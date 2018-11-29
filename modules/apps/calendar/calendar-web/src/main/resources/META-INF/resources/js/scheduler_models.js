@@ -81,9 +81,8 @@ AUI.add(
 						},
 						setter: function(val) {
 							var content = val;
-
 							if (val) {
-								content = LString.unescapeHTML(val);
+								content = LString.unescapeHTML(val + '');
 							}
 
 							return content;
