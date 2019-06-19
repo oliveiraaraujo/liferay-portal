@@ -936,6 +936,11 @@ while (manageableCalendarsIterator.hasNext()) {
 	defaultEndTimeJCalendar.add(java.util.Calendar.MINUTE, defaultDuration);
 	%>
 
+	var maxLength = Liferay.AUI.getDateFormat().replace(/%[mdY]/gm,'').length + 8;
+
+	A.one('#<portlet:namespace />endTime').set('maxLength', maxLength);
+	A.one('#<portlet:namespace />startTime').set('maxLength', maxLength);
+
 	allDayCheckbox.after(
 		'click',
 		function() {
