@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import dom from 'metal-dom';
 import {DefaultEventHandler} from 'frontend-js-web';
 
@@ -45,10 +59,10 @@ class UsersManagementToolbarDefaultEventHandler extends DefaultEventHandler {
 				eventName: this.ns('selectSiteRole'),
 				on: {
 					selectedItemChange: function(event) {
-						let selectedItem = event.newVal;
+						const selectedItem = event.newVal;
 
 						if (selectedItem) {
-							let fm = this.one('#fm');
+							const fm = this.one('#fm');
 
 							selectedItem.forEach(item => {
 								dom.append(fm, item);
@@ -76,7 +90,9 @@ class UsersManagementToolbarDefaultEventHandler extends DefaultEventHandler {
 						const selectedItem = event.newVal;
 
 						if (selectedItem) {
-							let addGroupUsersFm = this.one('#addGroupUsersFm');
+							const addGroupUsersFm = this.one(
+								'#addGroupUsersFm'
+							);
 
 							selectedItem.forEach(item => {
 								dom.append(addGroupUsersFm, item);

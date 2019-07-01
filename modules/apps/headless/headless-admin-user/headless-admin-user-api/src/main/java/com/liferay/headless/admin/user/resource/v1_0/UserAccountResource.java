@@ -24,6 +24,8 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 
 import javax.annotation.Generated;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
  * To access this resource, run:
  *
@@ -33,6 +35,7 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
+@ProviderType
 public interface UserAccountResource {
 
 	public UserAccount getMyUserAccount() throws Exception;

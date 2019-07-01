@@ -1,5 +1,12 @@
 components:
     schemas:
+        AffectedEntry:
+            properties:
+                contentType:
+                    type: string
+                title:
+                    type: string
+            type: object
         Collection:
             properties:
                 additionCount:
@@ -11,6 +18,9 @@ components:
                 companyId:
                     format: int64
                     type: integer
+                dateStatus:
+                    format: date-time
+                    type: string
                 deletionCount:
                     format: int64
                     type: integer
@@ -23,15 +33,87 @@ components:
                     type: string
                 statusByUserName:
                     type: string
-                statusDate:
-                    format: date-time
-                    type: string
             type: object
+        CollectionType:
+            default: "all"
+            enum: [active, all, production, recent]
+            type: string
         CollectionUpdate:
             properties:
                 description:
                     type: string
                 name:
+                    type: string
+            type: object
+        Entry:
+            properties:
+                affectedByEntriesCount:
+                    type: integer
+                changeType:
+                    type: integer
+                classNameId:
+                    format: int64
+                    type: integer
+                classPK:
+                    format: int64
+                    type: integer
+                collision:
+                    type: boolean
+                contentType:
+                    type: string
+                dateModified:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                entryId:
+                    format: int64
+                    type: integer
+                key:
+                    format: int64
+                    type: integer
+                siteName:
+                    type: string
+                title:
+                    type: string
+                userName:
+                    type: string
+                version:
+                    type: string
+            type: object
+        Process:
+            properties:
+                collection:
+                    $ref: "#/components/schemas/Collection"
+                companyId:
+                    format: int64
+                    type: integer
+                dateCreated:
+                    format: date-time
+                    type: string
+                percentage:
+                    type: integer
+                processId:
+                    format: int64
+                    type: integer
+                processUser:
+                    $ref: "#/components/schemas/ProcessUser"
+                status:
+                    type: string
+            type: object
+        ProcessType:
+            default: "all"
+            enum: [all, failed, in_progress, published, published_latest]
+            type: string
+        ProcessUser:
+            properties:
+                userId:
+                    format: int64
+                    type: integer
+                userInitials:
+                    type: string
+                userName:
+                    type: string
+                userPortraitURL:
                     type: string
             type: object
         Settings:
@@ -75,6 +157,11 @@ paths:
             operationId: getCollectionsPage
             parameters:
                 - in: query
+                  name: collectionType
+                  required: false
+                  schema:
+                      $ref: "#/components/schemas/CollectionType"
+                - in: query
                   name: companyId
                   required: false
                   schema:
@@ -94,12 +181,6 @@ paths:
                   name: sort
                   required: false
                   schema:
-                      type: string
-                - in: query
-                  name: type
-                  required: false
-                  schema:
-                      default: "all"
                       type: string
                 - in: query
                   name: userId
@@ -190,6 +271,12 @@ paths:
                   schema:
                       format: int64
                       type: integer
+                - in: query
+                  name: companyId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
             responses:
                 204:
                     description: ""
@@ -207,6 +294,12 @@ paths:
             parameters:
                 - in: path
                   name: collectionId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+                - in: query
+                  name: companyId
                   required: true
                   schema:
                       format: int64
@@ -248,6 +341,76 @@ paths:
                 202:
                     description: ""
             tags: ["Collection"]
+    "/collections/{collectionId}/entries":
+        get:
+            operationId: getCollectionEntriesPage
+            parameters:
+                - in: path
+                  name: collectionId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+                - in: query
+                  name: changeTypesFilter
+                  required: false
+                  schema:
+                      type: string
+                - in: query
+                  name: classNameIdsFilter
+                  required: false
+                  schema:
+                      type: string
+                - in: query
+                  name: collision
+                  required: false
+                  schema:
+                      type: boolean
+                - in: query
+                  name: groupIdsFilter
+                  required: false
+                  schema:
+                      type: string
+                - in: query
+                  name: page
+                  required: false
+                  schema:
+                      type: integer
+                - in: query
+                  name: pageSize
+                  required: false
+                  schema:
+                      type: integer
+                - in: query
+                  name: sort
+                  required: false
+                  schema:
+                      type: string
+                - in: query
+                  name: status
+                  required: false
+                  schema:
+                      type: integer
+                - in: query
+                  name: userIdsFilter
+                  required: false
+                  schema:
+                      type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Entry"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Entry"
+                                type: array
+                    description: ""
+            tags: ["Entry"]
     "/collections/{collectionId}/publish":
         post:
             operationId: postCollectionPublish
@@ -279,6 +442,189 @@ paths:
                                 type: string
                     description: ""
             tags: ["Collection"]
+    "/entries/{entryId}":
+        get:
+            operationId: getEntry
+            parameters:
+                - in: path
+                  name: entryId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Entry"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Entry"
+                    description: ""
+            tags: ["Entry"]
+    "/entries/{entryId}/affected-entries":
+        get:
+            operationId: getEntryAffectedEntriesPage
+            parameters:
+                - in: path
+                  name: entryId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+                - in: query
+                  name: keywords
+                  required: false
+                  schema:
+                      type: string
+                - in: query
+                  name: page
+                  required: false
+                  schema:
+                      type: integer
+                - in: query
+                  name: pageSize
+                  required: false
+                  schema:
+                      type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/AffectedEntry"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/AffectedEntry"
+                                type: array
+                    description: ""
+            tags: ["AffectedEntry"]
+    "/processes":
+        get:
+            operationId: getProcessesPage
+            parameters:
+                - in: query
+                  name: companyId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+                - in: query
+                  name: keywords
+                  required: false
+                  schema:
+                      type: string
+                - in: query
+                  name: page
+                  required: false
+                  schema:
+                      type: integer
+                - in: query
+                  name: pageSize
+                  required: false
+                  schema:
+                      type: integer
+                - in: query
+                  name: processType
+                  required: false
+                  schema:
+                      $ref: "#/components/schemas/ProcessType"
+                - in: query
+                  name: sort
+                  required: false
+                  schema:
+                      type: string
+                - in: query
+                  name: userId
+                  required: false
+                  schema:
+                      format: int64
+                      type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Process"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Process"
+                                type: array
+                    description: ""
+            tags: ["Process"]
+    "/processes/users":
+        get:
+            operationId: getProcessUsersPage
+            parameters:
+                - in: query
+                  name: companyId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+                - in: query
+                  name: keywords
+                  required: false
+                  schema:
+                      type: string
+                - in: query
+                  name: page
+                  required: false
+                  schema:
+                      type: integer
+                - in: query
+                  name: pageSize
+                  required: false
+                  schema:
+                      type: integer
+                - in: query
+                  name: processType
+                  required: false
+                  schema:
+                      $ref: "#/components/schemas/ProcessType"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/ProcessUser"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/ProcessUser"
+                                type: array
+                    description: ""
+            tags: ["ProcessUser"]
+    "/processes/{processId}":
+        get:
+            operationId: getProcess
+            parameters:
+                - in: path
+                  name: processId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Process"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Process"
+                    description: ""
+            tags: ["Process"]
     "/settings":
         get:
             operationId: getSettingsPage

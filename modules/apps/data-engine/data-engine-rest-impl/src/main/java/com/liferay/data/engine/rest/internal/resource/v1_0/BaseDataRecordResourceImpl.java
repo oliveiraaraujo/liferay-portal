@@ -168,6 +168,10 @@ public abstract class BaseDataRecordResourceImpl implements DataRecordResource {
 		return new DataRecord();
 	}
 
+	public void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage) {
+		this.contextAcceptLanguage = contextAcceptLanguage;
+	}
+
 	public void setContextCompany(Company contextCompany) {
 		this.contextCompany = contextCompany;
 	}

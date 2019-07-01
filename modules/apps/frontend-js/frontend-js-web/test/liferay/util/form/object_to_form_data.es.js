@@ -1,10 +1,24 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 'use strict';
 
 import objectToFormData from '../../../../src/main/resources/META-INF/resources/liferay/util/form/object_to_form_data.es';
 
 describe('Liferay.Util.objectToFormData', () => {
 	describe('for plain objects', () => {
-		it('should convert the object string entries into string FormData entries', () => {
+		it('converts the object string entries into string FormData entries', () => {
 			const body = {
 				value1: 'value1',
 				value2: 'value2'
@@ -16,7 +30,7 @@ describe('Liferay.Util.objectToFormData', () => {
 			expect(formData.get('value2')).toEqual('value2');
 		});
 
-		it('should convert the object boolean entries into string FormData entries', () => {
+		it('converts the object boolean entries into string FormData entries', () => {
 			const body = {
 				value1: true,
 				value2: false
@@ -28,7 +42,7 @@ describe('Liferay.Util.objectToFormData', () => {
 			expect(formData.get('value2')).toEqual('false');
 		});
 
-		it('should convert the object number entries into string FormData entries', () => {
+		it('converts the object number entries into string FormData entries', () => {
 			const body = {
 				value1: 1,
 				value2: -1
@@ -40,7 +54,7 @@ describe('Liferay.Util.objectToFormData', () => {
 			expect(formData.get('value2')).toEqual('-1');
 		});
 
-		it('should convert the object File entries into File FormData entries', () => {
+		it('converts the object File entries into File FormData entries', () => {
 			const body = {
 				value1: new File([''], '')
 			};
@@ -52,7 +66,7 @@ describe('Liferay.Util.objectToFormData', () => {
 	});
 
 	describe('for objects with array values', () => {
-		it('should generate a grouped field matching the key of the array', () => {
+		it('generates a grouped field matching the key of the array', () => {
 			const body = {
 				array: ['value1', 'value2']
 			};
@@ -66,7 +80,7 @@ describe('Liferay.Util.objectToFormData', () => {
 	});
 
 	describe('for objects with object values', () => {
-		it('should transform an object with complex values into a FormData element', () => {
+		it('transforms an object with complex values into a FormData element', () => {
 			const body = {
 				objectValue: {
 					arrayValue: ['arrayValue1', 'arrayValue2'],

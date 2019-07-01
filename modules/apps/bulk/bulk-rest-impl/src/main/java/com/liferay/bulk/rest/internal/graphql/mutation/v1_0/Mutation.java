@@ -26,13 +26,11 @@ import com.liferay.bulk.rest.resource.v1_0.TaxonomyCategoryResource;
 import com.liferay.bulk.rest.resource.v1_0.TaxonomyVocabularyResource;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
-import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
 import com.liferay.portal.vulcan.pagination.Page;
-
-import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLInvokeDetached;
-import graphql.annotations.annotationTypes.GraphQLName;
 
 import javax.annotation.Generated;
 
@@ -77,8 +75,8 @@ public class Mutation {
 			taxonomyVocabularyResourceComponentServiceObjects;
 	}
 
-	@GraphQLInvokeDetached
-	public void patchKeywordBatch(
+	@GraphQLField
+	public boolean patchKeywordBatch(
 			@GraphQLName("keywordBulkSelection") KeywordBulkSelection
 				keywordBulkSelection)
 		throws Exception {
@@ -88,10 +86,12 @@ public class Mutation {
 			this::_populateResourceContext,
 			keywordResource -> keywordResource.patchKeywordBatch(
 				keywordBulkSelection));
+
+		return true;
 	}
 
-	@GraphQLInvokeDetached
-	public void putKeywordBatch(
+	@GraphQLField
+	public boolean putKeywordBatch(
 			@GraphQLName("keywordBulkSelection") KeywordBulkSelection
 				keywordBulkSelection)
 		throws Exception {
@@ -101,10 +101,11 @@ public class Mutation {
 			this::_populateResourceContext,
 			keywordResource -> keywordResource.putKeywordBatch(
 				keywordBulkSelection));
+
+		return true;
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public java.util.Collection<Keyword> postKeywordsCommonPage(
 			@GraphQLName("documentBulkSelection") DocumentBulkSelection
 				documentBulkSelection)
@@ -122,7 +123,6 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public Selection postBulkSelection(
 			@GraphQLName("documentBulkSelection") DocumentBulkSelection
 				documentBulkSelection)
@@ -135,8 +135,8 @@ public class Mutation {
 				documentBulkSelection));
 	}
 
-	@GraphQLInvokeDetached
-	public void patchTaxonomyCategoryBatch(
+	@GraphQLField
+	public boolean patchTaxonomyCategoryBatch(
 			@GraphQLName("taxonomyCategoryBulkSelection")
 				TaxonomyCategoryBulkSelection taxonomyCategoryBulkSelection)
 		throws Exception {
@@ -147,10 +147,12 @@ public class Mutation {
 			taxonomyCategoryResource ->
 				taxonomyCategoryResource.patchTaxonomyCategoryBatch(
 					taxonomyCategoryBulkSelection));
+
+		return true;
 	}
 
-	@GraphQLInvokeDetached
-	public void putTaxonomyCategoryBatch(
+	@GraphQLField
+	public boolean putTaxonomyCategoryBatch(
 			@GraphQLName("taxonomyCategoryBulkSelection")
 				TaxonomyCategoryBulkSelection taxonomyCategoryBulkSelection)
 		throws Exception {
@@ -161,10 +163,11 @@ public class Mutation {
 			taxonomyCategoryResource ->
 				taxonomyCategoryResource.putTaxonomyCategoryBatch(
 					taxonomyCategoryBulkSelection));
+
+		return true;
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public java.util.Collection<TaxonomyVocabulary>
 			postSiteTaxonomyVocabulariesCommonPage(
 				@GraphQLName("siteId") Long siteId,
@@ -226,35 +229,31 @@ public class Mutation {
 	private void _populateResourceContext(KeywordResource keywordResource)
 		throws Exception {
 
-		keywordResource.setContextCompany(
-			CompanyLocalServiceUtil.getCompany(
-				CompanyThreadLocal.getCompanyId()));
+		keywordResource.setContextAcceptLanguage(_acceptLanguage);
+		keywordResource.setContextCompany(_company);
 	}
 
 	private void _populateResourceContext(SelectionResource selectionResource)
 		throws Exception {
 
-		selectionResource.setContextCompany(
-			CompanyLocalServiceUtil.getCompany(
-				CompanyThreadLocal.getCompanyId()));
+		selectionResource.setContextAcceptLanguage(_acceptLanguage);
+		selectionResource.setContextCompany(_company);
 	}
 
 	private void _populateResourceContext(
 			TaxonomyCategoryResource taxonomyCategoryResource)
 		throws Exception {
 
-		taxonomyCategoryResource.setContextCompany(
-			CompanyLocalServiceUtil.getCompany(
-				CompanyThreadLocal.getCompanyId()));
+		taxonomyCategoryResource.setContextAcceptLanguage(_acceptLanguage);
+		taxonomyCategoryResource.setContextCompany(_company);
 	}
 
 	private void _populateResourceContext(
 			TaxonomyVocabularyResource taxonomyVocabularyResource)
 		throws Exception {
 
-		taxonomyVocabularyResource.setContextCompany(
-			CompanyLocalServiceUtil.getCompany(
-				CompanyThreadLocal.getCompanyId()));
+		taxonomyVocabularyResource.setContextAcceptLanguage(_acceptLanguage);
+		taxonomyVocabularyResource.setContextCompany(_company);
 	}
 
 	private static ComponentServiceObjects<KeywordResource>
@@ -265,5 +264,8 @@ public class Mutation {
 		_taxonomyCategoryResourceComponentServiceObjects;
 	private static ComponentServiceObjects<TaxonomyVocabularyResource>
 		_taxonomyVocabularyResourceComponentServiceObjects;
+
+	private AcceptLanguage _acceptLanguage;
+	private Company _company;
 
 }

@@ -50,7 +50,7 @@ public interface EROrganizationLocalService extends BaseLocalService {
 			String externalReferenceCode, long userId,
 			long parentOrganizationId, String name, String type, long regionId,
 			long countryId, long statusId, String comments, boolean site,
-			boolean logo, byte[] logoBytes, ServiceContext serviceContext)
+			boolean hasLogo, byte[] logoBytes, ServiceContext serviceContext)
 		throws PortalException;
 
 	/**

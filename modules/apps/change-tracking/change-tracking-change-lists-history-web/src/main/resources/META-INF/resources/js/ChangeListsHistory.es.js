@@ -1,3 +1,19 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+
 import 'clay-label';
 import 'clay-progress-bar';
 import 'clay-sticker';
@@ -19,11 +35,11 @@ const USER_FILTER_ALL = -1;
  */
 class ChangeListsHistory extends PortletBase {
 	created() {
-		let headers = new Headers();
+		const headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('X-CSRF-Token', Liferay.authToken);
 
-		let init = {
+		const init = {
 			credentials: 'include',
 			headers,
 			method: 'GET'
@@ -33,11 +49,11 @@ class ChangeListsHistory extends PortletBase {
 
 		let beforeUnloadHandler = null;
 
-		let urlProcesses = this._getUrlProcesses();
+		const urlProcesses = this._getUrlProcesses();
 
 		this._fetchProcesses(urlProcesses, init);
 
-		let instance = this;
+		const instance = this;
 
 		this.timeoutId = setTimeout(
 			() => instance._fetchProcesses(urlProcesses, init),
@@ -151,7 +167,7 @@ class ChangeListsHistory extends PortletBase {
 	}
 
 	_getUrlProcesses() {
-		let sort = '&sort=' + this.orderByCol + ':' + this.orderByType;
+		const sort = '&sort=' + this.orderByCol + ':' + this.orderByType;
 
 		let urlProcesses =
 			this.urlProcesses +
@@ -175,18 +191,18 @@ class ChangeListsHistory extends PortletBase {
 
 	_populateProcessUsers(processUsers) {
 		AUI().use('liferay-portlet-url', A => {
-			let managementToolbar = Liferay.component(
+			const managementToolbar = Liferay.component(
 				'changeListHistoryManagementToolbar'
 			);
 
-			let filterByUserIndex = managementToolbar.filterItems.findIndex(
+			const filterByUserIndex = managementToolbar.filterItems.findIndex(
 				e => e.label === 'Filter by User'
 			);
 
-			let filterByUserItems =
+			const filterByUserItems =
 				managementToolbar.filterItems[filterByUserIndex].items;
 
-			let updatedFilterByUserItems = [];
+			const updatedFilterByUserItems = [];
 
 			updatedFilterByUserItems.push(
 				filterByUserItems[

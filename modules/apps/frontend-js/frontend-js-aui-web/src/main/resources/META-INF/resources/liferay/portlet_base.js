@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 AUI.add(
 	'liferay-portlet-base',
 	function(A) {
@@ -42,13 +56,15 @@ AUI.add(
 
 				root = A.one(root) || instance.rootNode || A;
 
-				return root.allNS(instance.NS, selector);
+				return root.all(
+					instance._formatSelectorNS(instance.NS, selector)
+				);
 			},
 
 			byId: function(id) {
 				var instance = this;
 
-				return A.byIdNS(instance.NS, id);
+				return A.one('#' + A.Lang.String.prefix(instance.NS, id));
 			},
 
 			ns: function(str) {
@@ -62,7 +78,16 @@ AUI.add(
 
 				root = A.one(root) || instance.rootNode || A;
 
-				return root.oneNS(instance.NS, selector);
+				return root.one(
+					instance._formatSelectorNS(instance.NS, selector)
+				);
+			},
+
+			_formatSelectorNS: function(ns, selector) {
+				return selector.replace(
+					A.DOM._getRegExp('(#|\\[id=(\\"|\\\'))(?!' + ns + ')', 'g'),
+					'$1' + ns
+				);
 			},
 
 			_getNS: function(value) {
@@ -92,6 +117,6 @@ AUI.add(
 	},
 	'',
 	{
-		requires: ['aui-base', 'liferay-node']
+		requires: ['aui-base']
 	}
 );

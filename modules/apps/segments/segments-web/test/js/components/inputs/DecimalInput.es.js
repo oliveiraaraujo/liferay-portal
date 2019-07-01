@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import DecimalInput from 'components/inputs/DecimalInput.es';
 import React from 'react';
 import {cleanup, fireEvent, render} from 'react-testing-library';
@@ -8,7 +22,7 @@ const DECIMAL_NUMBER_INPUT_TESTID = 'decimal-number';
 describe('DecimalInput', () => {
 	afterEach(cleanup);
 
-	it('should render type decimal number', () => {
+	it('renders type decimal number', () => {
 		const mockOnChange = jest.fn();
 
 		const defaultNumberValue = '1.23';
@@ -30,7 +44,7 @@ describe('DecimalInput', () => {
 		});
 	});
 
-	it('should format the value after blur', () => {
+	it('formats the value after blur', () => {
 		const mockOnChange = jest.fn();
 
 		const {getByTestId} = render(<DecimalInput onChange={mockOnChange} />);

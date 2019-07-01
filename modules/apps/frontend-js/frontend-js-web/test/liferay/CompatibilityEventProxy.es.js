@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 'use strict';
 
 import EventEmitter from 'metal-events/lib/EventEmitter';
@@ -7,7 +21,7 @@ import CompatibilityEventProxy from '../../src/main/resources/META-INF/resources
 describe('CompatibilityEventProxy', () => {
 	function createMockedTarget(event, emitFacade) {
 		const mockedTarget = {
-			fire: function() {},
+			fire() {},
 
 			_yuievt: {
 				events: {}
@@ -16,7 +30,7 @@ describe('CompatibilityEventProxy', () => {
 
 		if (event) {
 			mockedTarget._yuievt.events[event] = {
-				emitFacade: emitFacade
+				emitFacade
 			};
 		}
 
@@ -47,9 +61,9 @@ describe('CompatibilityEventProxy', () => {
 
 	const namespace = 'namespace';
 
-	it('should not emit any event when no targets have been added', done => {
+	it('does not emit any event when no targets have been added', done => {
 		const component = new CompatibilityEventProxy({
-			host: host
+			host
 		});
 
 		const spy = jest.spyOn(component, 'emitCompatibleEvents_');
@@ -64,11 +78,11 @@ describe('CompatibilityEventProxy', () => {
 		done();
 	});
 
-	it('should not crash if target has no method fire', done => {
+	it('does not crash if target has no method fire', done => {
 		const mockedTarget = {};
 
 		const component = new CompatibilityEventProxy({
-			host: host
+			host
 		});
 
 		const spy = jest.spyOn(component, 'emitCompatibleEvents_');
@@ -89,13 +103,13 @@ describe('CompatibilityEventProxy', () => {
 		done();
 	});
 
-	it('should emit adapted event with event name and event params to given targets when no namespace is specified', done => {
+	it('emits adapted event with event name and event params to given targets when no namespace is specified', done => {
 		const mockedTarget = createMockedTarget(eventNameToEmit);
 
 		const spy = jest.spyOn(mockedTarget, 'fire');
 
 		const component = new CompatibilityEventProxy({
-			host: host
+			host
 		});
 
 		component.addTarget(mockedTarget);
@@ -110,7 +124,7 @@ describe('CompatibilityEventProxy', () => {
 		done();
 	});
 
-	it('should emit adapted event with event name and event params to given targets when namespace is specified', done => {
+	it('emits adapted event with event name and event params to given targets when namespace is specified', done => {
 		const namespacedEventNameToEmit = namespace + ':' + eventNameToEmit;
 
 		const mockedTarget = createMockedTarget(namespacedEventNameToEmit);
@@ -118,8 +132,8 @@ describe('CompatibilityEventProxy', () => {
 		const spy = jest.spyOn(mockedTarget, 'fire');
 
 		const component = new CompatibilityEventProxy({
-			host: host,
-			namespace: namespace
+			host,
+			namespace
 		});
 
 		component.addTarget(mockedTarget);
@@ -134,13 +148,13 @@ describe('CompatibilityEventProxy', () => {
 		done();
 	});
 
-	it('should emit adapted event to given targets when target is not listening', done => {
+	it('emits adapted event to given targets when target is not listening', done => {
 		const mockedTarget = createMockedTarget();
 
 		const spy = jest.spyOn(mockedTarget, 'fire');
 
 		const component = new CompatibilityEventProxy({
-			host: host
+			host
 		});
 
 		component.addTarget(mockedTarget);
@@ -152,13 +166,13 @@ describe('CompatibilityEventProxy', () => {
 		done();
 	});
 
-	it('should emit adapted event to given targets when target is listening', done => {
+	it('emits adapted event to given targets when target is listening', done => {
 		const mockedTarget = createMockedTarget(eventNameToEmit);
 
 		const spy = jest.spyOn(mockedTarget, 'fire');
 
 		const component = new CompatibilityEventProxy({
-			host: host
+			host
 		});
 
 		component.addTarget(mockedTarget);
@@ -170,7 +184,7 @@ describe('CompatibilityEventProxy', () => {
 		done();
 	});
 
-	it('should maintain target original state of emitFacade after emiting events', done => {
+	it('maintains target original state of emitFacade after emiting events', done => {
 		const emitFacade = false;
 
 		const mockedTarget = createMockedTarget(eventNameToEmit, emitFacade);
@@ -178,7 +192,7 @@ describe('CompatibilityEventProxy', () => {
 		const spy = jest.spyOn(mockedTarget, 'fire');
 
 		const component = new CompatibilityEventProxy({
-			host: host
+			host
 		});
 
 		component.addTarget(mockedTarget);
@@ -193,7 +207,7 @@ describe('CompatibilityEventProxy', () => {
 		done();
 	});
 
-	it('should maintain target original state of emitFacade after emiting events when component emitFacade is true', done => {
+	it('maintains target original state of emitFacade after emiting events when component emitFacade is true', done => {
 		const emitFacade = false;
 
 		const mockedTarget = createMockedTarget(eventNameToEmit, emitFacade);
@@ -202,7 +216,7 @@ describe('CompatibilityEventProxy', () => {
 
 		const component = new CompatibilityEventProxy({
 			emitFacade: true,
-			host: host
+			host
 		});
 
 		component.addTarget(mockedTarget);
@@ -217,7 +231,7 @@ describe('CompatibilityEventProxy', () => {
 		done();
 	});
 
-	it('should adapt the events according to specified RegExp', done => {
+	it('adapts the events according to specified RegExp', done => {
 		const eventNameToEmit = 'eventChanged';
 
 		const eventObjectToEmit = {
@@ -239,7 +253,7 @@ describe('CompatibilityEventProxy', () => {
 				match: /(.*)(Changed)$/,
 				replace: '$1Change'
 			},
-			host: host
+			host
 		});
 
 		component.addTarget(mockedTarget);
@@ -251,7 +265,7 @@ describe('CompatibilityEventProxy', () => {
 		done();
 	});
 
-	it('should emit events even if the event does not have a key property', done => {
+	it('emits events even if the event does not have a key property', done => {
 		const eventObjectToEmit = {};
 
 		const mockedTarget = createMockedTarget(eventNameToEmit);
@@ -259,7 +273,7 @@ describe('CompatibilityEventProxy', () => {
 		const spy = jest.spyOn(mockedTarget, 'fire');
 
 		const component = new CompatibilityEventProxy({
-			host: host
+			host
 		});
 
 		component.addTarget(mockedTarget);

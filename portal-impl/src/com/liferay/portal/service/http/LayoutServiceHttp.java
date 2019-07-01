@@ -1376,7 +1376,7 @@ public class LayoutServiceHttp {
 			java.util.Map<java.util.Locale, String> robotsMap, String type,
 			boolean hidden,
 			java.util.Map<java.util.Locale, String> friendlyURLMap,
-			boolean iconImage, byte[] iconBytes,
+			boolean hasIconImage, byte[] iconBytes,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -1388,8 +1388,8 @@ public class LayoutServiceHttp {
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, privateLayout, layoutId, parentLayoutId,
 				localeNamesMap, localeTitlesMap, descriptionMap, keywordsMap,
-				robotsMap, type, hidden, friendlyURLMap, iconImage, iconBytes,
-				serviceContext);
+				robotsMap, type, hidden, friendlyURLMap, hasIconImage,
+				iconBytes, serviceContext);
 
 			Object returnObj = null;
 

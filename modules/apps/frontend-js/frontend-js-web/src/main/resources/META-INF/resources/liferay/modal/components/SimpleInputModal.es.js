@@ -1,4 +1,19 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import {Config} from 'metal-state';
+import fetch from './../../util/fetch.es';
 import {isString} from 'metal';
 import Soy from 'metal-soy';
 
@@ -44,7 +59,10 @@ class SimpleInputModal extends PortletBase {
 	 */
 
 	_defaultFormSubmit(event) {
-		this.fetch(this.formSubmitURL, event.form)
+		fetch(this.formSubmitURL, {
+			body: new FormData(event.form),
+			method: 'POST'
+		})
 			.then(response => response.json())
 			.then(responseContent => {
 				if (responseContent.error) {

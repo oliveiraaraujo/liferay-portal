@@ -1,4 +1,18 @@
-import {AOP} from 'metal-aop';
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+import {AOP} from 'frontend-js-web';
 import {delegate, on} from 'metal-dom';
 import {EventHandler} from 'metal-events';
 import PortletBase from 'frontend-js-web/liferay/PortletBase.es';
@@ -36,6 +50,20 @@ class JournalPortlet extends PortletBase {
 		this._eventHandler.add(
 			on(form, 'submit', this._onFormSubmit.bind(this))
 		);
+
+		const resetValuesButton = this._getInputByName(
+			this.ns('resetValuesButton')
+		);
+
+		if (resetValuesButton) {
+			this._eventHandler.add(
+				on(
+					resetValuesButton,
+					'click',
+					this._resetValuesDDMStructure.bind(this)
+				)
+			);
+		}
 
 		this._localeChangedHandler = Liferay.after(
 			'inputLocalized:localeChanged',
@@ -107,6 +135,23 @@ class JournalPortlet extends PortletBase {
 	}
 
 	/**
+	 * @private
+	 */
+	_resetValuesDDMStructure(event) {
+		if (
+			confirm(
+				Liferay.Language.get(
+					'are-you-sure-you-want-to-reset-the-default-values'
+				)
+			)
+		) {
+			const button = event.currentTarget;
+
+			submitForm(document.hrefFm, button.dataset.url);
+		}
+	}
+
+	/**
 	 * Prepare action and articleId inputs to submit form
 	 * @param {string} actionName
 	 */
@@ -122,7 +167,17 @@ class JournalPortlet extends PortletBase {
 		}
 
 		if (!actionName) {
-			actionName = articleId ? 'updateArticle' : 'addArticle';
+			const classNameId = this._getInputByName('classNameId').value;
+
+			if (classNameId > 0) {
+				actionName = articleId
+					? '/journal/update_ddm_structure_default_values'
+					: '/journal/add_ddm_structure_default_values';
+			} else {
+				actionName = articleId
+					? '/journal/update_article'
+					: '/journal/add_article';
+			}
 		}
 
 		this._setActionName(actionName);

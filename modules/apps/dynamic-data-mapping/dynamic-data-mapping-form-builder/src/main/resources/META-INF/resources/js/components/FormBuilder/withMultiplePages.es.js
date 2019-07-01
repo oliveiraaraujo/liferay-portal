@@ -1,3 +1,19 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+
 import '../SuccessPage/SuccessPagePaginationItem.soy.js';
 import '../SuccessPage/SuccessPageRenderer.soy.js';
 import '../SuccessPage/SuccessPageWizardItem.soy.js';
@@ -15,21 +31,26 @@ const withMultiplePages = ChildComponent => {
 	class MultiplePages extends Component {
 		getPages() {
 			let {pages} = this.props;
-			const {successPageSettings} = this.props;
+			const {paginationMode, successPageSettings} = this.props;
 
 			if (successPageSettings.enabled) {
 				pages = [
 					...pages,
 					{
 						contentRenderer: 'success',
-						paginationItemRenderer: 'success',
+						paginationItemRenderer: `${paginationMode}_success`,
 						rows: [],
 						successPageSettings
 					}
 				];
 			}
 
-			return pages;
+			return pages.map(page => {
+				return {
+					...page,
+					enabled: true
+				};
+			});
 		}
 
 		getPaginationPosition() {
@@ -281,6 +302,14 @@ const withMultiplePages = ChildComponent => {
 		 */
 
 		paginationMode: Config.string().required(),
+
+		/**
+		 * @instance
+		 * @memberof FormBuilder
+		 * @type {string}
+		 */
+
+		portletNamespace: Config.string().required(),
 
 		/**
 		 * @instance

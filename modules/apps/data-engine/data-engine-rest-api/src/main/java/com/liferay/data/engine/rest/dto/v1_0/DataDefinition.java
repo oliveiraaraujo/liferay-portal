@@ -20,9 +20,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.petra.string.StringBundler;
-
-import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLName;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -79,6 +78,34 @@ public class DataDefinition {
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected DataDefinitionField[] dataDefinitionFields;
+
+	@Schema
+	public String getDataDefinitionKey() {
+		return dataDefinitionKey;
+	}
+
+	public void setDataDefinitionKey(String dataDefinitionKey) {
+		this.dataDefinitionKey = dataDefinitionKey;
+	}
+
+	@JsonIgnore
+	public void setDataDefinitionKey(
+		UnsafeSupplier<String, Exception> dataDefinitionKeyUnsafeSupplier) {
+
+		try {
+			dataDefinitionKey = dataDefinitionKeyUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected String dataDefinitionKey;
 
 	@Schema
 	public DataDefinitionRule[] getDataDefinitionRules() {
@@ -382,6 +409,20 @@ public class DataDefinition {
 			}
 
 			sb.append("]");
+		}
+
+		if (dataDefinitionKey != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"dataDefinitionKey\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(dataDefinitionKey));
+
+			sb.append("\"");
 		}
 
 		if (dataDefinitionRules != null) {

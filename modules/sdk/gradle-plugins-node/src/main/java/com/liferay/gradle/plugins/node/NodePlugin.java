@@ -60,7 +60,6 @@ import org.gradle.api.plugins.PluginContainer;
 import org.gradle.api.specs.Spec;
 import org.gradle.api.tasks.Delete;
 import org.gradle.api.tasks.SourceSet;
-import org.gradle.api.tasks.SourceSetOutput;
 import org.gradle.api.tasks.TaskContainer;
 import org.gradle.api.tasks.TaskOutputs;
 import org.gradle.language.base.plugins.LifecycleBasePlugin;
@@ -603,11 +602,9 @@ public class NodePlugin implements Plugin<Project> {
 			SourceSet sourceSet = GradleUtil.getSourceSet(
 				npmRunTask.getProject(), SourceSet.MAIN_SOURCE_SET_NAME);
 
-			SourceSetOutput sourceSetOutput = sourceSet.getOutput();
+			File javaClassesDir = FileUtil.getJavaClassesDir(sourceSet);
 
-			File classesDir = sourceSetOutput.getClassesDir();
-
-			if (!classesDir.exists()) {
+			if (!javaClassesDir.exists()) {
 				TaskOutputs taskOutputs = npmRunTask.getOutputs();
 
 				taskOutputs.upToDateWhen(

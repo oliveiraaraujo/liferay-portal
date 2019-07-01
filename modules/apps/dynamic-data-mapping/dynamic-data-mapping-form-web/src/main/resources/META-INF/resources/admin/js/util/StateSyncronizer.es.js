@@ -1,8 +1,22 @@
-import * as FormSupport from 'dynamic-data-mapping-form-builder/js/components/Form/FormSupport.es';
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+import * as FormSupport from 'dynamic-data-mapping-form-renderer/js/components/FormRenderer/FormSupport.es';
 import Component from 'metal-jsx';
 import {Config} from 'metal-state';
 import {EventHandler} from 'metal-events';
-import {PagesVisitor} from 'dynamic-data-mapping-form-builder/js/util/visitors.es';
+import {PagesVisitor} from 'dynamic-data-mapping-form-renderer/js/util/visitors.es';
 
 class StateSyncronizer extends Component {
 	created() {
@@ -146,11 +160,11 @@ class StateSyncronizer extends Component {
 		});
 
 		if (settingsDDMForm) {
-			const settings = settingsDDMForm.get('context');
-
 			document.querySelector(
 				`#${namespace}serializedSettingsContext`
-			).value = JSON.stringify(settings);
+			).value = JSON.stringify({
+				pages: settingsDDMForm.pages
+			});
 		}
 
 		document.querySelector(`#${namespace}name`).value = JSON.stringify(
@@ -186,6 +200,8 @@ class StateSyncronizer extends Component {
 					...field,
 					settingsContext: {
 						...field.settingsContext,
+						availableLanguageIds: this.getAvailableLanguageIds(),
+						defaultLanguageId: this.getDefaultLanguageId(),
 						pages: this._getSerializedSettingsContextPages(
 							field.settingsContext.pages
 						)

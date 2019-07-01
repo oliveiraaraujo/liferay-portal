@@ -73,6 +73,16 @@ definition {
 		MenuItem.click(menuItem = "${menuItem}");
 	}
 
+	macro gotoAddReport {
+		var browserType = PropsUtil.get("browser.type");
+
+		if ("${browserType}" == "chrome") {
+			MetalComponent.waitForReportsManagementBar();
+		}
+
+		Click(locator1 = "Button#PLUS");
+	}
+
 	macro gotoEllipsisMenuItem {
 		Click.waitForMenuToggleJSClick(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
 

@@ -117,6 +117,8 @@ public class DDMFormFieldTemplateContextFactory {
 
 		Map<String, Object> ddmFormFieldTemplateContext = new HashMap<>();
 
+		ddmFormFieldTemplateContext.put("type", ddmFormField.getType());
+
 		setDDMFormFieldTemplateContextFieldName(
 			ddmFormFieldTemplateContext, ddmFormField.getName());
 		setDDMFormFieldTemplateContextLocalizedValue(

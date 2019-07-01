@@ -51,13 +51,6 @@ public class DeployManagerImpl implements DeployManager {
 
 	@Override
 	public String getInstalledDir() throws Exception {
-		if (ServerDetector.isGlassfish()) {
-			File file = new File(
-				System.getProperty("com.sun.aas.instanceRoot"), "autodeploy");
-
-			return file.getAbsolutePath();
-		}
-
 		return DeployUtil.getAutoDeployDestDir();
 	}
 
@@ -106,10 +99,7 @@ public class DeployManagerImpl implements DeployManager {
 
 	@Override
 	public void redeploy(String context) throws Exception {
-		if (ServerDetector.isJetty()) {
-			DeployUtil.redeployJetty(context);
-		}
-		else if (ServerDetector.isTomcat()) {
+		if (ServerDetector.isTomcat()) {
 			DeployUtil.redeployTomcat(context);
 		}
 	}

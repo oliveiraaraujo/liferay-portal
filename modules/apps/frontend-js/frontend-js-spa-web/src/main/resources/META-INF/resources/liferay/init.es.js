@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 'use strict';
 
 import {async} from 'metal';
@@ -17,13 +31,13 @@ import RenderURLScreen from './screen/RenderURLScreen.es';
  * @return {!App} The Senna App initialized
  */
 
-let initSPA = function() {
-	let app = new App();
+const initSPA = function() {
+	const app = new App();
 
 	app.addRoutes([
 		{
 			handler: ActionURLScreen,
-			path: function(url) {
+			path(url) {
 				let match = false;
 
 				const uri = new Uri(url);
@@ -41,7 +55,7 @@ let initSPA = function() {
 		},
 		{
 			handler: RenderURLScreen,
-			path: function(url) {
+			path(url) {
 				let match = false;
 
 				if (
@@ -69,10 +83,10 @@ let initSPA = function() {
 
 	Liferay.Util.submitForm = function(form) {
 		async.nextTick(() => {
-			let formElement = form.getDOM();
-			let formSelector =
+			const formElement = form.getDOM();
+			const formSelector =
 				'form' + Liferay.SPA.navigationExceptionSelectors;
-			let url = formElement.action;
+			const url = formElement.action;
 
 			if (
 				match(formElement, formSelector) &&
@@ -114,7 +128,7 @@ let initSPA = function() {
 };
 
 export default {
-	init: function(callback) {
+	init(callback) {
 		if (globals.document.readyState == 'loading') {
 			globals.document.addEventListener('DOMContentLoaded', () => {
 				callback.call(this, initSPA());

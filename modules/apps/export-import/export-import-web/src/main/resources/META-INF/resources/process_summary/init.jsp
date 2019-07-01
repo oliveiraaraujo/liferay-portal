@@ -34,7 +34,7 @@ BackgroundTask backgroundTask = BackgroundTaskManagerUtil.fetchBackgroundTask(ba
 
 Map<String, ?> taskContextMap = backgroundTask.getTaskContextMap();
 
-long exportImportConfigurationId = Long.parseLong(taskContextMap.get("exportImportConfigurationId").toString());
+long exportImportConfigurationId = GetterUtil.getLong(String.valueOf(taskContextMap.get("exportImportConfigurationId")));
 
 ExportImportConfiguration exportImportConfiguration = ExportImportConfigurationLocalServiceUtil.getExportImportConfiguration(exportImportConfigurationId);
 
@@ -43,4 +43,6 @@ Map<String, Serializable> exportImportConfigurationSettingsMap = exportImportCon
 Map<String, Serializable> parameterMap = (Map<String, Serializable>)exportImportConfigurationSettingsMap.get("parameterMap");
 
 String processCmd = MapUtil.getString(parameterMap, "cmd");
+
+Map<String, LongWrapper> modelDeletionCounters = (Map<String, LongWrapper>)taskContextMap.get(ExportImportBackgroundTaskContextMapConstants.MODEL_DELETION_COUNTERS);
 %>

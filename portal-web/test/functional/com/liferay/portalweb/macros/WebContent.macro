@@ -221,7 +221,7 @@ definition {
 		if (isSet(templateName)) {
 			if (IsTextNotEqual(locator1 = "WCEditWebContent#SELECTED_TEMPLATE", value1 = "${templateName}")) {
 				WebContent.selectTemplateCP(
-					structureName = "${structureName}",
+					structureName = "Basic Web Content",
 					templateName = "${templateName}");
 			}
 		}
@@ -766,9 +766,10 @@ definition {
 				value1 = "Draft");
 		}
 		else {
-			if("${changeListEnabled}" == "true") {
+			if ("${changeListEnabled}" == "true") {
 				Button.clickPublishToChangeList();
-			} else {
+			}
+			else {
 				PortletEntry.publish();
 			}
 			LexiconEntry.changeDisplayStyle(displayStyle = "list");
@@ -921,7 +922,7 @@ definition {
 		else {
 			AssertTextEquals(
 				locator1 = "WCD#WEB_CONTENT_CONTENT",
-				value1 = "Content ${webContentContentEdit}");
+				value1 = "${webContentContentEdit}");
 		}
 	}
 

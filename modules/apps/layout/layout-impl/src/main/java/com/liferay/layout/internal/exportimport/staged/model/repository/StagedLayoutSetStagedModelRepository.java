@@ -14,6 +14,7 @@
 
 package com.liferay.layout.internal.exportimport.staged.model.repository;
 
+import com.liferay.exportimport.kernel.lar.ExportImportHelper;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
@@ -99,7 +100,9 @@ public class StagedLayoutSetStagedModelRepository
 
 		Stream<Layout> layoutsStream = layouts.stream();
 
-		return layoutsStream.map(
+		return layoutsStream.filter(
+			layout -> !_exportImportHelper.isLayoutRevisionInReview(layout)
+		).map(
 			layout -> (StagedModel)layout
 		).collect(
 			Collectors.toList()
@@ -260,6 +263,9 @@ public class StagedLayoutSetStagedModelRepository
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		StagedLayoutSetStagedModelRepository.class);
+
+	@Reference
+	private ExportImportHelper _exportImportHelper;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;

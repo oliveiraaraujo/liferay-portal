@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import Component from 'metal-component';
 import {Config} from 'metal-state';
 import Soy from 'metal-soy';
@@ -216,7 +230,7 @@ class SidebarPageStructurePanel extends Component {
 	 * @review
 	 */
 	_handleElementClick(event) {
-		const {nodeKey} = event.delegateTarget.dataset;
+		const {elementId, elementType, nodeKey} = event.delegateTarget.dataset;
 
 		if (nodeKey) {
 			const nodeKeyIndex = this._expandedNodes.indexOf(nodeKey);
@@ -228,6 +242,16 @@ class SidebarPageStructurePanel extends Component {
 			}
 
 			this._expandedNodes = this._expandedNodes;
+		}
+
+		if (elementId && elementType) {
+			const element = document.querySelector(
+				`.fragment-entry-link-list [data-fragments-editor-item-id="${elementId}"][data-fragments-editor-item-type="${elementType}"]`
+			);
+
+			if (element) {
+				element.scrollIntoView({behavior: 'smooth', block: 'center'});
+			}
 		}
 	}
 

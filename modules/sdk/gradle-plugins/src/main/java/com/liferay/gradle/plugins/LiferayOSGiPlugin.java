@@ -954,14 +954,15 @@ public class LiferayOSGiPlugin implements Plugin<Project> {
 		SourceSet sourceSet = GradleUtil.getSourceSet(
 			project, SourceSet.MAIN_SOURCE_SET_NAME);
 
-		SourceSetOutput sourceSetOutput = sourceSet.getOutput();
-
-		File classesDir = new File(docrootDir, "WEB-INF/classes");
-
-		sourceSetOutput.setClassesDir(classesDir);
-		sourceSetOutput.setResourcesDir(classesDir);
+		File javaClassesDir = new File(docrootDir, "WEB-INF/classes");
 
 		SourceDirectorySet javaSourceDirectorySet = sourceSet.getJava();
+
+		javaSourceDirectorySet.setOutputDir(javaClassesDir);
+
+		SourceSetOutput sourceSetOutput = sourceSet.getOutput();
+
+		sourceSetOutput.setResourcesDir(javaClassesDir);
 
 		File srcDir = new File(docrootDir, "WEB-INF/src");
 
@@ -1071,12 +1072,12 @@ public class LiferayOSGiPlugin implements Plugin<Project> {
 							projectProperties.entrySet()) {
 
 						String key = entry.getKey();
+						Object value = entry.getValue();
 
 						Matcher matcher = _keyRegex.matcher(key);
 
-						if (matcher.matches()) {
-							instructions.put(
-								key, GradleUtil.toString(entry.getValue()));
+						if (matcher.matches() && (value instanceof String)) {
+							instructions.put(key, entry.getValue());
 						}
 					}
 

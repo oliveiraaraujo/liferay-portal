@@ -1,6 +1,19 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import 'clay-progress-bar';
-import Ajax from 'metal-ajax';
-import {PortletBase} from 'frontend-js-web';
+import {PortletBase, fetch} from 'frontend-js-web';
 import Soy from 'metal-soy';
 import core from 'metal';
 
@@ -44,7 +57,7 @@ class AdaptiveMediaProgress extends PortletBase {
 		}
 
 		if (backgroundTaskUrl) {
-			Ajax.request(backgroundTaskUrl);
+			fetch(backgroundTaskUrl);
 		}
 
 		this.clearInterval_();
@@ -77,19 +90,18 @@ class AdaptiveMediaProgress extends PortletBase {
 	 * @protected
 	 */
 	getAdaptedImagesPercentage_() {
-		Ajax.request(this.percentageUrl).then(xhr => {
-			try {
-				const json = JSON.parse(xhr.response);
-
+		fetch(this.percentageUrl)
+			.then(res => res.json())
+			.then(json => {
 				this.updateProgressBar_(json.adaptedImages, json.totalImages);
 
 				if (this.percentage_ >= 100) {
 					this.onProgressBarComplete_();
 				}
-			} catch (e) {
+			})
+			.catch(() => {
 				clearInterval(this.intervalId_);
-			}
-		});
+			});
 	}
 
 	/**

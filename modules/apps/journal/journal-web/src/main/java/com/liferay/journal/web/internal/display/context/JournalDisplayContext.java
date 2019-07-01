@@ -261,6 +261,12 @@ public class JournalDisplayContext {
 				journalArticle.getId());
 	}
 
+	public PortletURL getChangeListURL(JournalArticle journalArticle) {
+		return JournalChangeTrackingHelperUtil.getJournalArticleCTCollectionURL(
+			_liferayPortletRequest, _themeDisplay.getCompanyId(),
+			_themeDisplay.getUserId(), journalArticle.getId());
+	}
+
 	public String[] getCharactersBlacklist() throws PortalException {
 		JournalServiceConfiguration journalServiceConfiguration =
 			ConfigurationProviderUtil.getCompanyConfiguration(
@@ -1143,10 +1149,6 @@ public class JournalDisplayContext {
 	}
 
 	public boolean isShowInfoButton() {
-		if (Validator.isNotNull(getDDMStructureKey())) {
-			return false;
-		}
-
 		if (isNavigationMine()) {
 			return false;
 		}

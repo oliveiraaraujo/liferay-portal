@@ -36,7 +36,7 @@ import com.liferay.portal.kernel.security.auth.AccessControlContext;
 import com.liferay.portal.kernel.security.auth.AuthException;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifier;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierResult;
-import com.liferay.portal.kernel.security.service.access.policy.ServiceAccessPolicyThreadLocal;
+import com.liferay.portal.kernel.security.service.access.policy.ServiceAccessPolicy;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -129,11 +129,13 @@ public class OAuth2JSONWSAuthVerifier implements AuthVerifier {
 				_sapEntryScopeDescriptorFinderRegistrator.
 					getRegisteredSAPEntryScopes(companyId);
 
+			List<String> serviceAccessPolicyNames = new ArrayList<>(
+				sapEntryScopes.size());
+
 			for (SAPEntryScope sapEntryScope : sapEntryScopes) {
 				if (scopes.contains(sapEntryScope.getScope())) {
-					ServiceAccessPolicyThreadLocal.
-						addActiveServiceAccessPolicyName(
-							sapEntryScope.getSapEntryName());
+					serviceAccessPolicyNames.add(
+						sapEntryScope.getSapEntryName());
 				}
 			}
 
@@ -141,6 +143,9 @@ public class OAuth2JSONWSAuthVerifier implements AuthVerifier {
 
 			settings.put(
 				BearerTokenProvider.AccessToken.class.getName(), accessToken);
+			settings.put(
+				ServiceAccessPolicy.SERVICE_ACCESS_POLICY_NAMES,
+				serviceAccessPolicyNames);
 
 			authVerifierResult.setState(AuthVerifierResult.State.SUCCESS);
 			authVerifierResult.setUserId(accessToken.getUserId());

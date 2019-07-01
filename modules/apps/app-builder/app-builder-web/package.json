@@ -1,0 +1,19 @@
+{
+	"dependencies": {
+		"@clayui/table": "^3.0.0-milestone.1",
+		"axios": "^0.19.0",
+		"moment": "^2.24.0",
+		"react": "^16.8.6",
+		"react-dom": "^16.8.6"
+	},
+	"description": "",
+	"main": "js/index.es.js",
+	"name": "app-builder-web",
+	"private": true,
+	"scripts": {
+		"build": "liferay-npm-scripts build",
+		"checkFormat": "liferay-npm-scripts check",
+		"format": "liferay-npm-scripts fix"
+	},
+	"version": "1.0.0"
+}

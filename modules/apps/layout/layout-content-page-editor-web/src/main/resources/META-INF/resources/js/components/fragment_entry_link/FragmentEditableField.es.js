@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import {Config} from 'metal-state';
 import {PortletBase} from 'frontend-js-web';
 import Soy from 'metal-soy';
@@ -159,7 +173,7 @@ class FragmentEditableField extends PortletBase {
 
 		const mapped = FragmentEditableField._isMapped(this.editableValues);
 
-		let value = mapped
+		const value = mapped
 			? this._mappedFieldValue || this.editableValues.defaultValue
 			: translatedValue || this.editableValues.defaultValue;
 
@@ -367,7 +381,10 @@ class FragmentEditableField extends PortletBase {
 	 * @review
 	 */
 	_handleEditableClick() {
-		if (this._preventEditableClick) {
+		if (
+			this._preventEditableClick &&
+			this._getItemId() !== this.activeItemId
+		) {
 			this._preventEditableClick = false;
 		} else {
 			this.store.dispatch({

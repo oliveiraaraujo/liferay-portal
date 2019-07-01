@@ -1,7 +1,7 @@
 {
 	"dependencies": {
-		"clay": "2.16.0",
-		"clay-alert": "2.16.0",
+		"clay": "2.16.1",
+		"clay-alert": "2.16.1",
 		"liferay-amd-loader": "4.0.0",
 		"lodash.escape": "4.0.1",
 		"lodash.groupby": "4.6.0",
@@ -16,14 +16,10 @@
 		"metal-events": "2.16.8",
 		"metal-keyboard-focus": "2.0.1",
 		"metal-position": "2.1.2",
-		"metal-promise": "3.0.5",
 		"metal-soy": "2.16.8",
 		"metal-uri": "2.4.0",
 		"svg4everybody": "^2.1.8",
 		"uuid": "^3.3.2"
-	},
-	"devDependencies": {
-		"babel-loader": "^8.0.5"
 	},
 	"jest": {
 		"globals": {

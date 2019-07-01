@@ -1,7 +1,21 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import GeoJSONBase from '../../src/main/resources/META-INF/resources/js/GeoJSONBase.es';
 
 describe('GeoJSONBase', () => {
-	let features = [
+	const features = [
 		{
 			name: 'FeatureA'
 		},
@@ -33,7 +47,7 @@ describe('GeoJSONBase', () => {
 	});
 
 	describe('addData()', () => {
-		it('should apply _getNativeFeatures() to the given parameter', () => {
+		it('applies _getNativeFeatures() to the given parameter', () => {
 			geoJSONChild.addData('some data to be parsed');
 
 			expect(geoJSONChild._getNativeFeatures).toHaveBeenCalledTimes(1);
@@ -42,20 +56,20 @@ describe('GeoJSONBase', () => {
 			);
 		});
 
-		it('should emit a featuresAdded event after adding data', () => {
+		it('emits a featuresAdded event after adding data', () => {
 			geoJSONChild.addData('more data');
 
 			expect(geoJSONChild.emit).toHaveBeenCalledTimes(1);
 			expect(geoJSONChild.emit.mock.calls[0][0]).toBe('featuresAdded');
 		});
 
-		it('should not emit a featuresAdded event with no features', () => {
+		it('does not emit a featuresAdded event with no features', () => {
 			geoJSONChild.addData();
 
 			expect(geoJSONChild.emit).not.toHaveBeenCalled();
 		});
 
-		it('should wrap every feature with _wrapNativeFeature()', () => {
+		it('wraps every feature with _wrapNativeFeature()', () => {
 			geoJSONChild.addData('even more stuff');
 
 			expect(geoJSONChild.emit).toHaveBeenCalledTimes(1);
@@ -70,14 +84,14 @@ describe('GeoJSONBase', () => {
 	});
 
 	describe('_handleFeatureClicked()', () => {
-		it('should emit a featureClick event', () => {
+		it('emits a featureClick event', () => {
 			geoJSONChild._handleFeatureClicked();
 
 			expect(geoJSONChild.emit).toHaveBeenCalledTimes(1);
 			expect(geoJSONChild.emit.mock.calls[0][0]).toBe('featureClick');
 		});
 
-		it('should wrap the given feature with _wrapNativeFeature()', () => {
+		it('wraps the given feature with _wrapNativeFeature()', () => {
 			geoJSONChild._handleFeatureClicked('Nice feature baby');
 
 			expect(geoJSONChild.emit).toHaveBeenCalledTimes(1);
@@ -92,7 +106,7 @@ describe('GeoJSONBase', () => {
 	});
 
 	describe('_getNativeFeatures()', () => {
-		it('should throw a not implemented error', () => {
+		it('throws a not implemented error', () => {
 			expect(() => {
 				geoJSONBase._getNativeFeatures();
 			}).toThrow();
@@ -100,7 +114,7 @@ describe('GeoJSONBase', () => {
 	});
 
 	describe('_wrapNativeFeature()', () => {
-		it('should throw a not implemented error', () => {
+		it('throws a not implemented error', () => {
 			expect(() => {
 				geoJSONBase._wrapNativeFeature();
 			}).toThrow();

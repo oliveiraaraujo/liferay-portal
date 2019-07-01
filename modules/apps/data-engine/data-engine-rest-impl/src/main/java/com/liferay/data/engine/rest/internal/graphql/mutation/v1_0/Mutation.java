@@ -27,12 +27,10 @@ import com.liferay.data.engine.rest.resource.v1_0.DataRecordCollectionResource;
 import com.liferay.data.engine.rest.resource.v1_0.DataRecordResource;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
-import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
-
-import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLInvokeDetached;
-import graphql.annotations.annotationTypes.GraphQLName;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
 
 import javax.annotation.Generated;
 
@@ -77,8 +75,8 @@ public class Mutation {
 			dataRecordCollectionResourceComponentServiceObjects;
 	}
 
-	@GraphQLInvokeDetached
-	public void deleteDataDefinition(
+	@GraphQLField
+	public boolean deleteDataDefinition(
 			@GraphQLName("dataDefinitionId") Long dataDefinitionId)
 		throws Exception {
 
@@ -87,9 +85,11 @@ public class Mutation {
 			this::_populateResourceContext,
 			dataDefinitionResource ->
 				dataDefinitionResource.deleteDataDefinition(dataDefinitionId));
+
+		return true;
 	}
 
-	@GraphQLInvokeDetached
+	@GraphQLField
 	public DataDefinition putDataDefinition(
 			@GraphQLName("dataDefinitionId") Long dataDefinitionId,
 			@GraphQLName("dataDefinition") DataDefinition dataDefinition)
@@ -103,8 +103,7 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public void postDataDefinitionDataDefinitionPermission(
+	public boolean postDataDefinitionDataDefinitionPermission(
 			@GraphQLName("dataDefinitionId") Long dataDefinitionId,
 			@GraphQLName("operation") String operation,
 			@GraphQLName("dataDefinitionPermission") DataDefinitionPermission
@@ -118,11 +117,12 @@ public class Mutation {
 				dataDefinitionResource.
 					postDataDefinitionDataDefinitionPermission(
 						dataDefinitionId, operation, dataDefinitionPermission));
+
+		return true;
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public void postSiteDataDefinitionPermission(
+	public boolean postSiteDataDefinitionPermission(
 			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("operation") String operation,
 			@GraphQLName("dataDefinitionPermission") DataDefinitionPermission
@@ -135,10 +135,11 @@ public class Mutation {
 			dataDefinitionResource ->
 				dataDefinitionResource.postSiteDataDefinitionPermission(
 					siteId, operation, dataDefinitionPermission));
+
+		return true;
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public DataDefinition postSiteDataDefinition(
 			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("dataDefinition") DataDefinition dataDefinition)
@@ -153,7 +154,6 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public DataLayout postDataDefinitionDataLayout(
 			@GraphQLName("dataDefinitionId") Long dataDefinitionId,
 			@GraphQLName("dataLayout") DataLayout dataLayout)
@@ -168,8 +168,7 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public void postDataLayoutDataLayoutPermission(
+	public boolean postDataLayoutDataLayoutPermission(
 			@GraphQLName("dataLayoutId") Long dataLayoutId,
 			@GraphQLName("operation") String operation,
 			@GraphQLName("dataLayoutPermission") DataLayoutPermission
@@ -182,10 +181,13 @@ public class Mutation {
 			dataLayoutResource ->
 				dataLayoutResource.postDataLayoutDataLayoutPermission(
 					dataLayoutId, operation, dataLayoutPermission));
+
+		return true;
 	}
 
-	@GraphQLInvokeDetached
-	public void deleteDataLayout(@GraphQLName("dataLayoutId") Long dataLayoutId)
+	@GraphQLField
+	public boolean deleteDataLayout(
+			@GraphQLName("dataLayoutId") Long dataLayoutId)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -193,9 +195,11 @@ public class Mutation {
 			this::_populateResourceContext,
 			dataLayoutResource -> dataLayoutResource.deleteDataLayout(
 				dataLayoutId));
+
+		return true;
 	}
 
-	@GraphQLInvokeDetached
+	@GraphQLField
 	public DataLayout putDataLayout(
 			@GraphQLName("dataLayoutId") Long dataLayoutId,
 			@GraphQLName("dataLayout") DataLayout dataLayout)
@@ -209,8 +213,7 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public void postSiteDataLayoutPermission(
+	public boolean postSiteDataLayoutPermission(
 			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("operation") String operation,
 			@GraphQLName("dataLayoutPermission") DataLayoutPermission
@@ -223,10 +226,11 @@ public class Mutation {
 			dataLayoutResource ->
 				dataLayoutResource.postSiteDataLayoutPermission(
 					siteId, operation, dataLayoutPermission));
+
+		return true;
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public DataRecord postDataRecordCollectionDataRecord(
 			@GraphQLName("dataRecordCollectionId") Long dataRecordCollectionId,
 			@GraphQLName("dataRecord") DataRecord dataRecord)
@@ -240,8 +244,9 @@ public class Mutation {
 					dataRecordCollectionId, dataRecord));
 	}
 
-	@GraphQLInvokeDetached
-	public void deleteDataRecord(@GraphQLName("dataRecordId") Long dataRecordId)
+	@GraphQLField
+	public boolean deleteDataRecord(
+			@GraphQLName("dataRecordId") Long dataRecordId)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -249,9 +254,11 @@ public class Mutation {
 			this::_populateResourceContext,
 			dataRecordResource -> dataRecordResource.deleteDataRecord(
 				dataRecordId));
+
+		return true;
 	}
 
-	@GraphQLInvokeDetached
+	@GraphQLField
 	public DataRecord putDataRecord(
 			@GraphQLName("dataRecordId") Long dataRecordId,
 			@GraphQLName("dataRecord") DataRecord dataRecord)
@@ -265,7 +272,6 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public DataRecordCollection postDataDefinitionDataRecordCollection(
 			@GraphQLName("dataDefinitionId") Long dataDefinitionId,
 			@GraphQLName("dataRecordCollection") DataRecordCollection
@@ -281,8 +287,8 @@ public class Mutation {
 						dataDefinitionId, dataRecordCollection));
 	}
 
-	@GraphQLInvokeDetached
-	public void deleteDataRecordCollection(
+	@GraphQLField
+	public boolean deleteDataRecordCollection(
 			@GraphQLName("dataRecordCollectionId") Long dataRecordCollectionId)
 		throws Exception {
 
@@ -292,9 +298,11 @@ public class Mutation {
 			dataRecordCollectionResource ->
 				dataRecordCollectionResource.deleteDataRecordCollection(
 					dataRecordCollectionId));
+
+		return true;
 	}
 
-	@GraphQLInvokeDetached
+	@GraphQLField
 	public DataRecordCollection putDataRecordCollection(
 			@GraphQLName("dataRecordCollectionId") Long dataRecordCollectionId,
 			@GraphQLName("dataRecordCollection") DataRecordCollection
@@ -310,8 +318,7 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public void postDataRecordCollectionDataRecordCollectionPermission(
+	public boolean postDataRecordCollectionDataRecordCollectionPermission(
 			@GraphQLName("dataRecordCollectionId") Long dataRecordCollectionId,
 			@GraphQLName("operation") String operation,
 			@GraphQLName("dataRecordCollectionPermission")
@@ -326,11 +333,12 @@ public class Mutation {
 					postDataRecordCollectionDataRecordCollectionPermission(
 						dataRecordCollectionId, operation,
 						dataRecordCollectionPermission));
+
+		return true;
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public void postSiteDataRecordCollectionPermission(
+	public boolean postSiteDataRecordCollectionPermission(
 			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("operation") String operation,
 			@GraphQLName("dataRecordCollectionPermission")
@@ -344,6 +352,8 @@ public class Mutation {
 				dataRecordCollectionResource.
 					postSiteDataRecordCollectionPermission(
 						siteId, operation, dataRecordCollectionPermission));
+
+		return true;
 	}
 
 	private <T, R, E1 extends Throwable, E2 extends Throwable> R
@@ -388,34 +398,30 @@ public class Mutation {
 			DataDefinitionResource dataDefinitionResource)
 		throws Exception {
 
-		dataDefinitionResource.setContextCompany(
-			CompanyLocalServiceUtil.getCompany(
-				CompanyThreadLocal.getCompanyId()));
+		dataDefinitionResource.setContextAcceptLanguage(_acceptLanguage);
+		dataDefinitionResource.setContextCompany(_company);
 	}
 
 	private void _populateResourceContext(DataLayoutResource dataLayoutResource)
 		throws Exception {
 
-		dataLayoutResource.setContextCompany(
-			CompanyLocalServiceUtil.getCompany(
-				CompanyThreadLocal.getCompanyId()));
+		dataLayoutResource.setContextAcceptLanguage(_acceptLanguage);
+		dataLayoutResource.setContextCompany(_company);
 	}
 
 	private void _populateResourceContext(DataRecordResource dataRecordResource)
 		throws Exception {
 
-		dataRecordResource.setContextCompany(
-			CompanyLocalServiceUtil.getCompany(
-				CompanyThreadLocal.getCompanyId()));
+		dataRecordResource.setContextAcceptLanguage(_acceptLanguage);
+		dataRecordResource.setContextCompany(_company);
 	}
 
 	private void _populateResourceContext(
 			DataRecordCollectionResource dataRecordCollectionResource)
 		throws Exception {
 
-		dataRecordCollectionResource.setContextCompany(
-			CompanyLocalServiceUtil.getCompany(
-				CompanyThreadLocal.getCompanyId()));
+		dataRecordCollectionResource.setContextAcceptLanguage(_acceptLanguage);
+		dataRecordCollectionResource.setContextCompany(_company);
 	}
 
 	private static ComponentServiceObjects<DataDefinitionResource>
@@ -426,5 +432,8 @@ public class Mutation {
 		_dataRecordResourceComponentServiceObjects;
 	private static ComponentServiceObjects<DataRecordCollectionResource>
 		_dataRecordCollectionResourceComponentServiceObjects;
+
+	private AcceptLanguage _acceptLanguage;
+	private Company _company;
 
 }

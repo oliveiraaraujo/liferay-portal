@@ -384,7 +384,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 
 	@Override
 	public LayoutSet updateLogo(
-			long groupId, boolean privateLayout, boolean logo, byte[] bytes)
+			long groupId, boolean privateLayout, boolean hasLogo, byte[] bytes)
 		throws PortalException {
 
 		LayoutSet layoutSet = layoutSetPersistence.findByG_P_Head(
@@ -398,7 +398,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 			draftLayoutSet.setModifiedDate(new Date());
 
 			PortalUtil.updateImageId(
-				draftLayoutSet, logo, bytes, "logoId", 0, 0, 0);
+				draftLayoutSet, hasLogo, bytes, "logoId", 0, 0, 0);
 
 			return updateDraft(draftLayoutSet);
 		}
@@ -406,7 +406,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 		layoutSetBranch.setModifiedDate(new Date());
 
 		PortalUtil.updateImageId(
-			layoutSetBranch, logo, bytes, "logoId", 0, 0, 0);
+			layoutSetBranch, hasLogo, bytes, "logoId", 0, 0, 0);
 
 		layoutSetBranchPersistence.update(layoutSetBranch);
 
@@ -415,7 +415,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 
 	@Override
 	public LayoutSet updateLogo(
-			long groupId, boolean privateLayout, boolean logo, File file)
+			long groupId, boolean privateLayout, boolean hasLogo, File file)
 		throws PortalException {
 
 		byte[] bytes = null;
@@ -427,21 +427,22 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 			throw new SystemException(ioe);
 		}
 
-		return updateLogo(groupId, privateLayout, logo, bytes);
+		return updateLogo(groupId, privateLayout, hasLogo, bytes);
 	}
 
 	@Override
 	public LayoutSet updateLogo(
-			long groupId, boolean privateLayout, boolean logo, InputStream is)
+			long groupId, boolean privateLayout, boolean hasLogo,
+			InputStream is)
 		throws PortalException {
 
-		return updateLogo(groupId, privateLayout, logo, is, true);
+		return updateLogo(groupId, privateLayout, hasLogo, is, true);
 	}
 
 	@Override
 	public LayoutSet updateLogo(
-			long groupId, boolean privateLayout, boolean logo, InputStream is,
-			boolean cleanUpStream)
+			long groupId, boolean privateLayout, boolean hasLogo,
+			InputStream is, boolean cleanUpStream)
 		throws PortalException {
 
 		byte[] bytes = null;
@@ -453,7 +454,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 			throw new SystemException(ioe);
 		}
 
-		return updateLogo(groupId, privateLayout, logo, bytes);
+		return updateLogo(groupId, privateLayout, hasLogo, bytes);
 	}
 
 	@Override

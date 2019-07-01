@@ -7,6 +7,8 @@ components:
                     items:
                         $ref: '#/components/schemas/DataDefinitionField'
                     type: array
+                dataDefinitionKey:
+                    type: string
                 dataDefinitionRules:
                     items:
                         $ref: '#/components/schemas/DataDefinitionRule'
@@ -107,6 +109,8 @@ components:
                 dataDefinitionId:
                     format: int64
                     type: integer
+                dataLayoutKey:
+                    type: string
                 dataLayoutPages:
                     items:
                         $ref: '#/components/schemas/DataLayoutPage'
@@ -133,6 +137,9 @@ components:
                     type: object
                 paginationMode:
                     type: string
+                siteId:
+                    format: int64
+                    type: integer
                 userId:
                     format: int64
                     type: integer
@@ -208,6 +215,8 @@ components:
                 dataDefinitionId:
                     format: int64
                     type: integer
+                dataRecordCollectionKey:
+                    type: string
                 description:
                     additionalProperties:
                         type: object
@@ -219,6 +228,9 @@ components:
                     additionalProperties:
                         type: object
                     type: object
+                siteId:
+                    format: int64
+                    type: integer
             type: object
         DataRecordCollectionPermission:
             properties:
@@ -911,6 +923,32 @@ paths:
                                 $ref: "#/components/schemas/DataDefinition"
                     description: ""
             tags: ["DataDefinition"]
+    "/sites/{siteId}/data-definitions/{dataDefinitionKey}":
+        get:
+            operationId: getSiteDataDefinition
+            parameters:
+                - in: path
+                  name: siteId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+                - in: path
+                  name: dataDefinitionKey
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/DataDefinition"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/DataDefinition"
+                    description: ""
+            tags: ["DataDefinition"]
     "/sites/{siteId}/data-layout":
         get:
             operationId: getSiteDataLayoutPage
@@ -977,6 +1015,32 @@ paths:
                         application/json: {}
                     description: ""
             tags: ["DataLayout"]
+    "/sites/{siteId}/data-layouts/{dataLayoutKey}":
+        get:
+            operationId: getSiteDataLayout
+            parameters:
+                - in: path
+                  name: siteId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+                - in: path
+                  name: dataLayoutKey
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/DataLayout"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/DataLayout"
+                    description: ""
+            tags: ["DataLayout"]
     "/sites/{siteId}/data-record-collection-permissions":
         post:
             operationId: postSiteDataRecordCollectionPermission
@@ -1041,5 +1105,31 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/DataRecordCollection"
                                 type: array
+                    description: ""
+            tags: ["DataRecordCollection"]
+    "/sites/{siteId}/data-record-collections/{dataRecordCollectionKey}":
+        get:
+            operationId: getSiteDataRecordCollection
+            parameters:
+                - in: path
+                  name: siteId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+                - in: path
+                  name: dataRecordCollectionKey
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/DataRecordCollection"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/DataRecordCollection"
                     description: ""
             tags: ["DataRecordCollection"]

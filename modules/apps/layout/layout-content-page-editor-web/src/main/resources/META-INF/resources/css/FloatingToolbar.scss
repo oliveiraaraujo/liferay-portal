@@ -37,11 +37,29 @@
 
 	&-panel {
 		padding: 0 $fragmentsEditorSpacing;
+		z-index: $floatingToolbarPanelZIndex;
 
 		& > .popover {
 			min-width: $floatingToolbarPanelMinWidth;
 			padding: $fragmentsEditorSpacing * 2;
 			position: static;
+		}
+
+		&--fixed {
+			padding: $fragmentsEditorSpacing;
+
+			.dropdown-menu {
+				max-width: none;
+				width: 312px;
+
+				&:after {
+					padding: 0;
+				}
+
+				.inline-scroller {
+					max-height: 320px;
+				}
+			}
 		}
 
 		.btn,

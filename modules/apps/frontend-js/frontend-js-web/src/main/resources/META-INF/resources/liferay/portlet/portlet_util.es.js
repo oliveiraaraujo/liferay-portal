@@ -1,3 +1,21 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-empty: "warn" */
+/* eslint no-for-of-loops/no-for-of-loops: "warn" */
+/* eslint no-useless-escape: "warn" */
+
 import {isDefAndNotNull, isString} from 'metal';
 
 // Constants for URL generation
@@ -109,7 +127,7 @@ const encodeFormAsString = function(portletId, form) {
 				(type !== 'CHECKBOX' && type !== 'RADIO') ||
 				element.checked
 			) {
-				let param =
+				const param =
 					encodeURIComponent(portletId + name) +
 					'=' +
 					encodeURIComponent(value);
@@ -140,7 +158,7 @@ const encodeParameter = function(name, values) {
 				VALUE_DELIM +
 				VALUE_ARRAY_EMPTY;
 		} else {
-			for (let value of values) {
+			for (const value of values) {
 				str += TOKEN_DELIM + encodeURIComponent(name);
 				if (value === null) {
 					str += VALUE_DELIM + VALUE_NULL;
@@ -168,7 +186,7 @@ const generateActionUrl = function(portletId, url, form) {
 	const request = {
 		credentials: 'same-origin',
 		method: 'POST',
-		url: url
+		url
 	};
 
 	if (form) {
@@ -309,7 +327,7 @@ const getUpdatedPublicRenderParameters = function(
 
 			const keys = Object.keys(portletPublicParameters);
 
-			for (let key of keys) {
+			for (const key of keys) {
 				if (
 					!isParameterInStateEqual(
 						pageRenderState,
@@ -431,7 +449,7 @@ const getUrl = function(
 
 						const keys = Object.keys(stateParameters);
 
-						for (let key of keys) {
+						for (const key of keys) {
 							if (
 								!isPublicParameter(
 									pageRenderState,
@@ -459,11 +477,11 @@ const getUrl = function(
 					const publicRenderParameters = {};
 
 					const mapKeys = Object.keys(pageRenderState.prpMap);
-					for (let mapKey of mapKeys) {
+					for (const mapKey of mapKeys) {
 						const groupKeys = Object.keys(
 							pageRenderState.prpMap[mapKey]
 						);
-						for (let groupKey of groupKeys) {
+						for (const groupKey of groupKeys) {
 							const groupName =
 								pageRenderState.prpMap[mapKey][groupKey];
 							const parts = groupName.split('|');
@@ -500,7 +518,7 @@ const getUrl = function(
 		str = '';
 		const parameterKeys = Object.keys(parameters);
 
-		for (let parameterKey of parameterKeys) {
+		for (const parameterKey of parameterKeys) {
 			str += encodeParameter(
 				portletId + parameterKey,
 				parameters[parameterKey]
@@ -790,7 +808,7 @@ const validateParameters = function(parameters) {
 	}
 
 	const keys = Object.keys(parameters);
-	for (let key of keys) {
+	for (const key of keys) {
 		if (!Array.isArray(parameters[key])) {
 			throw new TypeError(`${key} parameter is not an array`);
 		}

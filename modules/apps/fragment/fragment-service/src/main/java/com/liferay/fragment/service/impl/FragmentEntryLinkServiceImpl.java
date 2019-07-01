@@ -16,6 +16,7 @@ package com.liferay.fragment.service.impl;
 
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.service.base.FragmentEntryLinkServiceBaseImpl;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -52,8 +53,25 @@ public class FragmentEntryLinkServiceImpl
 
 		return fragmentEntryLinkLocalService.addFragmentEntryLink(
 			getUserId(), groupId, originalFragmentEntryLinkId, fragmentEntryId,
-			classNameId, classPK, css, html, js, editableValues, namespace,
-			position, rendererKey, serviceContext);
+			classNameId, classPK, css, html, js, StringPool.BLANK,
+			editableValues, namespace, position, rendererKey, serviceContext);
+	}
+
+	@Override
+	public FragmentEntryLink addFragmentEntryLink(
+			long groupId, long originalFragmentEntryLinkId,
+			long fragmentEntryId, long classNameId, long classPK, String css,
+			String html, String js, String configuration, String editableValues,
+			String namespace, int position, String rendererKey,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		_checkPermission(groupId, _portal.getClassName(classNameId), classPK);
+
+		return fragmentEntryLinkLocalService.addFragmentEntryLink(
+			getUserId(), groupId, originalFragmentEntryLinkId, fragmentEntryId,
+			classNameId, classPK, css, html, js, configuration, editableValues,
+			namespace, position, rendererKey, serviceContext);
 	}
 
 	@Override
@@ -97,7 +115,7 @@ public class FragmentEntryLinkServiceImpl
 		_checkPermission(groupId, _portal.getClassName(classNameId), classPK);
 
 		fragmentEntryLinkLocalService.updateFragmentEntryLinks(
-			getUserId(), groupId, classNameId, classNameId, fragmentEntryIds,
+			getUserId(), groupId, classNameId, classPK, fragmentEntryIds,
 			editableValues, serviceContext);
 	}
 

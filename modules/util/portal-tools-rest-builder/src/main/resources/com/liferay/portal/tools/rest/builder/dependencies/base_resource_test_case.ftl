@@ -195,7 +195,7 @@ public abstract class Base${schemaName}ResourceTestCase {
 	<#list javaMethodSignatures as javaMethodSignature>
 		<#assign
 			arguments = freeMarkerTool.getResourceTestCaseArguments(javaMethodSignature.javaMethodParameters)
-			parameters = freeMarkerTool.getResourceTestCaseParameters(javaMethodSignature.javaMethodParameters, javaMethodSignature.operation, false)
+			parameters = freeMarkerTool.getResourceTestCaseParameters(javaMethodSignature.javaMethodParameters, openAPIYAML, javaMethodSignature.operation, false)
 		/>
 
 		<#if freeMarkerTool.hasHTTPMethod(javaMethodSignature, "delete")>
@@ -262,37 +262,35 @@ public abstract class Base${schemaName}ResourceTestCase {
 			<#else>
 				@Test
 				public void test${javaMethodSignature.methodName?cap_first}() throws Exception {
-					<#if freeMarkerTool.hasQueryParameter(javaMethodSignature)>
-						Page<${schemaName}> page = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
+					Page<${schemaName}> page = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
-						<#list javaMethodSignature.javaMethodParameters as javaMethodParameter>
-							<#if !javaMethodParameter?is_first>
-								,
-							</#if>
+					<#list javaMethodSignature.javaMethodParameters as javaMethodParameter>
+						<#if !javaMethodParameter?is_first>
+							,
+						</#if>
 
-							<#if stringUtil.equals(javaMethodParameter.parameterName, "pagination")>
-								Pagination.of(1, 2)
-							<#elseif freeMarkerTool.isPathParameter(javaMethodParameter, javaMethodSignature.operation)>
-								test${javaMethodSignature.methodName?cap_first}_get${javaMethodParameter.parameterName?cap_first}()
-							<#elseif stringUtil.equals(javaMethodParameter.parameterType, "java.lang.String")>
-								RandomTestUtil.randomString()
-							<#elseif stringUtil.equals(javaMethodParameter.parameterType, "boolean")>
-								RandomTestUtil.randomBoolean();
-							<#elseif stringUtil.equals(javaMethodParameter.parameterType, "double")>
-								RandomTestUtil.randomDouble();
-							<#elseif stringUtil.equals(javaMethodParameter.parameterType, "long")>
-								RandomTestUtil.randomLong();
-							<#elseif stringUtil.equals(javaMethodParameter.parameterType, "java.util.Date")>
-								RandomTestUtil.nextDate();
-							<#else>
-								null
-							</#if>
-						</#list>
+						<#if stringUtil.equals(javaMethodParameter.parameterName, "pagination")>
+							Pagination.of(1, 2)
+						<#elseif freeMarkerTool.isPathParameter(javaMethodParameter, javaMethodSignature.operation)>
+							test${javaMethodSignature.methodName?cap_first}_get${javaMethodParameter.parameterName?cap_first}()
+						<#elseif stringUtil.equals(javaMethodParameter.parameterType, "java.lang.String")>
+							RandomTestUtil.randomString()
+						<#elseif stringUtil.equals(javaMethodParameter.parameterType, "boolean")>
+							RandomTestUtil.randomBoolean();
+						<#elseif stringUtil.equals(javaMethodParameter.parameterType, "double")>
+							RandomTestUtil.randomDouble();
+						<#elseif stringUtil.equals(javaMethodParameter.parameterType, "long")>
+							RandomTestUtil.randomLong();
+						<#elseif stringUtil.equals(javaMethodParameter.parameterType, "java.util.Date")>
+							RandomTestUtil.nextDate();
+						<#else>
+							null
+						</#if>
+					</#list>
 
-						);
+					);
 
-						Assert.assertEquals(0, page.getTotalCount());
-					</#if>
+					Assert.assertEquals(0, page.getTotalCount());
 
 					<#list javaMethodSignature.pathJavaMethodParameters as javaMethodParameter>
 						${javaMethodParameter.parameterType} ${javaMethodParameter.parameterName} = test${javaMethodSignature.methodName?cap_first}_get${javaMethodParameter.parameterName?cap_first}();
@@ -315,10 +313,6 @@ public abstract class Base${schemaName}ResourceTestCase {
 							</#list>
 
 							randomIrrelevant${schemaName}());
-
-							<#if !freeMarkerTool.hasQueryParameter(javaMethodSignature)>
-								Page<${schemaName}>
-							</#if>
 
 							page = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
@@ -360,10 +354,6 @@ public abstract class Base${schemaName}ResourceTestCase {
 					</#list>
 
 					random${schemaName}());
-
-					<#if !freeMarkerTool.hasQueryParameter(javaMethodSignature)>
-						Page<${schemaName}>
-					</#if>
 
 					page = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 

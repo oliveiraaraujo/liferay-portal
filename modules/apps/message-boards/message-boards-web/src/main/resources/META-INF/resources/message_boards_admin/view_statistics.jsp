@@ -17,14 +17,14 @@
 <%@ include file="/message_boards/init.jsp" %>
 
 <%
+String navigation = "statistics";
+
 PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("mvcRenderCommandName", "/message_boards/view_statistics");
 %>
 
-<liferay-util:include page="/message_boards_admin/nav.jsp" servletContext="<%= application %>">
-	<liferay-util:param name="navItemSelected" value="statistics" />
-</liferay-util:include>
+<%@ include file="/message_boards_admin/nav.jspf" %>
 
 <%
 long categoryId = GetterUtil.getLong(request.getAttribute("view.jsp-categoryId"));

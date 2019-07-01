@@ -209,6 +209,30 @@ public abstract class BaseDataLayoutResourceImpl implements DataLayoutResource {
 		throws Exception {
 	}
 
+	@Override
+	@GET
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "siteId"),
+			@Parameter(in = ParameterIn.PATH, name = "dataLayoutKey")
+		}
+	)
+	@Path("/sites/{siteId}/data-layouts/{dataLayoutKey}")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "DataLayout")})
+	public DataLayout getSiteDataLayout(
+			@NotNull @Parameter(hidden = true) @PathParam("siteId") Long siteId,
+			@NotNull @Parameter(hidden = true) @PathParam("dataLayoutKey")
+				String dataLayoutKey)
+		throws Exception {
+
+		return new DataLayout();
+	}
+
+	public void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage) {
+		this.contextAcceptLanguage = contextAcceptLanguage;
+	}
+
 	public void setContextCompany(Company contextCompany) {
 		this.contextCompany = contextCompany;
 	}

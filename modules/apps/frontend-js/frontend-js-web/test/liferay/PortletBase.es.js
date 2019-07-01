@@ -1,3 +1,20 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-undef: "warn" */
+/* eslint no-unused-vars: "warn" */
+
 'use strict';
 
 import PortletBase from '../../src/main/resources/META-INF/resources/liferay/PortletBase.es';
@@ -28,19 +45,19 @@ describe('PortletBase', () => {
 		};
 
 		portletBase = new PortletBase({
-			namespace: namespace
+			namespace
 		});
 	});
 
 	describe('PortletBase.all', () => {
-		it('should return an empty list if no elements are found', () => {
+		it('returns an empty list if no elements are found', () => {
 			const elements = portletBase.all('.bar');
 
 			expect(elements).not.toBeNull();
 			expect(elements.length).toEqual(0);
 		});
 
-		it('should get all matching nodes within the root node tree', () => {
+		it('gets all matching nodes within the root node tree', () => {
 			expect(portletBase.all('.foo').length).toEqual(2);
 			expect(
 				portletBase.all(
@@ -50,7 +67,7 @@ describe('PortletBase', () => {
 			).toEqual(1);
 		});
 
-		it('should use the document as root node if one has not been specified or the default has not been found', () => {
+		it('uses the document as root node if one has not been specified or the default has not been found', () => {
 			portletBase = new PortletBase({
 				namespace: '_com_liferay_unknown_portlet'
 			});
@@ -73,7 +90,7 @@ describe('PortletBase', () => {
 			global.fetch = globalFetch;
 		});
 
-		it('should make the request to the given url', done => {
+		it('makes the request to the given url', done => {
 			global.fetch = jest.fn(url => {
 				expect(url).toBe(sampleUrl);
 				done();
@@ -82,7 +99,7 @@ describe('PortletBase', () => {
 			portletBase.fetch(sampleUrl, sampleBody);
 		});
 
-		it('should add credentials option to the request', done => {
+		it('adds credentials option to the request', done => {
 			global.fetch = jest.fn((url, options) => {
 				expect(options.credentials).toBe('include');
 				done();
@@ -91,7 +108,7 @@ describe('PortletBase', () => {
 			portletBase.fetch(sampleUrl, sampleBody);
 		});
 
-		it('should add the POST method option to the request', done => {
+		it('adds the POST method option to the request', done => {
 			global.fetch = jest.fn((url, options) => {
 				expect(options.method).toBe('POST');
 				done();
@@ -100,7 +117,7 @@ describe('PortletBase', () => {
 			portletBase.fetch(sampleUrl, sampleBody);
 		});
 
-		it('should add the given body to the request', done => {
+		it('adds the given body to the request', done => {
 			global.fetch = jest.fn((url, options) => {
 				expect(options.body).toBe(sampleBody);
 				done();
@@ -110,7 +127,7 @@ describe('PortletBase', () => {
 			portletBase.fetch(sampleUrl, sampleBody);
 		});
 
-		it('should transform the given body using getRequestBody_', done => {
+		it('transforms the given body using getRequestBody_', done => {
 			portletBase.getRequestBody_ = jest.fn();
 
 			global.fetch = jest.fn((url, options) => {
@@ -127,7 +144,7 @@ describe('PortletBase', () => {
 	});
 
 	describe('PortletBase.getRequestBody_', () => {
-		it('should keep body intact if it is already a FormData instance', () => {
+		it('keeps body intact if it is already a FormData instance', () => {
 			const sampleFormData = new FormData();
 
 			expect(portletBase.getRequestBody_(sampleFormData)).toBe(
@@ -135,7 +152,7 @@ describe('PortletBase', () => {
 			);
 		});
 
-		it('should create a FormData instance from a given HTMLFormElement', () => {
+		it('creates a FormData instance from a given HTMLFormElement', () => {
 			const sampleFormElement = document.createElement('form');
 
 			sampleFormElement.innerHTML = `
@@ -157,7 +174,7 @@ describe('PortletBase', () => {
 			);
 		});
 
-		it('should append all object keys inside a new FormData element', () => {
+		it('appends all object keys inside a new FormData element', () => {
 			portletBase.ns = obj => obj;
 
 			const sampleBody = {
@@ -173,7 +190,7 @@ describe('PortletBase', () => {
 	});
 
 	describe('PortletBase.ns', () => {
-		it('should namespace objects with the portlet namespace using the provided Liferay.Util.ns helper', () => {
+		it('namespaces objects with the portlet namespace using the provided Liferay.Util.ns helper', () => {
 			portletBase.ns('test');
 
 			expect(Liferay.Util.ns.mock.calls.length).toBe(1);
@@ -181,11 +198,11 @@ describe('PortletBase', () => {
 	});
 
 	describe('PortletBase.one', () => {
-		it('should return null if no element is found', () => {
+		it('returns null if no element is found', () => {
 			expect(portletBase.one('.bar')).toBeNull();
 		});
 
-		it('should get the first matching node within the root node tree', () => {
+		it('gets the first matching node within the root node tree', () => {
 			expect(portletBase.one('.foo')).toEqual(
 				document.getElementById(
 					'_com_liferay_test_portlet_child_container'
@@ -204,7 +221,7 @@ describe('PortletBase', () => {
 			);
 		});
 
-		it('should use the document as root node if one has not been specified or the default has not been found', () => {
+		it('uses the document as root node if one has not been specified or the default has not been found', () => {
 			portletBase = new PortletBase({
 				namespace: '_com_liferay_unknown_portlet'
 			});
@@ -216,13 +233,13 @@ describe('PortletBase', () => {
 	});
 
 	describe('PortletBase.rootNode', () => {
-		it('should set the root node by default', () => {
+		it('sets the root node by default', () => {
 			expect(portletBase.rootNode).toEqual(
 				document.getElementById('p_p_id' + namespace)
 			);
 		});
 
-		it('should use a specified root node', () => {
+		it('uses a specified root node', () => {
 			portletBase.rootNode = '#' + namespace + 'child_container';
 
 			expect(portletBase.rootNode).toEqual(
@@ -230,9 +247,9 @@ describe('PortletBase', () => {
 			);
 		});
 
-		it('should override the default root node if specified', () => {
+		it('overrides the default root node if specified', () => {
 			portletBase = new PortletBase({
-				namespace: namespace,
+				namespace,
 				rootNode: '#' + namespace + 'child_container'
 			});
 

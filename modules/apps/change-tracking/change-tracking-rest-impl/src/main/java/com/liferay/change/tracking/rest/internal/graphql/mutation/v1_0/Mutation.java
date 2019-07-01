@@ -24,10 +24,8 @@ import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
-
-import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLInvokeDetached;
-import graphql.annotations.annotationTypes.GraphQLName;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
 
 import javax.annotation.Generated;
 
@@ -36,7 +34,7 @@ import javax.ws.rs.core.Response;
 import org.osgi.service.component.ComponentServiceObjects;
 
 /**
- * @author Mate Thurzo
+ * @author Máté Thurzó
  * @generated
  */
 @Generated("")
@@ -59,7 +57,6 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public Collection postCollection(
 			@GraphQLName("companyId") Long companyId,
 			@GraphQLName("userId") Long userId,
@@ -73,20 +70,20 @@ public class Mutation {
 				companyId, userId, collectionUpdate));
 	}
 
-	@GraphQLInvokeDetached
+	@GraphQLField
 	public Response deleteCollection(
-			@GraphQLName("collectionId") Long collectionId)
+			@GraphQLName("collectionId") Long collectionId,
+			@GraphQLName("companyId") Long companyId)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_collectionResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			collectionResource -> collectionResource.deleteCollection(
-				collectionId));
+				collectionId, companyId));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public Response postCollectionCheckout(
 			@GraphQLName("collectionId") Long collectionId,
 			@GraphQLName("userId") Long userId)
@@ -100,7 +97,6 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public Response postCollectionPublish(
 			@GraphQLName("collectionId") Long collectionId,
 			@GraphQLName("ignoreCollision") Boolean ignoreCollision,
@@ -114,7 +110,7 @@ public class Mutation {
 				collectionId, ignoreCollision, userId));
 	}
 
-	@GraphQLInvokeDetached
+	@GraphQLField
 	public Settings putSettings(
 			@GraphQLName("companyId") Long companyId,
 			@GraphQLName("userId") Long userId,

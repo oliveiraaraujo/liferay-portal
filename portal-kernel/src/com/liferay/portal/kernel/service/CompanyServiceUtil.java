@@ -206,7 +206,7 @@ public class CompanyServiceUtil {
 	 * @param virtualHost the company's virtual host name
 	 * @param mx the company's mail domain
 	 * @param homeURL the company's home URL (optionally <code>null</code>)
-	 * @param logo whether to update the company's logo
+	 * @param hasLogo if the company has a custom logo
 	 * @param logoBytes the new logo image data
 	 * @param name the company's account name (optionally <code>null</code>)
 	 * @param legalName the company's account legal name (optionally
@@ -227,13 +227,13 @@ public class CompanyServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.Company updateCompany(
 			long companyId, String virtualHost, String mx, String homeURL,
-			boolean logo, byte[] logoBytes, String name, String legalName,
+			boolean hasLogo, byte[] logoBytes, String name, String legalName,
 			String legalId, String legalType, String sicCode,
 			String tickerSymbol, String industry, String type, String size)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCompany(
-			companyId, virtualHost, mx, homeURL, logo, logoBytes, name,
+			companyId, virtualHost, mx, homeURL, hasLogo, logoBytes, name,
 			legalName, legalId, legalType, sicCode, tickerSymbol, industry,
 			type, size);
 	}
@@ -245,7 +245,7 @@ public class CompanyServiceUtil {
 	 * @param virtualHost the company's virtual host name
 	 * @param mx the company's mail domain
 	 * @param homeURL the company's home URL (optionally <code>null</code>)
-	 * @param logo if the company has a custom logo
+	 * @param hasLogo if the company has a custom logo
 	 * @param logoBytes the new logo image data
 	 * @param name the company's account name (optionally <code>null</code>)
 	 * @param legalName the company's account legal name (optionally
@@ -273,7 +273,7 @@ public class CompanyServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.model.Company updateCompany(
 			long companyId, String virtualHost, String mx, String homeURL,
-			boolean logo, byte[] logoBytes, String name, String legalName,
+			boolean hasLogo, byte[] logoBytes, String name, String legalName,
 			String legalId, String legalType, String sicCode,
 			String tickerSymbol, String industry, String type, String size,
 			String languageId, String timeZoneId,
@@ -286,7 +286,7 @@ public class CompanyServiceUtil {
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateCompany(
-			companyId, virtualHost, mx, homeURL, logo, logoBytes, name,
+			companyId, virtualHost, mx, homeURL, hasLogo, logoBytes, name,
 			legalName, legalId, legalType, sicCode, tickerSymbol, industry,
 			type, size, languageId, timeZoneId, addresses, emailAddresses,
 			phones, websites, properties);

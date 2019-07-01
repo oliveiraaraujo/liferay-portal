@@ -80,6 +80,10 @@ public abstract class BaseKeywordResourceImpl implements KeywordResource {
 		return Page.of(Collections.emptyList());
 	}
 
+	public void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage) {
+		this.contextAcceptLanguage = contextAcceptLanguage;
+	}
+
 	public void setContextCompany(Company contextCompany) {
 		this.contextCompany = contextCompany;
 	}

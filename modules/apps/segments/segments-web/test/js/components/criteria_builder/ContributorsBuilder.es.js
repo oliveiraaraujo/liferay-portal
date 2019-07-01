@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import ContributorsBuilder from 'components/criteria_builder/ContributorsBuilder.es';
 import React from 'react';
 import {cleanup, render} from 'react-testing-library';
@@ -168,7 +182,7 @@ const propertyGroups = [
 describe('ContributorsBuilder', () => {
 	afterEach(cleanup);
 
-	it('should render builder with sidebar', () => {
+	it('renders builder with sidebar', () => {
 		const editing = true;
 
 		const {asFragment} = render(
@@ -186,7 +200,7 @@ describe('ContributorsBuilder', () => {
 		expect(asFragment()).toMatchSnapshot('initialRenderEditing');
 	});
 
-	it('should render builder without sidebar', () => {
+	it('renders builder without sidebar', () => {
 		const editing = false;
 
 		const {asFragment} = render(

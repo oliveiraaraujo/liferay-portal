@@ -17,6 +17,7 @@ package com.liferay.headless.delivery.internal.resource.v1_0;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.list.model.AssetListEntry;
 import com.liferay.asset.list.service.AssetListEntryService;
+import com.liferay.asset.list.util.AssetListAssetEntryProvider;
 import com.liferay.headless.delivery.dto.v1_0.ContentSetElement;
 import com.liferay.headless.delivery.dto.v1_0.converter.DTOConverter;
 import com.liferay.headless.delivery.dto.v1_0.converter.DefaultDTOConverterContext;
@@ -147,11 +148,13 @@ public class ContentSetElementResourceImpl
 
 		return Page.of(
 			transform(
-				assetListEntry.getAssetEntries(
-					segmentsEntryIds, pagination.getStartPosition(),
-					pagination.getEndPosition()),
+				_assetListAssetEntryProvider.getAssetEntries(
+					assetListEntry, segmentsEntryIds,
+					pagination.getStartPosition(), pagination.getEndPosition()),
 				this::_toContentSetElement),
-			pagination, assetListEntry.getAssetEntriesCount(segmentsEntryIds));
+			pagination,
+			_assetListAssetEntryProvider.getAssetEntriesCount(
+				assetListEntry, segmentsEntryIds));
 	}
 
 	private ContentSetElement _toContentSetElement(AssetEntry assetEntry) {
@@ -186,6 +189,9 @@ public class ContentSetElementResourceImpl
 			}
 		};
 	}
+
+	@Reference
+	private AssetListAssetEntryProvider _assetListAssetEntryProvider;
 
 	@Reference
 	private AssetListEntryService _assetListEntryService;

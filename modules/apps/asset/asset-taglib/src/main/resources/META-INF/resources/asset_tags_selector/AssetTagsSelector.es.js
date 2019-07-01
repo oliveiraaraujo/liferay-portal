@@ -1,9 +1,27 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+
 import 'clay-multi-select';
 import {Config} from 'metal-state';
 import Component from 'metal-component';
 import Soy from 'metal-soy';
 
 import templates from './AssetTagsSelector.soy';
+
+import {ItemSelectorDialog} from 'frontend-js-web';
 
 /**
  * Wraps Clay's existing <code>MultiSelect</code> component that offers the user
@@ -26,73 +44,67 @@ class AssetTagsSelector extends Component {
 	 * @private
 	 */
 	_handleButtonClicked() {
-		AUI().use(
-			'liferay-item-selector-dialog',
-			function(A) {
-				const uri = A.Lang.sub(decodeURIComponent(this.portletURL), {
-					selectedTagNames: this._getTagNames()
-				});
+		const sub = (str, obj) => str.replace(/\{([^}]+)\}/g, (_, m) => obj[m]);
 
-				const itemSelectorDialog = new A.LiferayItemSelectorDialog({
-					eventName: this.eventName,
-					on: {
-						selectedItemChange: function(event) {
-							const selectedItems = event.newVal;
+		const uri = sub(decodeURIComponent(this.portletURL), {
+			selectedTagNames: this._getTagNames()
+		});
 
-							if (selectedItems) {
-								const newValues =
-									selectedItems.items.length > 0
-										? selectedItems.items.split(',')
-										: [];
-								const oldItems = this.selectedItems.slice();
-								const oldValues = oldItems.map(
-									item => item.value
-								);
-								const valueMapper = item => {
-									return {
-										label: item,
-										value: item
-									};
-								};
+		let itemSelectorDialog = new ItemSelectorDialog({
+			buttonAddLabel: Liferay.Language.get('done'),
+			eventName: this.eventName,
+			title: Liferay.Language.get('tags'),
+			url: uri
+		});
 
-								const addedItems = newValues
-									.filter(value => !oldValues.includes(value))
-									.map(valueMapper);
+		itemSelectorDialog.open();
 
-								const removedItems = oldValues
-									.filter(value => !newValues.includes(value))
-									.map(valueMapper);
+		itemSelectorDialog.on('selectedItemChange', event => {
+			const selectedItems = event.selectedItem;
 
-								this.selectedItems = newValues.map(valueMapper);
+			if (selectedItems) {
+				const newValues =
+					selectedItems.items.length > 0
+						? selectedItems.items.split(',')
+						: [];
+				const oldItems = this.selectedItems.slice();
+				const oldValues = oldItems.map(item => item.value);
+				const valueMapper = item => {
+					return {
+						label: item,
+						value: item
+					};
+				};
 
-								this.tagNames = this._getTagNames();
+				const addedItems = newValues
+					.filter(value => !oldValues.includes(value))
+					.map(valueMapper);
 
-								addedItems.forEach(item =>
-									this._notifyItemsChanged(
-										'itemAdded',
-										this.addCallback,
-										item
-									)
-								);
+				const removedItems = oldValues
+					.filter(value => !newValues.includes(value))
+					.map(valueMapper);
 
-								removedItems.forEach(item =>
-									this._notifyItemsChanged(
-										'itemRemoved',
-										this.removeCallback,
-										item
-									)
-								);
-							}
-						}.bind(this)
-					},
-					'strings.add': Liferay.Language.get('done'),
-					title: Liferay.Language.get('tags'),
-					url: uri
-				});
+				this.selectedItems = newValues.map(valueMapper);
 
-				itemSelectorDialog.open();
-			}.bind(this)
-		);
+				this.tagNames = this._getTagNames();
+
+				addedItems.forEach(item =>
+					this._notifyItemsChanged(
+						'itemAdded',
+						this.addCallback,
+						item
+					)
+				);
+
+				removedItems.forEach(item =>
+					this._notifyItemsChanged(
+						'itemRemoved',
+						this.removeCallback,
+						item
+					)
+				);
+			}
+		});
 	}
 
 	/**

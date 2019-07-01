@@ -14,7 +14,38 @@
  */
 --%>
 
-<%@ include file="/init.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
+
+<%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
+taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
+
+<%@ page import="com.liferay.petra.string.StringPool" %><%@
+page import="com.liferay.portal.kernel.backgroundtask.BackgroundTask" %><%@
+page import="com.liferay.portal.kernel.backgroundtask.BackgroundTaskConstants" %><%@
+page import="com.liferay.portal.kernel.backgroundtask.BackgroundTaskManagerUtil" %><%@
+page import="com.liferay.portal.kernel.backgroundtask.display.BackgroundTaskDisplay" %><%@
+page import="com.liferay.portal.kernel.backgroundtask.display.BackgroundTaskDisplayFactoryUtil" %><%@
+page import="com.liferay.portal.kernel.model.CompanyConstants" %><%@
+page import="com.liferay.portal.kernel.search.Indexer" %><%@
+page import="com.liferay.portal.kernel.search.IndexerClassNameComparator" %><%@
+page import="com.liferay.portal.kernel.search.IndexerRegistryUtil" %><%@
+page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
+page import="com.liferay.portal.search.admin.web.internal.constants.SearchAdminWebKeys" %><%@
+page import="com.liferay.portal.search.admin.web.internal.display.context.IndexActionsDisplayContext" %>
+
+<%@ page import="java.io.Serializable" %>
+
+<%@ page import="java.util.ArrayList" %><%@
+page import="java.util.Collections" %><%@
+page import="java.util.HashMap" %><%@
+page import="java.util.List" %><%@
+page import="java.util.Map" %>
+
+<%@ page import="javax.portlet.PortletURL" %>
+
+<portlet:defineObjects />
 
 <%
 IndexActionsDisplayContext indexActionsDisplayContext = (IndexActionsDisplayContext)request.getAttribute(SearchAdminWebKeys.INDEX_ACTIONS_DISPLAY_CONTEXT);
@@ -85,7 +116,7 @@ portletURL.setParameter("mvcRenderCommandName", "/search_admin/view");
 			<ul class="list-group system-action-group">
 				<li class="clearfix list-group-item">
 					<div class="pull-left">
-						<h5><liferay-ui:message key="reindex-all-search-indexes" /></h5>
+						<liferay-ui:message key="reindex-all-search-indexes" />
 					</div>
 
 					<%
@@ -117,7 +148,7 @@ portletURL.setParameter("mvcRenderCommandName", "/search_admin/view");
 				</li>
 				<li class="clearfix list-group-item">
 					<div class="pull-left">
-						<h5><liferay-ui:message key="reindex-all-spell-check-indexes" /></h5>
+						<liferay-ui:message key="reindex-all-spell-check-indexes" />
 					</div>
 
 					<div class="pull-right">
@@ -136,7 +167,7 @@ portletURL.setParameter("mvcRenderCommandName", "/search_admin/view");
 
 					<li class="clearfix list-group-item">
 						<div class="pull-left">
-							<h5><liferay-ui:message arguments="<%= indexer.getClassName() %>" key="reindex-x" /></h5>
+							<liferay-ui:message arguments="<%= indexer.getClassName() %>" key="reindex-x" />
 						</div>
 
 						<div class="index-action-wrapper pull-right" data-type="<%= indexer.getClassName() %>">

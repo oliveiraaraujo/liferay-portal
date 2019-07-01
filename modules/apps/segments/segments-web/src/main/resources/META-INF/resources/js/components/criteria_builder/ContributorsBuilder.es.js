@@ -1,5 +1,19 @@
-import ClayButton from '../shared/ClayButton.es';
-import ClaySpinner from '../shared/ClaySpinner.es';
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+import ClayButton from '@clayui/button';
+import ClayLoadingIndicator from '@clayui/loading-indicator';
 import Conjunction from './Conjunction.es';
 import CriteriaBuilder from './CriteriaBuilder.es';
 import CriteriaSidebar from '../criteria_sidebar/CriteriaSidebar.es';
@@ -118,13 +132,12 @@ class ContributorBuilder extends React.Component {
 										<div className='criterion-string'>
 											<div className='btn-group'>
 												<div className='btn-group-item inline-item'>
-													<ClaySpinner
-														className='mr-4'
-														loading={
-															membersCountLoading
-														}
-														size='sm'
-													/>
+													{membersCountLoading && (
+														<ClayLoadingIndicator
+															className='mr-4'
+															small
+														/>
+													)}
 
 													{!membersCountLoading && (
 														<span className='mr-4'>
@@ -146,15 +159,17 @@ class ContributorBuilder extends React.Component {
 													)}
 
 													<ClayButton
-														label={Liferay.Language.get(
-															'view-members'
-														)}
+														displayType='secondary'
 														onClick={
 															onPreviewMembers
 														}
-														size='sm'
+														small
 														type='button'
-													/>
+													>
+														{Liferay.Language.get(
+															'view-members'
+														)}
+													</ClayButton>
 												</div>
 											</div>
 										</div>

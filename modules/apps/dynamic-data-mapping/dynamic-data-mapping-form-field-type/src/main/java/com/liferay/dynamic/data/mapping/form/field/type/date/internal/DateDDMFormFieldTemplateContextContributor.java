@@ -20,7 +20,10 @@ import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.render.DDMFormFieldRenderingContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
@@ -55,6 +58,20 @@ public class DateDDMFormFieldTemplateContextContributor
 		if (predefinedValue != null) {
 			parameters.put("predefinedValue", predefinedValue);
 		}
+
+		List<Integer> years = new ArrayList<>();
+
+		Calendar calendar = Calendar.getInstance();
+
+		calendar.add(Calendar.YEAR, -4);
+
+		for (int i = 0; i < 5; i++) {
+			years.add(calendar.get(Calendar.YEAR));
+
+			calendar.add(Calendar.YEAR, 1);
+		}
+
+		parameters.put("years", years);
 
 		return parameters;
 	}

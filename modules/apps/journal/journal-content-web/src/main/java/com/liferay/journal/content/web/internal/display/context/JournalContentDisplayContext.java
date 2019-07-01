@@ -77,7 +77,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.portlet.PortletMode;
@@ -386,11 +385,9 @@ public class JournalContentDisplayContext {
 			return _ddmTemplateKey;
 		}
 
-		_ddmTemplateKey =
-			_journalContentPortletInstanceConfiguration.ddmTemplateKey();
-
 		String ddmTemplateKey = ParamUtil.getString(
-			_portletRequest, "ddmTemplateKey");
+			_portletRequest, "ddmTemplateKey",
+			_journalContentPortletInstanceConfiguration.ddmTemplateKey());
 
 		if (Validator.isNotNull(ddmTemplateKey)) {
 			_ddmTemplateKey = ddmTemplateKey;
@@ -399,6 +396,14 @@ public class JournalContentDisplayContext {
 		JournalArticle article = getArticle();
 
 		if (article == null) {
+			return _ddmTemplateKey;
+		}
+
+		if (Validator.isNull(_ddmTemplateKey) ||
+			_ddmTemplateKey.equals(article.getDDMTemplateKey())) {
+
+			_ddmTemplateKey = article.getDDMTemplateKey();
+
 			return _ddmTemplateKey;
 		}
 
@@ -784,27 +789,6 @@ public class JournalContentDisplayContext {
 		AssetEntryServiceUtil.incrementViewCounter(
 			JournalArticle.class.getName(),
 			articleDisplay.getResourcePrimKey());
-	}
-
-	public boolean isArticleInScope() throws Exception {
-		JournalArticle article = getArticle();
-
-		if (article == null) {
-			return true;
-		}
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)_portletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long[] groupIds = Optional.ofNullable(
-			getSelectedGroupIds()
-		).orElse(
-			PortalUtil.getSharedContentSiteGroupIds(
-				themeDisplay.getCompanyId(), themeDisplay.getScopeGroupId(),
-				themeDisplay.getUserId())
-		);
-
-		return ArrayUtil.contains(groupIds, article.getGroupId());
 	}
 
 	public boolean isDefaultTemplate() {

@@ -37,9 +37,7 @@ import com.liferay.dynamic.data.lists.service.DDLRecordService;
 import com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMStructureVersion;
-import com.liferay.dynamic.data.mapping.service.DDMContentLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStorageLinkLocalService;
-import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
@@ -146,7 +144,7 @@ public class DataRecordResourceImpl extends BaseDataRecordResourceImpl {
 			throw new BadRequestException(
 				LanguageUtil.format(
 					contextAcceptLanguage.getPreferredLocale(),
-					"page-size-cannot-be-bigger-than-x", 250));
+					"page-size-is-greater-than-x", 250));
 		}
 
 		_modelResourcePermission.check(
@@ -286,8 +284,8 @@ public class DataRecordResourceImpl extends BaseDataRecordResourceImpl {
 		};
 	}
 
-	private void _validate(DataDefinition dataDefinition, DataRecord dataRecord)
-		throws Exception {
+	private void _validate(
+		DataDefinition dataDefinition, DataRecord dataRecord) {
 
 		// Field names
 
@@ -397,13 +395,7 @@ public class DataRecordResourceImpl extends BaseDataRecordResourceImpl {
 	private DDLRecordSetLocalService _ddlRecordSetLocalService;
 
 	@Reference
-	private DDMContentLocalService _ddmContentLocalService;
-
-	@Reference
 	private DDMStorageLinkLocalService _ddmStorageLinkLocalService;
-
-	@Reference
-	private DDMStructureLocalService _ddmStructureLocalService;
 
 	private ModelResourcePermission<InternalDataRecordCollection>
 		_modelResourcePermission;

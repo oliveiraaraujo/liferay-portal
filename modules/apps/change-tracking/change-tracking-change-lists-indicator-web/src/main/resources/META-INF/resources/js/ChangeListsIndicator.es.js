@@ -1,3 +1,19 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+
 import {PortletBase, openToast} from 'frontend-js-web';
 import Soy from 'metal-soy';
 import {Config} from 'metal-state';
@@ -26,7 +42,7 @@ class ChangeListsIndicator extends PortletBase {
 	 */
 	created() {
 		this._eventHandler = new EventHandler();
-		let urlActiveCollection =
+		const urlActiveCollection =
 			this.urlCollectionsBase +
 			'?companyId=' +
 			Liferay.ThemeDisplay.getCompanyId() +
@@ -36,7 +52,7 @@ class ChangeListsIndicator extends PortletBase {
 
 		this._render(urlActiveCollection);
 
-		let instance = this;
+		const instance = this;
 
 		Liferay.on('refreshChangeTrackingIndicator', function() {
 			instance._render(urlActiveCollection);
@@ -64,7 +80,7 @@ class ChangeListsIndicator extends PortletBase {
 	 * @private
 	 */
 	_checkElement(selector) {
-		let element = document.querySelector(selector);
+		const element = document.querySelector(selector);
 
 		var result = Promise.resolve(element);
 
@@ -96,7 +112,7 @@ class ChangeListsIndicator extends PortletBase {
 	 * @private
 	 */
 	_checkElementHidden(selector) {
-		let element = document.querySelector(selector);
+		const element = document.querySelector(selector);
 
 		var result = Promise.resolve(element);
 
@@ -116,13 +132,13 @@ class ChangeListsIndicator extends PortletBase {
 	 * @private
 	 */
 	_getDataRequest(url, callback) {
-		let headers = new Headers();
+		const headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('X-CSRF-Token', Liferay.authToken);
 
-		let type = 'GET';
+		const type = 'GET';
 
-		let init = {
+		const init = {
 			credentials: 'include',
 			headers,
 			method: type

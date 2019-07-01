@@ -14,6 +14,8 @@
 
 package com.liferay.jenkins.results.parser.k8s;
 
+import com.google.gson.JsonSyntaxException;
+
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 
 import io.kubernetes.client.ApiClient;
@@ -21,12 +23,11 @@ import io.kubernetes.client.ApiException;
 import io.kubernetes.client.Configuration;
 import io.kubernetes.client.apis.CoreV1Api;
 import io.kubernetes.client.models.V1DeleteOptions;
-import io.kubernetes.client.models.V1ObjectMeta;
 import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.models.V1PodList;
-import io.kubernetes.client.models.V1Status;
 import io.kubernetes.client.util.Config;
 
+import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
@@ -46,58 +47,132 @@ public class LiferayK8sConnection {
 	}
 
 	public Pod createPod(Pod configurationPod) {
-		return createPod(configurationPod, "default");
+		return createPod(configurationPod, getNamespace());
 	}
 
 	public Pod createPod(Pod configurationPod, String namespace) {
 		try {
-			return new Pod(
+			Pod pod = new Pod(
 				_coreV1Api.createNamespacedPod(
 					namespace, configurationPod.getV1Pod(), null));
+
+			long timeout =
+				System.currentTimeMillis() + (_SECONDS_RETRY_TIMEOUT * 1000);
+
+			String phase = "";
+
+			while (!phase.equals("Running") &&
+				   (System.currentTimeMillis() < timeout)) {
+
+				phase = pod.getPhase();
+
+				JenkinsResultsParserUtil.sleep(_SECONDS_RETRY_PERIOD * 1000);
+
+				pod.refreshV1Pod();
+			}
+
+			if (phase.equals("Running")) {
+				System.out.println(
+					JenkinsResultsParserUtil.combine(
+						"Successfully created pod with name '", pod.getName(),
+						"' in namespace '", namespace, "'"));
+			}
+			else {
+				System.out.println(
+					JenkinsResultsParserUtil.combine(
+						"Unable to start new pod with name '",
+						configurationPod.getName(), "' in namespace '",
+						namespace, "'"));
+			}
+
+			return pod;
 		}
 		catch (ApiException ae) {
-			System.out.println(
-				JenkinsResultsParserUtil.combine(
-					"Unable to create new pod with name '",
-					configurationPod.getName(), "' in namespace '", namespace,
-					"'"));
-
-			ae.printStackTrace();
-
-			return null;
+			throw new RuntimeException(ae);
 		}
 	}
 
 	public boolean deletePod(Pod pod) {
-		return deletePod(pod, "default");
+		return deletePod(pod, getNamespace());
 	}
 
 	public boolean deletePod(Pod pod, String namespace) {
-		V1Status v1Status = null;
+		String podName = pod.getName();
 
 		try {
-			v1Status = _coreV1Api.deleteNamespacedPod(
-				pod.getName(), namespace, new V1DeleteOptions(), null, 60, true,
+			_coreV1Api.deleteNamespacedPod(
+				podName, namespace, new V1DeleteOptions(), null, 60, true,
 				null);
 		}
 		catch (ApiException ae) {
-			System.out.println(
-				JenkinsResultsParserUtil.combine(
-					"Unable to delete pod with name '", pod.getName(),
-					"' in namespace '", namespace, "'"));
+			String message = ae.getMessage();
 
-			ae.printStackTrace();
+			if (message == null) {
+				message = "";
+			}
 
-			return false;
+			if (message.equals("Not Found")) {
+				return true;
+			}
+
+			throw new RuntimeException(ae);
+		}
+		catch (JsonSyntaxException jse) {
+			String message = jse.getMessage();
+
+			if (message == null) {
+				message = "";
+			}
+
+			if (!message.contains("Expected a string but was BEGIN_OBJECT")) {
+				throw jse;
+			}
 		}
 
-		String status = v1Status.getStatus();
+		long timeout =
+			System.currentTimeMillis() + (_SECONDS_RETRY_TIMEOUT * 1000);
 
-		if (status.equals("Success")) {
+		pod = getPod(pod, namespace);
+
+		while ((pod != null) && (System.currentTimeMillis() < timeout)) {
+			pod = getPod(pod, namespace);
+
+			JenkinsResultsParserUtil.sleep(_SECONDS_RETRY_PERIOD * 1000);
+		}
+
+		if (pod == null) {
+			System.out.println(
+				JenkinsResultsParserUtil.combine(
+					"Successfully deleted pod with name '", podName,
+					"' in namespace '", namespace, "'"));
+
 			return true;
 		}
 
+		System.out.println(
+			JenkinsResultsParserUtil.combine(
+				"Unable to delete pod with name '", podName, "' in namespace '",
+				namespace, "'"));
+
 		return false;
+	}
+
+	public String getNamespace() {
+		try {
+			File file = new File(
+				"/var/run/secrets/kubernetes.io/serviceaccount/namespace");
+
+			if (file.exists()) {
+				String contents = JenkinsResultsParserUtil.read(file);
+
+				return contents.trim();
+			}
+		}
+		catch (IOException ioe) {
+			System.out.println("Unable to read namespace file");
+		}
+
+		return "default";
 	}
 
 	public Pod getPod(Pod pod, String namespace) {
@@ -107,12 +182,12 @@ public class LiferayK8sConnection {
 					pod.getName(), namespace, null, true, false));
 		}
 		catch (ApiException ae) {
+			System.out.println(ae);
+
 			System.out.println(
 				JenkinsResultsParserUtil.combine(
 					"Unable to get pod with name '", pod.getName(),
 					"' in namespace '", namespace, "'"));
-
-			ae.printStackTrace();
 
 			return null;
 		}
@@ -131,7 +206,7 @@ public class LiferayK8sConnection {
 
 		List<V1Pod> v1Pods = v1PodList.getItems();
 
-		List<LiferayK8sConnection.Pod> pods = new ArrayList<>(v1Pods.size());
+		List<Pod> pods = new ArrayList<>(v1Pods.size());
 
 		for (V1Pod v1Pod : v1Pods) {
 			pods.add(new Pod(v1Pod));
@@ -140,28 +215,16 @@ public class LiferayK8sConnection {
 		return pods;
 	}
 
-	public static class Pod {
-
-		public String getName() {
-			V1ObjectMeta v1ObjectMeta = _v1Pod.getMetadata();
-
-			return v1ObjectMeta.getName();
-		}
-
-		protected Pod(V1Pod v1Pod) {
-			_v1Pod = v1Pod;
-		}
-
-		protected V1Pod getV1Pod() {
-			return _v1Pod;
-		}
-
-		private final V1Pod _v1Pod;
-
+	public void setDebugging(boolean debugging) {
+		_apiClient.setDebugging(debugging);
 	}
 
 	private LiferayK8sConnection() {
 	}
+
+	private static final int _SECONDS_RETRY_PERIOD = 5;
+
+	private static final int _SECONDS_RETRY_TIMEOUT = 300;
 
 	private static final ApiClient _apiClient;
 	private static final CoreV1Api _coreV1Api;
@@ -172,8 +235,6 @@ public class LiferayK8sConnection {
 			_apiClient = Config.defaultClient();
 
 			Configuration.setDefaultApiClient(_apiClient);
-
-			_apiClient.setDebugging(true);
 
 			_coreV1Api = new CoreV1Api(_apiClient);
 		}

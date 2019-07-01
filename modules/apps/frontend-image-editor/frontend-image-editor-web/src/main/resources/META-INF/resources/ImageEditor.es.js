@@ -1,8 +1,24 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+/* eslint no-useless-escape: "warn" */
+
 import 'clay-dropdown';
 
 import Soy from 'metal-soy';
 import dom from 'metal-dom';
-import {CancellablePromise} from 'metal-promise';
 import {async, core} from 'metal';
 import {PortletBase} from 'frontend-js-web';
 
@@ -86,7 +102,7 @@ class ImageEditor extends PortletBase {
 	 * a new entry in the history stack. This wipes out any stale redo states.
 	 */
 	accept() {
-		let selectedControl = this.components[
+		const selectedControl = this.components[
 			this.id + '_selected_control_' + this.selectedControl.variant
 		];
 
@@ -124,7 +140,7 @@ class ImageEditor extends PortletBase {
 			data: imageData
 		});
 
-		return CancellablePromise.resolve();
+		return Promise.resolve();
 	}
 
 	/**
@@ -151,12 +167,12 @@ class ImageEditor extends PortletBase {
 	/**
 	 * Retrieves the blob representation of the current image.
 	 *
-	 * @return {CancellablePromise} A promise that resolves with the image blob.
+	 * @return {Promise} A promise that resolves with the image blob.
 	 */
 	getImageEditorImageBlob() {
-		return new CancellablePromise((resolve, reject) => {
+		return new Promise((resolve, reject) => {
 			this.getImageEditorImageData().then(imageData => {
-				let canvas = document.createElement('canvas');
+				const canvas = document.createElement('canvas');
 				canvas.width = imageData.width;
 				canvas.height = imageData.height;
 
@@ -165,11 +181,11 @@ class ImageEditor extends PortletBase {
 				if (canvas.toBlob) {
 					canvas.toBlob(resolve, this.saveMimeType);
 				} else {
-					let data = atob(
+					const data = atob(
 						canvas.toDataURL(this.saveMimeType).split(',')[1]
 					);
-					let length = data.length;
-					let bytes = new Uint8Array(length);
+					const length = data.length;
+					const bytes = new Uint8Array(length);
 
 					for (let i = 0; i < length; i++) {
 						bytes[i] = data.charCodeAt(i);
@@ -184,7 +200,7 @@ class ImageEditor extends PortletBase {
 	/**
 	 * Retrieves the image data representation of the current image.
 	 *
-	 * @return {CancellablePromise} A promise that resolves with the image data.
+	 * @return {Promise} A promise that resolves with the image data.
 	 */
 	getImageEditorImageData() {
 		return this.history_[this.historyIndex_].getImageData();
@@ -250,11 +266,11 @@ class ImageEditor extends PortletBase {
 	 * @param  {MouseEvent} event The mouse event.
 	 */
 	requestImageEditorEditFilters(event) {
-		let controls = this.getPossibleControls();
+		const controls = this.getPossibleControls();
 
-		let target = event.delegateTarget || event.currentTarget;
-		let targetControl = target.getAttribute('data-control');
-		let targetTool = target.getAttribute('data-tool');
+		const target = event.delegateTarget || event.currentTarget;
+		const targetControl = target.getAttribute('data-control');
+		const targetTool = target.getAttribute('data-tool');
 
 		this.syncHistory_().then(() => {
 			this.selectedControl = controls.filter(
@@ -270,11 +286,11 @@ class ImageEditor extends PortletBase {
 	 * @param {MouseEvent} event The mouse event.
 	 */
 	requestImageEditorEdit(event) {
-		let controls = this.getPossibleControls();
+		const controls = this.getPossibleControls();
 
-		let target = event.target.element;
-		let targetControl = event.data.item.variant;
-		let targetTool = target.getAttribute('data-tool');
+		const target = event.target.element;
+		const targetControl = event.data.item.variant;
+		const targetTool = target.getAttribute('data-tool');
 
 		this.syncHistory_().then(() => {
 			this.selectedControl = controls.filter(
@@ -289,7 +305,7 @@ class ImageEditor extends PortletBase {
 	 * currently selected control.
 	 */
 	requestImageEditorPreview() {
-		let selectedControl = this.components[
+		const selectedControl = this.components[
 			this.id + '_selected_control_' + this.selectedControl.variant
 		];
 
@@ -370,15 +386,15 @@ class ImageEditor extends PortletBase {
 	 * Sends a given image blob to the server for processing and storing.
 	 * @param  {Blob} imageBlob The image blob to send to the server.
 	 * @protected
-	 * @return {CancellablePromise} A promise that follows the XHR submission
+	 * @return {Promise} A promise that follows the XHR submission
 	 * process.
 	 */
 	submitBlob_(imageBlob) {
-		let saveFileName = this.saveFileName;
-		let saveParamName = this.saveParamName;
+		const saveFileName = this.saveFileName;
+		const saveParamName = this.saveParamName;
 
-		let promise = new CancellablePromise((resolve, reject) => {
-			let formData = new FormData();
+		const promise = new Promise((resolve, reject) => {
+			const formData = new FormData();
 
 			formData.append(saveParamName, imageBlob, saveFileName);
 
@@ -398,7 +414,7 @@ class ImageEditor extends PortletBase {
 	 * @protected
 	 */
 	syncHistory_() {
-		return new CancellablePromise((resolve, reject) => {
+		return new Promise((resolve, reject) => {
 			this.history_[this.historyIndex_].getImageData().then(imageData => {
 				this.syncImageData_(imageData);
 
@@ -420,34 +436,34 @@ class ImageEditor extends PortletBase {
 	 * @protected
 	 */
 	syncImageData_(imageData) {
-		let width = imageData.width;
-		let height = imageData.height;
+		const width = imageData.width;
+		const height = imageData.height;
 
-		let aspectRatio = width / height;
+		const aspectRatio = width / height;
 
-		let offscreenCanvas = document.createElement('canvas');
+		const offscreenCanvas = document.createElement('canvas');
 		offscreenCanvas.width = width;
 		offscreenCanvas.height = height;
 
-		let offscreenContext = offscreenCanvas.getContext('2d');
+		const offscreenContext = offscreenCanvas.getContext('2d');
 		offscreenContext.clearRect(0, 0, width, height);
 		offscreenContext.putImageData(imageData, 0, 0);
 
-		let canvas = this.getImageEditorCanvas();
+		const canvas = this.getImageEditorCanvas();
 
-		let boundingBox = dom.closest(this.element, '.portlet-layout');
-		let availableWidth = boundingBox.offsetWidth;
+		const boundingBox = dom.closest(this.element, '.portlet-layout');
+		const availableWidth = boundingBox.offsetWidth;
 
 		let dialogFooterHeight = 0;
-		let dialogFooter = this.element.querySelector('.dialog-footer');
+		const dialogFooter = this.element.querySelector('.dialog-footer');
 
 		if (dialogFooter) {
 			dialogFooterHeight = dialogFooter.offsetHeight;
 		}
 
-		let availableHeight =
+		const availableHeight =
 			boundingBox.offsetHeight - 142 - 40 - dialogFooterHeight;
-		let availableAspectRatio = availableWidth / availableHeight;
+		const availableAspectRatio = availableWidth / availableHeight;
 
 		if (availableAspectRatio > 1) {
 			canvas.height = availableHeight;
@@ -457,7 +473,7 @@ class ImageEditor extends PortletBase {
 			canvas.height = availableWidth / aspectRatio;
 		}
 
-		let context = canvas.getContext('2d');
+		const context = canvas.getContext('2d');
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		context.drawImage(
 			offscreenCanvas,

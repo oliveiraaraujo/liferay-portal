@@ -107,6 +107,7 @@
 		<check name="GradleJavaVersionCheck" />
 		<check name="GradlePropertiesCheck" />
 		<check name="GradleProvidedDependenciesCheck" />
+		<check name="GradleStylingCheck" />
 		<check name="GradleTaskCreationCheck" />
 		<check name="GradleTestDependencyVersionCheck">
 			<property name="allowedDependencyNames" value="com.liferay.arquillian.arquillian-container-liferay" />
@@ -178,7 +179,6 @@
 		<check name="JavaStylingCheck" />
 		<check name="JavaSystemExceptionCheck" />
 		<check name="JavaTermDividersCheck" />
-		<check name="JavaTermMetadataLineBreakCheck" />
 		<check name="JavaTermOrderCheck" />
 		<check name="JavaTermStylingCheck" />
 		<check name="MethodCallsOrderCheck" />
@@ -332,8 +332,10 @@
 
 		<check name="JSPLanguageKeysCheck" />
 		<check name="JSPLogParametersCheck" />
+		<check name="JSPMissingTaglibsCheck" />
 		<check name="JSPSendRedirectCheck" />
 		<check name="JSPStringMethodsCheck" />
+		<check name="JSPUnusedJSPF" />
 		<check name="LocaleUtilCheck" />
 		<check name="ResourceBundleCheck" />
 		<check name="SubstringCheck" />

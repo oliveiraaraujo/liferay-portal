@@ -101,12 +101,12 @@ public class LayoutSetServiceSoap {
 	}
 
 	public static void updateLogo(
-			long groupId, boolean privateLayout, boolean logo, byte[] bytes)
+			long groupId, boolean privateLayout, boolean hasLogo, byte[] bytes)
 		throws RemoteException {
 
 		try {
 			LayoutSetServiceUtil.updateLogo(
-				groupId, privateLayout, logo, bytes);
+				groupId, privateLayout, hasLogo, bytes);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

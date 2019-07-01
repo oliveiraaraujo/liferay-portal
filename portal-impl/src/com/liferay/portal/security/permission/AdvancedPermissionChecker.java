@@ -30,10 +30,10 @@ import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.model.Resource;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
-import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroupGroupRole;
 import com.liferay.portal.kernel.model.UserGroupRole;
+import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
@@ -874,13 +874,12 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			return true;
 		}
 
-		if (group.isSite()) {
-			if (UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-					getUserId(), groupId, RoleConstants.SITE_CONTENT_REVIEWER,
-					true)) {
+		if (group.isSite() &&
+			UserGroupRoleLocalServiceUtil.hasUserGroupRole(
+				getUserId(), groupId, RoleConstants.SITE_CONTENT_REVIEWER,
+				true)) {
 
-				return true;
-			}
+			return true;
 		}
 
 		return false;
@@ -1096,13 +1095,12 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 	}
 
 	protected boolean isGroupOwnerImpl(Group group) throws PortalException {
-		if (group.isSite()) {
-			if (UserGroupRoleLocalServiceUtil.hasUserGroupRole(
-					getUserId(), group.getGroupId(), RoleConstants.SITE_OWNER,
-					true)) {
+		if (group.isSite() &&
+			UserGroupRoleLocalServiceUtil.hasUserGroupRole(
+				getUserId(), group.getGroupId(), RoleConstants.SITE_OWNER,
+				true)) {
 
-				return true;
-			}
+			return true;
 		}
 
 		if (group.isLayoutPrototype()) {
@@ -1489,10 +1487,10 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			return true;
 		}
 
-		if (name.equals(Organization.class.getName())) {
-			if (isOrganizationAdminImpl(GetterUtil.getLong(primKey))) {
-				return true;
-			}
+		if (name.equals(Organization.class.getName()) &&
+			isOrganizationAdminImpl(GetterUtil.getLong(primKey))) {
+
+			return true;
 		}
 
 		if (isCompanyAdminImpl(companyId)) {

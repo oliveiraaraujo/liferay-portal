@@ -219,7 +219,11 @@ if ((publicLayoutSet.isLayoutSetPrototypeLinkEnabled() || privateLayoutSet.isLay
 
 				const defaultLanguage = languageSelectInput.val();
 
-				const defaultLanguageSiteName = nameInput.getValue(defaultLanguage);
+				var defaultLanguageSiteName = null;
+
+				if (nameInput) {
+					defaultLanguageSiteName = nameInput.getValue(defaultLanguage);
+				}
 
 				new A.Alert(
 					{
@@ -232,7 +236,7 @@ if ((publicLayoutSet.isLayoutSetPrototypeLinkEnabled() || privateLayoutSet.isLay
 					}
 				);
 
-				if (!defaultLanguageSiteName) {
+				if (!defaultLanguageSiteName && <%= !liveGroup.isGuest() %>) {
 					new A.Alert(
 						{
 							bodyContent: '<liferay-ui:message key="site-name-will-display-a-generic-text-until-a-translation-is-added" />',

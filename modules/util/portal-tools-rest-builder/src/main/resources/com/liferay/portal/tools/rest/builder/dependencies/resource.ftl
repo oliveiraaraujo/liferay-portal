@@ -1,6 +1,10 @@
 package ${configYAML.apiPackagePath}.resource.${escapedVersion};
 
-<#list openAPIYAML.components.schemas?keys as schemaName>
+<#list globalEnumSchemas?keys as globalEnumSchemaName>
+	import ${configYAML.apiPackagePath}.constant.${escapedVersion}.${globalEnumSchemaName};
+</#list>
+
+<#list allSchemas?keys as schemaName>
 	import ${configYAML.apiPackagePath}.dto.${escapedVersion}.${schemaName};
 </#list>
 
@@ -18,6 +22,8 @@ import javax.annotation.Generated;
 
 import javax.ws.rs.core.Response;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
  * To access this resource, run:
  *
@@ -27,10 +33,11 @@ import javax.ws.rs.core.Response;
  * @generated
  */
 @Generated("")
+@ProviderType
 public interface ${schemaName}Resource {
 
 	<#list freeMarkerTool.getResourceJavaMethodSignatures(configYAML, openAPIYAML, schemaName) as javaMethodSignature>
-		public ${javaMethodSignature.returnType} ${javaMethodSignature.methodName}(${freeMarkerTool.getResourceParameters(javaMethodSignature.javaMethodParameters, javaMethodSignature.operation, false)}) throws Exception;
+		public ${javaMethodSignature.returnType} ${javaMethodSignature.methodName}(${freeMarkerTool.getResourceParameters(javaMethodSignature.javaMethodParameters, openAPIYAML, javaMethodSignature.operation, false)}) throws Exception;
 	</#list>
 
 	public default void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage) {

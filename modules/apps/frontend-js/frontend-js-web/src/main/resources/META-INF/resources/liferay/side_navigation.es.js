@@ -1,3 +1,21 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-console: "warn" */
+/* eslint no-const-assign: "warn" */
+/* eslint no-unused-vars: "warn" */
+
 import EventEmitter from 'metal-events';
 
 /**
@@ -191,10 +209,11 @@ function handleEvent(eventName, event) {
 }
 
 /**
- * Creates a delegated event listener for `eventName` events on `element`.
+ * Creates a delegated event listener for `eventName` events on
+ * `elementOrSelector`.
  */
-function subscribe(element, eventName, handler) {
-	if (element) {
+function subscribe(elementOrSelector, eventName, handler) {
+	if (elementOrSelector) {
 		// Add only one listener per `eventName`.
 		if (!eventNamesToSelectors[eventName]) {
 			eventNamesToSelectors[eventName] = {};
@@ -205,14 +224,21 @@ function subscribe(element, eventName, handler) {
 		}
 
 		const emitters = eventNamesToSelectors[eventName];
-		const selector = getUniqueSelector(element);
+		const selector =
+			typeof elementOrSelector === 'string'
+				? elementOrSelector
+				: getUniqueSelector(elementOrSelector);
 
 		if (!emitters[selector]) {
 			emitters[selector] = new EventEmitter();
 		}
 
 		const emitter = emitters[selector];
-		const subscription = emitter.on(eventName, handler);
+		const subscription = emitter.on(eventName, event => {
+			if (!event.defaultPrevented) {
+				handler(event);
+			}
+		});
 
 		return {
 			dispose() {
@@ -236,7 +262,7 @@ function SideNavigation(toggler, options) {
 SideNavigation.TRANSITION_DURATION = 500;
 
 SideNavigation.prototype = {
-	init: function(toggler, options) {
+	init(toggler, options) {
 		const instance = this;
 
 		/**
@@ -284,15 +310,15 @@ SideNavigation.prototype = {
 		instance._renderUI();
 	},
 
-	on: function(event, listener) {
+	on(event, listener) {
 		return this._emitter.on(event, listener);
 	},
 
-	_emit: function(event) {
+	_emit(event) {
 		this._emitter.emit(event, this);
 	},
 
-	clearHeight: function() {
+	clearHeight() {
 		const instance = this;
 
 		const options = instance.options;
@@ -312,7 +338,7 @@ SideNavigation.prototype = {
 		}
 	},
 
-	destroy: function() {
+	destroy() {
 		const instance = this;
 
 		const options = instance.options;
@@ -330,7 +356,7 @@ SideNavigation.prototype = {
 		INSTANCE_MAP.delete(instance.toggler);
 	},
 
-	hide: function() {
+	hide() {
 		const instance = this;
 
 		if (instance.useDataAttribute) {
@@ -340,7 +366,7 @@ SideNavigation.prototype = {
 		}
 	},
 
-	hideSidenav: function() {
+	hideSidenav() {
 		const instance = this;
 		const options = instance.options;
 
@@ -378,7 +404,7 @@ SideNavigation.prototype = {
 		}
 	},
 
-	hideSimpleSidenav: function() {
+	hideSimpleSidenav() {
 		const instance = this;
 
 		const options = instance.options;
@@ -439,7 +465,7 @@ SideNavigation.prototype = {
 		}
 	},
 
-	setHeight: function() {
+	setHeight() {
 		const instance = this;
 
 		const options = instance.options;
@@ -474,7 +500,7 @@ SideNavigation.prototype = {
 		}
 	},
 
-	show: function() {
+	show() {
 		const instance = this;
 
 		if (instance.useDataAttribute) {
@@ -484,7 +510,7 @@ SideNavigation.prototype = {
 		}
 	},
 
-	showSidenav: function() {
+	showSidenav() {
 		const instance = this;
 		const mobile = instance.mobile;
 		const options = instance.options;
@@ -564,7 +590,7 @@ SideNavigation.prototype = {
 		}
 	},
 
-	showSimpleSidenav: function() {
+	showSimpleSidenav() {
 		const instance = this;
 
 		const options = instance.options;
@@ -613,7 +639,7 @@ SideNavigation.prototype = {
 		}
 	},
 
-	toggle: function() {
+	toggle() {
 		const instance = this;
 
 		if (instance.useDataAttribute) {
@@ -623,7 +649,7 @@ SideNavigation.prototype = {
 		}
 	},
 
-	toggleNavigation: function(force) {
+	toggleNavigation(force) {
 		const instance = this;
 		const options = instance.options;
 
@@ -706,7 +732,7 @@ SideNavigation.prototype = {
 		});
 	},
 
-	toggleSimpleSidenav: function() {
+	toggleSimpleSidenav() {
 		const instance = this;
 
 		const simpleSidenavClosed = instance._isSimpleSidenavClosed();
@@ -718,7 +744,7 @@ SideNavigation.prototype = {
 		}
 	},
 
-	visible: function() {
+	visible() {
 		const instance = this;
 
 		let closed;
@@ -738,7 +764,7 @@ SideNavigation.prototype = {
 		return !closed;
 	},
 
-	_bindUI: function() {
+	_bindUI() {
 		const instance = this;
 
 		instance._subscribeClickTrigger();
@@ -746,7 +772,7 @@ SideNavigation.prototype = {
 		instance._subscribeClickSidenavClose();
 	},
 
-	_getSidenavWidth: function() {
+	_getSidenavWidth() {
 		const instance = this;
 
 		const options = instance.options;
@@ -763,7 +789,7 @@ SideNavigation.prototype = {
 		return width;
 	},
 
-	_getSimpleSidenavType: function() {
+	_getSimpleSidenavType() {
 		const instance = this;
 
 		const options = instance.options;
@@ -781,11 +807,11 @@ SideNavigation.prototype = {
 		return 'fixed';
 	},
 
-	_isDesktop: function() {
+	_isDesktop() {
 		return window.innerWidth >= this.options.breakpoint;
 	},
 
-	_isSidenavRight: function() {
+	_isSidenavRight() {
 		const instance = this;
 		const options = instance.options;
 
@@ -795,7 +821,7 @@ SideNavigation.prototype = {
 		return isSidenavRight;
 	},
 
-	_isSimpleSidenavClosed: function() {
+	_isSimpleSidenavClosed() {
 		const instance = this;
 		const options = instance.options;
 
@@ -806,7 +832,7 @@ SideNavigation.prototype = {
 		return !hasClass(container, openClass);
 	},
 
-	_loadUrl: function(element, url) {
+	_loadUrl(element, url) {
 		const instance = this;
 
 		const sidebar = element.querySelector('.sidebar-body');
@@ -846,7 +872,7 @@ SideNavigation.prototype = {
 		}
 	},
 
-	_subscribeClickSidenavClose: function() {
+	_subscribeClickSidenavClose() {
 		const instance = this;
 
 		const options = instance.options;
@@ -854,12 +880,9 @@ SideNavigation.prototype = {
 		const containerSelector = options.container;
 
 		if (!instance._sidenavCloseSubscription) {
-			const closeButton = document.querySelector(
-				`${containerSelector} .sidenav-close`
-			);
-
+			const closeButtonSelector = `${containerSelector} .sidenav-close`;
 			instance._sidenavCloseSubscription = subscribe(
-				closeButton,
+				closeButtonSelector,
 				'click',
 				function handleSidenavClose(event) {
 					event.preventDefault();
@@ -869,7 +892,7 @@ SideNavigation.prototype = {
 		}
 	},
 
-	_subscribeClickTrigger: function() {
+	_subscribeClickTrigger() {
 		const instance = this;
 
 		if (!instance._togglerSubscription) {
@@ -887,7 +910,7 @@ SideNavigation.prototype = {
 		}
 	},
 
-	_subscribeSidenavTransitionEnd: function(element, fn) {
+	_subscribeSidenavTransitionEnd(element, fn) {
 		setTimeout(() => {
 			removeClass(element, 'sidenav-transition');
 
@@ -895,7 +918,7 @@ SideNavigation.prototype = {
 		}, SideNavigation.TRANSITION_DURATION);
 	},
 
-	_renderNav: function() {
+	_renderNav() {
 		const instance = this;
 		const options = instance.options;
 
@@ -925,7 +948,7 @@ SideNavigation.prototype = {
 		}
 	},
 
-	_renderUI: function() {
+	_renderUI() {
 		const instance = this;
 		const options = instance.options;
 

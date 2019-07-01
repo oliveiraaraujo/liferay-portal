@@ -51,13 +51,28 @@ public class DataRecordCollectionResourceTest
 		return new DataRecordCollection() {
 			{
 				dataDefinitionId = _ddmStructure.getStructureId();
+				dataRecordCollectionKey = RandomTestUtil.randomString();
 				name = new HashMap<String, Object>() {
 					{
 						put("en_US", RandomTestUtil.randomString());
 					}
 				};
+				siteId = testGroup.getGroupId();
 			}
 		};
+	}
+
+	@Override
+	protected DataRecordCollection randomIrrelevantDataRecordCollection()
+		throws Exception {
+
+		DataRecordCollection randomIrrelevantDataRecordCollection =
+			super.randomIrrelevantDataRecordCollection();
+
+		randomIrrelevantDataRecordCollection.setDataDefinitionId(
+			_irrelevantDDMStructure.getStructureId());
+
+		return randomIrrelevantDataRecordCollection;
 	}
 
 	@Override
@@ -90,19 +105,24 @@ public class DataRecordCollectionResourceTest
 
 	@Override
 	protected DataRecordCollection
+			testGetSiteDataRecordCollection_addDataRecordCollection()
+		throws Exception {
+
+		return dataRecordCollectionResource.
+			postDataDefinitionDataRecordCollection(
+				_ddmStructure.getStructureId(), randomDataRecordCollection());
+	}
+
+	@Override
+	protected DataRecordCollection
 			testGetSiteDataRecordCollectionsPage_addDataRecordCollection(
 				Long siteId, DataRecordCollection dataRecordCollection)
 		throws Exception {
 
-		long dataDefinitionId = _ddmStructure.getStructureId();
-
-		if (siteId == _irrelevantDDMStructure.getGroupId()) {
-			dataDefinitionId = _irrelevantDDMStructure.getStructureId();
-		}
-
 		return dataRecordCollectionResource.
 			postDataDefinitionDataRecordCollection(
-				dataDefinitionId, randomDataRecordCollection());
+				dataRecordCollection.getDataDefinitionId(),
+				dataRecordCollection);
 	}
 
 	@Override
@@ -113,7 +133,8 @@ public class DataRecordCollectionResourceTest
 
 		return dataRecordCollectionResource.
 			postDataDefinitionDataRecordCollection(
-				_ddmStructure.getStructureId(), dataRecordCollection);
+				dataRecordCollection.getDataDefinitionId(),
+				dataRecordCollection);
 	}
 
 	@Override

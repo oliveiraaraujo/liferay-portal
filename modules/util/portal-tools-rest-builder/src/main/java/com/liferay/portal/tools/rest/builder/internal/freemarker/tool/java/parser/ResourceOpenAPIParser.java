@@ -184,8 +184,8 @@ public class ResourceOpenAPIParser {
 	}
 
 	public static String getParameters(
-		List<JavaMethodParameter> javaMethodParameters, Operation operation,
-		boolean annotation) {
+		List<JavaMethodParameter> javaMethodParameters, OpenAPIYAML openAPIYAML,
+		Operation operation, boolean annotation) {
 
 		StringBuilder sb = new StringBuilder();
 
@@ -194,7 +194,7 @@ public class ResourceOpenAPIParser {
 
 			if (annotation) {
 				parameterAnnotation = _getParameterAnnotation(
-					javaMethodParameter, operation);
+					javaMethodParameter, openAPIYAML, operation);
 			}
 
 			String parameter = OpenAPIParserUtil.getParameter(
@@ -247,6 +247,34 @@ public class ResourceOpenAPIParser {
 		return null;
 	}
 
+	private static String _getDefaultValue(
+		OpenAPIYAML openAPIYAML, Schema schema) {
+
+		if (schema.getDefault() != null) {
+			return schema.getDefault();
+		}
+		else if (schema.getReference() != null) {
+			Map<String, Schema> schemas = OpenAPIUtil.getAllSchemas(
+				openAPIYAML);
+
+			String referenceName = OpenAPIParserUtil.getReferenceName(
+				schema.getReference());
+
+			Schema referenceSchema = schemas.get(referenceName);
+
+			if (referenceSchema == null) {
+				Map<String, Schema> enumSchemas =
+					OpenAPIUtil.getGlobalEnumSchemas(openAPIYAML);
+
+				referenceSchema = enumSchemas.get(referenceName);
+			}
+
+			return referenceSchema.getDefault();
+		}
+
+		return null;
+	}
+
 	private static List<JavaMethodParameter> _getJavaMethodParameters(
 		Map<String, String> javaDataTypeMap, Operation operation,
 		Set<String> requestBodyMediaTypes) {
@@ -275,14 +303,12 @@ public class ResourceOpenAPIParser {
 				continue;
 			}
 
-			if (StringUtil.equals(parameterName, "page") ||
-				StringUtil.equals(parameterName, "pageSize")) {
+			if ((StringUtil.equals(parameterName, "page") ||
+				 StringUtil.equals(parameterName, "pageSize")) &&
+				parameterNames.contains("page") &&
+				parameterNames.contains("pageSize")) {
 
-				if (parameterNames.contains("page") &&
-					parameterNames.contains("pageSize")) {
-
-					continue;
-				}
+				continue;
 			}
 
 			javaMethodParameters.add(
@@ -519,7 +545,8 @@ public class ResourceOpenAPIParser {
 	}
 
 	private static String _getParameterAnnotation(
-		JavaMethodParameter javaMethodParameter, Operation operation) {
+		JavaMethodParameter javaMethodParameter, OpenAPIYAML openAPIYAML,
+		Operation operation) {
 
 		List<Parameter> parameters = operation.getParameters();
 
@@ -560,24 +587,29 @@ public class ResourceOpenAPIParser {
 				continue;
 			}
 
-			Schema schema = parameter.getSchema();
+			StringBuilder sb = new StringBuilder();
 
-			if (schema.getType() != null) {
-				StringBuilder sb = new StringBuilder();
+			String defaultValue = _getDefaultValue(
+				openAPIYAML, parameter.getSchema());
 
-				if (parameter.isRequired()) {
-					sb.append("@NotNull ");
-				}
-
-				sb.append("@Parameter(hidden=true)");
-				sb.append("@");
-				sb.append(StringUtil.upperCaseFirstLetter(parameter.getIn()));
-				sb.append("Param(\"");
-				sb.append(parameter.getName());
+			if (defaultValue != null) {
+				sb.append("@DefaultValue(\"");
+				sb.append(defaultValue);
 				sb.append("\")");
-
-				return sb.toString();
 			}
+
+			if (parameter.isRequired()) {
+				sb.append("@NotNull");
+			}
+
+			sb.append("@Parameter(hidden=true)");
+			sb.append("@");
+			sb.append(StringUtil.upperCaseFirstLetter(parameter.getIn()));
+			sb.append("Param(\"");
+			sb.append(parameter.getName());
+			sb.append("\")");
+
+			return sb.toString();
 		}
 
 		return "";

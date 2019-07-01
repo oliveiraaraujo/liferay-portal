@@ -1,6 +1,6 @@
 package ${configYAML.apiPackagePath}.internal.graphql.query.${escapedVersion};
 
-<#list openAPIYAML.components.schemas?keys as schemaName>
+<#list allSchemas?keys as schemaName>
 	import ${configYAML.apiPackagePath}.dto.${escapedVersion}.${schemaName};
 	import ${configYAML.apiPackagePath}.resource.${escapedVersion}.${schemaName}Resource;
 </#list>
@@ -13,13 +13,11 @@ import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
 import com.liferay.portal.vulcan.multipart.MultipartBody;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
-
-import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLInvokeDetached;
-import graphql.annotations.annotationTypes.GraphQLName;
 
 import java.util.Date;
 
@@ -50,21 +48,54 @@ public class Query {
 
 	<#list javaMethodSignatures as javaMethodSignature>
 		${freeMarkerTool.getGraphQLMethodAnnotations(javaMethodSignature)}
-		public ${javaMethodSignature.returnType} ${javaMethodSignature.methodName}(${freeMarkerTool.getGraphQLParameters(javaMethodSignature.javaMethodParameters, javaMethodSignature.operation, true)}) throws Exception {
+		public
+
+		<#if javaMethodSignature.returnType?contains("Collection<")>
+			${javaMethodSignature.schemaName}Page
+		<#else>
+			${javaMethodSignature.returnType}
+		</#if>
+
+		${javaMethodSignature.methodName}(${freeMarkerTool.getGraphQLParameters(javaMethodSignature.javaMethodParameters, javaMethodSignature.operation, true)}) throws Exception {
 			<#assign arguments = freeMarkerTool.getGraphQLArguments(javaMethodSignature.javaMethodParameters) />
 
 			<#if javaMethodSignature.returnType?contains("Collection<")>
 				return _applyComponentServiceObjects(
 					_${freeMarkerTool.getSchemaVarName(javaMethodSignature.schemaName)}ResourceComponentServiceObjects,
 					this::_populateResourceContext,
-					${freeMarkerTool.getSchemaVarName(javaMethodSignature.schemaName)}Resource -> {
-						Page paginationPage = ${freeMarkerTool.getSchemaVarName(javaMethodSignature.schemaName)}Resource.${javaMethodSignature.methodName}(${arguments?replace("pageSize,page", "Pagination.of(pageSize, page)")});
-
-						return paginationPage.getItems();
-					});
+					${freeMarkerTool.getSchemaVarName(javaMethodSignature.schemaName)}Resource ->
+						new ${javaMethodSignature.schemaName}Page(
+							${freeMarkerTool.getSchemaVarName(javaMethodSignature.schemaName)}Resource.${javaMethodSignature.methodName}(${arguments?replace("pageSize,page", "Pagination.of(page, pageSize)")}))
+					);
 			<#else>
-				return _applyComponentServiceObjects(_${freeMarkerTool.getSchemaVarName(javaMethodSignature.schemaName)}ResourceComponentServiceObjects, this::_populateResourceContext, ${freeMarkerTool.getSchemaVarName(javaMethodSignature.schemaName)}Resource -> ${freeMarkerTool.getSchemaVarName(javaMethodSignature.schemaName)}Resource.${javaMethodSignature.methodName}(${arguments?replace("pageSize,page", "Pagination.of(pageSize, page)")}));
+				return _applyComponentServiceObjects(_${freeMarkerTool.getSchemaVarName(javaMethodSignature.schemaName)}ResourceComponentServiceObjects, this::_populateResourceContext, ${freeMarkerTool.getSchemaVarName(javaMethodSignature.schemaName)}Resource -> ${freeMarkerTool.getSchemaVarName(javaMethodSignature.schemaName)}Resource.${javaMethodSignature.methodName}(${arguments?replace("pageSize,page", "Pagination.of(page, pageSize)")}));
 			</#if>
+		}
+	</#list>
+
+	<#list schemaNames as schemaName>
+		@GraphQLName("${schemaName}Page")
+		public class ${schemaName}Page {
+
+			public ${schemaName}Page(Page ${freeMarkerTool.getSchemaVarName(schemaName)}Page) {
+				items = ${freeMarkerTool.getSchemaVarName(schemaName)}Page.getItems();
+				page = ${freeMarkerTool.getSchemaVarName(schemaName)}Page.getPage();
+				pageSize = ${freeMarkerTool.getSchemaVarName(schemaName)}Page.getPageSize();
+				totalCount = ${freeMarkerTool.getSchemaVarName(schemaName)}Page.getTotalCount();
+			}
+
+			@GraphQLField
+			protected java.util.Collection<${schemaName}> items;
+
+			@GraphQLField
+			protected long page;
+
+			@GraphQLField
+			protected long pageSize;
+
+			@GraphQLField
+			protected long totalCount;
+
 		}
 	</#list>
 

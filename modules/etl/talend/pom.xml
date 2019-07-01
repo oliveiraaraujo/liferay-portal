@@ -28,6 +28,7 @@
 		<maven.deploy.skip>true</maven.deploy.skip>
 	</properties>
 	<modules>
+		<module>talend-common</module>
 		<module>talend-definition</module>
 		<module>talend-runtime</module>
 	</modules>
@@ -37,12 +38,12 @@
 				<plugin>
 					<groupId>com.liferay</groupId>
 					<artifactId>com.liferay.javadoc.formatter</artifactId>
-					<version>${liferay.javadoc.formatter.version}</version>
+					<version>1.0.33</version>
 				</plugin>
 				<plugin>
 					<groupId>com.liferay</groupId>
 					<artifactId>com.liferay.source.formatter</artifactId>
-					<version>1.0.871</version>
+					<version>1.0.880</version>
 				</plugin>
 				<plugin>
 					<groupId>com.liferay</groupId>

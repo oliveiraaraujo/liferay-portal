@@ -1,7 +1,23 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+
 import AutoSave from './util/AutoSave.es';
 import ClayModal from 'clay-modal';
 import Component from 'metal-jsx';
-import compose from 'dynamic-data-mapping-form-builder/js/util/compose.es';
+import compose from 'dynamic-data-mapping-form-renderer/js/util/compose.es';
 import core from 'metal';
 import dom from 'metal-dom';
 import LayoutProvider from 'dynamic-data-mapping-form-builder/js/components/LayoutProvider/LayoutProvider.es';
@@ -24,6 +40,7 @@ import {
 	isModifyingKey
 } from 'dynamic-data-mapping-form-builder/js/util/dom.es';
 import {pageStructure} from 'dynamic-data-mapping-form-builder/js/util/config.es';
+import {PagesVisitor} from 'dynamic-data-mapping-form-renderer/js/util/visitors.es';
 import {sub} from 'dynamic-data-mapping-form-builder/js/util/strings.es';
 
 /**
@@ -80,6 +97,13 @@ class Form extends Component {
 			const translationManager = results[2];
 
 			if (translationManager) {
+				this.props.defaultLanguageId = translationManager.get(
+					'defaultLocale'
+				);
+				this.props.editingLanguageId = translationManager.get(
+					'editingLocale'
+				);
+
 				translationManager.on('editingLocaleChange', event => {
 					this.props.editingLanguageId = event.newVal;
 				});
@@ -231,15 +255,21 @@ class Form extends Component {
 		const {ComposedFormBuilder} = this;
 		const {
 			context,
+			dataProviderInstanceParameterSettingsURL,
+			dataProviderInstancesURL,
 			defaultLanguageId,
 			editingLanguageId,
 			fieldSetDefinitionURL,
 			fieldSets,
 			fieldTypes,
+			functionsMetadata,
+			functionsURL,
 			groupId,
 			namespace,
 			published,
 			redirectURL,
+			rolesURL,
+			rules,
 			spritemap,
 			view
 		} = this.props;
@@ -268,18 +298,17 @@ class Form extends Component {
 					{this.isFormBuilderView() && (
 						<RuleBuilder
 							dataProviderInstanceParameterSettingsURL={
-								this.props
-									.dataProviderInstanceParameterSettingsURL
+								dataProviderInstanceParameterSettingsURL
 							}
-							dataProviderInstancesURL={
-								this.props.dataProviderInstancesURL
-							}
+							dataProviderInstancesURL={dataProviderInstancesURL}
 							fieldTypes={fieldTypes}
-							functionsMetadata={this.props.functionsMetadata}
-							functionsURL={this.props.functionsURL}
-							pages={context.pages}
-							rolesURL={this.props.rolesURL}
-							rules={this.props.rules}
+							functionsMetadata={functionsMetadata}
+							functionsURL={functionsURL}
+							groupId={groupId}
+							portletNamespace={namespace}
+							ref='ruleBuilder'
+							rolesURL={rolesURL}
+							rules={rules}
 							spritemap={spritemap}
 							visible={this.isShowRuleBuilder()}
 						/>
@@ -290,9 +319,9 @@ class Form extends Component {
 						fieldSets={fieldSets}
 						fieldTypes={fieldTypes}
 						groupId={groupId}
-						namespace={this.props.namespace}
-						ref='builder'
-						rules={this.props.rules}
+						portletNamespace={namespace}
+						ref='formBuilder'
+						rules={rules}
 						spritemap={spritemap}
 						view={view}
 						visible={!this.isShowRuleBuilder()}
@@ -491,10 +520,19 @@ class Form extends Component {
 
 		const settingsDDMForm = Liferay.component('settingsDDMForm');
 
-		if (
-			settingsDDMForm &&
-			settingsDDMForm.getField('requireAuthentication').getValue()
-		) {
+		let requireAuthentication = false;
+
+		if (settingsDDMForm) {
+			const settingsPageVisitor = new PagesVisitor(settingsDDMForm.pages);
+
+			settingsPageVisitor.mapFields(field => {
+				if (field.fieldName === 'requireAuthentication') {
+					requireAuthentication = field.value;
+				}
+			});
+		}
+
+		if (requireAuthentication) {
 			formURL = Liferay.DDM.FormSettings.restrictedFormURL;
 		} else {
 			formURL = Liferay.DDM.FormSettings.sharedFormURL;
@@ -614,16 +652,6 @@ class Form extends Component {
 		});
 
 		this.submitForm();
-	}
-
-	_openSidebar() {
-		const {builder} = this.refs;
-
-		if (builder) {
-			const {sidebar} = builder.refs;
-
-			sidebar.open();
-		}
 	}
 
 	_pagesValueFn() {

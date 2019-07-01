@@ -34,7 +34,7 @@ public class EROrganizationLocalServiceImpl
 			String externalReferenceCode, long userId,
 			long parentOrganizationId, String name, String type, long regionId,
 			long countryId, long statusId, String comments, boolean site,
-			boolean logo, byte[] logoBytes, ServiceContext serviceContext)
+			boolean hasLogo, byte[] logoBytes, ServiceContext serviceContext)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -51,7 +51,7 @@ public class EROrganizationLocalServiceImpl
 			organization.setExternalReferenceCode(externalReferenceCode);
 
 			PortalUtil.updateImageId(
-				organization, logo, logoBytes, "logoId",
+				organization, hasLogo, logoBytes, "logoId",
 				_userFileUploadsSettings.getImageMaxSize(),
 				_userFileUploadsSettings.getImageMaxHeight(),
 				_userFileUploadsSettings.getImageMaxWidth());
@@ -63,7 +63,7 @@ public class EROrganizationLocalServiceImpl
 			organizationLocalService.updateOrganization(
 				user.getCompanyId(), organization.getOrganizationId(),
 				parentOrganizationId, name, type, regionId, countryId, statusId,
-				comments, logo, logoBytes, site, serviceContext);
+				comments, hasLogo, logoBytes, site, serviceContext);
 		}
 
 		return organization;

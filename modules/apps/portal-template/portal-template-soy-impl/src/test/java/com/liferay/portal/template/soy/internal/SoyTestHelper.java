@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.URLTemplateResource;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.template.soy.SoyTemplateResource;
 import com.liferay.portal.template.soy.SoyTemplateResourceFactory;
 
 import java.io.Reader;
@@ -34,7 +35,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -49,13 +49,8 @@ public class SoyTestHelper {
 		return _soyManager;
 	}
 
-	public SoyTemplate getSoyTemplate(
-		List<TemplateResource> templateResources) {
-
-		return (SoyTemplate)_soyManager.getTemplate(
-			_soyTemplateResourceFactory.createSoyTemplateResource(
-				templateResources),
-			false);
+	public SoyTemplate getSoyTemplate(SoyTemplateResource soyTemplateResource) {
+		return (SoyTemplate)_soyManager.getTemplate(soyTemplateResource, false);
 	}
 
 	public SoyTemplate getSoyTemplate(String fileName) {
@@ -65,10 +60,7 @@ public class SoyTestHelper {
 	}
 
 	public SoyTemplate getSoyTemplate(String... fileNames) {
-		List<TemplateResource> templateResources = getTemplateResources(
-			Arrays.asList(fileNames));
-
-		return getSoyTemplate(templateResources);
+		return getSoyTemplate(getSoyTemplateResource(Arrays.asList(fileNames)));
 	}
 
 	public void setUp() {
@@ -98,6 +90,19 @@ public class SoyTestHelper {
 		return builder.build();
 	}
 
+	protected SoyTemplateResource getSoyTemplateResource(
+		List<String> fileNames) {
+
+		List<TemplateResource> templateResources = new ArrayList<>();
+
+		for (String fileName : fileNames) {
+			templateResources.add(getTemplateResource(fileName));
+		}
+
+		return _soyTemplateResourceFactory.createSoyTemplateResource(
+			templateResources);
+	}
+
 	protected TemplateResource getTemplateResource(String name) {
 		TemplateResource templateResource = null;
 
@@ -116,20 +121,8 @@ public class SoyTestHelper {
 		return templateResource;
 	}
 
-	protected List<TemplateResource> getTemplateResources(
-		List<String> fileNames) {
-
-		List<TemplateResource> templateResources = new ArrayList<>();
-
-		for (String fileName : fileNames) {
-			templateResources.add(getTemplateResource(fileName));
-		}
-
-		return templateResources;
-	}
-
 	protected PortalCache mockPortalCache() {
-		Map<HashSet<TemplateResource>, SoyTofuCacheBag> cache = new HashMap<>();
+		Map<String, SoyTofuCacheBag> cache = new HashMap<>();
 
 		return (PortalCache)ProxyUtil.newProxyInstance(
 			PortalCache.class.getClassLoader(),
@@ -144,9 +137,7 @@ public class SoyTestHelper {
 					return new ArrayList<>(cache.keySet());
 				}
 				else if (methodName.equals("put")) {
-					cache.put(
-						(HashSet<TemplateResource>)args[0],
-						(SoyTofuCacheBag)args[1]);
+					cache.put((String)args[0], (SoyTofuCacheBag)args[1]);
 				}
 				else if (methodName.equals("remove")) {
 					cache.remove(args[0]);

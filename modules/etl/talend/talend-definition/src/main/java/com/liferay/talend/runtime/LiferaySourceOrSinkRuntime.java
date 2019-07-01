@@ -14,8 +14,8 @@
 
 package com.liferay.talend.runtime;
 
+import com.liferay.talend.common.oas.OASParameter;
 import com.liferay.talend.connection.LiferayConnectionPropertiesProvider;
-import com.liferay.talend.openapi.Parameter;
 
 import java.io.IOException;
 
@@ -26,7 +26,6 @@ import org.apache.avro.Schema;
 
 import org.talend.components.api.component.runtime.SourceOrSink;
 import org.talend.components.api.container.RuntimeContainer;
-import org.talend.daikon.NamedThing;
 import org.talend.daikon.properties.ValidationResult;
 
 /**
@@ -34,14 +33,12 @@ import org.talend.daikon.properties.ValidationResult;
  */
 public interface LiferaySourceOrSinkRuntime extends SourceOrSink {
 
-	public List<NamedThing> getAvailableWebSites() throws IOException;
-
 	public Set<String> getEndpointList(String operation) throws IOException;
 
 	public Schema getEndpointSchema(String endpoint, String operation)
 		throws IOException;
 
-	public List<Parameter> getParameters(String endpoint, String operation);
+	public List<OASParameter> getParameters(String endpoint, String operation);
 
 	public Set<String> getSupportedOperations(String endpoint);
 

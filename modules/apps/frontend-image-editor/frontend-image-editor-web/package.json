@@ -1,11 +1,10 @@
 {
 	"dependencies": {
-		"clay-dropdown": "2.16.0",
+		"clay-dropdown": "2.16.1",
 		"frontend-js-web": "^4.0.0",
 		"metal": "2.16.8",
 		"metal-component": "2.16.8",
 		"metal-dom": "2.16.8",
-		"metal-promise": "3.0.5",
 		"metal-soy": "2.16.8"
 	},
 	"name": "frontend-image-editor-web",

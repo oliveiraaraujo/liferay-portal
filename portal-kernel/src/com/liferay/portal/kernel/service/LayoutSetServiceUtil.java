@@ -78,35 +78,35 @@ public class LayoutSetServiceUtil {
 	}
 
 	public static void updateLogo(
-			long groupId, boolean privateLayout, boolean logo, byte[] bytes)
+			long groupId, boolean privateLayout, boolean hasLogo, byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		getService().updateLogo(groupId, privateLayout, logo, bytes);
+		getService().updateLogo(groupId, privateLayout, hasLogo, bytes);
 	}
 
 	public static void updateLogo(
-			long groupId, boolean privateLayout, boolean logo,
+			long groupId, boolean privateLayout, boolean hasLogo,
 			java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		getService().updateLogo(groupId, privateLayout, logo, file);
+		getService().updateLogo(groupId, privateLayout, hasLogo, file);
 	}
 
 	public static void updateLogo(
-			long groupId, boolean privateLayout, boolean logo,
+			long groupId, boolean privateLayout, boolean hasLogo,
 			java.io.InputStream inputStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		getService().updateLogo(groupId, privateLayout, logo, inputStream);
+		getService().updateLogo(groupId, privateLayout, hasLogo, inputStream);
 	}
 
 	public static void updateLogo(
-			long groupId, boolean privateLayout, boolean logo,
+			long groupId, boolean privateLayout, boolean hasLogo,
 			java.io.InputStream inputStream, boolean cleanUpStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		getService().updateLogo(
-			groupId, privateLayout, logo, inputStream, cleanUpStream);
+			groupId, privateLayout, hasLogo, inputStream, cleanUpStream);
 	}
 
 	public static com.liferay.portal.kernel.model.LayoutSet updateLookAndFeel(

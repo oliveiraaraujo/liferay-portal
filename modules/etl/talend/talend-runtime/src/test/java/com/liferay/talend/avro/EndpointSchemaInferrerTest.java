@@ -16,14 +16,15 @@ package com.liferay.talend.avro;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.liferay.talend.openapi.constants.OpenAPIConstants;
+import com.liferay.talend.common.oas.constants.OASConstants;
 
 import java.io.InputStream;
 
 import java.util.List;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 
 import javax.ws.rs.HttpMethod;
 
@@ -42,7 +43,7 @@ public class EndpointSchemaInferrerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		if (_openAPISpecJsonNode != null) {
+		if (_oasJsonObject != null) {
 			return;
 		}
 
@@ -52,7 +53,9 @@ public class EndpointSchemaInferrerTest {
 		InputStream resourceAsStream =
 			endpointSchemaInferrerTestClass.getResourceAsStream("openapi.json");
 
-		_openAPISpecJsonNode = _objectMapper.readTree(resourceAsStream);
+		JsonReader jsonReader = Json.createReader(resourceAsStream);
+
+		_oasJsonObject = jsonReader.readObject();
 	}
 
 	@Test
@@ -61,24 +64,7 @@ public class EndpointSchemaInferrerTest {
 
 		Schema schema = _getSchema(endpoint, HttpMethod.POST);
 
-		List<Schema.Field> fields = schema.getFields();
-
-		Assert.assertThat(fields.size(), equalTo(48));
-
-		Schema.Field field = schema.getField("active");
-
-		Schema fieldSchema = AvroUtils.unwrapIfNullable(field.schema());
-
-		Assert.assertTrue(
-			"Boolean type was expected: ",
-			AvroUtils.isSameType(fieldSchema, AvroUtils._boolean()));
-
-		field = schema.getField("subscriptionConfiguration_enable");
-		fieldSchema = AvroUtils.unwrapIfNullable(field.schema());
-
-		Assert.assertTrue(
-			"Boolean type was expected for nested field: ",
-			AvroUtils.isSameType(fieldSchema, AvroUtils._boolean()));
+		_assertValidProductSchema(schema);
 	}
 
 	@Test
@@ -98,6 +84,8 @@ public class EndpointSchemaInferrerTest {
 		Schema schema = _getSchema(endpoint, HttpMethod.GET);
 
 		Assert.assertFalse(AvroUtils.isSchemaEmpty(schema));
+
+		_assertValidProductSchema(schema);
 	}
 
 	@Test
@@ -166,7 +154,7 @@ public class EndpointSchemaInferrerTest {
 
 	@Test
 	public void testOpenAPISpecification() {
-		Assert.assertTrue("Test", _openAPISpecJsonNode.has("openapi"));
+		Assert.assertTrue("Test", _oasJsonObject.containsKey("openapi"));
 	}
 
 	@Test
@@ -216,17 +204,39 @@ public class EndpointSchemaInferrerTest {
 			AvroUtils.isSameType(fieldSchema, AvroUtils._string()));
 	}
 
-	private Schema _getSchema(String endpoint, String operation) {
-		JsonNode endpointsJsonNode = _openAPISpecJsonNode.path(
-			OpenAPIConstants.PATHS);
+	private void _assertValidProductSchema(Schema schema) {
+		List<Schema.Field> fields = schema.getFields();
 
-		Assert.assertTrue(endpointsJsonNode.has(endpoint));
+		Assert.assertThat(fields.size(), equalTo(48));
 
-		return EndpointSchemaInferrer.inferSchema(
-			endpoint, operation, _openAPISpecJsonNode);
+		Schema.Field field = schema.getField("active");
+
+		Schema fieldSchema = AvroUtils.unwrapIfNullable(field.schema());
+
+		Assert.assertTrue(
+			"Boolean type was expected: ",
+			AvroUtils.isSameType(fieldSchema, AvroUtils._boolean()));
+
+		field = schema.getField("subscriptionConfiguration_enable");
+		fieldSchema = AvroUtils.unwrapIfNullable(field.schema());
+
+		Assert.assertTrue(
+			"Boolean type was expected for nested field: ",
+			AvroUtils.isSameType(fieldSchema, AvroUtils._boolean()));
 	}
 
-	private final ObjectMapper _objectMapper = new ObjectMapper();
-	private JsonNode _openAPISpecJsonNode;
+	private Schema _getSchema(String endpoint, String operation) {
+		JsonObject endpointsJsonObject = _oasJsonObject.getJsonObject(
+			OASConstants.PATHS);
+
+		Assert.assertTrue(endpointsJsonObject.containsKey(endpoint));
+
+		return _endpointSchemaInferrer.inferSchema(
+			endpoint, operation, _oasJsonObject);
+	}
+
+	private final EndpointSchemaInferrer _endpointSchemaInferrer =
+		new EndpointSchemaInferrer();
+	private JsonObject _oasJsonObject;
 
 }

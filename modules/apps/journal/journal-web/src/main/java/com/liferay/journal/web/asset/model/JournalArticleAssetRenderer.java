@@ -382,7 +382,8 @@ public class JournalArticleAssetRenderer
 			liferayPortletRequest, JournalPortletKeys.JOURNAL,
 			PortletRequest.RENDER_PHASE);
 
-		portletURL.setParameter("mvcPath", "/compare_versions.jsp");
+		portletURL.setParameter(
+			"mvcRenderCommandName", "/journal/compare_versions");
 		portletURL.setParameter(
 			"groupId", String.valueOf(_article.getGroupId()));
 		portletURL.setParameter("articleId", _article.getArticleId());
@@ -645,7 +646,8 @@ public class JournalArticleAssetRenderer
 			Layout hitLayout = LayoutLocalServiceUtil.getLayout(
 				_article.getGroupId(), privateLayout, hitLayoutId.longValue());
 
-			if (LayoutPermissionUtil.contains(
+			if (!hitLayout.isSystem() &&
+				LayoutPermissionUtil.contains(
 					themeDisplay.getPermissionChecker(), hitLayout,
 					ActionKeys.VIEW)) {
 

@@ -22,15 +22,18 @@ import com.liferay.portal.vulcan.pagination.Page;
 
 import javax.annotation.Generated;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
  * To access this resource, run:
  *
  *     curl -u your@email.com:yourpassword -D - http://localhost:8080/o/change-tracking/v1.0
  *
- * @author Mate Thurzo
+ * @author Máté Thurzó
  * @generated
  */
 @Generated("")
+@ProviderType
 public interface SettingsResource {
 
 	public Page<Settings> getSettingsPage(Long companyId, Long userId)

@@ -23,6 +23,7 @@ import java.io.IOException;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
@@ -44,14 +45,16 @@ public class JSONPackageJSONCheck extends BaseFileCheck {
 		throws IOException {
 
 		if (!absolutePath.endsWith("/package.json") ||
-			!absolutePath.contains("/modules/apps/")) {
+			(!absolutePath.contains("/modules/apps/") &&
+			 !absolutePath.contains("/modules/private/apps/"))) {
 
 			return content;
 		}
 
 		JSONObject jsonObject = new JSONObject(content);
 
-		content = _fixDependencyVersions(absolutePath, content, jsonObject);
+		content = _fixDependencyVersions(
+			fileName, absolutePath, content, jsonObject);
 
 		String dirName = absolutePath.substring(0, absolutePath.length() - 12);
 
@@ -123,7 +126,8 @@ public class JSONPackageJSONCheck extends BaseFileCheck {
 	}
 
 	private String _fixDependencyVersions(
-			String absolutePath, String content, JSONObject jsonObject)
+			String fileName, String absolutePath, String content,
+			JSONObject jsonObject)
 		throws IOException {
 
 		if (jsonObject.isNull("dependencies")) {
@@ -135,6 +139,9 @@ public class JSONPackageJSONCheck extends BaseFileCheck {
 
 		JSONObject dependenciesJSONObject = jsonObject.getJSONObject(
 			"dependencies");
+
+		List<String> enforceMinorReleaseRangePackageNames = getAttributeValues(
+			_ENFORCE_MINOR_RELEASE_RANGE_DEPENDENCY_NAMES, absolutePath);
 
 		Iterator<String> keys = dependenciesJSONObject.keys();
 
@@ -155,6 +162,14 @@ public class JSONPackageJSONCheck extends BaseFileCheck {
 						"\"", dependencyName, "\": \"", actualVersion, "\""),
 					StringBundler.concat(
 						"\"", dependencyName, "\": \"", expectedVersion, "\""));
+			}
+
+			if (enforceMinorReleaseRangePackageNames.contains(dependencyName)) {
+				addMessage(
+					fileName,
+					StringBundler.concat(
+						"Version for '", dependencyName,
+						"' should start with '^'"));
 			}
 		}
 
@@ -219,6 +234,9 @@ public class JSONPackageJSONCheck extends BaseFileCheck {
 
 		return _expectedDependencyVersionsMap;
 	}
+
+	private static final String _ENFORCE_MINOR_RELEASE_RANGE_DEPENDENCY_NAMES =
+		"enforceMinorReleaseRangeDependencyNames";
 
 	private Map<String, String> _expectedDependencyVersionsMap;
 

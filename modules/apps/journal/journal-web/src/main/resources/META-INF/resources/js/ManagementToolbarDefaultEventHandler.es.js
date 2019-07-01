@@ -1,10 +1,24 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import {DefaultEventHandler} from 'frontend-js-web';
 import {Config} from 'metal-state';
 
 class ManagementToolbarDefaultEventHandler extends DefaultEventHandler {
 	created() {
-		let addArticleURL = this.addArticleURL;
-		let namespace = this.namespace;
+		const addArticleURL = this.addArticleURL;
+		const namespace = this.namespace;
 
 		Liferay.on(this.ns('selectAddMenuItem'), function(event) {
 			const selectAddMenuItemWindow = Liferay.Util.Window.getById(
@@ -37,15 +51,15 @@ class ManagementToolbarDefaultEventHandler extends DefaultEventHandler {
 		if (confirm(message)) {
 			Liferay.fire(this.ns('editEntry'), {
 				action: this.trashEnabled
-					? 'moveEntriesToTrash'
-					: 'deleteEntries'
+					? '/journal/move_entries_to_trash'
+					: '/journal/delete_entries'
 			});
 		}
 	}
 
 	expireEntries() {
 		Liferay.fire(this.ns('editEntry'), {
-			action: 'expireEntries'
+			action: '/journal/expire_entries'
 		});
 	}
 
@@ -55,7 +69,7 @@ class ManagementToolbarDefaultEventHandler extends DefaultEventHandler {
 		Liferay.Util.openWindow({
 			dialog: {
 				after: {
-					destroy: function(event) {
+					destroy(event) {
 						if (event.target.get('destroyOnHide')) {
 							window.location.reload();
 						}
@@ -71,14 +85,25 @@ class ManagementToolbarDefaultEventHandler extends DefaultEventHandler {
 	}
 
 	moveEntries() {
-		Liferay.fire(this.ns('editEntry'), {
-			action: 'moveEntries'
+		let moveEntriesURL = this.moveEntriesURL;
+
+		const entrySelectorNodes = document.querySelectorAll('.entry-selector');
+
+		entrySelectorNodes.forEach(node => {
+			if (node.checked) {
+				moveEntriesURL = Liferay.Util.addParams(
+					`${node.name}=${node.value}`,
+					moveEntriesURL
+				);
+			}
 		});
+
+		Liferay.Util.navigate(moveEntriesURL);
 	}
 
 	openDDMStructuresSelector() {
-		let namespace = this.namespace;
-		let uri = this.viewDDMStructureArticlesURL;
+		const namespace = this.namespace;
+		const uri = this.viewDDMStructureArticlesURL;
 
 		Liferay.Util.selectEntity(
 			{
@@ -91,9 +116,11 @@ class ManagementToolbarDefaultEventHandler extends DefaultEventHandler {
 				uri: this.selectEntityURL
 			},
 			function(event) {
-				location.href = Liferay.Util.addParams(
-					namespace + 'ddmStructureKey=' + event.ddmstructurekey,
-					uri
+				Liferay.Util.navigate(
+					Liferay.Util.addParams(
+						namespace + 'ddmStructureKey=' + event.ddmstructurekey,
+						uri
+					)
 				);
 			}
 		);
@@ -103,6 +130,7 @@ class ManagementToolbarDefaultEventHandler extends DefaultEventHandler {
 ManagementToolbarDefaultEventHandler.STATE = {
 	addArticleURL: Config.string(),
 	folderId: Config.string(),
+	moveEntriesURL: Config.string(),
 	namespace: Config.string(),
 	openViewMoreStructuresURL: Config.string(),
 	selectEntityURL: Config.string(),

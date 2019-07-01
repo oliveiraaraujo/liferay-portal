@@ -44,10 +44,10 @@ import com.liferay.portal.kernel.model.LayoutTemplate;
 import com.liferay.portal.kernel.model.LayoutTypeAccessPolicy;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.model.LayoutTypePortletConstants;
-import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.Theme;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.VirtualLayout;
+import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
@@ -892,11 +892,10 @@ public class ServicePreAction extends Action {
 
 		Long realUserId = (Long)session.getAttribute(WebKeys.USER_ID);
 
-		if (realUserId != null) {
-			if (user.getUserId() != realUserId.longValue()) {
-				realUser = UserLocalServiceUtil.getUserById(
-					realUserId.longValue());
-			}
+		if ((realUserId != null) &&
+			(user.getUserId() != realUserId.longValue())) {
+
+			realUser = UserLocalServiceUtil.getUserById(realUserId.longValue());
 		}
 
 		String doAsUserId = ParamUtil.getString(
@@ -1369,12 +1368,11 @@ public class ServicePreAction extends Action {
 
 		boolean themeJsBarebone = PropsValues.JAVASCRIPT_BAREBONE_ENABLED;
 
-		if (themeJsBarebone) {
-			if (signedIn ||
-				PropsValues.JAVASCRIPT_SINGLE_PAGE_APPLICATION_ENABLED) {
+		if (themeJsBarebone &&
+			(signedIn ||
+			 PropsValues.JAVASCRIPT_SINGLE_PAGE_APPLICATION_ENABLED)) {
 
-				themeJsBarebone = false;
-			}
+			themeJsBarebone = false;
 		}
 
 		boolean themeJsFastLoad = SessionParamUtil.getBoolean(

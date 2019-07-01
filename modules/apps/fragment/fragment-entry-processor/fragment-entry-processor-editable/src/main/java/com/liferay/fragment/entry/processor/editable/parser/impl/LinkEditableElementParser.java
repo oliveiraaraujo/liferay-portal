@@ -56,20 +56,6 @@ public class LinkEditableElementParser implements EditableElementParser {
 
 		Element replaceableElement = elements.get(0);
 
-		if (replaceableElement.hasClass("btn") &&
-			replaceableElement.hasClass("btn-primary")) {
-
-			jsonObject.put("buttonType", "primary");
-		}
-		else if (replaceableElement.hasClass("btn") &&
-				 replaceableElement.hasClass("btn-secondary")) {
-
-			jsonObject.put("buttonType", "secondary");
-		}
-		else {
-			jsonObject.put("buttonType", "link");
-		}
-
 		String href = replaceableElement.attr("href");
 
 		if (Validator.isNotNull(href)) {
@@ -127,22 +113,25 @@ public class LinkEditableElementParser implements EditableElementParser {
 		EditableElementParserUtil.addAttribute(
 			replaceableElement, configJSONObject, "target", "target");
 
-		for (String className : replaceableElement.classNames()) {
-			if (className.startsWith("btn-") ||
-				Objects.equals(className, "btn")) {
-
-				replaceableElement.removeClass(className);
-			}
-		}
-
 		String buttonType = configJSONObject.getString("buttonType");
 
-		if (Objects.equals(buttonType, "link")) {
-			replaceableElement.addClass("link");
-		}
-		else {
-			EditableElementParserUtil.addClass(
-				replaceableElement, configJSONObject, "btn btn-", "buttonType");
+		if (!buttonType.isEmpty()) {
+			for (String className : replaceableElement.classNames()) {
+				if (className.startsWith("btn-") ||
+					Objects.equals(className, "btn")) {
+
+					replaceableElement.removeClass(className);
+				}
+			}
+
+			if (Objects.equals(buttonType, "link")) {
+				replaceableElement.addClass("link");
+			}
+			else {
+				EditableElementParserUtil.addClass(
+					replaceableElement, configJSONObject, "btn btn-",
+					"buttonType");
+			}
 		}
 
 		replaceableElement.html(bodyElement.html());

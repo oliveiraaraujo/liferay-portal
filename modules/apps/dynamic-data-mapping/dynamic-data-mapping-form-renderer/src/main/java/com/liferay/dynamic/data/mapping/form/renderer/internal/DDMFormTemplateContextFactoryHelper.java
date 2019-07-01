@@ -25,6 +25,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Leonardo Barros
@@ -92,7 +94,12 @@ public class DDMFormTemplateContextFactoryHelper {
 		Set<String> referencedFieldNames = new HashSet<>();
 
 		for (String ddmFormFieldName : ddmFormFieldNames) {
-			if (expression.contains(ddmFormFieldName)) {
+			Pattern pattern = Pattern.compile(
+				String.format(".*('?%s'?).*", ddmFormFieldName));
+
+			Matcher matcher = pattern.matcher(expression);
+
+			if (matcher.matches()) {
 				referencedFieldNames.add(ddmFormFieldName);
 			}
 		}

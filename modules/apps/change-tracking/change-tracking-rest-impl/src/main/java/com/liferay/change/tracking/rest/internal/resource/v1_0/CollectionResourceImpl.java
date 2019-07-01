@@ -14,29 +14,44 @@
 
 package com.liferay.change.tracking.rest.internal.resource.v1_0;
 
-import com.liferay.change.tracking.constants.CTConstants;
 import com.liferay.change.tracking.engine.CTEngineManager;
+import com.liferay.change.tracking.engine.CTManager;
 import com.liferay.change.tracking.engine.exception.CTCollectionDescriptionCTEngineException;
 import com.liferay.change.tracking.engine.exception.CTCollectionNameCTEngineException;
+import com.liferay.change.tracking.exception.NoSuchCollectionException;
 import com.liferay.change.tracking.model.CTCollection;
+import com.liferay.change.tracking.rest.constant.v1_0.CollectionType;
 import com.liferay.change.tracking.rest.dto.v1_0.Collection;
 import com.liferay.change.tracking.rest.dto.v1_0.CollectionUpdate;
+import com.liferay.change.tracking.rest.internal.dto.v1_0.util.CollectionUtil;
 import com.liferay.change.tracking.rest.internal.jaxrs.exception.ChangeTrackingDisabledException;
 import com.liferay.change.tracking.rest.internal.jaxrs.exception.CollectionDescriptionTooLongException;
 import com.liferay.change.tracking.rest.internal.jaxrs.exception.CollectionNameTooLongException;
 import com.liferay.change.tracking.rest.internal.jaxrs.exception.CollectionNameTooShortException;
 import com.liferay.change.tracking.rest.internal.jaxrs.exception.CreateCollectionException;
 import com.liferay.change.tracking.rest.internal.jaxrs.exception.DeleteCollectionException;
+import com.liferay.change.tracking.rest.internal.odata.entity.v1_0.CollectionEntityModel;
 import com.liferay.change.tracking.rest.resource.v1_0.CollectionResource;
+import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.vulcan.pagination.Page;
+import com.liferay.portal.vulcan.pagination.Pagination;
+import com.liferay.portal.vulcan.resource.EntityModelResource;
+import com.liferay.portal.vulcan.util.SearchUtil;
+import com.liferay.portal.vulcan.util.TransformUtil;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import org.osgi.service.component.annotations.Component;
@@ -50,12 +65,15 @@ import org.osgi.service.component.annotations.ServiceScope;
 	properties = "OSGI-INF/liferay/rest/v1_0/collection.properties",
 	scope = ServiceScope.PROTOTYPE, service = CollectionResource.class
 )
-public class CollectionResourceImpl extends BaseCollectionResourceImpl {
+public class CollectionResourceImpl
+	extends BaseCollectionResourceImpl implements EntityModelResource {
 
 	@Override
-	public Response deleteCollection(Long collectionId) throws Exception {
+	public Response deleteCollection(Long companyId, Long collectionId)
+		throws Exception {
+
 		Optional<CTCollection> ctCollectionOptional =
-			_ctEngineManager.getCTCollectionOptional(collectionId);
+			_ctEngineManager.getCTCollectionOptional(companyId, collectionId);
 
 		if (!ctCollectionOptional.isPresent()) {
 			return Response.status(
@@ -66,7 +84,7 @@ public class CollectionResourceImpl extends BaseCollectionResourceImpl {
 		_ctEngineManager.deleteCTCollection(collectionId);
 
 		ctCollectionOptional = _ctEngineManager.getCTCollectionOptional(
-			collectionId);
+			companyId, collectionId);
 
 		if (ctCollectionOptional.isPresent()) {
 			throw new DeleteCollectionException(
@@ -79,14 +97,81 @@ public class CollectionResourceImpl extends BaseCollectionResourceImpl {
 	}
 
 	@Override
-	public Collection getCollection(Long collectionId) throws Exception {
-		Optional<CTCollection> ctCollectionOptional =
-			_ctEngineManager.getCTCollectionOptional(collectionId);
+	public Collection getCollection(Long companyId, Long collectionId)
+		throws Exception {
 
-		return _toCollection(
+		Optional<CTCollection> ctCollectionOptional =
+			_ctEngineManager.getCTCollectionOptional(companyId, collectionId);
+
+		return CollectionUtil.toCollection(
 			ctCollectionOptional.orElseThrow(
 				() -> new NoSuchModelException(
-					"Unable to get collection " + collectionId)));
+					"Unable to get collection " + collectionId)),
+			_ctEngineManager);
+	}
+
+	@Override
+	public Page<Collection> getCollectionsPage(
+			CollectionType collectionType, Long companyId, Long userId,
+			Pagination pagination, Sort[] sorts)
+		throws Exception {
+
+		List<CTCollection> ctCollections = new ArrayList<>();
+
+		if (CollectionType.ACTIVE == collectionType) {
+			_userLocalService.getUser(userId);
+
+			Optional<CTCollection> activeCTCollectionOptional =
+				_ctManager.getActiveCTCollectionOptional(companyId, userId);
+
+			activeCTCollectionOptional.ifPresent(ctCollections::add);
+		}
+		else if (CollectionType.ALL == collectionType) {
+			_companyLocalService.getCompany(companyId);
+
+			ctCollections = _ctManager.getCTCollections(
+				companyId, userId, false, true,
+				SearchUtil.getQueryDefinition(
+					CTCollection.class, pagination, sorts));
+		}
+		else if (CollectionType.PRODUCTION == collectionType) {
+			_companyLocalService.getCompany(companyId);
+
+			Optional<CTCollection> productionCTCollectionOptional =
+				_ctEngineManager.getProductionCTCollectionOptional(companyId);
+
+			CTCollection ctCollection =
+				productionCTCollectionOptional.orElseThrow(
+					() -> new NoSuchCollectionException(
+						"Unable to get production change tracking collection"));
+
+			ctCollections.add(ctCollection);
+		}
+		else if (CollectionType.RECENT == collectionType) {
+			_companyLocalService.getCompany(companyId);
+			_userLocalService.getUser(userId);
+
+			QueryDefinition<CTCollection> queryDefinition =
+				SearchUtil.getQueryDefinition(
+					CTCollection.class, pagination, sorts);
+
+			queryDefinition.setStatus(WorkflowConstants.STATUS_DRAFT);
+
+			ctCollections = _ctManager.getCTCollections(
+				companyId, userId, false, false, queryDefinition);
+		}
+
+		List<Collection> collections = TransformUtil.transform(
+			ctCollections,
+			ctCollection -> CollectionUtil.toCollection(
+				ctCollection, _ctEngineManager));
+
+		return Page.of(collections, pagination, collections.size());
+	}
+
+	@Override
+	public EntityModel getEntityModel(MultivaluedMap multivaluedMap) {
+		return new CollectionEntityModel();
 	}
 
 	@Override
@@ -109,7 +194,8 @@ public class CollectionResourceImpl extends BaseCollectionResourceImpl {
 					collectionUpdate.getDescription());
 
 			return ctCollectionOptional.map(
-				this::_toCollection
+				ctCollection -> CollectionUtil.toCollection(
+					ctCollection, _ctEngineManager)
 			).orElseThrow(
 				() -> new CreateCollectionException(
 					"Unable to create collection")
@@ -164,34 +250,14 @@ public class CollectionResourceImpl extends BaseCollectionResourceImpl {
 		return responseBuilder.build();
 	}
 
-	private Collection _toCollection(CTCollection ctCollection) {
-		Map<Integer, Long> ctEntriesChangeTypes =
-			_ctEngineManager.getCTCollectionChangeTypeCounts(
-				ctCollection.getCtCollectionId());
-
-		return new Collection() {
-			{
-				additionCount = ctEntriesChangeTypes.getOrDefault(
-					CTConstants.CT_CHANGE_TYPE_ADDITION, 0L);
-				collectionId = ctCollection.getCtCollectionId();
-				companyId = ctCollection.getCompanyId();
-				deletionCount = ctEntriesChangeTypes.getOrDefault(
-					CTConstants.CT_CHANGE_TYPE_DELETION, 0L);
-				description = ctCollection.getDescription();
-				modificationCount = ctEntriesChangeTypes.getOrDefault(
-					CTConstants.CT_CHANGE_TYPE_MODIFICATION, 0L);
-				name = ctCollection.getName();
-				statusByUserName = ctCollection.getStatusByUserName();
-				statusDate = ctCollection.getStatusDate();
-			}
-		};
-	}
-
 	@Reference
 	private CompanyLocalService _companyLocalService;
 
 	@Reference
 	private CTEngineManager _ctEngineManager;
+
+	@Reference
+	private CTManager _ctManager;
 
 	@Reference
 	private UserLocalService _userLocalService;

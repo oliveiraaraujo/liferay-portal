@@ -17,13 +17,12 @@ package com.liferay.talend.resource;
 import static org.talend.daikon.properties.presentation.Widget.widget;
 
 import com.liferay.talend.LiferayBaseComponentDefinition;
+import com.liferay.talend.common.oas.OASParameter;
 import com.liferay.talend.connection.LiferayConnectionProperties;
 import com.liferay.talend.connection.LiferayConnectionPropertiesProvider;
-import com.liferay.talend.exception.ExceptionUtils;
-import com.liferay.talend.openapi.Parameter;
+import com.liferay.talend.properties.ExceptionUtils;
 import com.liferay.talend.runtime.LiferaySourceOrSinkRuntime;
 import com.liferay.talend.runtime.ValidatedSoSSandboxRuntime;
-import com.liferay.talend.utils.URIUtils;
 
 import java.io.IOException;
 
@@ -54,13 +53,10 @@ import org.talend.daikon.exception.TalendRuntimeException;
 import org.talend.daikon.i18n.GlobalI18N;
 import org.talend.daikon.i18n.I18nMessageProvider;
 import org.talend.daikon.i18n.I18nMessages;
-import org.talend.daikon.properties.PresentationItem;
 import org.talend.daikon.properties.ValidationResult;
 import org.talend.daikon.properties.ValidationResultMutable;
 import org.talend.daikon.properties.presentation.Form;
 import org.talend.daikon.properties.presentation.Widget;
-import org.talend.daikon.properties.property.Property;
-import org.talend.daikon.properties.property.PropertyFactory;
 import org.talend.daikon.properties.property.StringProperty;
 
 /**
@@ -203,7 +199,7 @@ public class LiferayResourceProperties
 		for (int i = 0; i < parameterNames.size(); i++) {
 			String typeString = parameterTypes.get(i);
 
-			if (Parameter.Type.PATH == Parameter.Type.valueOf(
+			if (OASParameter.Type.PATH == OASParameter.Type.valueOf(
 					typeString.toUpperCase())) {
 
 				continue;
@@ -247,32 +243,9 @@ public class LiferayResourceProperties
 	public void setupProperties() {
 		super.setupProperties();
 
-		condition.setValue("");
 		endpoint.setValue(null);
 	}
 
-	public ValidationResult validateValidateCondition() {
-		ValidationResultMutable validationResultMutable =
-			new ValidationResultMutable();
-
-		validationResultMutable.setStatus(ValidationResult.Result.OK);
-
-		LiferayConnectionProperties liferayConnectionProperties =
-			getEffectiveLiferayConnectionProperties();
-
-		String endpointUrl = liferayConnectionProperties.getApiSpecURL();
-
-		try {
-			URIUtils.addQueryConditionToURL(endpointUrl, condition.getValue());
-		}
-		catch (Exception exception) {
-			return ExceptionUtils.exceptionToValidationResult(exception);
-		}
-
-		return validationResultMutable;
-	}
-
-	public Property<String> condition = PropertyFactory.newString("condition");
 	public LiferayConnectionProperties connection =
 		new LiferayConnectionProperties("connection");
 	public StringProperty endpoint = new StringProperty("endpoint");
@@ -291,8 +264,6 @@ public class LiferayResourceProperties
 	public ParametersTable parametersTable = new ParametersTable(
 		"parametersTable");
 	public ISchemaListener schemaListener;
-	public transient PresentationItem validateCondition = new PresentationItem(
-		"validateCondition");
 
 	protected LiferayConnectionProperties
 		getEffectiveLiferayConnectionProperties() {
@@ -339,17 +310,18 @@ public class LiferayResourceProperties
 		List<String> parameterValues = new ArrayList<>();
 		List<String> parameterTypes = new ArrayList<>();
 
-		List<Parameter> parameters = liferaySourceOrSinkRuntime.getParameters(
-			endpoint.getValue(), HttpMethod.GET);
+		List<OASParameter> oasParameters =
+			liferaySourceOrSinkRuntime.getParameters(
+				endpoint.getValue(), HttpMethod.GET);
 
-		if (parameters.isEmpty()) {
+		if (oasParameters.isEmpty()) {
 			parametersTable.columnName.setValue(Collections.emptyList());
 			parametersTable.valueColumnName.setValue(Collections.emptyList());
 			parametersTable.typeColumnName.setValue(Collections.emptyList());
 		}
 		else {
-			for (Parameter parameter : parameters) {
-				String name = parameter.getName();
+			for (OASParameter oasParameter : oasParameters) {
+				String name = oasParameter.getName();
 
 				if (Objects.equals(name, "page") ||
 					Objects.equals(name, "pageSize")) {
@@ -357,15 +329,15 @@ public class LiferayResourceProperties
 					continue;
 				}
 
-				if (parameter.isRequired() ||
-					(Parameter.Type.PATH == parameter.getType())) {
+				if (oasParameter.isRequired() ||
+					(OASParameter.Type.PATH == oasParameter.getType())) {
 
 					name = name + "*";
 				}
 
 				parameterNames.add(name);
 
-				Parameter.Type type = parameter.getType();
+				OASParameter.Type type = oasParameter.getType();
 
 				String typeString = type.toString();
 
@@ -403,17 +375,6 @@ public class LiferayResourceProperties
 			Widget.NAME_SELECTION_REFERENCE_WIDGET_TYPE);
 
 		referenceForm.addRow(endpointReferenceWidget);
-
-		referenceForm.addRow(condition);
-
-		Widget validateConditionReferenceWidget = Widget.widget(
-			validateCondition);
-
-		validateConditionReferenceWidget.setLongRunning(true);
-		validateConditionReferenceWidget.setWidgetType(
-			Widget.BUTTON_WIDGET_TYPE);
-
-		referenceForm.addColumn(validateConditionReferenceWidget);
 
 		referenceForm.addRow(main.getForm(Form.REFERENCE));
 

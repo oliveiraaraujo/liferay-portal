@@ -1,3 +1,19 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+
 import MapBase from '../../src/main/resources/META-INF/resources/js/MapBase.es';
 
 describe('MapBase', () => {
@@ -36,21 +52,21 @@ describe('MapBase', () => {
 		};
 	});
 
-	let DialogImpl = jest.fn().mockImplementation(({map}) => {});
+	const DialogImpl = jest.fn().mockImplementation(({map}) => {});
 
-	let geocoderImpl = {
-		reverse: function(location, cb) {
+	const geocoderImpl = {
+		reverse(location, cb) {
 			cb({data: {name: 'data', location}});
 		}
 	};
 
-	let GeocoderImpl = jest.fn().mockImplementation(() => geocoderImpl);
+	const GeocoderImpl = jest.fn().mockImplementation(() => geocoderImpl);
 
-	let geoJSONImpl = {
+	const geoJSONImpl = {
 		on: jest.fn()
 	};
 
-	let GeoJSONImpl = jest.fn().mockImplementation(({map}) => geoJSONImpl);
+	const GeoJSONImpl = jest.fn().mockImplementation(({map}) => geoJSONImpl);
 
 	beforeEach(() => {
 		window.Liferay = {
@@ -74,14 +90,14 @@ describe('MapBase', () => {
 
 		bounds = {
 			locations: [],
-			extend: function(location) {
+			extend(location) {
 				this.locations.push(location);
 			}
 		};
 	});
 
 	describe('addMarker()', () => {
-		it('should pass the given location object to the constructor', () => {
+		it('passes the given location object to the constructor', () => {
 			const location = getLocation();
 
 			mapImpl._map = 'map';
@@ -91,7 +107,7 @@ describe('MapBase', () => {
 			expect(MapImpl.MarkerImpl.mock.calls[0][0].location).toBe(location);
 		});
 
-		it('should pass the existing _map to the constructor', () => {
+		it('passes the existing _map to the constructor', () => {
 			const location = getLocation();
 
 			mapImpl._map = 'map';
@@ -101,7 +117,7 @@ describe('MapBase', () => {
 			expect(MapImpl.MarkerImpl.mock.calls[0][0].map).toBe('map');
 		});
 
-		it('should do nothing is MarkerImpl is not implemented', () => {
+		it('does nothing if MarkerImpl is not implemented', () => {
 			MapImpl.MarkerImpl = null;
 
 			const result = mapImpl.addMarker();
@@ -112,7 +128,7 @@ describe('MapBase', () => {
 	});
 
 	describe('constructor()', () => {
-		it('should call _initializeMap as a fallback', () => {
+		it('calls _initializeMap as a fallback', () => {
 			window.Liferay = {
 				Util: {
 					getGeolocation: jest.fn((success, fallback) => fallback())
@@ -132,7 +148,7 @@ describe('MapBase', () => {
 	});
 
 	describe('destructor()', () => {
-		it('should dispose existing _geoJSONLayer', () => {
+		it('disposes existing _geoJSONLayer', () => {
 			const layer = {dispose: jest.fn()};
 
 			mapImpl._geoJSONLayer = layer;
@@ -145,7 +161,7 @@ describe('MapBase', () => {
 			expect(layer.dispose).toHaveBeenCalledTimes(1);
 		});
 
-		it('should dispose existing search custom control', () => {
+		it('disposes existing search custom control', () => {
 			const control = {dispose: jest.fn()};
 
 			mapImpl._customControls = {[MapImpl.CONTROLS.SEARCH]: control};
@@ -162,7 +178,7 @@ describe('MapBase', () => {
 	});
 
 	describe('getNativeMap()', () => {
-		it('should return the _map property', () => {
+		it('returns the _map property', () => {
 			mapImpl._map = {name: 'map'};
 
 			expect(mapImpl.getNativeMap()).toBe(mapImpl._map);
@@ -170,7 +186,7 @@ describe('MapBase', () => {
 	});
 
 	describe('openDialog()', () => {
-		it('should call _getDialog() method', () => {
+		it('calls _getDialog() method', () => {
 			mapImpl._getDialog = jest.fn(() => null);
 
 			mapImpl.openDialog();
@@ -178,7 +194,7 @@ describe('MapBase', () => {
 			expect(mapImpl._getDialog).toHaveBeenCalledTimes(1);
 		});
 
-		it('should call dialog.open() with the given dialog config', () => {
+		it('calls dialog.open() with the given dialog config', () => {
 			const dialog = {open: jest.fn()};
 			const dialogConfig = {opt1: 'asd'};
 
@@ -192,7 +208,7 @@ describe('MapBase', () => {
 	});
 
 	describe('_bindUIMB()', () => {
-		it('should bind handlers to featuresAdded and featureClick events on geoJSONLayer', () => {
+		it('binds handlers to featuresAdded and featureClick events on geoJSONLayer', () => {
 			mapImpl._handleGeoJSONLayerFeatureClicked = jest.fn();
 			mapImpl._handleGeoJSONLayerFeaturesAdded = jest.fn();
 
@@ -206,7 +222,7 @@ describe('MapBase', () => {
 			]);
 		});
 
-		it('should bind handlers to dragend event on geolocationMarker', () => {
+		it('binds handlers to dragend event on geolocationMarker', () => {
 			mapImpl._geolocationMarker = {on: jest.fn()};
 			mapImpl._handleGeoLocationMarkerDragended = jest.fn();
 
@@ -218,7 +234,7 @@ describe('MapBase', () => {
 			]);
 		});
 
-		it('should bind handlers to click event on customControls[HOME]', () => {
+		it('binds handlers to click event on customControls[HOME]', () => {
 			mapImpl._handleHomeButtonClicked = jest.fn();
 
 			mapImpl._customControls = {
@@ -233,7 +249,7 @@ describe('MapBase', () => {
 			).toEqual(['click', mapImpl._handleHomeButtonClicked]);
 		});
 
-		it('should bind handlers to search event on customControls[SEARCH]', () => {
+		it('binds handlers to search event on customControls[SEARCH]', () => {
 			mapImpl._handleSearchButtonClicked = jest.fn();
 			mapImpl._customControls = {
 				[MapImpl.CONTROLS.SEARCH]: {on: jest.fn()}
@@ -249,13 +265,13 @@ describe('MapBase', () => {
 	});
 
 	describe('_getDialog()', () => {
-		it('should do nothing if there is no MapBase.DialogImpl', () => {
+		it('does nothing if there is no MapBase.DialogImpl', () => {
 			MapImpl.DialogImpl = null;
 
 			expect(mapImpl._getDialog()).toBe(null);
 		});
 
-		it('should pass the existing map to the dialog constructor', () => {
+		it('passes the existing map to the dialog constructor', () => {
 			mapImpl._map = Math.random();
 
 			const dialog = mapImpl._getDialog();
@@ -263,7 +279,7 @@ describe('MapBase', () => {
 			expect(MapImpl.DialogImpl.mock.calls[0][0].map).toBe(mapImpl._map);
 		});
 
-		it('should reuse the existing dialog instance', () => {
+		it('reuses the existing dialog instance', () => {
 			const dialog1 = mapImpl._getDialog();
 			const dialog2 = mapImpl._getDialog();
 
@@ -272,13 +288,13 @@ describe('MapBase', () => {
 	});
 
 	describe('_getGeoCoder()', () => {
-		it('should do nothing if there is no MapBase.GeocoderImpl', () => {
+		it('does nothing if there is no MapBase.GeocoderImpl', () => {
 			MapImpl.GeocoderImpl = null;
 
 			expect(mapImpl._getGeocoder()).toBe(null);
 		});
 
-		it('should reuse the existing geocoder instance', () => {
+		it('reuses the existing geocoder instance', () => {
 			const geocoder1 = mapImpl._getGeocoder();
 			const geocoder2 = mapImpl._getGeocoder();
 
@@ -287,7 +303,7 @@ describe('MapBase', () => {
 	});
 
 	describe('_initializeGeoJSONData()', () => {
-		it('should do nothing if there is no data attribute', () => {
+		it('does nothing if there is no data attribute', () => {
 			mapImpl._geoJSONLayer = {addData: jest.fn()};
 
 			mapImpl.data = null;
@@ -297,7 +313,7 @@ describe('MapBase', () => {
 			expect(mapImpl._geoJSONLayer.addData).not.toHaveBeenCalled();
 		});
 
-		it('should call geoJSONLayer.addData with data attribute', () => {
+		it('calls geoJSONLayer.addData with data attribute', () => {
 			mapImpl._geoJSONLayer = {addData: jest.fn()};
 
 			mapImpl.data = {name: 'more data'};
@@ -311,7 +327,7 @@ describe('MapBase', () => {
 	});
 
 	describe('_initializeLocation()', () => {
-		it('should directly call initializeMap with the given location if geolocation is false', () => {
+		it('directly calls initializeMap with the given location if geolocation is false', () => {
 			const location = getLocation();
 
 			mapImpl._initializeMap = jest.fn();
@@ -331,26 +347,26 @@ describe('MapBase', () => {
 			position = {location: getLocation()};
 		});
 
-		it('should store the given position as position', () => {
+		it('stores the given position as position', () => {
 			mapImpl._initializeMap(position);
 
 			expect(position).toBe(mapImpl.position);
 		});
 
-		it('should store the given position as originalPosition', () => {
+		it('stores the given position as originalPosition', () => {
 			mapImpl._initializeMap(position);
 
 			expect(position).toBe(mapImpl._originalPosition);
 		});
 
-		it('should create a new map and store it as _map', () => {
+		it('creates a new map and store it as _map', () => {
 			mapImpl._initializeMap(position);
 
 			expect(mapImpl._map.name).toBe('map');
 			expect(mapImpl._map.location).toBe(position.location);
 		});
 
-		it('should call _getControlsConfig()', () => {
+		it('calls _getControlsConfig()', () => {
 			jest.spyOn(mapImpl, '_getControlsConfig');
 
 			mapImpl._initializeMap(position);
@@ -358,7 +374,7 @@ describe('MapBase', () => {
 			expect(mapImpl._getControlsConfig).toHaveBeenCalledTimes(1);
 		});
 
-		it('should call _createCustomControls()', () => {
+		it('calls _createCustomControls()', () => {
 			jest.spyOn(mapImpl, '_createCustomControls');
 
 			mapImpl._initializeMap(position);
@@ -366,7 +382,7 @@ describe('MapBase', () => {
 			expect(mapImpl._createCustomControls).toHaveBeenCalledTimes(1);
 		});
 
-		it('should call _bindUIMB()', () => {
+		it('calls _bindUIMB()', () => {
 			jest.spyOn(mapImpl, '_bindUIMB');
 
 			mapImpl._initializeMap(position);
@@ -374,7 +390,7 @@ describe('MapBase', () => {
 			expect(mapImpl._bindUIMB).toHaveBeenCalledTimes(1);
 		});
 
-		it('should call _initializeGeoJSONData()', () => {
+		it('calls _initializeGeoJSONData()', () => {
 			jest.spyOn(mapImpl, '_initializeGeoJSONData');
 
 			mapImpl._initializeMap(position);
@@ -408,13 +424,13 @@ describe('MapBase', () => {
 			}
 		}
 
-		it('should get the map bounds using getBounds()', () => {
+		it('gets the map bounds using getBounds()', () => {
 			mapImpl._handleGeoJSONLayerFeaturesAdded({features: []});
 
 			expect(mapImpl.getBounds).toHaveBeenCalledTimes(1);
 		});
 
-		it('should get the feature geometry for each feature', () => {
+		it('gets the feature geometry for each feature', () => {
 			const feature = new Feature();
 
 			mapImpl._handleGeoJSONLayerFeaturesAdded({features: [feature]});
@@ -423,7 +439,7 @@ describe('MapBase', () => {
 			expect(feature.geometry.get).toHaveBeenCalledTimes(1);
 		});
 
-		it('should update the map position when there is a single feature', () => {
+		it('updates the map position when there is a single feature', () => {
 			const feature = new Feature();
 
 			mapImpl._handleGeoJSONLayerFeaturesAdded({features: [feature]});
@@ -431,7 +447,7 @@ describe('MapBase', () => {
 			expect(mapImpl.position.location).toBe(feature.geometry.location);
 		});
 
-		it('should add the features locations to the map bounds when there are multiple features', () => {
+		it('adds the features locations to the map bounds when there are multiple features', () => {
 			const featureA = new Feature();
 			const featureB = new Feature();
 
@@ -447,13 +463,13 @@ describe('MapBase', () => {
 	});
 
 	describe('_handleGeoJSONLayerFeatureClicked()', () => {
-		it('should emit a featureClick event', () => {
+		it('emits a featureClick event', () => {
 			mapImpl._handleGeoJSONLayerFeatureClicked({});
 
 			expect(mapImpl.emit.mock.calls[0][0]).toBe('featureClick');
 		});
 
-		it('should send the given feature as event data', () => {
+		it('sends the given feature as event data', () => {
 			mapImpl._handleGeoJSONLayerFeatureClicked({feature: 'feature'});
 
 			expect(mapImpl.emit.mock.calls[0][1]).toEqual({feature: 'feature'});
@@ -461,7 +477,7 @@ describe('MapBase', () => {
 	});
 
 	describe('_handleGeoLocationMarkerDragended()', () => {
-		it('should get the location position with geocoder.reverse()', () => {
+		it('gets the location position with geocoder.reverse()', () => {
 			const location = getLocation();
 
 			jest.spyOn(mapImpl._getGeocoder(), 'reverse');
@@ -473,7 +489,7 @@ describe('MapBase', () => {
 			);
 		});
 
-		it('should update the instance position', () => {
+		it('updates the instance position', () => {
 			const location = getLocation();
 
 			mapImpl._handleGeoLocationMarkerDragended({location});
@@ -483,7 +499,7 @@ describe('MapBase', () => {
 	});
 
 	describe('_handleHomeButtonClicked()', () => {
-		it('should call preventDefault on the given event', () => {
+		it('calls preventDefault on the given event', () => {
 			const event = {preventDefault: jest.fn()};
 			const position = {location: getLocation()};
 
@@ -494,7 +510,7 @@ describe('MapBase', () => {
 			expect(event.preventDefault).toHaveBeenCalledTimes(1);
 		});
 
-		it('should set the instance position to _originalPosition', () => {
+		it('sets the instance position to _originalPosition', () => {
 			const event = {preventDefault: jest.fn()};
 			const position = {location: getLocation()};
 
@@ -507,7 +523,7 @@ describe('MapBase', () => {
 	});
 
 	describe('_handlePositionChanged()', () => {
-		it('should call setCenter with the given location', () => {
+		it('calls setCenter with the given location', () => {
 			const location = getLocation();
 
 			mapImpl._handlePositionChanged({location});
@@ -515,7 +531,7 @@ describe('MapBase', () => {
 			expect(mapImpl.setCenter.mock.calls[0]).toEqual([location]);
 		});
 
-		it('should update the geolocationMarker position if present', () => {
+		it('updates the geolocationMarker position if present', () => {
 			const locationA = getLocation();
 			const locationB = getLocation();
 
@@ -532,7 +548,7 @@ describe('MapBase', () => {
 	});
 
 	describe('_handleSearchButtonClicked()', () => {
-		it('should update the instance position', () => {
+		it('updates the instance position', () => {
 			const position = {location: getLocation()};
 
 			mapImpl._handleSearchButtonClicked({position});
@@ -542,7 +558,7 @@ describe('MapBase', () => {
 	});
 
 	describe('getBounds()', () => {
-		it('should throw a not implemented Error', () => {
+		it('throws a not implemented Error', () => {
 			expect(() => {
 				new MapBase().getBounds();
 			}).toThrow();
@@ -550,7 +566,7 @@ describe('MapBase', () => {
 	});
 
 	describe('setCenter()', () => {
-		it('should throw a not implemented Error', () => {
+		it('throws a not implemented Error', () => {
 			expect(() => {
 				new MapBase().setCenter();
 			}).toThrow();
@@ -558,7 +574,7 @@ describe('MapBase', () => {
 	});
 
 	describe('_createMap()', () => {
-		it('should throw a not implemented Error', () => {
+		it('throws a not implemented Error', () => {
 			expect(() => {
 				new MapBase()._createMap();
 			}).toThrow();

@@ -17,8 +17,14 @@ package com.liferay.user.associated.data.web.internal.portlet.action;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.user.associated.data.anonymizer.UADAnonymizer;
 import com.liferay.user.associated.data.constants.UserAssociatedDataPortletKeys;
 import com.liferay.user.associated.data.display.UADDisplay;
@@ -33,6 +39,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Noah Sherrill
@@ -54,9 +61,23 @@ public class DeleteUADEntitiesMVCActionCommand extends BaseUADMVCActionCommand {
 
 		String applicationKey = ParamUtil.getString(
 			actionRequest, "applicationKey");
+		String parentContainerClass = ParamUtil.getString(
+			actionRequest, "parentContainerClass");
 
 		UADHierarchyDisplay uadHierarchyDisplay =
 			uadRegistry.getUADHierarchyDisplay(applicationKey);
+
+		String redirect = null;
+
+		if ((uadHierarchyDisplay != null) &&
+			Validator.isNotNull(parentContainerClass)) {
+
+			LiferayPortletResponse liferayPortletResponse =
+				_portal.getLiferayPortletResponse(actionResponse);
+
+			redirect = uadHierarchyDisplay.getParentContainerURL(
+				actionRequest, liferayPortletResponse);
+		}
 
 		for (String entityType : getEntityTypes(actionRequest)) {
 			String[] primaryKeys = getPrimaryKeys(actionRequest, entityType);
@@ -68,8 +89,30 @@ public class DeleteUADEntitiesMVCActionCommand extends BaseUADMVCActionCommand {
 
 			for (String primaryKey : primaryKeys) {
 				_delete(
-					entityUADAnonymizer, entityUADDisplay, primaryKey,
+					actionRequest, actionResponse, entityUADAnonymizer,
+					entityUADDisplay, primaryKey,
 					getSelectedUserId(actionRequest), uadHierarchyDisplay);
+			}
+		}
+
+		if (redirect != null) {
+			long parentContainerId = ParamUtil.getLong(
+				actionRequest, "parentContainerId");
+
+			UADDisplay<?> uadDisplay = uadRegistry.getUADDisplay(
+				parentContainerClass);
+
+			try {
+				uadDisplay.get(parentContainerId);
+			}
+			catch (Exception e) {
+				if (NoSuchModelException.class.isAssignableFrom(e.getClass())) {
+					sendRedirect(actionRequest, actionResponse, redirect);
+
+					return;
+				}
+
+				throw e;
 			}
 		}
 
@@ -77,6 +120,7 @@ public class DeleteUADEntitiesMVCActionCommand extends BaseUADMVCActionCommand {
 	}
 
 	private void _delete(
+			ActionRequest actionRequest, ActionResponse actionResponse,
 			UADAnonymizer entityUADAnonymizer, UADDisplay<?> entityUADDisplay,
 			String primaryKey, long selectedUserId,
 			UADHierarchyDisplay uadHierarchyDisplay)
@@ -86,7 +130,35 @@ public class DeleteUADEntitiesMVCActionCommand extends BaseUADMVCActionCommand {
 
 		if (uadHierarchyDisplay != null) {
 			if (uadHierarchyDisplay.isUserOwned(entity, selectedUserId)) {
-				entityUADAnonymizer.delete(entity);
+				try {
+					entityUADAnonymizer.delete(entity);
+				}
+				catch (Exception e) {
+					ThemeDisplay themeDisplay =
+						(ThemeDisplay)actionRequest.getAttribute(
+							WebKeys.THEME_DISPLAY);
+
+					Map<Class, String> exceptionMessageMap =
+						entityUADAnonymizer.getExceptionMessageMap(
+							themeDisplay.getLocale());
+
+					if (exceptionMessageMap.containsKey(e.getClass())) {
+						SessionErrors.add(
+							actionRequest, "deleteUADEntityException",
+							exceptionMessageMap.get(e.getClass()));
+
+						String redirect = ParamUtil.getString(
+							actionRequest, "redirect");
+
+						if (Validator.isNotNull(redirect)) {
+							sendRedirect(
+								actionRequest, actionResponse, redirect);
+						}
+					}
+					else {
+						throw e;
+					}
+				}
 			}
 			else {
 				Map<Class<?>, List<Serializable>> containerItemPKsMap =
@@ -133,5 +205,8 @@ public class DeleteUADEntitiesMVCActionCommand extends BaseUADMVCActionCommand {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DeleteUADEntitiesMVCActionCommand.class);
+
+	@Reference
+	private Portal _portal;
 
 }

@@ -1,4 +1,18 @@
-import {PagesVisitor} from './visitors.es';
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+import {PagesVisitor} from 'dynamic-data-mapping-form-renderer/js/util/visitors.es';
 
 export const formatFieldName = (instanceId, languageId, value) => {
 	return `ddm$$${value}$${instanceId}$0$$${languageId}`;
@@ -74,14 +88,7 @@ export const getFieldProperties = (
 
 	visitor.mapFields(
 		({fieldName, localizable, localizedValue, type, value}) => {
-			if (
-				localizable &&
-				localizedValue[editingLanguageId] &&
-				localizedValue[editingLanguageId].JSONArray
-			) {
-				properties[fieldName] =
-					localizedValue[editingLanguageId].JSONArray;
-			} else if (localizable && localizedValue[editingLanguageId]) {
+			if (localizable && localizedValue[editingLanguageId]) {
 				properties[fieldName] = localizedValue[editingLanguageId];
 			} else if (localizable && localizedValue[defaultLanguageId]) {
 				properties[fieldName] = localizedValue[defaultLanguageId];

@@ -1,3 +1,19 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+
 import './EditablePageHeader.soy.js';
 import Component, {Fragment} from 'metal-jsx';
 import {Config} from 'metal-state';
@@ -7,7 +23,7 @@ import {
 	pageStructure,
 	ruleStructure
 } from '../../util/config.es';
-import {PagesVisitor} from '../../util/visitors.es';
+import {PagesVisitor} from 'dynamic-data-mapping-form-renderer/js/util/visitors.es';
 import {sub} from '../../util/strings.es.js';
 
 const withEditablePageHeader = ChildComponent => {
@@ -175,6 +191,14 @@ const withEditablePageHeader = ChildComponent => {
 		 */
 
 		paginationMode: Config.string().required(),
+
+		/**
+		 * @instance
+		 * @memberof FormBuilder
+		 * @type {string}
+		 */
+
+		portletNamespace: Config.string().required(),
 
 		/**
 		 * @instance

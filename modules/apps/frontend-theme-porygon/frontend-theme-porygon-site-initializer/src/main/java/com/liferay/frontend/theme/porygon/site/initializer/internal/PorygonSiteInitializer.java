@@ -163,8 +163,9 @@ public class PorygonSiteInitializer implements SiteInitializer {
 			_addJournalArticleDDMTemplates(ddmStructure, serviceContext);
 
 			_addDisplayPageEntry(
-				"Porgon Entry", entryFragmentEntries, _PATH + "/page_templates",
-				"porygon_entry.jpg", ddmStructure, fileEntries, serviceContext);
+				"Porygon Entry", entryFragmentEntries,
+				_PATH + "/page_templates", "porygon_entry.jpg", ddmStructure,
+				fileEntries, serviceContext);
 
 			_addJournalArticles(fileEntries, serviceContext);
 
@@ -266,8 +267,8 @@ public class PorygonSiteInitializer implements SiteInitializer {
 				serviceContext.getUserId(), serviceContext.getScopeGroupId(), 0,
 				ddmStructure.getClassNameId(), ddmStructure.getStructureId(),
 				name, LayoutPageTemplateEntryTypeConstants.TYPE_DISPLAY_PAGE,
-				true, 0, previewFileEntryId, WorkflowConstants.STATUS_APPROVED,
-				serviceContext);
+				true, 0, previewFileEntryId, 0,
+				WorkflowConstants.STATUS_APPROVED, serviceContext);
 
 		long[] fragmentEntryIds = ListUtil.toLongArray(
 			fragmentEntries, FragmentEntryModel::getFragmentEntryId);

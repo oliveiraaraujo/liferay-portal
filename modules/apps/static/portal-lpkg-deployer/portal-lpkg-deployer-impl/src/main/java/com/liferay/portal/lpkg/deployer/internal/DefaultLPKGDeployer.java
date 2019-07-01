@@ -315,12 +315,17 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 			}
 		}
 
-		_lpkgBundleTracker = new BundleTracker<>(
-			bundleContext, ~Bundle.UNINSTALLED,
+		LPKGBundleTrackerCustomizer lpkgBundleTrackerCustomizer =
 			new LPKGBundleTrackerCustomizer(
-				bundleContext, _urls, _toFileNames(jarFiles, warFiles)));
+				bundleContext, _urls, _toFileNames(jarFiles, warFiles));
+
+		_lpkgBundleTracker = new BundleTracker<>(
+			bundleContext, ~Bundle.UNINSTALLED, lpkgBundleTrackerCustomizer);
 
 		_lpkgBundleTracker.open();
+
+		lpkgBundleTrackerCustomizer.cleanTrackedBundles(
+			_lpkgBundleTracker.getBundles());
 
 		List<File> lpkgFiles = _scanFiles(_deploymentDirPath, ".lpkg", false);
 
@@ -579,16 +584,14 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 					continue;
 				}
 
-				if (checkFileName) {
-					if (!_isValid(pathName)) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Override file " + path +
-									" has an invalid name and will be ignored");
-						}
-
-						continue;
+				if (checkFileName && !_isValid(pathName)) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							"Override file " + path +
+								" has an invalid name and will be ignored");
 					}
+
+					continue;
 				}
 
 				files.add(path.toFile());

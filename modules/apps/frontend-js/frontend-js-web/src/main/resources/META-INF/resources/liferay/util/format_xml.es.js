@@ -1,3 +1,20 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-expressions: "warn" */
+/* eslint no-useless-escape: "warn" */
+
 import {isString} from 'metal';
 
 const NEW_LINE = '\r\n';
@@ -65,7 +82,7 @@ export default function formatXML(content, options = {}) {
 
 	let commentCounter = 0;
 	let inComment = false;
-	let items = content.split(STR_TOKEN);
+	const items = content.split(STR_TOKEN);
 	let level = 0;
 	let result = '';
 

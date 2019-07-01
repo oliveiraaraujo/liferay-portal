@@ -24,7 +24,10 @@ import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.service.access.policy.ServiceAccessPolicyThreadLocal;
+import com.liferay.portal.kernel.security.access.control.AccessControlUtil;
+import com.liferay.portal.kernel.security.auth.AccessControlContext;
+import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierResult;
+import com.liferay.portal.kernel.security.service.access.policy.ServiceAccessPolicy;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -34,6 +37,7 @@ import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Dictionary;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -113,18 +117,34 @@ public class LiferayOAuth2OSGiFeature implements Feature {
 
 		featureContext.register(
 			(ContainerRequestFilter)a -> {
-				if (OAuth2ProviderScopeLiferayAccessControlContext.
+				if (!OAuth2ProviderScopeLiferayAccessControlContext.
 						isOAuth2AuthVerified()) {
 
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							"Enabling SAP " + oauth2ServiceAccessPolicyName);
-					}
-
-					ServiceAccessPolicyThreadLocal.
-						addActiveServiceAccessPolicyName(
-							oauth2ServiceAccessPolicyName);
+					return;
 				}
+
+				if (_log.isDebugEnabled()) {
+					_log.debug("Enabling SAP " + oauth2ServiceAccessPolicyName);
+				}
+
+				AccessControlContext accessControlContext =
+					AccessControlUtil.getAccessControlContext();
+
+				AuthVerifierResult authVerifierResult =
+					accessControlContext.getAuthVerifierResult();
+
+				if (authVerifierResult == null) {
+					return;
+				}
+
+				Map<String, Object> settings = authVerifierResult.getSettings();
+
+				List<String> serviceAccessPolicyNames =
+					(List<String>)settings.computeIfAbsent(
+						ServiceAccessPolicy.SERVICE_ACCESS_POLICY_NAMES,
+						value -> new ArrayList<>());
+
+				serviceAccessPolicyNames.add(oauth2ServiceAccessPolicyName);
 			},
 			Priorities.AUTHORIZATION - 9);
 
