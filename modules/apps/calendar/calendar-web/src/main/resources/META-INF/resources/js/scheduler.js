@@ -259,6 +259,8 @@ AUI.add(
 				_afterActiveViewChange: function(event) {
 					var instance = this;
 
+					instance.resetEvents();
+
 					Scheduler.superclass._afterActiveViewChange.apply(
 						this,
 						arguments
