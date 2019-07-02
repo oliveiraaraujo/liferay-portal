@@ -33,7 +33,7 @@ if (message.isAnonymous()) {
 
 <a id="<portlet:namespace />message_<%= message.getMessageId() %>"></a>
 
-<div class="card list-group-card panel">
+<div class="card panel">
 	<div class="panel-heading">
 		<div class="card-row card-row-padded">
 			<div class="card-col-field">
@@ -271,18 +271,7 @@ if (message.isAnonymous()) {
 								</portlet:renderURL>
 
 								<%
-								String quoteText = null;
-
-								if (messageFormat.equals("bbcode")) {
-									quoteText = MBUtil.getBBCodeQuoteBody(request, message);
-								}
-								else {
-									quoteText = MBUtil.getHtmlQuoteBody(request, message);
-								}
-
-								quoteText = HtmlUtil.escapeJS(quoteText);
-
-								String taglibReplyWithQuoteToMessageURL = "javascript:" + liferayPortletResponse.getNamespace() + "addReplyToMessage('" + message.getMessageId() + "', '" + quoteText + "');";
+								String taglibReplyWithQuoteToMessageURL = "javascript:" + liferayPortletResponse.getNamespace() + "addReplyToMessage('" + message.getMessageId() + "', true);";
 								%>
 
 								<liferay-ui:icon

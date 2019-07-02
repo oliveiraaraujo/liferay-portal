@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import CollectionInput from 'components/inputs/CollectionInput.es';
 import React from 'react';
 import {cleanup, render} from 'react-testing-library';
@@ -10,7 +24,7 @@ const COLLECTION_VALUE_INPUT_TESTID = 'collection-value-input';
 describe('CollectionInput', () => {
 	afterEach(cleanup);
 
-	it('should render collection type', () => {
+	it('renders collection type', () => {
 		const mockOnChange = jest.fn();
 
 		const startingKey = 'testKey';
@@ -26,7 +40,7 @@ describe('CollectionInput', () => {
 		expect(asFragment()).toMatchSnapshot();
 	});
 
-	it('should render a key input with the right-side value of the equal character', () => {
+	it('renders a key input with the right-side value of the equal character', () => {
 		const mockOnChange = jest.fn();
 
 		const startingKey = 'testKey';
@@ -44,7 +58,7 @@ describe('CollectionInput', () => {
 		expect(keyInputElement.value).toBe(startingKey);
 	});
 
-	it('should render a value input with the left-side value of the equal character', () => {
+	it('renders a value input with the left-side value of the equal character', () => {
 		const mockOnChange = jest.fn();
 
 		const startingKey = 'testKey';
@@ -62,7 +76,7 @@ describe('CollectionInput', () => {
 		expect(valueInputElement.value).toBe(startingValue);
 	});
 
-	it('should have a changeable key input', () => {
+	it('has a changeable key input', () => {
 		const mockOnChange = jest.fn();
 
 		const startingKey = 'testKey';
@@ -86,7 +100,7 @@ describe('CollectionInput', () => {
 		});
 	});
 
-	it('should have a changeable value input', () => {
+	it('has a changeable value input', () => {
 		const mockOnChange = jest.fn();
 
 		const startingKey = 'testKey';

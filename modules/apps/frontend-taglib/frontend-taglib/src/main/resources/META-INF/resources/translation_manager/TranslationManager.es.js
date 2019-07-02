@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import 'clay-dropdown';
 import 'clay-modal';
 import {CompatibilityEventProxy} from 'frontend-js-web';
@@ -33,7 +47,7 @@ class TranslationManager extends Component {
 	 * @review
 	 */
 	addLocale(event) {
-		let locale = event.data.item;
+		const locale = event.data.item;
 
 		if (this.availableLocales.indexOf(locale) === -1) {
 			this.availableLocales.push(locale);
@@ -59,7 +73,7 @@ class TranslationManager extends Component {
 	 * @review
 	 */
 	changeDefaultLocale(event) {
-		let localeId = event.delegateTarget.getAttribute('data-locale-id');
+		const localeId = event.delegateTarget.getAttribute('data-locale-id');
 
 		this.defaultLocale = localeId;
 
@@ -72,7 +86,7 @@ class TranslationManager extends Component {
 	 * @review
 	 */
 	changeLocale(event) {
-		let localeId = event.delegateTarget.getAttribute('data-locale-id');
+		const localeId = event.delegateTarget.getAttribute('data-locale-id');
 
 		this.editingLocale = localeId;
 	}

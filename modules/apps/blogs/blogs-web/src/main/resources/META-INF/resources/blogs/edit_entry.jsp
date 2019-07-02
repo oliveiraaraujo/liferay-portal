@@ -35,7 +35,7 @@ String description = BeanParamUtil.getString(entry, request, "description");
 boolean customAbstract = ParamUtil.getBoolean(request, "customAbstract", (entry != null) && Validator.isNotNull(entry.getDescription()) ? true : false);
 
 if (!customAbstract) {
-	description = StringUtil.shorten(content, pageAbstractLength);
+	description = StringUtil.shorten(content, PropsValues.BLOGS_PAGE_ABSTRACT_LENGTH);
 }
 
 boolean allowPingbacks = PropsValues.BLOGS_PINGBACK_ENABLED && BeanParamUtil.getBoolean(entry, request, "allowPingbacks", true);
@@ -52,6 +52,10 @@ boolean portletTitleBasedNavigation = GetterUtil.getBoolean(portletConfig.getIni
 if (portletTitleBasedNavigation) {
 	renderResponse.setTitle((entry != null) ? BlogsEntryUtil.getDisplayTitle(resourceBundle, entry) : LanguageUtil.get(request, "new-blog-entry"));
 }
+
+BlogsGroupServiceSettings blogsGroupServiceSettings = BlogsGroupServiceSettings.getInstance(scopeGroupId);
+
+BlogsPortletInstanceConfiguration blogsPortletInstanceConfiguration = BlogsPortletInstanceConfigurationUtil.getBlogsPortletInstanceConfiguration(themeDisplay);
 %>
 
 <liferay-util:buffer
@@ -298,7 +302,7 @@ if (portletTitleBasedNavigation) {
 						</liferay-ui:error>
 
 						<div class="form-group" id="<portlet:namespace />entryAbstractOptions">
-							<aui:input checked="<%= !customAbstract %>" label='<%= LanguageUtil.format(request, "use-the-first-x-characters-of-the-entry-content", pageAbstractLength, false) %>' name="customAbstract" type="radio" value="<%= false %>" />
+							<aui:input checked="<%= !customAbstract %>" label='<%= LanguageUtil.format(request, "use-the-first-x-characters-of-the-entry-content", PropsValues.BLOGS_PAGE_ABSTRACT_LENGTH, false) %>' name="customAbstract" type="radio" value="<%= false %>" />
 
 							<aui:input checked="<%= customAbstract %>" label="custom-abstract" name="customAbstract" type="radio" value="<%= true %>" />
 						</div>
@@ -496,7 +500,7 @@ if (portletTitleBasedNavigation) {
 					'STATUS_DRAFT': '<%= WorkflowConstants.STATUS_DRAFT %>',
 					'UPDATE': '<%= Constants.UPDATE %>'
 				},
-				descriptionLength: '<%= pageAbstractLength %>',
+				descriptionLength: '<%= PropsValues.BLOGS_PAGE_ABSTRACT_LENGTH %>',
 				editEntryURL: '<%= editEntryURL %>',
 
 				<c:if test="<%= entry != null %>">

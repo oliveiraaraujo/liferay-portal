@@ -15,10 +15,15 @@
 package com.liferay.gradle.plugins.lang.builder;
 
 import com.liferay.gradle.plugins.lang.builder.internal.util.GradleUtil;
+import com.liferay.gradle.util.Validator;
+
+import groovy.lang.Closure;
 
 import java.io.File;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -27,11 +32,14 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.DependencySet;
+import org.gradle.api.file.CopySpec;
 import org.gradle.api.file.FileCollection;
+import org.gradle.api.file.FileCopyDetails;
 import org.gradle.api.file.SourceDirectorySet;
 import org.gradle.api.plugins.BasePlugin;
 import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.plugins.PluginContainer;
+import org.gradle.api.tasks.Copy;
 import org.gradle.api.tasks.SourceSet;
 import org.gradle.api.tasks.TaskContainer;
 
@@ -127,25 +135,23 @@ public class LangBuilderPlugin implements Plugin<Project> {
 	private void _configureTaskBuildLang(BuildLangTask buildLangTask) {
 		Project project = buildLangTask.getProject();
 
-		Project parentProject = project.getParent();
+		Project appProject = GradleUtil.getAppProject(project);
 
-		if (parentProject != null) {
+		if (appProject != null) {
 			File appLangFile = new File(
-				parentProject.getProjectDir(),
+				appProject.getProjectDir(),
 				"app.bnd-localization/bundle.properties");
 
 			if (appLangFile.exists()) {
 				BuildLangTask appBuildLangTask = null;
 
-				if (GradleUtil.hasTask(
-						parentProject, APP_BUILD_LANG_TASK_NAME)) {
-
+				if (GradleUtil.hasTask(appProject, APP_BUILD_LANG_TASK_NAME)) {
 					appBuildLangTask = (BuildLangTask)GradleUtil.getTask(
-						project.getParent(), APP_BUILD_LANG_TASK_NAME);
+						appProject, APP_BUILD_LANG_TASK_NAME);
 				}
 				else {
 					appBuildLangTask = _addTaskAppBuildLang(
-						parentProject, appLangFile);
+						appProject, appLangFile);
 				}
 
 				buildLangTask.dependsOn(appBuildLangTask);
@@ -160,11 +166,13 @@ public class LangBuilderPlugin implements Plugin<Project> {
 
 		Project project = buildLangTask.getProject();
 
-		if ((project.getParent() != null) &&
-			GradleUtil.hasTask(project.getParent(), APP_BUILD_LANG_TASK_NAME)) {
+		Project appProject = GradleUtil.getAppProject(project);
+
+		if ((appProject != null) &&
+			GradleUtil.hasTask(appProject, APP_BUILD_LANG_TASK_NAME)) {
 
 			BuildLangTask appBuildLangTask = (BuildLangTask)GradleUtil.getTask(
-				project.getParent(), APP_BUILD_LANG_TASK_NAME);
+				appProject, APP_BUILD_LANG_TASK_NAME);
 
 			appBuildLangTask.setClasspath(fileCollection);
 		}
@@ -181,6 +189,86 @@ public class LangBuilderPlugin implements Plugin<Project> {
 					return new File(
 						_getResourcesDir(buildLangTask.getProject()),
 						"content");
+				}
+
+			});
+
+		_configureTaskProcessResources(buildLangTask.getProject());
+	}
+
+	@SuppressWarnings("serial")
+	private void _configureTaskProcessResources(final Project project) {
+		File appDir = GradleUtil.getRootDir(project, "app.bnd");
+
+		final File appBndLocalizationDir = new File(
+			appDir, "app.bnd-localization");
+
+		if (!appBndLocalizationDir.exists()) {
+			return;
+		}
+
+		Copy copy = (Copy)GradleUtil.getTask(
+			project, JavaPlugin.PROCESS_RESOURCES_TASK_NAME);
+
+		final Map<String, String> relengProperties = new HashMap<>();
+
+		Map<String, ?> projectProperties = project.getProperties();
+
+		for (Map.Entry<String, ?> entry : projectProperties.entrySet()) {
+			Object value = entry.getValue();
+
+			if (value instanceof String) {
+				String key = entry.getKey();
+
+				if (key.startsWith("liferay.releng")) {
+					relengProperties.put("${" + key + "}", (String)value);
+				}
+			}
+		}
+
+		final Action<FileCopyDetails> action = new Action<FileCopyDetails>() {
+
+			@Override
+			public void execute(final FileCopyDetails fileCopyDetails) {
+				fileCopyDetails.filter(
+					new Closure<Void>(copy) {
+
+						@SuppressWarnings("unused")
+						public String doCall(String line) {
+							if (Validator.isNull(line)) {
+								return line;
+							}
+
+							for (Map.Entry<String, String> entry :
+									relengProperties.entrySet()) {
+
+								line = line.replace(
+									entry.getKey(), entry.getValue());
+							}
+
+							return line;
+						}
+
+					});
+			}
+
+		};
+
+		copy.from(
+			new Callable<File>() {
+
+				@Override
+				public File call() throws Exception {
+					return appBndLocalizationDir;
+				}
+
+			},
+			new Closure<Void>(project) {
+
+				@SuppressWarnings("unused")
+				public void doCall(CopySpec copySpec) {
+					copySpec.eachFile(action);
+					copySpec.into("OSGI-INF/l10n");
 				}
 
 			});

@@ -444,6 +444,8 @@
 
 		<!-- Other fields -->
 
+		<column name="classNameId" type="long" />
+		<column name="structureLayoutKey" type="String" />
 		<column name="structureVersionId" type="long" />
 		<column localized="true" name="name" type="String" />
 		<column localized="true" name="description" type="String" />
@@ -454,8 +456,16 @@
 		<finder name="GroupId" return-type="Collection">
 			<finder-column name="groupId" />
 		</finder>
+		<finder name="StructureLayoutKey" return-type="Collection">
+			<finder-column name="structureLayoutKey" />
+		</finder>
 		<finder name="StructureVersionId" return-type="DDMStructureLayout">
 			<finder-column name="structureVersionId" />
+		</finder>
+		<finder name="G_C_S" return-type="DDMStructureLayout" unique="true">
+			<finder-column name="groupId" />
+			<finder-column name="classNameId" />
+			<finder-column name="structureLayoutKey" />
 		</finder>
 
 		<!-- References -->

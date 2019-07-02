@@ -1,3 +1,19 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+
 import 'clay-button';
 import 'clay-select';
 import 'clay-sticker';
@@ -54,7 +70,7 @@ class ManageCollaborators extends PortletBase {
 
 	_convertToPair(sharingEntryObject) {
 		const keys = Object.keys(sharingEntryObject);
-		let result = [];
+		const result = [];
 
 		keys.forEach(key => {
 			result.push(key + ',' + sharingEntryObject[key]);
@@ -70,7 +86,7 @@ class ManageCollaborators extends PortletBase {
 	 * @return {Boolean} If a collaborator has an invalid expiration date
 	 */
 	_findExpirationDateError() {
-		let collaborator = this.collaborators.find(
+		const collaborator = this.collaborators.find(
 			collaborator =>
 				collaborator.sharingEntryExpirationDateError === true
 		);
@@ -89,7 +105,7 @@ class ManageCollaborators extends PortletBase {
 	_getCollaborator(collaboratorId) {
 		const collaboratorIdNumber = Number(collaboratorId);
 
-		let collaborator = this.collaborators.find(
+		const collaborator = this.collaborators.find(
 			collaborator => collaborator.userId === collaboratorIdNumber
 		);
 
@@ -112,8 +128,8 @@ class ManageCollaborators extends PortletBase {
 	 * @protected
 	 */
 	_handleChangePermission(event) {
-		let sharingEntryId = event.target.getAttribute('name');
-		let sharingEntryPermissionKey = event.target.value;
+		const sharingEntryId = event.target.getAttribute('name');
+		const sharingEntryPermissionKey = event.target.value;
 
 		this._sharingEntryIdsAndPermissions[
 			sharingEntryId
@@ -127,12 +143,14 @@ class ManageCollaborators extends PortletBase {
 	 * @protected
 	 */
 	_handleBlurExpirationDate(event) {
-		let collaboratorId = event.target.dataset.collaboratorId;
-		let sharingEntryExpirationDate = event.target.value;
-		let sharingEntryId = event.target.dataset.sharingentryId;
+		const collaboratorId = event.target.dataset.collaboratorId;
+		const sharingEntryExpirationDate = event.target.value;
+		const sharingEntryId = event.target.dataset.sharingentryId;
 
-		let collaborator = this._getCollaborator(collaboratorId);
-		let dateError = !this._checkExpirationDate(sharingEntryExpirationDate);
+		const collaborator = this._getCollaborator(collaboratorId);
+		const dateError = !this._checkExpirationDate(
+			sharingEntryExpirationDate
+		);
 
 		collaborator.sharingEntryExpirationDateError = dateError;
 
@@ -164,7 +182,7 @@ class ManageCollaborators extends PortletBase {
 		const shareable = target.checked;
 		const sharingEntryId = target.dataset.sharingentryId;
 
-		let collaborator = this._getCollaborator(collaboratorId);
+		const collaborator = this._getCollaborator(collaboratorId);
 
 		if (collaborator) {
 			collaborator.sharingEntryShareable = shareable;
@@ -207,7 +225,7 @@ class ManageCollaborators extends PortletBase {
 		const collaboratorId = target.dataset.collaboratorId;
 		const enabled = target.checked;
 
-		let collaborator = this._getCollaborator(collaboratorId);
+		const collaborator = this._getCollaborator(collaboratorId);
 
 		if (collaborator) {
 			const sharingEntryExpirationDate = enabled

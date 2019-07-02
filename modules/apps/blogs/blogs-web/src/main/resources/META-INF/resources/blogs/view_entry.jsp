@@ -35,7 +35,7 @@ long entryId = ParamUtil.getLong(request, "entryId", entry.getEntryId());
 
 String entryTitle = BlogsEntryUtil.getDisplayTitle(resourceBundle, entry);
 
-AssetEntry assetEntry = AssetEntryLocalServiceUtil.getEntry(BlogsEntry.class.getName(), entry.getEntryId());
+AssetEntry assetEntry = BlogsEntryAssetEntryUtil.getAssetEntry(request, entry);
 
 AssetEntryServiceUtil.incrementViewCounter(assetEntry);
 
@@ -67,6 +67,8 @@ boolean portletTitleBasedNavigation = GetterUtil.getBoolean(portletConfig.getIni
 if (portletTitleBasedNavigation) {
 	renderResponse.setTitle(entryTitle);
 }
+
+BlogsPortletInstanceConfiguration blogsPortletInstanceConfiguration = BlogsPortletInstanceConfigurationUtil.getBlogsPortletInstanceConfiguration(themeDisplay);
 %>
 
 <portlet:actionURL name="/blogs/edit_entry" var="editEntryURL" />
@@ -148,7 +150,7 @@ PortalUtil.setPageTitle(BlogsEntryUtil.getDisplayTitle(resourceBundle, entry), r
 String description = entry.getDescription();
 
 if (Validator.isNull(description)) {
-	description = HtmlUtil.stripHtml(StringUtil.shorten(entry.getContent(), pageAbstractLength));
+	description = HtmlUtil.stripHtml(StringUtil.shorten(entry.getContent(), PropsValues.BLOGS_PAGE_ABSTRACT_LENGTH));
 }
 
 PortalUtil.setPageDescription(description, request);

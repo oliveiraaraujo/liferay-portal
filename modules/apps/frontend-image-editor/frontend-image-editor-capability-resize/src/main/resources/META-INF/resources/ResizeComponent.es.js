@@ -1,6 +1,21 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+
 import Component from 'metal-component';
 import Soy from 'metal-soy';
-import {CancellablePromise} from 'metal-promise';
 import {core} from 'metal';
 
 import componentTemplates from './ResizeComponent.soy';
@@ -35,11 +50,11 @@ class ResizeComponent extends Component {
 	 * Executes the resize operation to get the final version of the image.
 	 *
 	 * @param  {ImageData} imageData The image data representation of the image.
-	 * @return {CancellablePromise} A promise that resolves with the resized
+	 * @return {Promise} A promise that resolves with the resized
 	 * image data representation.
 	 */
 	process(imageData) {
-		return CancellablePromise.resolve(this.resizeImageData_(imageData));
+		return Promise.resolve(this.resizeImageData_(imageData));
 	}
 
 	/**
@@ -50,17 +65,17 @@ class ResizeComponent extends Component {
 	 * height values specified by the user.
 	 */
 	resizeImageData_(imageData) {
-		let rawCanvas = document.createElement('canvas');
+		const rawCanvas = document.createElement('canvas');
 		rawCanvas.width = imageData.width;
 		rawCanvas.height = imageData.height;
 
 		rawCanvas.getContext('2d').putImageData(imageData, 0, 0);
 
-		let canvas = document.createElement('canvas');
+		const canvas = document.createElement('canvas');
 		canvas.width = this.imageWidth;
 		canvas.height = this.imageHeight;
 
-		let context = canvas.getContext('2d');
+		const context = canvas.getContext('2d');
 		context.drawImage(rawCanvas, 0, 0, this.imageWidth, this.imageHeight);
 
 		return context.getImageData(0, 0, this.imageWidth, this.imageHeight);
@@ -73,7 +88,7 @@ class ResizeComponent extends Component {
 	 * @param  {InputEvent} event The input event.
 	 */
 	syncDimensions(event) {
-		let newValue = parseInt(event.delegateTarget.value, 10);
+		const newValue = parseInt(event.delegateTarget.value, 10);
 
 		if (event.delegateTarget === this.imageWidthInput_) {
 			this.imageWidth = newValue;

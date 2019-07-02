@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`LocalizedInput should render with pre-existing value should have dropdown with options 1`] = `
+exports[`LocalizedInput rendering with pre-existing value has dropdown with options 1`] = `
 <DocumentFragment>
   <div
     class="input-group input-localized input-localized-input"
@@ -21,9 +21,8 @@ exports[`LocalizedInput should render with pre-existing value should have dropdo
           class="inline-item"
         >
           <svg
-            aria-hidden="true"
             class="lexicon-icon lexicon-icon-en-us"
-            viewBox="0 0 512 512"
+            role="presentation"
           >
             <use
               xlink:href="#en-us"
@@ -53,9 +52,8 @@ exports[`LocalizedInput should render with pre-existing value should have dropdo
               class="inline-item inline-item-before"
             >
               <svg
-                aria-hidden="true"
                 class="lexicon-icon lexicon-icon-en-us"
-                viewBox="0 0 512 512"
+                role="presentation"
               >
                 <use
                   xlink:href="#en-us"
@@ -87,9 +85,8 @@ exports[`LocalizedInput should render with pre-existing value should have dropdo
               class="inline-item inline-item-before"
             >
               <svg
-                aria-hidden="true"
                 class="lexicon-icon lexicon-icon-es-es"
-                viewBox="0 0 512 512"
+                role="presentation"
               >
                 <use
                   xlink:href="#es-es"
@@ -125,7 +122,7 @@ exports[`LocalizedInput should render with pre-existing value should have dropdo
 </DocumentFragment>
 `;
 
-exports[`LocalizedInput should render with pre-existing value should render 1`] = `
+exports[`LocalizedInput rendering with pre-existing value renders 1`] = `
 <DocumentFragment>
   <div
     class="input-group input-localized input-localized-input"
@@ -146,9 +143,8 @@ exports[`LocalizedInput should render with pre-existing value should render 1`] 
           class="inline-item"
         >
           <svg
-            aria-hidden="true"
             class="lexicon-icon lexicon-icon-en-us"
-            viewBox="0 0 512 512"
+            role="presentation"
           >
             <use
               xlink:href="#en-us"
@@ -177,7 +173,7 @@ exports[`LocalizedInput should render with pre-existing value should render 1`] 
 </DocumentFragment>
 `;
 
-exports[`LocalizedInput with minimal configuration should render 1`] = `
+exports[`LocalizedInput with minimal configuration renders 1`] = `
 <DocumentFragment>
   <div
     class="input-group input-localized input-localized-input"
@@ -198,9 +194,8 @@ exports[`LocalizedInput with minimal configuration should render 1`] = `
           class="inline-item"
         >
           <svg
-            aria-hidden="true"
             class="lexicon-icon lexicon-icon-en-us"
-            viewBox="0 0 512 512"
+            role="presentation"
           >
             <use
               xlink:href="#en-us"

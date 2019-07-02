@@ -15,11 +15,10 @@
 package com.liferay.talend.connection;
 
 import com.liferay.talend.LiferayBaseComponentDefinition;
+import com.liferay.talend.common.util.URIUtil;
 import com.liferay.talend.runtime.ValidatedSoSSandboxRuntime;
 import com.liferay.talend.tliferayconnection.TLiferayConnectionDefinition;
 import com.liferay.talend.ui.UIKeys;
-import com.liferay.talend.utils.PropertiesUtils;
-import com.liferay.talend.utils.URIUtils;
 
 import java.net.URL;
 
@@ -70,10 +69,10 @@ public class LiferayConnectionProperties
 	}
 
 	public String getApplicationBaseHref() {
-		URL openAPISpecURL = URIUtils.toURL(_getValue(apiSpecURL));
+		URL openAPISpecURL = URIUtil.toURL(_getValue(apiSpecURL));
 
-		URL serverURL = URIUtils.extractServerURL(openAPISpecURL);
-		String jaxRSAppBase = URIUtils.extractJaxRSAppBasePathSegment(
+		URL serverURL = URIUtil.extractServerURL(openAPISpecURL);
+		String jaxRSAppBase = URIUtil.extractJaxRSAppBasePathSegment(
 			openAPISpecURL);
 
 		String serverHref = serverURL.toExternalForm();
@@ -130,10 +129,6 @@ public class LiferayConnectionProperties
 		return _getValue(basicAuthorizationProperties.userId);
 	}
 
-	public boolean isAnonymousLogin() {
-		return _getValue(basicAuthorizationProperties.anonymousLogin);
-	}
-
 	public boolean isBasicAuthorization() {
 		if (loginType.getValue() == LoginType.BASIC) {
 			return true;
@@ -165,8 +160,17 @@ public class LiferayConnectionProperties
 			hidden = true;
 		}
 
-		PropertiesUtils.setHidden(form, apiSpecURL, hidden);
-		PropertiesUtils.setHidden(form, loginType, hidden);
+		Widget widget = form.getWidget(apiSpecURL.getName());
+
+		if (widget != null) {
+			widget.setHidden(hidden);
+		}
+
+		widget = form.getWidget(loginType.getName());
+
+		if (widget != null) {
+			widget.setHidden(hidden);
+		}
 
 		Form basicAuthorizationPropertiesForm =
 			basicAuthorizationProperties.getForm(

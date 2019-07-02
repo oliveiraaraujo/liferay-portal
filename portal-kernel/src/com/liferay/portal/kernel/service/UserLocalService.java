@@ -2431,7 +2431,7 @@ public interface UserLocalService
 	 * @param emailAddress the user's new email address
 	 * @param facebookId the user's new Facebook ID
 	 * @param openId the user's new OpenID
-	 * @param portrait whether to update the user's portrait image
+	 * @param hasPortrait if the user has a custom portrait image
 	 * @param portraitBytes the new portrait image data
 	 * @param languageId the user's new language ID
 	 * @param timeZoneId the user's new time zone ID
@@ -2469,7 +2469,7 @@ public interface UserLocalService
 			String newPassword2, boolean passwordReset,
 			String reminderQueryQuestion, String reminderQueryAnswer,
 			String screenName, String emailAddress, long facebookId,
-			String openId, boolean portrait, byte[] portraitBytes,
+			String openId, boolean hasPortrait, byte[] portraitBytes,
 			String languageId, String timeZoneId, String greeting,
 			String comments, String firstName, String middleName,
 			String lastName, long prefixId, long suffixId, boolean male,

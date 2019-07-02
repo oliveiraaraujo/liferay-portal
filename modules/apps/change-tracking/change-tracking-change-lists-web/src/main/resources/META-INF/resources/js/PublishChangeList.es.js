@@ -1,3 +1,19 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+
 import 'clay-checkbox';
 
 import Component from 'metal-component';
@@ -25,11 +41,11 @@ class PublishChangeList extends Component {
 	_checkoutProduction() {
 		this.refs.modal.visible = false;
 
-		let headers = new Headers();
+		const headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('X-CSRF-Token', Liferay.authToken);
 
-		let body = {
+		const body = {
 			credentials: 'include',
 			headers,
 			method: 'POST'
@@ -43,17 +59,17 @@ class PublishChangeList extends Component {
 	}
 
 	_publishChangeList() {
-		let headers = new Headers();
+		const headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('X-CSRF-Token', Liferay.authToken);
 
-		let init = {
+		const init = {
 			credentials: 'include',
 			headers,
 			method: this.urlPublishChangeList.type
 		};
 
-		let url =
+		const url =
 			this.urlPublishChangeList.href +
 			'?userId=' +
 			Liferay.ThemeDisplay.getUserId() +

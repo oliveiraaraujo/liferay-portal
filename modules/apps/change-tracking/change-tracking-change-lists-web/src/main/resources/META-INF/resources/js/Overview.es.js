@@ -1,3 +1,19 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+
 import 'clay-icon';
 
 import Soy from 'metal-soy';
@@ -21,17 +37,17 @@ class Overview extends PortletBase {
 	}
 
 	_checkoutCollection(ctCollectionId, production) {
-		let headers = new Headers();
+		const headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('X-CSRF-Token', Liferay.authToken);
 
-		let body = {
+		const body = {
 			credentials: 'include',
 			headers,
 			method: 'POST'
 		};
 
-		let url =
+		const url =
 			this.urlCollectionsBase +
 			'/' +
 			ctCollectionId +
@@ -86,17 +102,17 @@ class Overview extends PortletBase {
 	}
 
 	_fetchProductionCollection() {
-		let headers = new Headers();
+		const headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('X-CSRF-Token', Liferay.authToken);
 
-		let init = {
+		const init = {
 			credentials: 'include',
 			headers,
 			method: 'GET'
 		};
 
-		let url =
+		const url =
 			this.urlCollectionsBase +
 			'?companyId=' +
 			Liferay.ThemeDisplay.getCompanyId() +
@@ -137,11 +153,11 @@ class Overview extends PortletBase {
 	}
 
 	_fetchChangeEntries(url, type) {
-		let headers = new Headers();
+		const headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('X-CSRF-Token', Liferay.authToken);
 
-		let init = {
+		const init = {
 			credentials: 'include',
 			headers,
 			method: type
@@ -172,11 +188,11 @@ class Overview extends PortletBase {
 	_fetchCollisions(url, type) {
 		this.collisionsLoading = true;
 
-		let headers = new Headers();
+		const headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('X-CSRF-Token', Liferay.authToken);
 
-		let init = {
+		const init = {
 			credentials: 'include',
 			headers,
 			method: type
@@ -205,11 +221,11 @@ class Overview extends PortletBase {
 	}
 
 	_fetchRecentCollections(url, type) {
-		let headers = new Headers();
+		const headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('X-CSRF-Token', Liferay.authToken);
 
-		let init = {
+		const init = {
 			credentials: 'include',
 			headers,
 			method: type
@@ -239,7 +255,7 @@ class Overview extends PortletBase {
 
 	_handleClickAffected(event) {
 		event.preventDefault();
-		let entryId = event.target.getAttribute('data-entry-id');
+		const entryId = event.target.getAttribute('data-entry-id');
 
 		new ContentsAffected({
 			entityNameTranslations: this.entityNameTranslations,
@@ -287,9 +303,11 @@ class Overview extends PortletBase {
 		}
 
 		if (ok) {
-			let collectionId = event.target.getAttribute('data-collection-id');
+			const collectionId = event.target.getAttribute(
+				'data-collection-id'
+			);
 
-			let production = event.target.getAttribute('data-production');
+			const production = event.target.getAttribute('data-production');
 
 			this._checkoutCollection(collectionId, production);
 		}
@@ -308,17 +326,18 @@ class Overview extends PortletBase {
 		ok = confirm(label);
 
 		if (ok) {
-			let headers = new Headers();
+			const headers = new Headers();
 			headers.append('Content-Type', 'application/json');
 			headers.append('X-CSRF-Token', Liferay.authToken);
 
-			let body = {
+			const body = {
 				credentials: 'include',
 				headers,
 				method: 'DELETE'
 			};
 
-			let url = this.urlCollectionsBase + '/' + this.activeCTCollectionId;
+			const url =
+				this.urlCollectionsBase + '/' + this.activeCTCollectionId;
 
 			fetch(url, body)
 				.then(response => {
@@ -377,7 +396,7 @@ class Overview extends PortletBase {
 				changeTypeStr = Liferay.Language.get('modified');
 			}
 
-			let entityNameTranslation = this.entityNameTranslations.find(
+			const entityNameTranslation = this.entityNameTranslations.find(
 				entityNameTranslation =>
 					entityNameTranslation.key == changeEntry.contentType
 			);
@@ -441,7 +460,7 @@ class Overview extends PortletBase {
 	_populateFields(requestResult) {
 		let activeCollection = requestResult[0];
 		let productionInformation = requestResult[1];
-		let userSettings = requestResult[2];
+		const userSettings = requestResult[2];
 
 		this.activeCTCollectionId = activeCollection[0].ctCollectionId;
 
@@ -450,7 +469,9 @@ class Overview extends PortletBase {
 		}
 
 		if (activeCollection !== undefined) {
-			let foundEntriesLink = activeCollection.links.find(function(link) {
+			const foundEntriesLink = activeCollection.links.find(function(
+				link
+			) {
 				return link.rel === 'entries';
 			});
 
@@ -460,7 +481,9 @@ class Overview extends PortletBase {
 					foundEntriesLink.type
 				);
 				this._fetchChangeEntries(
-					foundEntriesLink.href,
+					foundEntriesLink.href +
+						'?companyId=' +
+						Liferay.ThemeDisplay.getCompanyId(),
 					foundEntriesLink.type
 				);
 			}
@@ -485,7 +508,7 @@ class Overview extends PortletBase {
 
 			// Change Lists dropdown Menu
 
-			let urlRecentCollections =
+			const urlRecentCollections =
 				this.urlCollectionsBase +
 				'?companyId=' +
 				Liferay.ThemeDisplay.getCompanyId() +
@@ -521,7 +544,7 @@ class Overview extends PortletBase {
 			this.headerTitleProductionInformation =
 				productionInformation.ctcollection.name;
 
-			let publishDate = new Date(productionInformation.date);
+			const publishDate = new Date(productionInformation.date);
 
 			this.publishedBy = {
 				dateTime: new Intl.DateTimeFormat(
@@ -551,7 +574,7 @@ class Overview extends PortletBase {
 	}
 
 	_render() {
-		let urlActiveCollection =
+		const urlActiveCollection =
 			this.urlCollectionsBase +
 			'?companyId=' +
 			Liferay.ThemeDisplay.getCompanyId() +
@@ -559,7 +582,7 @@ class Overview extends PortletBase {
 			Liferay.ThemeDisplay.getUserId() +
 			'&type=active';
 
-		let urls = [
+		const urls = [
 			urlActiveCollection,
 			this.urlProductionInformation,
 			this.urlUserSettings
@@ -567,11 +590,11 @@ class Overview extends PortletBase {
 
 		this.initialFetch = false;
 
-		let headers = new Headers();
+		const headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('X-CSRF-Token', Liferay.authToken);
 
-		let init = {
+		const init = {
 			credentials: 'include',
 			headers,
 			method: 'GET'

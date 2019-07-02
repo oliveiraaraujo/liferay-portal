@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.LayoutPrototypeLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -112,17 +113,18 @@ public class LayoutPageTemplateEntryStagedModelDataHandler
 			layoutPageTemplateEntry.getPlid());
 
 		if (layout != null) {
+			Layout draftLayout = _layoutLocalService.fetchLayout(
+				_portal.getClassNameId(Layout.class), layout.getPlid());
+
+			if (draftLayout != null) {
+				StagedModelDataHandlerUtil.exportReferenceStagedModel(
+					portletDataContext, layoutPageTemplateEntry, draftLayout,
+					PortletDataContext.REFERENCE_TYPE_DEPENDENCY);
+			}
+
 			StagedModelDataHandlerUtil.exportReferenceStagedModel(
 				portletDataContext, layoutPageTemplateEntry, layout,
 				PortletDataContext.REFERENCE_TYPE_DEPENDENCY);
-
-			Element layoutPageTemplateEntryElement =
-				portletDataContext.getExportDataElement(
-					layoutPageTemplateEntry);
-
-			portletDataContext.addReferenceElement(
-				layoutPageTemplateEntry, layoutPageTemplateEntryElement, layout,
-				PortletDataContext.REFERENCE_TYPE_DEPENDENCY, false);
 		}
 
 		Element entryElement = portletDataContext.getExportDataElement(
@@ -462,6 +464,9 @@ public class LayoutPageTemplateEntryStagedModelDataHandler
 
 	@Reference
 	private LayoutPrototypeLocalService _layoutPrototypeLocalService;
+
+	@Reference
+	private Portal _portal;
 
 	@Reference(
 		target = "(model.class.name=com.liferay.layout.page.template.model.LayoutPageTemplateEntry)",

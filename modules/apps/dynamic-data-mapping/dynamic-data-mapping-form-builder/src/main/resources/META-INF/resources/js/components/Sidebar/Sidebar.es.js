@@ -1,12 +1,27 @@
-import * as FormSupport from '../Form/FormSupport.es';
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+
+import * as FormSupport from 'dynamic-data-mapping-form-renderer/js/components/FormRenderer/FormSupport.es';
 import classnames from 'classnames';
 import ClayButton from 'clay-button';
 import Component, {Fragment} from 'metal-jsx';
 import dom from 'metal-dom';
 import FieldTypeBox from '../FieldTypeBox/FieldTypeBox.es.js';
-import FormRenderer from '../Form/FormRenderer.es';
+import Form from 'dynamic-data-mapping-form-renderer/js/containers/Form/Form.es';
 import UA from 'metal-useragent';
-import WithEvaluator from '../Form/Evaluator.es';
 import {ClayActionsDropdown, ClayDropdownBase} from 'clay-dropdown';
 import {ClayIcon} from 'clay-icon';
 import {Config} from 'metal-state';
@@ -17,11 +32,11 @@ import {
 	getFieldProperties,
 	normalizeSettingsContextPages
 } from '../../util/fieldSupport.es';
-import {PagesVisitor, RulesVisitor} from '../../util/visitors.es';
+import {
+	PagesVisitor,
+	RulesVisitor
+} from 'dynamic-data-mapping-form-renderer/js/util/visitors.es';
 import {selectText} from '../../util/dom.es';
-
-const EVALUATOR_URL = '/o/dynamic-data-mapping-form-context-provider/';
-const FormWithEvaluator = WithEvaluator(FormRenderer);
 
 /**
  * Sidebar is a tooling to mount forms.
@@ -43,6 +58,7 @@ class Sidebar extends Component {
 			fieldTypes,
 			focusedField
 		} = this.props;
+		const {dispatch} = this.context;
 		const newFieldType = fieldTypes.find(({name}) => name === type);
 		const newSettingsContext = {
 			...newFieldType.settingsContext,
@@ -62,7 +78,7 @@ class Sidebar extends Component {
 			);
 		}
 
-		this.emit('focusedFieldUpdated', {
+		dispatch('focusedFieldUpdated', {
 			...focusedField,
 			...newFieldType,
 			...getFieldProperties(
@@ -73,8 +89,6 @@ class Sidebar extends Component {
 			settingsContext,
 			type: newFieldType.name
 		});
-
-		this.refs.evaluableForm.evaluate();
 	}
 
 	close() {
@@ -114,6 +128,9 @@ class Sidebar extends Component {
 		this._handleSettingsFieldEdited = this._handleSettingsFieldEdited.bind(
 			this
 		);
+		this._handleSettingsFormAttached = this._handleSettingsFormAttached.bind(
+			this
+		);
 		this._handleTabItemClicked = this._handleTabItemClicked.bind(this);
 		this._renderFieldTypeDropdownLabel = this._renderFieldTypeDropdownLabel.bind(
 			this
@@ -134,7 +151,7 @@ class Sidebar extends Component {
 		this.emit('fieldBlurred');
 	}
 
-	getFormContext() {
+	getSettingsFormContext() {
 		const {defaultLanguageId, editingLanguageId, focusedField} = this.props;
 		const {settingsContext} = focusedField;
 		const visitor = new PagesVisitor(settingsContext.pages);
@@ -172,13 +189,14 @@ class Sidebar extends Component {
 	}
 
 	open() {
+		const {container} = this.refs;
 		const {transitionEnd} = this;
 
-		dom.once(this.refs.container, transitionEnd, () => {
+		dom.once(container, transitionEnd, () => {
 			if (this._isEditMode()) {
 				const firstInput = this.element.querySelector('input');
 
-				if (firstInput && document.activeElement !== firstInput) {
+				if (firstInput && !container.contains(document.activeElement)) {
 					firstInput.focus();
 					selectText(firstInput);
 				}
@@ -203,16 +221,8 @@ class Sidebar extends Component {
 
 	render() {
 		const {activeTab, open} = this.state;
-		const {editingLanguageId, focusedField, spritemap} = this.props;
-
-		const layoutRenderEvents = {
-			evaluated: this._handleEvaluatorChanged,
-			fieldBlurred: this._handleSettingsFieldBlurred,
-			fieldEdited: this._handleSettingsFieldEdited
-		};
-
+		const {spritemap} = this.props;
 		const editMode = this._isEditMode();
-
 		const styles = classnames('sidebar-container', {open});
 
 		return (
@@ -264,18 +274,7 @@ class Sidebar extends Component {
 						{editMode && (
 							<div class='sidebar-body ddm-field-settings'>
 								<div class='tab-content'>
-									<FormWithEvaluator
-										activePage={activeTab}
-										editable={true}
-										editingLanguageId={editingLanguageId}
-										events={layoutRenderEvents}
-										fieldType={focusedField.type}
-										formContext={this.getFormContext()}
-										paginationMode='tabbed'
-										ref='evaluableForm'
-										spritemap={spritemap}
-										url={EVALUATOR_URL}
-									/>
+									<form>{this._renderSettingsForm()}</form>
 								</div>
 							</div>
 						)}
@@ -286,10 +285,20 @@ class Sidebar extends Component {
 	}
 
 	syncEditingLanguageId() {
+		const {dispatch} = this.context;
 		const {evaluableForm} = this.refs;
+		const {focusedField} = this.props;
 
 		if (evaluableForm) {
-			evaluableForm.evaluate();
+			evaluableForm.evaluate().then(pages => {
+				dispatch('focusedFieldUpdated', {
+					...focusedField,
+					settingsContext: {
+						...focusedField.settingsContext,
+						pages
+					}
+				});
+			});
 		}
 	}
 
@@ -456,9 +465,10 @@ class Sidebar extends Component {
 	}
 
 	_handleEvaluatorChanged(pages) {
+		const {dispatch} = this.context;
 		const {focusedField} = this.props;
 
-		this.emit('focusedFieldUpdated', {
+		dispatch('focusedFieldUpdated', {
 			...focusedField,
 			settingsContext: {
 				...focusedField.settingsContext,
@@ -504,6 +514,10 @@ class Sidebar extends Component {
 
 	_handleSettingsFieldEdited(event) {
 		this.emit('settingsFieldEdited', event);
+	}
+
+	_handleSettingsFormAttached() {
+		this.refs.evaluableForm.evaluate();
 	}
 
 	_handleTabItemClicked(event) {
@@ -582,7 +596,7 @@ class Sidebar extends Component {
 		const newVisitor = new PagesVisitor(newSettingsContext.pages);
 		const oldVisitor = new PagesVisitor(oldSettingsContext.pages);
 
-		const excludedFields = ['indexType', 'type', 'validation'];
+		const excludedFields = ['indexType', 'readOnly', 'type', 'validation'];
 
 		const getPreviousField = ({fieldName, type}) => {
 			let field;
@@ -615,15 +629,37 @@ class Sidebar extends Component {
 							...previousField.localizedValue
 						};
 					}
+				}
 
-					if (newField.fieldName === 'predefinedValue') {
-						delete newField.value;
+				if (newField.fieldName == 'predefinedValue') {
+					delete newField.value;
+
+					newField.localizedValue = {};
+
+					if (newField.options) {
+						newField.options = this._getPredefinedOptions(
+							newVisitor
+						);
 					}
 				}
 
 				return newField;
 			})
 		};
+	}
+
+	_getPredefinedOptions(visitor) {
+		const options = visitor.findField(field => {
+			return field.fieldName == 'options';
+		});
+
+		if (options) {
+			const locale = options.locale;
+
+			return options.value[locale];
+		}
+
+		return options;
 	}
 
 	_renderElementSets() {
@@ -837,6 +873,40 @@ class Sidebar extends Component {
 		);
 	}
 
+	_renderSettingsForm() {
+		const {activeTab} = this.state;
+		const {
+			defaultLanguageId,
+			editingLanguageId,
+			portletNamespace,
+			spritemap
+		} = this.props;
+		const {pages, rules} = this.getSettingsFormContext();
+
+		const formEvents = {
+			attached: this._handleSettingsFormAttached,
+			evaluated: this._handleEvaluatorChanged,
+			fieldBlurred: this._handleSettingsFieldBlurred,
+			fieldEdited: this._handleSettingsFieldEdited
+		};
+
+		return (
+			<Form
+				activePage={activeTab}
+				defaultLanguageId={defaultLanguageId}
+				editable={true}
+				editingLanguageId={editingLanguageId}
+				events={formEvents}
+				pages={pages}
+				paginationMode='tabbed'
+				portletNamespace={portletNamespace}
+				ref='evaluableForm'
+				rules={rules}
+				spritemap={spritemap}
+			/>
+		);
+	}
+
 	_renderTopBar() {
 		const {fieldTypes, focusedField, spritemap} = this.props;
 		const editMode = this._isEditMode();
@@ -1043,6 +1113,15 @@ Sidebar.PROPS = {
 	 */
 
 	focusedField: focusedFieldStructure.value({}),
+
+	/**
+	 * @default undefined
+	 * @instance
+	 * @memberof Sidebar
+	 * @type {?string}
+	 */
+
+	portletNamespace: Config.string(),
 
 	/**
 	 * @default undefined

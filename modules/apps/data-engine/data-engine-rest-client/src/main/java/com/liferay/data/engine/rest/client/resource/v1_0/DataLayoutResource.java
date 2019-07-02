@@ -105,6 +105,13 @@ public interface DataLayoutResource {
 				dataLayoutPermission)
 		throws Exception;
 
+	public DataLayout getSiteDataLayout(Long siteId, String dataLayoutKey)
+		throws Exception;
+
+	public HttpInvoker.HttpResponse getSiteDataLayoutHttpResponse(
+			Long siteId, String dataLayoutKey)
+		throws Exception;
+
 	public static class Builder {
 
 		public Builder authentication(String login, String password) {
@@ -555,6 +562,57 @@ public interface DataLayoutResource {
 					_builder._port +
 						"/o/data-engine/v1.0/sites/{siteId}/data-layout-permissions",
 				siteId);
+
+			httpInvoker.userNameAndPassword(
+				_builder._login + ":" + _builder._password);
+
+			return httpInvoker.invoke();
+		}
+
+		public DataLayout getSiteDataLayout(Long siteId, String dataLayoutKey)
+			throws Exception {
+
+			HttpInvoker.HttpResponse httpResponse =
+				getSiteDataLayoutHttpResponse(siteId, dataLayoutKey);
+
+			String content = httpResponse.getContent();
+
+			_logger.fine("HTTP response content: " + content);
+
+			_logger.fine("HTTP response message: " + httpResponse.getMessage());
+			_logger.fine(
+				"HTTP response status code: " + httpResponse.getStatusCode());
+
+			try {
+				return DataLayoutSerDes.toDTO(content);
+			}
+			catch (Exception e) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response: " + content, e);
+
+				throw e;
+			}
+		}
+
+		public HttpInvoker.HttpResponse getSiteDataLayoutHttpResponse(
+				Long siteId, String dataLayoutKey)
+			throws Exception {
+
+			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			if (_builder._locale != null) {
+				httpInvoker.header(
+					"Accept-Language", _builder._locale.toLanguageTag());
+			}
+
+			httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
+
+			httpInvoker.path(
+				_builder._scheme + "://" + _builder._host + ":" +
+					_builder._port +
+						"/o/data-engine/v1.0/sites/{siteId}/data-layouts/{dataLayoutKey}",
+				siteId, dataLayoutKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

@@ -13,24 +13,15 @@ definition {
 
 		User.firstLoginPG();
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			panel = "Site Administration",
-			portlet = "Pages");
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Message Boards Page");
 
-		SitePages.addPublicPage(
-			pageName = "Message Boards Page",
-			sitePageType = "Widget Page");
-
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "Message Boards Page",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
-
-		Navigator.gotoPage(pageName = "Message Boards Page");
-
-		Portlet.addPG(portletName = "Message Boards");
+		JSONLayout.addWidgetToPublicLayout(
+			column = "1",
+			groupName = "Guest",
+			layoutName = "Message Boards Page",
+			widgetName = "Message Boards");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 	}
@@ -301,6 +292,7 @@ definition {
 	@priority = "5"
 	test AddMBThreadReply {
 		JSONMBMessage.addMessage(
+			groupName = "Guest",
 			threadBody = "MB Thread Message Body",
 			threadSubject = "MB Thread Message Subject");
 
@@ -550,11 +542,13 @@ definition {
 	test MoveMBCategory1ThreadToCategory2 {
 		JSONMBMessage.addCategory(
 			categoryDescription = "MB Category Description",
-			categoryName = "MB Category1 Name");
+			categoryName = "MB Category1 Name",
+			userEmailAddress = "test@liferay.com");
 
 		JSONMBMessage.addCategory(
 			categoryDescription = "MB Category Description",
-			categoryName = "MB Category2 Name");
+			categoryName = "MB Category2 Name",
+			userEmailAddress = "test@liferay.com");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -592,11 +586,13 @@ definition {
 	test MoveMBCategory1ThreadWithExplanationPostToCategory2 {
 		JSONMBMessage.addCategory(
 			categoryDescription = "MB Category Description",
-			categoryName = "MB Category1 Name");
+			categoryName = "MB Category1 Name",
+			userEmailAddress = "test@liferay.com");
 
 		JSONMBMessage.addCategory(
 			categoryDescription = "MB Category Description",
-			categoryName = "MB Category2 Name");
+			categoryName = "MB Category2 Name",
+			userEmailAddress = "test@liferay.com");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -781,6 +777,7 @@ definition {
 		property custom.properties = "discussion.comments.delta.value=5";
 
 		JSONMBMessage.addMessage(
+			groupName = "Guest",
 			threadBody = "Message Boards Thread Body",
 			threadSubject = "Message Boards Thread Subject");
 

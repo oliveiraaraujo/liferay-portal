@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.version.Version;
 import com.liferay.portal.modules.util.GradleDependency;
 import com.liferay.portal.modules.util.ModulesStructureTestUtil;
 
@@ -136,6 +135,17 @@ public class ModulesStructureTest {
 						_excludedDirNames.contains(dirName)) {
 
 						return FileVisitResult.SKIP_SUBTREE;
+					}
+
+					Path appBndLocalizationDirPath = dirPath.resolve(
+						"app.bnd-localization");
+
+					if (Files.exists(appBndLocalizationDirPath)) {
+						Path parentPath = appBndLocalizationDirPath.getParent();
+
+						Assert.assertTrue(
+							"Forbidden " + appBndLocalizationDirPath,
+							Files.exists(parentPath.resolve("app.bnd")));
 					}
 
 					Path buildGradlePath = dirPath.resolve("build.gradle");
@@ -319,6 +329,10 @@ public class ModulesStructureTest {
 					Path dirPath, BasicFileAttributes basicFileAttributes) {
 
 					String dirName = String.valueOf(dirPath.getFileName());
+
+					if (_excludedDirNames.contains(dirName)) {
+						return FileVisitResult.SKIP_SUBTREE;
+					}
 
 					if (dirName.equals("archetype-resources") ||
 						dirName.equals("gradleTest")) {
@@ -533,7 +547,7 @@ public class ModulesStructureTest {
 			gradleDependency.getConfiguration());
 		String moduleGroup = gradleDependency.getModuleGroup();
 		String moduleName = gradleDependency.getModuleName();
-		Version moduleVersion = gradleDependency.getModuleVersion();
+		String moduleVersion = gradleDependency.getModuleVersion();
 
 		for (GradleDependency curGradleDependency : gradleDependencies) {
 			if (!moduleGroup.equals(curGradleDependency.getModuleGroup()) ||
@@ -547,8 +561,8 @@ public class ModulesStructureTest {
 			int curConfigurationPos = _gradleConfigurations.indexOf(
 				curGradleDependency.getConfiguration());
 
-			int value = moduleVersion.compareTo(
-				curGradleDependency.getModuleVersion());
+			int value = ModulesStructureTestUtil.compare(
+				moduleVersion, curGradleDependency.getModuleVersion());
 
 			if (((curConfigurationPos == configurationPos) && (value < 0)) ||
 				((curConfigurationPos < configurationPos) && (value <= 0))) {
@@ -780,12 +794,10 @@ public class ModulesStructureTest {
 		String projectPathPrefix = String.valueOf(
 			_modulesDirPath.relativize(dirPath));
 
-		projectPathPrefix =
-			":" +
-				StringUtil.replace(
-					projectPathPrefix, File.separatorChar, CharPool.COLON);
+		projectPathPrefix = StringUtil.replace(
+			projectPathPrefix, File.separatorChar, CharPool.COLON);
 
-		return projectPathPrefix;
+		return ":" + projectPathPrefix;
 	}
 
 	private boolean _isEmptyGitRepo(Path dirPath) {
@@ -846,6 +858,31 @@ public class ModulesStructureTest {
 
 	private boolean _isInPrivateModulesDir(Path dirPath) {
 		return _isInModulesRootDir(dirPath, "private");
+	}
+
+	private boolean _isUnusedGradleConfiguration(
+		String configuration, boolean hasSrcTestDir,
+		boolean hasSrcTestIntegrationDir) {
+
+		if (configuration.equals("testCompile") && !hasSrcTestDir &&
+			!hasSrcTestIntegrationDir) {
+
+			return true;
+		}
+
+		if (configuration.equals("testRuntime") && !hasSrcTestDir &&
+			!hasSrcTestIntegrationDir) {
+
+			return true;
+		}
+
+		if (configuration.startsWith("testIntegration") &&
+			!hasSrcTestIntegrationDir) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private boolean _shouldBecomeProjectDependency(
@@ -1278,6 +1315,12 @@ public class ModulesStructureTest {
 
 		boolean mainConfigurationsAllowed = false;
 
+		if ((_branchName.startsWith("7.0") || _branchName.startsWith("7.1")) &&
+			content.contains("copyLibs {\n\tenabled = true")) {
+
+			mainConfigurationsAllowed = true;
+		}
+
 		if (hasSrcMainDir ||
 			(!hasSrcMainDir && !hasSrcTestDir && !hasSrcTestIntegrationDir)) {
 
@@ -1322,36 +1365,51 @@ public class ModulesStructureTest {
 				sb.toString(),
 				_shouldBecomeProjectDependency(gradleDependency, dirPath));
 
-			Boolean allowed = allowedConfigurationsMap.get(
-				gradleDependency.getConfiguration());
+			String configuration = gradleDependency.getConfiguration();
+
+			Boolean allowed = allowedConfigurationsMap.get(configuration);
 
 			if ((allowed != null) && !allowed.booleanValue()) {
-				sb = new StringBundler(allowedConfigurationsMap.size() * 4 + 4);
+				if (_isUnusedGradleConfiguration(
+						configuration, hasSrcTestDir,
+						hasSrcTestIntegrationDir)) {
 
-				sb.append("Incorrect configuration of dependency {");
-				sb.append(gradleDependency);
-				sb.append("} in ");
-				sb.append(path);
-				sb.append(", use one of these instead: ");
+					sb = new StringBundler(4);
 
-				boolean first = true;
+					sb.append("Please delete the unused ");
+					sb.append(configuration);
+					sb.append(" dependencies in ");
+					sb.append(path);
+				}
+				else {
+					sb = new StringBundler(
+						allowedConfigurationsMap.size() * 4 + 4);
 
-				for (Map.Entry<String, Boolean> entry :
-						allowedConfigurationsMap.entrySet()) {
+					sb.append("Incorrect configuration of dependency {");
+					sb.append(gradleDependency);
+					sb.append("} in ");
+					sb.append(path);
+					sb.append(", use one of these instead: ");
 
-					if (!entry.getValue()) {
-						continue;
+					boolean first = true;
+
+					for (Map.Entry<String, Boolean> entry :
+							allowedConfigurationsMap.entrySet()) {
+
+						if (!entry.getValue()) {
+							continue;
+						}
+
+						if (!first) {
+							sb.append(StringPool.COMMA_AND_SPACE);
+						}
+
+						first = false;
+
+						sb.append(CharPool.QUOTE);
+						sb.append(entry.getKey());
+						sb.append(CharPool.QUOTE);
 					}
-
-					if (!first) {
-						sb.append(StringPool.COMMA_AND_SPACE);
-					}
-
-					first = false;
-
-					sb.append(CharPool.QUOTE);
-					sb.append(entry.getKey());
-					sb.append(CharPool.QUOTE);
 				}
 
 				Assert.assertFalse(sb.toString(), !allowed);

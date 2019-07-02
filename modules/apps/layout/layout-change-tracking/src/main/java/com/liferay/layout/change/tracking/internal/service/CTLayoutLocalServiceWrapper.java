@@ -232,13 +232,14 @@ public class CTLayoutLocalServiceWrapper extends LayoutLocalServiceWrapper {
 			Map<Locale, String> titleMap, Map<Locale, String> descriptionMap,
 			Map<Locale, String> keywordsMap, Map<Locale, String> robotsMap,
 			String type, boolean hidden, Map<Locale, String> friendlyURLMap,
-			boolean iconImage, byte[] iconBytes, ServiceContext serviceContext)
+			boolean hasIconImage, byte[] iconBytes,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		Layout layout = super.updateLayout(
 			groupId, privateLayout, layoutId, parentLayoutId, nameMap, titleMap,
 			descriptionMap, keywordsMap, robotsMap, type, hidden,
-			friendlyURLMap, iconImage, iconBytes, serviceContext);
+			friendlyURLMap, hasIconImage, iconBytes, serviceContext);
 
 		LayoutVersion layoutVersion = fetchLatestVersion(layout);
 

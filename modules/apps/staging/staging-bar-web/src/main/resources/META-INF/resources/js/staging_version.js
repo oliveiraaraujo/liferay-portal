@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 AUI.add(
 	'liferay-staging-version',
 	function(A) {
@@ -88,14 +102,11 @@ AUI.add(
 					)
 				];
 
-				var layoutRevisionDetails = A.byIdNS(
-					namespace,
-					'layoutRevisionDetails'
+				var layoutRevisionDetails = A.one(
+					'#' + namespace + 'layoutRevisionDetails'
 				);
-
-				var layoutRevisionStatus = A.byIdNS(
-					namespace,
-					'layoutRevisionStatus'
+				var layoutRevisionStatus = A.one(
+					'#' + namespace + 'layoutRevisionStatus'
 				);
 
 				if (layoutRevisionDetails) {
@@ -182,11 +193,9 @@ AUI.add(
 
 				var namespace = instance._namespace;
 
-				var layoutRevisionDetails = A.byIdNS(
-					namespace,
-					'layoutRevisionDetails'
+				var layoutRevisionDetails = A.one(
+					'#' + namespace + 'layoutRevisionDetails'
 				);
-
 				var layoutRevisionInfo = layoutRevisionDetails.one(
 					'.layout-revision-info'
 				);
@@ -195,7 +204,7 @@ AUI.add(
 					layoutRevisionInfo.addClass('loading');
 				}
 
-				var submitLink = A.byIdNS(namespace, 'submitLink');
+				var submitLink = A.one('#' + namespace + 'submitLink');
 
 				if (submitLink) {
 					submitLink.html(Liferay.Language.get('loading') + '...');

@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import 'clay-multi-select';
 import 'clay-sticker';
 import Soy from 'metal-soy';
@@ -34,7 +48,7 @@ class Sharing extends PortletBase {
 					label: fullName,
 					portraitURL,
 					spritemap: this.spritemap,
-					userId: userId,
+					userId,
 					value: emailAddress
 				}))
 			);
@@ -102,14 +116,14 @@ class Sharing extends PortletBase {
 	 * @review
 	 */
 	_handleEmailAddressAdded(event) {
-		let {item, selectedItems} = event.data;
+		const {item, selectedItems} = event.data;
 
 		this._userEmailAddresses = selectedItems;
 
 		this.emailAddressErrorMessage = '';
 		this._inputValue = '';
 
-		let itemAdded = item.value;
+		const itemAdded = item.value;
 
 		if (!this._isEmailAddressValid(itemAdded)) {
 			this.emailAddressErrorMessage = Liferay.Language.get(
@@ -123,7 +137,7 @@ class Sharing extends PortletBase {
 			})
 				.then(response => response.json())
 				.then(result => {
-					let {userExists} = result;
+					const {userExists} = result;
 
 					if (!userExists) {
 						this.emailAddressErrorMessage = Liferay.Util.sub(

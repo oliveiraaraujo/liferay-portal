@@ -25,13 +25,16 @@ import org.osgi.service.component.annotations.Component;
 @Component(
 	immediate = true,
 	property = {
-		"ddm.form.field.type.js.class.name=Liferay.DDM.Field.Validation",
-		"ddm.form.field.type.js.module=liferay-ddm-form-field-validation",
 		"ddm.form.field.type.name=validation", "ddm.form.field.type.system=true"
 	},
 	service = DDMFormFieldType.class
 )
 public class ValidationDDMFormFieldType extends BaseDDMFormFieldType {
+
+	@Override
+	public String getModuleName() {
+		return "dynamic-data-mapping-form-field-type/Validation/Validation.es";
+	}
 
 	@Override
 	public String getName() {

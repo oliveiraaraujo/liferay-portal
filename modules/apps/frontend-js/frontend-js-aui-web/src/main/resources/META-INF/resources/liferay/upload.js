@@ -1,11 +1,23 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 AUI.add(
 	'liferay-upload',
 	function(A) {
 		var AArray = A.Array;
 		var Lang = A.Lang;
 		var UploaderQueue = A.Uploader.Queue;
-
-		var formatSelectorNS = A.Node.formatSelectorNS;
 
 		var STATUS_CODE = Liferay.STATUS_CODE;
 
@@ -1109,7 +1121,7 @@ AUI.add(
 				_onUploadProgress: function(event) {
 					var instance = this;
 
-					var progress = A.byIdNS(event.file.id, 'progress');
+					var progress = A.one('#' + event.file.id + 'progress');
 
 					if (progress) {
 						var percentLoaded = Math.min(
@@ -1205,16 +1217,10 @@ AUI.add(
 						'selectUploadedFile'
 					);
 
-					var NS = instance.NS;
+					var idNS = '#' + instance.NS;
 
-					instance._fileListSelector = formatSelectorNS(
-						NS,
-						'#fileList'
-					);
-					instance._allRowIdsCheckboxSelector = formatSelectorNS(
-						NS,
-						'#allRowIds'
-					);
+					instance._allRowIdsCheckboxSelector = idNS + 'allRowIds';
+					instance._fileListSelector = idNS + 'fileList';
 
 					var uploadFragment = new A.Template(
 						TPL_UPLOAD,
@@ -1226,42 +1232,33 @@ AUI.add(
 					instance._allRowIdsCheckbox = uploadFragment.one(
 						instance._allRowIdsCheckboxSelector
 					);
-
-					instance._manageUploadTarget = uploadFragment.oneNS(
-						NS,
-						'#manageUploadTarget'
+					instance._manageUploadTarget = uploadFragment.one(
+						idNS + 'manageUploadTarget'
 					);
-
 					instance._cancelButton = uploadFragment.one(
 						'.cancel-uploads'
 					);
 					instance._clearUploadsButton = uploadFragment.one(
 						'.clear-uploads'
 					);
-
 					instance._fileList = uploadFragment.one(
 						instance._fileListSelector
 					);
-					instance._fileListContent = uploadFragment.oneNS(
-						NS,
-						'#fileListContent'
+					instance._fileListContent = uploadFragment.one(
+						idNS + 'fileListContent'
 					);
-					instance._listInfo = uploadFragment.oneNS(NS, '#listInfo');
+					instance._listInfo = uploadFragment.one(idNS + 'listInfo');
 					instance._pendingFileInfo = uploadFragment.one(
 						'.pending-files-info'
 					);
-					instance._selectFilesButton = uploadFragment.oneNS(
-						NS,
-						'#selectFilesButton'
+					instance._selectFilesButton = uploadFragment.one(
+						idNS + 'selectFilesButton'
 					);
-
-					instance._uploaderBoundingBox = uploadFragment.oneNS(
-						NS,
-						'#uploader'
+					instance._uploaderBoundingBox = uploadFragment.one(
+						idNS + 'uploader'
 					);
-					instance._uploaderContentBox = uploadFragment.oneNS(
-						NS,
-						'#uploaderContent'
+					instance._uploaderContentBox = uploadFragment.one(
+						idNS + 'uploaderContent'
 					);
 
 					var tempFileURL = instance.get('tempFileURL');

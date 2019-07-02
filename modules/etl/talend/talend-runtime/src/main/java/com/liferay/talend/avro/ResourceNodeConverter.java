@@ -14,7 +14,13 @@
 
 package com.liferay.talend.avro;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.liferay.talend.common.json.JsonFinder;
+import com.liferay.talend.common.oas.OASException;
+
+import javax.json.JsonNumber;
+import javax.json.JsonObject;
+import javax.json.JsonString;
+import javax.json.JsonValue;
 
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
@@ -24,89 +30,91 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.talend.daikon.avro.AvroUtils;
+import org.talend.daikon.avro.converter.AvroConverter;
 
 /**
  * @author Zoltán Takács
+ * @author Igor Beslic
  */
 @SuppressWarnings("rawtypes")
 public class ResourceNodeConverter
-	extends BaseConverter<JsonNode, IndexedRecord> {
+	extends BaseConverter<JsonObject, IndexedRecord> {
 
 	public ResourceNodeConverter(Schema schema) {
-		super(JsonNode.class, schema);
+		super(JsonObject.class, schema);
 
 		initConverters(schema);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public IndexedRecord convertToAvro(JsonNode resourceJsonNode) {
+	public IndexedRecord convertToAvro(JsonObject contentJsonObject) {
 		IndexedRecord record = new GenericData.Record(getSchema());
 
 		schemaFields.forEach(
 			schemaEntry -> {
-				String name = schemaEntry.name();
+				String valueFinderPath = _getValueFinderPath(
+					schemaEntry.name());
 
-				JsonNode fieldJsonNode = _getFieldJsonNode(
-					resourceJsonNode, name);
+				JsonValue jsonValue = _jsonFinder.getDescendantJsonValue(
+					valueFinderPath, contentJsonObject);
 
-				if (fieldJsonNode.isMissingNode() && _log.isDebugEnabled()) {
-					_log.debug(
-						"{} field is not present in the response. It will be " +
-							"ignored.",
-						name);
+				if (jsonValue == JsonValue.NULL) {
+					if (AvroUtils.isNullable(schemaEntry.schema())) {
+						if (_log.isDebugEnabled()) {
+							_log.debug(
+								"Ignoring content's absent path {}",
+								valueFinderPath);
+						}
 
-					return;
+						return;
+					}
+
+					throw new OASException(
+						"Missing non-nullable value at " + valueFinderPath);
 				}
 
+				AvroConverter avroConverter = avroConverters[schemaEntry.pos()];
 				Schema fieldSchema = AvroUtils.unwrapIfNullable(
 					schemaEntry.schema());
 
 				if (AvroUtils.isSameType(fieldSchema, AvroUtils._boolean())) {
-					Object value =
-						avroConverters[schemaEntry.pos()].convertToAvro(
-							fieldJsonNode.asText());
-
-					record.put(schemaEntry.pos(), value);
+					record.put(schemaEntry.pos(), _asBoolean(jsonValue));
 				}
 				else if (AvroUtils.isSameType(
 							fieldSchema, AvroUtils._bytes())) {
 
-					Object value =
-						avroConverters[schemaEntry.pos()].convertToAvro(
-							fieldJsonNode.asText());
-
-					record.put(schemaEntry.pos(), value);
+					record.put(
+						schemaEntry.pos(),
+						avroConverter.convertToAvro(_asText(jsonValue)));
 				}
 				else if (AvroUtils.isSameType(
 							fieldSchema, AvroUtils._double())) {
 
-					Object value =
-						avroConverters[schemaEntry.pos()].convertToAvro(
-							fieldJsonNode.asText("0"));
-
-					record.put(schemaEntry.pos(), value);
+					record.put(
+						schemaEntry.pos(),
+						avroConverter.convertToAvro(_asDouble(jsonValue)));
 				}
 				else if (AvroUtils.isSameType(fieldSchema, AvroUtils._long())) {
-					Object value =
-						avroConverters[schemaEntry.pos()].convertToAvro(
-							fieldJsonNode.asText("0"));
-
-					record.put(schemaEntry.pos(), value);
+					record.put(schemaEntry.pos(), _asLong(jsonValue));
 				}
 				else if (AvroUtils.isSameType(fieldSchema, AvroUtils._int())) {
-					Object value =
-						avroConverters[schemaEntry.pos()].convertToAvro(
-							fieldJsonNode.asText("0"));
-
-					record.put(schemaEntry.pos(), value);
+					record.put(
+						schemaEntry.pos(),
+						avroConverter.convertToAvro(_asInteger(jsonValue)));
 				}
 				else {
-					Object value =
-						avroConverters[schemaEntry.pos()].convertToAvro(
-							fieldJsonNode.toString());
+					if (jsonValue instanceof JsonString) {
+						record.put(
+							schemaEntry.pos(),
+							avroConverter.convertToAvro(_asText(jsonValue)));
 
-					record.put(schemaEntry.pos(), value);
+						return;
+					}
+
+					record.put(
+						schemaEntry.pos(),
+						avroConverter.convertToAvro(jsonValue.toString()));
 				}
 			});
 
@@ -114,23 +122,57 @@ public class ResourceNodeConverter
 	}
 
 	@Override
-	public JsonNode convertToDatum(IndexedRecord value) {
+	public JsonObject convertToDatum(IndexedRecord value) {
 		throw new UnsupportedOperationException();
 	}
 
-	private JsonNode _getFieldJsonNode(JsonNode resourceJsonNode, String name) {
-		int index = name.indexOf("_");
-
-		if (index != -1) {
-			resourceJsonNode = resourceJsonNode.path(name.substring(0, index));
-
-			name = name.substring(index + 1);
+	private Boolean _asBoolean(JsonValue jsonValue) {
+		if (jsonValue == JsonValue.TRUE) {
+			return Boolean.TRUE;
 		}
 
-		return resourceJsonNode.path(name);
+		return Boolean.FALSE;
+	}
+
+	private Double _asDouble(JsonValue jsonValue) {
+		JsonNumber jsonNumber = _asJsonNumber(jsonValue);
+
+		return jsonNumber.doubleValue();
+	}
+
+	private Integer _asInteger(JsonValue jsonValue) {
+		JsonNumber jsonNumber = _asJsonNumber(jsonValue);
+
+		return jsonNumber.intValue();
+	}
+
+	private JsonNumber _asJsonNumber(JsonValue jsonValue) {
+		return (JsonNumber)jsonValue;
+	}
+
+	private Long _asLong(JsonValue jsonValue) {
+		JsonNumber jsonNumber = _asJsonNumber(jsonValue);
+
+		return jsonNumber.longValue();
+	}
+
+	private String _asText(JsonValue jsonValue) {
+		JsonString jsonString = (JsonString)jsonValue;
+
+		return jsonString.getString();
+	}
+
+	private String _getValueFinderPath(String name) {
+		if (name.indexOf("_") == -1) {
+			return name;
+		}
+
+		return name.replaceFirst("_", ">");
 	}
 
 	private static final Logger _log = LoggerFactory.getLogger(
 		ResourceNodeConverter.class);
+
+	private static final JsonFinder _jsonFinder = new JsonFinder();
 
 }

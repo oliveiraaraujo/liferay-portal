@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import Soy from 'metal-soy';
 import {Treeview} from 'frontend-js-web';
 import {Config} from 'metal-state';
@@ -120,9 +134,9 @@ class CardsTreeview extends Treeview {
 	 * @review
 	 */
 	focusNextNode_(node) {
-		let path = node.getAttribute('data-treeview-path').split('-');
+		const path = node.getAttribute('data-treeview-path').split('-');
 
-		let nodeObj = this.getNodeObj(path);
+		const nodeObj = this.getNodeObj(path);
 
 		let nextNodeObj;
 
@@ -150,7 +164,7 @@ class CardsTreeview extends Treeview {
 	 * @review
 	 */
 	focusPrevNode_(node) {
-		let path = node.getAttribute('data-treeview-path').split('-');
+		const path = node.getAttribute('data-treeview-path').split('-');
 
 		let prevNodeObj;
 
@@ -179,11 +193,11 @@ class CardsTreeview extends Treeview {
 	 * @review
 	 */
 	handleNodeClicked_(event) {
-		let path = event.delegateTarget.parentNode.parentNode.parentNode
+		const path = event.delegateTarget.parentNode.parentNode.parentNode
 			.getAttribute('data-treeview-path')
 			.split('-');
 
-		let node = this.getNodeObj(path);
+		const node = this.getNodeObj(path);
 
 		if (node.disabled) {
 			return;
@@ -216,7 +230,7 @@ class CardsTreeview extends Treeview {
 	 * @review
 	 */
 	handleNodeKeyUp_(event) {
-		let node = event.delegateTarget.parentNode.parentNode.parentNode;
+		const node = event.delegateTarget.parentNode.parentNode.parentNode;
 
 		if (event.keyCode === 37) {
 			this.setNodeExpandedState_(node, {
@@ -269,9 +283,9 @@ class CardsTreeview extends Treeview {
 	 * @review
 	 */
 	setNodeExpandedState_(node, state) {
-		let path = node.getAttribute('data-treeview-path').split('-');
+		const path = node.getAttribute('data-treeview-path').split('-');
 
-		let nodeObj = this.getNodeObj(path);
+		const nodeObj = this.getNodeObj(path);
 
 		nodeObj.expanded = state.expanded;
 

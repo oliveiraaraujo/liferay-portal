@@ -569,20 +569,16 @@ public class LDAPAuth implements Authenticator {
 			User user = _userLocalService.fetchUserByEmailAddress(
 				companyId, emailAddress);
 
-			if (user != null) {
-				if (_omniadmin.isOmniadmin(user)) {
-					return SUCCESS;
-				}
+			if ((user != null) && _omniadmin.isOmniadmin(user)) {
+				return SUCCESS;
 			}
 		}
 		else if (Validator.isNotNull(screenName)) {
 			User user = _userLocalService.fetchUserByScreenName(
 				companyId, screenName);
 
-			if (user != null) {
-				if (_omniadmin.isOmniadmin(user)) {
-					return SUCCESS;
-				}
+			if ((user != null) && _omniadmin.isOmniadmin(user)) {
+				return SUCCESS;
 			}
 		}
 
@@ -597,11 +593,13 @@ public class LDAPAuth implements Authenticator {
 		// Make exceptions for omniadmins so that if they break the LDAP
 		// configuration, they can still login to fix the problem
 
-		if (allowOmniadmin &&
-			(authenticateOmniadmin(
-				companyId, emailAddress, screenName, userId) == SUCCESS)) {
+		if (allowOmniadmin) {
+			int code = authenticateOmniadmin(
+				companyId, emailAddress, screenName, userId);
 
-			return SUCCESS;
+			if (code == SUCCESS) {
+				return SUCCESS;
+			}
 		}
 
 		LDAPAuthConfiguration ldapAuthConfiguration =

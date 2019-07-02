@@ -73,13 +73,14 @@ public class DataRecordResourceTest extends BaseDataRecordResourceTestCase {
 	}
 
 	@Override
-	protected DataRecord randomDataRecord() throws Exception {
+	protected DataRecord randomDataRecord() {
 		return _createDataRecord("MyText");
 	}
 
 	@Override
 	protected DataRecord randomIrrelevantDataRecord() throws Exception {
-		DataRecord randomIrrelevantDataRecord = randomDataRecord();
+		DataRecord randomIrrelevantDataRecord =
+			super.randomIrrelevantDataRecord();
 
 		randomIrrelevantDataRecord.setDataRecordCollectionId(
 			_irrelevantDDLRecordSet.getRecordSetId());
@@ -105,14 +106,8 @@ public class DataRecordResourceTest extends BaseDataRecordResourceTestCase {
 				Long dataLayoutId, DataRecord dataRecord)
 		throws Exception {
 
-		long dataRecordCollectionId = _ddlRecordSet.getRecordSetId();
-
-		if (dataLayoutId == _irrelevantDDLRecordSet.getDDMStructureId()) {
-			dataRecordCollectionId = _irrelevantDDLRecordSet.getRecordSetId();
-		}
-
 		return dataRecordResource.postDataRecordCollectionDataRecord(
-			dataRecordCollectionId, randomDataRecord());
+			dataRecord.getDataRecordCollectionId(), dataRecord);
 	}
 
 	@Override

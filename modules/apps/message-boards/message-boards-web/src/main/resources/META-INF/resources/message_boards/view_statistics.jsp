@@ -17,6 +17,8 @@
 <%@ include file="/message_boards/init.jsp" %>
 
 <%
+String mvcRenderCommandName = ParamUtil.getString(request, "mvcRenderCommandName", "/message_boards/view");
+
 MBCategory category = (MBCategory)request.getAttribute(WebKeys.MESSAGE_BOARDS_CATEGORY);
 
 long categoryId = MBUtil.getCategoryId(request, category);
@@ -29,7 +31,7 @@ portletURL.setParameter("mvcRenderCommandName", "/message_boards/view_statistics
 portletURL.setParameter("mbCategoryId", String.valueOf(categoryId));
 %>
 
-<liferay-util:include page="/message_boards/nav.jsp" servletContext="<%= application %>" />
+<%@ include file="/message_boards/nav.jspf" %>
 
 <div class="main-content-body">
 	<h3><liferay-ui:message key="statistics" /></h3>

@@ -364,9 +364,10 @@ public class OpenIdServiceHandlerImpl implements OpenIdServiceHandler {
 				discoveryInformation, portletURL.toString(),
 				themeDisplay.getPortalURL());
 
-			if (_userLocalService.fetchUserByOpenId(
-					themeDisplay.getCompanyId(), openId) != null) {
+			User user = _userLocalService.fetchUserByOpenId(
+				themeDisplay.getCompanyId(), openId);
 
+			if (user != null) {
 				httpServletResponse.sendRedirect(
 					authRequest.getDestinationUrl(true));
 
@@ -375,7 +376,7 @@ public class OpenIdServiceHandlerImpl implements OpenIdServiceHandler {
 
 			String screenName = getScreenName(openId);
 
-			User user = _userLocalService.fetchUserByScreenName(
+			user = _userLocalService.fetchUserByScreenName(
 				themeDisplay.getCompanyId(), screenName);
 
 			if (user != null) {
@@ -520,11 +521,11 @@ public class OpenIdServiceHandlerImpl implements OpenIdServiceHandler {
 			throw new StrangersNotAllowedException(companyId);
 		}
 
-		if (company.hasCompanyMx(emailAddress)) {
-			if (!company.isStrangersWithMx()) {
-				throw new UserEmailAddressException.MustNotUseCompanyMx(
-					emailAddress);
-			}
+		if (company.hasCompanyMx(emailAddress) &&
+			!company.isStrangersWithMx()) {
+
+			throw new UserEmailAddressException.MustNotUseCompanyMx(
+				emailAddress);
 		}
 	}
 

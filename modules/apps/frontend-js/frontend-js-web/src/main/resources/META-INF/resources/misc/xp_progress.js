@@ -1,3 +1,5 @@
+/* eslint-disable notice/notice */
+
 // xp_progressbar
 // Copyright 2004 Brian Gosselin of ScriptAsylum.com
 //

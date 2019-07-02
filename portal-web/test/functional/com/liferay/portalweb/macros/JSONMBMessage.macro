@@ -4,12 +4,10 @@ definition {
 	macro addCategory {
 		var portalURL = JSONCompany.getPortalURL();
 
+		var userId = JSONUser.getUserIdByEmailAddress(userEmailAddress = "${userEmailAddress}");
+
 		if (!(isSet(parentCategoryId))) {
 			var parentCategoryId = "0";
-		}
-
-		if (!(isSet(userId))) {
-			var userId = "20129";
 		}
 
 		var curl = '''
@@ -32,14 +30,12 @@ definition {
 
 	@summary = "This calls the JSON WS API to add a MB thread"
 	macro addMessage {
+		var groupId = JSONGroup._getGroupIdByName(groupName = "${groupName}");
+
 		var portalURL = JSONCompany.getPortalURL();
 
 		if (!(isSet(categoryId))) {
 			var categoryId = "0";
-		}
-
-		if (!(isSet(groupId))) {
-			var groupId = "20123";
 		}
 
 		var curl = '''

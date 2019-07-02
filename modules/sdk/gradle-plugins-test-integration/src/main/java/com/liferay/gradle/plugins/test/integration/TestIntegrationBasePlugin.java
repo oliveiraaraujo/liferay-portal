@@ -16,6 +16,7 @@ package com.liferay.gradle.plugins.test.integration;
 
 import com.liferay.gradle.plugins.test.integration.internal.util.GradleUtil;
 import com.liferay.gradle.plugins.test.integration.internal.util.ReflectionUtil;
+import com.liferay.gradle.util.FileUtil;
 
 import java.io.File;
 
@@ -203,7 +204,8 @@ public class TestIntegrationBasePlugin implements Plugin<Project> {
 
 					@Override
 					public File call() throws Exception {
-						return sourceSetOutput.getClassesDir();
+						return FileUtil.getJavaClassesDir(
+							testIntegrationSourceSet);
 					}
 
 				});

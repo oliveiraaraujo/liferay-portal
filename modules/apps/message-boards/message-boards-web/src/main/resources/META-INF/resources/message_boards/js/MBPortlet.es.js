@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import core from 'metal';
 import {EventHandler} from 'metal-events';
 import {PortletBase} from 'frontend-js-web';
@@ -24,7 +38,7 @@ class MBPortlet extends PortletBase {
 	 */
 
 	attached() {
-		let publishButton = this.one('.button-holder button[type="submit"]');
+		const publishButton = this.one('.button-holder button[type="submit"]');
 
 		if (publishButton) {
 			this.eventHandler_.add(
@@ -34,7 +48,7 @@ class MBPortlet extends PortletBase {
 			);
 		}
 
-		let saveButton = this.one('#saveButton');
+		const saveButton = this.one('#saveButton');
 
 		if (saveButton) {
 			this.eventHandler_.add(
@@ -44,7 +58,7 @@ class MBPortlet extends PortletBase {
 			);
 		}
 
-		let advancedReplyLink = this.one('.advanced-reply');
+		const advancedReplyLink = this.one('.advanced-reply');
 
 		if (advancedReplyLink) {
 			this.eventHandler_.add(
@@ -54,7 +68,7 @@ class MBPortlet extends PortletBase {
 			);
 		}
 
-		let searchContainerId = this.ns('messageAttachments');
+		const searchContainerId = this.ns('messageAttachments');
 
 		Liferay.componentReady(searchContainerId).then(searchContainer => {
 			this.eventHandler_.add(
@@ -70,7 +84,7 @@ class MBPortlet extends PortletBase {
 			this.searchContainer_ = searchContainer;
 		});
 
-		let viewRemovedAttachmentsLink = document.getElementById(
+		const viewRemovedAttachmentsLink = document.getElementById(
 			'view-removed-attachments-link'
 		);
 
@@ -111,16 +125,16 @@ class MBPortlet extends PortletBase {
 	 */
 
 	openAdvancedReply_() {
-		let inputNode = this.one('#body');
+		const inputNode = this.one('#body');
 		inputNode.value = window[
 			this.ns('replyMessageBody' + this.replyToMessageId)
 		].getHTML();
 
-		let form = this.one(
+		const form = this.one(
 			`[name="${this.ns('advancedReplyFm' + this.replyToMessageId)}"]`
 		);
 
-		let advancedReplyInputNode = form.querySelector(
+		const advancedReplyInputNode = form.querySelector(
 			`[name="${this.ns('body')}"]`
 		);
 
@@ -149,7 +163,7 @@ class MBPortlet extends PortletBase {
 	 */
 
 	save_() {
-		let tempImages = this.all('img[data-random-id]');
+		const tempImages = this.all('img[data-random-id]');
 
 		if (tempImages.length > 0) {
 			if (confirm(this.strings.confirmDiscardImages)) {
@@ -172,14 +186,14 @@ class MBPortlet extends PortletBase {
 	 */
 
 	removeAttachment_(event) {
-		let link = event.currentTarget;
+		const link = event.currentTarget;
 
-		let deleteURL = link.getAttribute('data-url');
+		const deleteURL = link.getAttribute('data-url');
 
 		fetch(deleteURL, {
 			credentials: 'include'
 		}).then(() => {
-			let searchContainer = this.searchContainer_;
+			const searchContainer = this.searchContainer_;
 
 			searchContainer.deleteRow(
 				link.ancestor('tr'),
@@ -202,8 +216,8 @@ class MBPortlet extends PortletBase {
 			.then(res => res.json())
 			.then(attachments => {
 				if (attachments.active.length > 0) {
-					let searchContainer = this.searchContainer_;
-					let searchContainerData = searchContainer.getData();
+					const searchContainer = this.searchContainer_;
+					const searchContainerData = searchContainer.getData();
 
 					document
 						.getElementById(this.namespace + 'fileAttachments')
@@ -259,7 +273,9 @@ class MBPortlet extends PortletBase {
 	 */
 
 	updateMultipleMBMessageAttachments_() {
-		let selectedFileNameContainer = this.one('#selectedFileNameContainer');
+		const selectedFileNameContainer = this.one(
+			'#selectedFileNameContainer'
+		);
 
 		if (selectedFileNameContainer) {
 			const inputName = this.ns('selectUploadedFile');

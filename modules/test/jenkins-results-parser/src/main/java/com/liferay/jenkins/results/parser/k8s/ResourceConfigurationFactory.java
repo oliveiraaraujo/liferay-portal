@@ -27,55 +27,52 @@ import io.kubernetes.client.models.V1Volume;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Kenji Heigel
  */
 public class ResourceConfigurationFactory {
 
-	public static LiferayK8sConnection.Pod newMySQLConfigurationPod(
-		String dockerBaseImageName, String dockerImageName) {
-
-		V1Pod v1Pod = new V1Pod();
-
-		String hostname = JenkinsResultsParserUtil.getHostName(null);
-
-		if (hostname == null) {
-			throw new RuntimeException("Unable to determine hostname");
+	public static Pod getConfigurationPod(String name) {
+		if (!_podConfigurationsMap.containsKey(name)) {
+			throw new IllegalArgumentException(
+				"Invalid configuration pod name: " + name);
 		}
 
-		v1Pod.setMetadata(
-			newConfigurationMetaData(
-				JenkinsResultsParserUtil.combine(
-					hostname, "-", dockerBaseImageName)));
-
-		V1Container v1Container = newConfigurationContainer(
-			dockerBaseImageName, dockerImageName);
-
-		v1Container.setEnv(
-			new ArrayList<>(
-				Arrays.asList(
-					newConfigurationEnvVar(
-						"MYSQL_ROOT_PASSWORD", "password"))));
-
-		v1Container.setPorts(
-			new ArrayList<>(
-				Arrays.asList(
-					newConfigurationContainerPort(dockerBaseImageName, 3306))));
-
-		V1PodSpec v1PodSpec = newConfigurationPodSpec(v1Container);
-
-		v1PodSpec.setVolumes(
-			new ArrayList<>(
-				Arrays.asList(
-					newEmptyDirConfigurationVolume(dockerBaseImageName))));
-
-		v1Pod.setSpec(v1PodSpec);
-
-		return new LiferayK8sConnection.Pod(v1Pod);
+		return _podConfigurationsMap.get(name);
 	}
 
-	protected static V1Container newConfigurationContainer(
+	public static Pod getConfigurationPod(
+		String databaseName, String databaseVersion) {
+
+		return getConfigurationPod(
+			_getDatabaseConfigurationName(databaseName, databaseVersion));
+	}
+
+	private static String _getDatabaseConfigurationName(
+		String databaseName, String databaseVersion) {
+
+		if (StringUtils.countMatches(databaseVersion, ".") > 1) {
+			int index = databaseVersion.lastIndexOf(".");
+
+			databaseVersion = databaseVersion.substring(0, index);
+		}
+
+		String databaseConfigurationName = databaseName + databaseVersion;
+
+		databaseConfigurationName = databaseConfigurationName.toLowerCase();
+
+		databaseConfigurationName = databaseConfigurationName.replace(".", "");
+
+		return databaseConfigurationName;
+	}
+
+	private static V1Container _newConfigurationContainer(
 		String dockerBaseImageName, String dockerImageName) {
 
 		V1Container v1Container = new V1Container();
@@ -86,7 +83,7 @@ public class ResourceConfigurationFactory {
 		return v1Container;
 	}
 
-	protected static V1ContainerPort newConfigurationContainerPort(
+	private static V1ContainerPort _newConfigurationContainerPort(
 		String dockerBaseImageName, int containerPort) {
 
 		V1ContainerPort v1ContainerPort = new V1ContainerPort();
@@ -97,7 +94,7 @@ public class ResourceConfigurationFactory {
 		return v1ContainerPort;
 	}
 
-	protected static V1EnvVar newConfigurationEnvVar(
+	private static V1EnvVar _newConfigurationEnvVar(
 		String variableName, String variableValue) {
 
 		V1EnvVar v1EnvVar = new V1EnvVar();
@@ -108,9 +105,7 @@ public class ResourceConfigurationFactory {
 		return v1EnvVar;
 	}
 
-	protected static V1ObjectMeta newConfigurationMetaData(
-		String metaDataName) {
-
+	private static V1ObjectMeta _newConfigurationMetaData(String metaDataName) {
 		V1ObjectMeta v1ObjectMeta = new V1ObjectMeta();
 
 		v1ObjectMeta.setName(metaDataName);
@@ -118,9 +113,7 @@ public class ResourceConfigurationFactory {
 		return v1ObjectMeta;
 	}
 
-	protected static V1PodSpec newConfigurationPodSpec(
-		V1Container v1Container) {
-
+	private static V1PodSpec _newConfigurationPodSpec(V1Container v1Container) {
 		V1PodSpec v1PodSpec = new V1PodSpec();
 
 		v1PodSpec.addContainersItem(v1Container);
@@ -128,7 +121,51 @@ public class ResourceConfigurationFactory {
 		return v1PodSpec;
 	}
 
-	protected static V1Volume newEmptyDirConfigurationVolume(
+	private static Pod _newDatabaseConfigurationPod(
+		String dockerBaseImageName, String dockerImageName,
+		List<V1ContainerPort> v1ContainerPorts, List<V1EnvVar> v1EnvVars) {
+
+		V1Pod v1Pod = new V1Pod();
+
+		String hostname = JenkinsResultsParserUtil.getHostName(null);
+
+		if (hostname == null) {
+			throw new RuntimeException("Unable to determine hostname");
+		}
+
+		hostname = JenkinsResultsParserUtil.combine(
+			hostname.replaceFirst("\\..*", ""), "-", dockerBaseImageName);
+
+		V1ObjectMeta v1ObjectMeta = _newConfigurationMetaData(hostname);
+
+		String serviceName = "database";
+
+		v1ObjectMeta.putLabelsItem("app", serviceName);
+
+		v1Pod.setMetadata(v1ObjectMeta);
+
+		V1Container v1Container = _newConfigurationContainer(
+			dockerBaseImageName, dockerImageName);
+
+		v1Container.setEnv(v1EnvVars);
+
+		v1Container.setPorts(v1ContainerPorts);
+
+		V1PodSpec v1PodSpec = _newConfigurationPodSpec(v1Container);
+
+		v1PodSpec.setHostname(hostname);
+		v1PodSpec.setSubdomain(serviceName);
+		v1PodSpec.setVolumes(
+			new ArrayList<>(
+				Arrays.asList(
+					_newEmptyDirConfigurationVolume(dockerBaseImageName))));
+
+		v1Pod.setSpec(v1PodSpec);
+
+		return new Pod(v1Pod);
+	}
+
+	private static V1Volume _newEmptyDirConfigurationVolume(
 		String dockerImageName) {
 
 		V1Volume v1Volume = new V1Volume();
@@ -138,5 +175,60 @@ public class ResourceConfigurationFactory {
 
 		return v1Volume;
 	}
+
+	private static Pod _newMySQLConfigurationPod(
+		String dockerBaseImageName, String dockerImageName) {
+
+		List<V1ContainerPort> v1ContainerPorts = new ArrayList<>(
+			Arrays.asList(
+				_newConfigurationContainerPort(dockerBaseImageName, 3306)));
+
+		List<V1EnvVar> v1EnvVars = new ArrayList<>(
+			Arrays.asList(
+				_newConfigurationEnvVar("MYSQL_ALLOW_EMPTY_PASSWORD", "yes")));
+
+		return _newDatabaseConfigurationPod(
+			dockerBaseImageName, dockerImageName, v1ContainerPorts, v1EnvVars);
+	}
+
+	private static Pod _newPostgreSQLConfigurationPod(
+		String dockerBaseImageName, String dockerImageName) {
+
+		List<V1ContainerPort> v1ContainerPorts = new ArrayList<>(
+			Arrays.asList(
+				_newConfigurationContainerPort(dockerBaseImageName, 5432)));
+
+		List<V1EnvVar> v1EnvVars = new ArrayList<>(
+			Arrays.asList(_newConfigurationEnvVar("POSTGRES_USER", "root")));
+
+		return _newDatabaseConfigurationPod(
+			dockerBaseImageName, dockerImageName, v1ContainerPorts, v1EnvVars);
+	}
+
+	private static final Map<String, Pod> _podConfigurationsMap =
+		new HashMap<String, Pod>() {
+			{
+				put(
+					"mariadb102",
+					ResourceConfigurationFactory._newMySQLConfigurationPod(
+						"mariadb102", "mariadb:10.2.25"));
+				put(
+					"mysql55",
+					ResourceConfigurationFactory._newMySQLConfigurationPod(
+						"mysql55", "mysql:5.5.62"));
+				put(
+					"mysql56",
+					ResourceConfigurationFactory._newMySQLConfigurationPod(
+						"mysql56", "mysql:5.6.43"));
+				put(
+					"mysql57",
+					ResourceConfigurationFactory._newMySQLConfigurationPod(
+						"mysql57", "mysql:5.7.25"));
+				put(
+					"postgresql10",
+					ResourceConfigurationFactory._newPostgreSQLConfigurationPod(
+						"postgresql10", "postgres:10.9"));
+			}
+		};
 
 }

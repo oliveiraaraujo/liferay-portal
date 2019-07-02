@@ -73,38 +73,39 @@ public class LayoutSetServiceWrapper
 
 	@Override
 	public void updateLogo(
-			long groupId, boolean privateLayout, boolean logo, byte[] bytes)
+			long groupId, boolean privateLayout, boolean hasLogo, byte[] bytes)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		_layoutSetService.updateLogo(groupId, privateLayout, logo, bytes);
+		_layoutSetService.updateLogo(groupId, privateLayout, hasLogo, bytes);
 	}
 
 	@Override
 	public void updateLogo(
-			long groupId, boolean privateLayout, boolean logo,
+			long groupId, boolean privateLayout, boolean hasLogo,
 			java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		_layoutSetService.updateLogo(groupId, privateLayout, logo, file);
+		_layoutSetService.updateLogo(groupId, privateLayout, hasLogo, file);
 	}
 
 	@Override
 	public void updateLogo(
-			long groupId, boolean privateLayout, boolean logo,
+			long groupId, boolean privateLayout, boolean hasLogo,
 			java.io.InputStream inputStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		_layoutSetService.updateLogo(groupId, privateLayout, logo, inputStream);
+		_layoutSetService.updateLogo(
+			groupId, privateLayout, hasLogo, inputStream);
 	}
 
 	@Override
 	public void updateLogo(
-			long groupId, boolean privateLayout, boolean logo,
+			long groupId, boolean privateLayout, boolean hasLogo,
 			java.io.InputStream inputStream, boolean cleanUpStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		_layoutSetService.updateLogo(
-			groupId, privateLayout, logo, inputStream, cleanUpStream);
+			groupId, privateLayout, hasLogo, inputStream, cleanUpStream);
 	}
 
 	@Override

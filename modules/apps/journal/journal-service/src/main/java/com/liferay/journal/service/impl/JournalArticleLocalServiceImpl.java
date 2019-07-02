@@ -340,28 +340,25 @@ public class JournalArticleLocalServiceImpl
 		User user = userLocalService.getUser(userId);
 		articleId = StringUtil.toUpperCase(StringUtil.trim(articleId));
 
-		Date displayDate = null;
+		Date displayDate = _portal.getDate(
+			displayDateMonth, displayDateDay, displayDateYear, displayDateHour,
+			displayDateMinute, user.getTimeZone(), null);
+
 		Date expirationDate = null;
 		Date reviewDate = null;
 
-		if (classNameId == JournalArticleConstants.CLASSNAME_ID_DEFAULT) {
-			displayDate = _portal.getDate(
-				displayDateMonth, displayDateDay, displayDateYear,
-				displayDateHour, displayDateMinute, user.getTimeZone(), null);
+		if (!neverExpire) {
+			expirationDate = _portal.getDate(
+				expirationDateMonth, expirationDateDay, expirationDateYear,
+				expirationDateHour, expirationDateMinute, user.getTimeZone(),
+				ArticleExpirationDateException.class);
+		}
 
-			if (!neverExpire) {
-				expirationDate = _portal.getDate(
-					expirationDateMonth, expirationDateDay, expirationDateYear,
-					expirationDateHour, expirationDateMinute,
-					user.getTimeZone(), ArticleExpirationDateException.class);
-			}
-
-			if (!neverReview) {
-				reviewDate = _portal.getDate(
-					reviewDateMonth, reviewDateDay, reviewDateYear,
-					reviewDateHour, reviewDateMinute, user.getTimeZone(),
-					ArticleReviewDateException.class);
-			}
+		if (!neverReview) {
+			reviewDate = _portal.getDate(
+				reviewDateMonth, reviewDateDay, reviewDateYear, reviewDateHour,
+				reviewDateMinute, user.getTimeZone(),
+				ArticleReviewDateException.class);
 		}
 
 		byte[] smallImageBytes = null;
@@ -398,7 +395,7 @@ public class JournalArticleLocalServiceImpl
 			}
 			catch (ExportImportContentValidationException eicve) {
 				eicve.setStagedModelClassName(JournalArticle.class.getName());
-				eicve.setStagedModelClassPK(Long.valueOf(articleId));
+				eicve.setStagedModelPrimaryKeyObj(articleId);
 
 				throw eicve;
 			}
@@ -530,14 +527,7 @@ public class JournalArticleLocalServiceImpl
 
 		// Workflow
 
-		if (classNameId == JournalArticleConstants.CLASSNAME_ID_DEFAULT) {
-			startWorkflowInstance(userId, article, serviceContext);
-		}
-		else {
-			updateStatus(
-				userId, article, WorkflowConstants.STATUS_APPROVED, null,
-				serviceContext, new HashMap<String, Serializable>());
-		}
+		startWorkflowInstance(userId, article, serviceContext);
 
 		return journalArticlePersistence.findByPrimaryKey(article.getId());
 	}
@@ -724,6 +714,117 @@ public class JournalArticleLocalServiceImpl
 			displayDateYear, displayDateHour, displayDateMinute, 0, 0, 0, 0, 0,
 			true, 0, 0, 0, 0, 0, true, true, false, null, null, null, null,
 			serviceContext);
+	}
+
+	@Override
+	public JournalArticle addArticleDefaultValues(
+			long userId, long groupId, long classNameId, long classPK,
+			Map<Locale, String> titleMap, Map<Locale, String> descriptionMap,
+			String content, String ddmStructureKey, String ddmTemplateKey,
+			String layoutUuid, boolean indexable, boolean smallImage,
+			String smallImageURL, File smallImageFile,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		// Article
+
+		User user = userLocalService.getUser(userId);
+
+		byte[] smallImageBytes = null;
+
+		try {
+			smallImageBytes = FileUtil.getBytes(smallImageFile);
+		}
+		catch (IOException ioe) {
+		}
+
+		String articleId = String.valueOf(counterLocalService.increment());
+
+		sanitize(user.getCompanyId(), groupId, userId, classPK, descriptionMap);
+
+		validate(
+			user.getCompanyId(), groupId, classNameId, articleId, true, 0,
+			titleMap, content, ddmStructureKey, ddmTemplateKey, null, null,
+			smallImage, smallImageURL, smallImageFile, smallImageBytes,
+			serviceContext);
+
+		serviceContext.setAttribute("articleId", articleId);
+
+		long id = counterLocalService.increment();
+
+		JournalArticle article = journalArticlePersistence.create(id);
+
+		article.setUuid(serviceContext.getUuid());
+
+		String articleResourceUuid = GetterUtil.getString(
+			serviceContext.getAttribute("articleResourceUuid"));
+
+		long resourcePrimKey =
+			_journalArticleResourceLocalService.getArticleResourcePrimKey(
+				articleResourceUuid, groupId, articleId);
+
+		article.setResourcePrimKey(resourcePrimKey);
+
+		article.setGroupId(groupId);
+		article.setCompanyId(user.getCompanyId());
+		article.setUserId(user.getUserId());
+		article.setUserName(user.getFullName());
+		article.setClassNameId(classNameId);
+		article.setClassPK(classPK);
+		article.setArticleId(articleId);
+
+		content = format(user, groupId, article, content);
+		content = _replaceTempImages(article, content);
+
+		article.setContent(content);
+
+		article.setDDMStructureKey(ddmStructureKey);
+		article.setDDMTemplateKey(ddmTemplateKey);
+
+		Locale locale = getArticleDefaultLocale(content);
+
+		article.setDefaultLanguageId(LocaleUtil.toLanguageId(locale));
+
+		article.setLayoutUuid(layoutUuid);
+		article.setIndexable(indexable);
+		article.setSmallImage(smallImage);
+		article.setSmallImageId(counterLocalService.increment());
+		article.setSmallImageURL(smallImageURL);
+		article.setStatus(WorkflowConstants.STATUS_APPROVED);
+		article.setStatusByUserId(userId);
+		article.setStatusDate(serviceContext.getModifiedDate(new Date()));
+		article.setExpandoBridgeAttributes(serviceContext);
+
+		journalArticlePersistence.update(article);
+
+		// Article localization
+
+		_addArticleLocalizedFields(
+			user.getCompanyId(), article.getId(), titleMap, descriptionMap);
+
+		// Resources
+
+		addArticleResources(article, serviceContext.getModelPermissions());
+
+		// Small image
+
+		saveImages(
+			smallImage, article.getSmallImageId(), smallImageFile,
+			smallImageBytes);
+
+		// Asset
+
+		updateAsset(
+			userId, article, serviceContext.getAssetCategoryIds(),
+			serviceContext.getAssetTagNames(),
+			serviceContext.getAssetLinkEntryIds(),
+			serviceContext.getAssetPriority());
+
+		// Dynamic data mapping
+
+		updateDDMStructurePredefinedValues(classPK, content, serviceContext);
+
+		return journalArticlePersistence.findByPrimaryKey(article.getId());
 	}
 
 	/**
@@ -5693,30 +5794,25 @@ public class JournalArticleLocalServiceImpl
 			}
 		}
 
-		Date displayDate = null;
+		Date displayDate = _portal.getDate(
+			displayDateMonth, displayDateDay, displayDateYear, displayDateHour,
+			displayDateMinute, user.getTimeZone(), null);
+
 		Date expirationDate = null;
 		Date reviewDate = null;
 
-		if (article.getClassNameId() ==
-				JournalArticleConstants.CLASSNAME_ID_DEFAULT) {
+		if (!neverExpire) {
+			expirationDate = _portal.getDate(
+				expirationDateMonth, expirationDateDay, expirationDateYear,
+				expirationDateHour, expirationDateMinute, user.getTimeZone(),
+				ArticleExpirationDateException.class);
+		}
 
-			displayDate = _portal.getDate(
-				displayDateMonth, displayDateDay, displayDateYear,
-				displayDateHour, displayDateMinute, user.getTimeZone(), null);
-
-			if (!neverExpire) {
-				expirationDate = _portal.getDate(
-					expirationDateMonth, expirationDateDay, expirationDateYear,
-					expirationDateHour, expirationDateMinute,
-					user.getTimeZone(), ArticleExpirationDateException.class);
-			}
-
-			if (!neverReview) {
-				reviewDate = _portal.getDate(
-					reviewDateMonth, reviewDateDay, reviewDateYear,
-					reviewDateHour, reviewDateMinute, user.getTimeZone(),
-					ArticleReviewDateException.class);
-			}
+		if (!neverReview) {
+			reviewDate = _portal.getDate(
+				reviewDateMonth, reviewDateDay, reviewDateYear, reviewDateHour,
+				reviewDateMinute, user.getTimeZone(),
+				ArticleReviewDateException.class);
 		}
 
 		Date now = new Date();
@@ -5748,7 +5844,7 @@ public class JournalArticleLocalServiceImpl
 			}
 			catch (ExportImportContentValidationException eicve) {
 				eicve.setStagedModelClassName(JournalArticle.class.getName());
-				eicve.setStagedModelClassPK(Long.valueOf(articleId));
+				eicve.setStagedModelPrimaryKeyObj(articleId);
 
 				throw eicve;
 			}
@@ -5790,10 +5886,7 @@ public class JournalArticleLocalServiceImpl
 
 		String urlTitle = urlTitleMap.get(LocaleUtil.toLanguageId(locale));
 
-		if (Validator.isNull(urlTitle) &&
-			(classNameLocalService.getClassNameId(DDMStructure.class) !=
-				article.getClassNameId())) {
-
+		if (Validator.isNull(urlTitle)) {
 			throw new ArticleFriendlyURLException();
 		}
 
@@ -5815,7 +5908,9 @@ public class JournalArticleLocalServiceImpl
 		article.setSmallImage(smallImage);
 
 		if (smallImage) {
-			if ((smallImageFile != null) && (smallImageBytes != null)) {
+			if ((smallImageFile != null) && (smallImageBytes != null) &&
+				(article.getSmallImageId() <= 0)) {
+
 				article.setSmallImageId(counterLocalService.increment());
 			}
 		}
@@ -5857,17 +5952,9 @@ public class JournalArticleLocalServiceImpl
 
 		// Dynamic data mapping
 
-		if (classNameLocalService.getClassNameId(DDMStructure.class) ==
-				article.getClassNameId()) {
-
-			updateDDMStructurePredefinedValues(
-				article.getClassPK(), content, serviceContext);
-		}
-		else {
-			updateDDMLinks(
-				article.getId(), groupId, ddmStructureKey, ddmTemplateKey,
-				addNewVersion);
-		}
+		updateDDMLinks(
+			article.getId(), groupId, ddmStructureKey, ddmTemplateKey,
+			addNewVersion);
 
 		// Small image
 
@@ -6238,6 +6325,104 @@ public class JournalArticleLocalServiceImpl
 		return article;
 	}
 
+	@Override
+	public JournalArticle updateArticleDefaultValues(
+			long userId, long groupId, String articleId,
+			Map<Locale, String> titleMap, Map<Locale, String> descriptionMap,
+			String content, String ddmStructureKey, String ddmTemplateKey,
+			String layoutUuid, boolean indexable, boolean smallImage,
+			String smallImageURL, File smallImageFile,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		// Article
+
+		User user = userLocalService.getUser(userId);
+		articleId = StringUtil.toUpperCase(StringUtil.trim(articleId));
+
+		byte[] smallImageBytes = null;
+
+		try {
+			smallImageBytes = FileUtil.getBytes(smallImageFile);
+		}
+		catch (IOException ioe) {
+		}
+
+		JournalArticle article = getArticle(groupId, articleId);
+
+		serviceContext.validateModifiedDate(
+			article, ArticleVersionException.class);
+
+		sanitize(
+			user.getCompanyId(), groupId, userId, article.getClassPK(),
+			descriptionMap);
+
+		validate(
+			user.getCompanyId(), groupId, article.getClassNameId(), titleMap,
+			content, ddmStructureKey, ddmTemplateKey, null, null, smallImage,
+			smallImageURL, smallImageFile, smallImageBytes, serviceContext);
+
+		_updateArticleLocalizedFields(
+			article.getCompanyId(), article.getId(), titleMap, descriptionMap);
+
+		content = format(user, groupId, article, content);
+		content = _replaceTempImages(article, content);
+
+		article.setContent(content);
+
+		article.setDDMStructureKey(ddmStructureKey);
+		article.setDDMTemplateKey(ddmTemplateKey);
+
+		Locale locale = getArticleDefaultLocale(content);
+
+		article.setDefaultLanguageId(LocaleUtil.toLanguageId(locale));
+
+		article.setLayoutUuid(layoutUuid);
+		article.setIndexable(indexable);
+		article.setSmallImage(smallImage);
+
+		if (smallImage) {
+			if ((smallImageFile != null) && (smallImageBytes != null) &&
+				(article.getSmallImageId() <= 0)) {
+
+				article.setSmallImageId(counterLocalService.increment());
+			}
+		}
+		else {
+			article.setSmallImageId(0);
+		}
+
+		article.setSmallImageURL(smallImageURL);
+		article.setStatus(WorkflowConstants.STATUS_APPROVED);
+
+		ExpandoBridgeUtil.setExpandoBridgeAttributes(
+			article.getExpandoBridge(), article.getExpandoBridge(),
+			serviceContext);
+
+		journalArticlePersistence.update(article);
+
+		// Asset
+
+		updateAsset(
+			userId, article, serviceContext.getAssetCategoryIds(),
+			serviceContext.getAssetTagNames(),
+			serviceContext.getAssetLinkEntryIds(),
+			serviceContext.getAssetPriority());
+
+		// Dynamic data mapping
+
+		updateDDMStructurePredefinedValues(
+			article.getClassPK(), content, serviceContext);
+
+		// Small image
+
+		saveImages(
+			smallImage, article.getSmallImageId(), smallImageFile,
+			smallImageBytes);
+
+		return journalArticlePersistence.findByPrimaryKey(article.getId());
+	}
+
 	/**
 	 * Updates the translation of the web content article.
 	 *
@@ -6591,8 +6776,6 @@ public class JournalArticleLocalServiceImpl
 		Date now = new Date();
 
 		if ((status == WorkflowConstants.STATUS_APPROVED) &&
-			(article.getClassNameId() ==
-				JournalArticleConstants.CLASSNAME_ID_DEFAULT) &&
 			(article.getDisplayDate() != null) &&
 			now.before(article.getDisplayDate())) {
 
@@ -6687,14 +6870,10 @@ public class JournalArticleLocalServiceImpl
 					}
 				}
 
-				if (article.getClassNameId() ==
-						JournalArticleConstants.CLASSNAME_ID_DEFAULT) {
-
-					assetEntryLocalService.updateEntry(
-						JournalArticle.class.getName(),
-						article.getResourcePrimKey(), article.getDisplayDate(),
-						article.getExpirationDate(), isListable(article), true);
-				}
+				assetEntryLocalService.updateEntry(
+					JournalArticle.class.getName(),
+					article.getResourcePrimKey(), article.getDisplayDate(),
+					article.getExpirationDate(), isListable(article), true);
 
 				// Social
 
@@ -6720,9 +6899,7 @@ public class JournalArticleLocalServiceImpl
 
 		String action = "update";
 
-		if ((article.getClassNameId() ==
-				JournalArticleConstants.CLASSNAME_ID_DEFAULT) &&
-			(oldStatus != WorkflowConstants.STATUS_IN_TRASH) &&
+		if ((oldStatus != WorkflowConstants.STATUS_IN_TRASH) &&
 			(status != WorkflowConstants.STATUS_IN_TRASH)) {
 
 			// Email
@@ -8222,15 +8399,21 @@ public class JournalArticleLocalServiceImpl
 			"[$ARTICLE_DIFFS$]", DiffHtmlUtil.replaceStyles(articleDiffs),
 			false);
 
-		JournalFolder folder = article.getFolder();
+		String folderName = StringPool.BLANK;
 
-		String folderName = folder.getName();
+		JournalFolder folder = journalFolderPersistence.fetchByPrimaryKey(
+			article.getFolderId());
 
-		if ((folder.getFolderId() ==
-				DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) &&
-			Validator.isNull(folderName)) {
+		if (folder != null) {
+			folderName = folder.getName();
 
-			folderName = LanguageUtil.get(LocaleUtil.getSiteDefault(), "home");
+			if ((folder.getFolderId() ==
+					JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID) &&
+				Validator.isNull(folderName)) {
+
+				folderName = LanguageUtil.get(
+					LocaleUtil.getSiteDefault(), "home");
+			}
 		}
 
 		String portletId = PortletProviderUtil.getPortletId(

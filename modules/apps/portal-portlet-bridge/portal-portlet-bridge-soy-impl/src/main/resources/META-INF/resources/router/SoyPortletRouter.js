@@ -1,4 +1,17 @@
-import {CancellablePromise} from 'metal-promise';
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import {openToast} from 'frontend-js-web';
 import {RequestScreen, utils} from 'senna';
 import {toRegex} from 'metal-path-parser';
@@ -126,14 +139,14 @@ class SoyPortletRouter extends State {
 			 * only when the controller for the path and all its dependencies
 			 * have been successfully loaded. If the load fails , then it falls
 			 * back to an ordinary full page navigation.
-			 * @return {CancellablePromise} A promise to be resolved once the path
+			 * @return {Promise} A promise to be resolved once the path
 			 * and its needed controllers have been successully loaded or rejected
 			 * otherwise
 			 */
 			flip() {
 				const loadedState = super.maybeParseLastLoadedStateAsJson();
 
-				const deferred = new CancellablePromise((resolve, reject) => {
+				const deferred = new Promise((resolve, reject) => {
 					Liferay.Loader.require(
 						loadedState.javaScriptLoaderModule,
 						module => {

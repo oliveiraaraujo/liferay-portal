@@ -100,6 +100,14 @@ public interface DataDefinitionResource {
 			Long siteId, DataDefinition dataDefinition)
 		throws Exception;
 
+	public DataDefinition getSiteDataDefinition(
+			Long siteId, String dataDefinitionKey)
+		throws Exception;
+
+	public HttpInvoker.HttpResponse getSiteDataDefinitionHttpResponse(
+			Long siteId, String dataDefinitionKey)
+		throws Exception;
+
 	public static class Builder {
 
 		public Builder authentication(String login, String password) {
@@ -497,6 +505,58 @@ public interface DataDefinitionResource {
 					_builder._port +
 						"/o/data-engine/v1.0/sites/{siteId}/data-definitions",
 				siteId);
+
+			httpInvoker.userNameAndPassword(
+				_builder._login + ":" + _builder._password);
+
+			return httpInvoker.invoke();
+		}
+
+		public DataDefinition getSiteDataDefinition(
+				Long siteId, String dataDefinitionKey)
+			throws Exception {
+
+			HttpInvoker.HttpResponse httpResponse =
+				getSiteDataDefinitionHttpResponse(siteId, dataDefinitionKey);
+
+			String content = httpResponse.getContent();
+
+			_logger.fine("HTTP response content: " + content);
+
+			_logger.fine("HTTP response message: " + httpResponse.getMessage());
+			_logger.fine(
+				"HTTP response status code: " + httpResponse.getStatusCode());
+
+			try {
+				return DataDefinitionSerDes.toDTO(content);
+			}
+			catch (Exception e) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response: " + content, e);
+
+				throw e;
+			}
+		}
+
+		public HttpInvoker.HttpResponse getSiteDataDefinitionHttpResponse(
+				Long siteId, String dataDefinitionKey)
+			throws Exception {
+
+			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			if (_builder._locale != null) {
+				httpInvoker.header(
+					"Accept-Language", _builder._locale.toLanguageTag());
+			}
+
+			httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
+
+			httpInvoker.path(
+				_builder._scheme + "://" + _builder._host + ":" +
+					_builder._port +
+						"/o/data-engine/v1.0/sites/{siteId}/data-definitions/{dataDefinitionKey}",
+				siteId, dataDefinitionKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

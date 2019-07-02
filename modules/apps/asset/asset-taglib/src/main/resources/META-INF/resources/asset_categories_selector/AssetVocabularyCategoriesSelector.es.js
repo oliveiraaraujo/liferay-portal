@@ -1,9 +1,27 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+
 import 'clay-multi-select';
 import {Config} from 'metal-state';
 import Component from 'metal-component';
 import Soy from 'metal-soy';
 
 import templates from './AssetVocabularyCategoriesSelector.soy';
+
+import {ItemSelectorDialog} from 'frontend-js-web';
 
 /**
  * Wraps Clay's existing <code>MultiSelect</code> component that offers the user
@@ -26,43 +44,35 @@ class AssetVocabularyCategoriesSelector extends Component {
 	 * @private
 	 */
 	_handleButtonClicked(event) {
-		AUI().use(
-			'liferay-item-selector-dialog',
-			function(A) {
-				var uri = A.Lang.sub(decodeURIComponent(this.portletURL), {
-					selectedCategories: this.selectedItems
-						.map(item => item.value)
-						.join(),
-					singleSelect: this.singleSelect,
-					vocabularyIds: this.vocabularyIds.concat()
+		const sub = (str, obj) => str.replace(/\{([^}]+)\}/g, (_, m) => obj[m]);
+
+		const uri = sub(decodeURIComponent(this.portletURL), {
+			selectedCategories: this.selectedItems
+				.map(item => item.value)
+				.join(),
+			singleSelect: this.singleSelect,
+			vocabularyIds: this.vocabularyIds.concat()
+		});
+
+		const itemSelectorDialog = new ItemSelectorDialog({
+			eventName: this.eventName,
+			title: Liferay.Language.get('select-categories'),
+			url: uri
+		});
+
+		itemSelectorDialog.open();
+		itemSelectorDialog.on('selectedItemChange', event => {
+			const selectedItems = event.selectedItem;
+
+			if (selectedItems) {
+				this.selectedItems = Object.keys(selectedItems).map(itemKey => {
+					return {
+						label: selectedItems[itemKey].value,
+						value: selectedItems[itemKey].categoryId
+					};
 				});
-
-				const itemSelectorDialog = new A.LiferayItemSelectorDialog({
-					eventName: this.eventName,
-					on: {
-						selectedItemChange: function(event) {
-							const selectedItems = event.newVal;
-
-							if (selectedItems) {
-								this.selectedItems = Object.keys(
-									selectedItems
-								).map(itemKey => {
-									return {
-										label: selectedItems[itemKey].value,
-										value: selectedItems[itemKey].categoryId
-									};
-								});
-							}
-						}.bind(this)
-					},
-					'strings.add': Liferay.Language.get('add'),
-					title: Liferay.Language.get('select-categories'),
-					url: uri
-				});
-
-				itemSelectorDialog.open();
-			}.bind(this)
-		);
+			}
+		});
 	}
 
 	_handleInputFocus(event) {

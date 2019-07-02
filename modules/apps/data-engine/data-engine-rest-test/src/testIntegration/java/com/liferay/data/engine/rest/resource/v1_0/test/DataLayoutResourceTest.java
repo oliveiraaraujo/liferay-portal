@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import java.util.HashMap;
 
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
@@ -41,6 +42,25 @@ public class DataLayoutResourceTest extends BaseDataLayoutResourceTestCase {
 	}
 
 	@Override
+	@Test
+	public void testPostDataDefinitionDataLayout() throws Exception {
+		super.testPostDataDefinitionDataLayout();
+
+		// Multiple data layouts with the same data definition
+
+		for (int i = 0; i < 3; i++) {
+			DataLayout randomDataLayout = randomDataLayout();
+
+			DataLayout postDataLayout =
+				testPostDataDefinitionDataLayout_addDataLayout(
+					randomDataLayout);
+
+			assertEquals(randomDataLayout, postDataLayout);
+			assertValid(postDataLayout);
+		}
+	}
+
+	@Override
 	protected String[] getAdditionalAssertFieldNames() {
 		return new String[] {"dataDefinitionId", "name"};
 	}
@@ -51,6 +71,7 @@ public class DataLayoutResourceTest extends BaseDataLayoutResourceTestCase {
 			{
 				dataDefinitionId = _ddmStructure.getStructureId();
 				dateCreated = RandomTestUtil.nextDate();
+				dataLayoutKey = RandomTestUtil.randomString();
 				dateModified = RandomTestUtil.nextDate();
 				defaultLanguageId = "en_US";
 				id = RandomTestUtil.randomLong();
@@ -59,18 +80,20 @@ public class DataLayoutResourceTest extends BaseDataLayoutResourceTestCase {
 						put("en_US", RandomTestUtil.randomString());
 					}
 				};
+				siteId = testGroup.getGroupId();
 			}
 		};
 	}
 
 	@Override
-	protected DataLayout randomIrrelevantDataLayout() {
-		DataLayout dataLayout = randomDataLayout();
+	protected DataLayout randomIrrelevantDataLayout() throws Exception {
+		DataLayout randomIrrelevantDataLayout =
+			super.randomIrrelevantDataLayout();
 
-		dataLayout.setDataDefinitionId(
+		randomIrrelevantDataLayout.setDataDefinitionId(
 			_irrelevantDDMStructure.getStructureId());
 
-		return dataLayout;
+		return randomIrrelevantDataLayout;
 	}
 
 	@Override
@@ -88,6 +111,14 @@ public class DataLayoutResourceTest extends BaseDataLayoutResourceTestCase {
 
 	@Override
 	protected DataLayout testGetDataLayout_addDataLayout() throws Exception {
+		return dataLayoutResource.postDataDefinitionDataLayout(
+			_ddmStructure.getStructureId(), randomDataLayout());
+	}
+
+	@Override
+	protected DataLayout testGetSiteDataLayout_addDataLayout()
+		throws Exception {
+
 		return dataLayoutResource.postDataDefinitionDataLayout(
 			_ddmStructure.getStructureId(), randomDataLayout());
 	}

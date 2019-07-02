@@ -50,10 +50,10 @@ import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
-import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.impl.VirtualLayout;
+import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -602,12 +602,15 @@ public class SitesImpl implements Sites {
 		}
 
 		if (group.isGuest() && !layout.isPrivateLayout() &&
-			layout.isRootLayout() &&
-			(LayoutLocalServiceUtil.getLayoutsCount(
-				group, false, LayoutConstants.DEFAULT_PARENT_LAYOUT_ID) == 1)) {
+			layout.isRootLayout()) {
 
-			throw new RequiredLayoutException(
-				RequiredLayoutException.AT_LEAST_ONE);
+			int count = LayoutLocalServiceUtil.getLayoutsCount(
+				group, false, LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
+
+			if (count == 1) {
+				throw new RequiredLayoutException(
+					RequiredLayoutException.AT_LEAST_ONE);
+			}
 		}
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(

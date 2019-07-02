@@ -274,6 +274,8 @@ public class ${schemaName}SerDes {
 							toDate((String)jsonParserFieldValue)
 						<#elseif stringUtil.equals(propertyType, "Date[]")>
 							toDates((Object[])jsonParserFieldValue)
+						<#elseif stringUtil.equals(propertyType, "Double")>
+							Double.valueOf((String)jsonParserFieldValue)
 						<#elseif stringUtil.equals(propertyType, "Integer")>
 							Integer.valueOf((String)jsonParserFieldValue)
 						<#elseif stringUtil.equals(propertyType, "Integer[]")>

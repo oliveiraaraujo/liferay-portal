@@ -15,15 +15,11 @@
 package com.liferay.dynamic.data.mapping.form.web.internal.display.context;
 
 import com.liferay.dynamic.data.mapping.constants.DDMActionKeys;
-import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldType;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServicesTracker;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderer;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderingContext;
 import com.liferay.dynamic.data.mapping.form.values.factory.DDMFormValuesFactory;
 import com.liferay.dynamic.data.mapping.form.web.internal.security.permission.resource.DDMFormInstancePermission;
-import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesSerializer;
-import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesSerializerSerializeRequest;
-import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesSerializerSerializeResponse;
 import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesSerializerTracker;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
@@ -46,12 +42,12 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.util.DDMFormValuesMerger;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -93,24 +89,20 @@ import javax.servlet.http.HttpServletRequest;
 public class DDMFormDisplayContext {
 
 	public DDMFormDisplayContext(
-			RenderRequest renderRequest, RenderResponse renderResponse,
-			DDMFormFieldTypeServicesTracker ddmFormFieldTypeServicesTracker,
-			DDMFormFieldTypesSerializerTracker
-				ddmFormFieldTypesSerializerTracker,
-			DDMFormInstanceLocalService ddmFormInstanceLocalService,
-			DDMFormInstanceRecordVersionLocalService
-				ddmFormInstanceRecordVersionLocalService,
-			DDMFormInstanceService ddmFormInstanceService,
-			DDMFormInstanceVersionLocalService
-				ddmFormInstanceVersionLocalService,
-			DDMFormRenderer ddmFormRenderer,
-			DDMFormValuesFactory ddmFormValuesFactory,
-			DDMFormValuesMerger ddmFormValuesMerger,
-			GroupLocalService groupLocalService, JSONFactory jsonFactory,
-			WorkflowDefinitionLinkLocalService
-				workflowDefinitionLinkLocalService,
-			Portal portal)
-		throws PortalException {
+		RenderRequest renderRequest, RenderResponse renderResponse,
+		DDMFormFieldTypeServicesTracker ddmFormFieldTypeServicesTracker,
+		DDMFormFieldTypesSerializerTracker ddmFormFieldTypesSerializerTracker,
+		DDMFormInstanceLocalService ddmFormInstanceLocalService,
+		DDMFormInstanceRecordVersionLocalService
+			ddmFormInstanceRecordVersionLocalService,
+		DDMFormInstanceService ddmFormInstanceService,
+		DDMFormInstanceVersionLocalService ddmFormInstanceVersionLocalService,
+		DDMFormRenderer ddmFormRenderer,
+		DDMFormValuesFactory ddmFormValuesFactory,
+		DDMFormValuesMerger ddmFormValuesMerger,
+		GroupLocalService groupLocalService, JSONFactory jsonFactory,
+		WorkflowDefinitionLinkLocalService workflowDefinitionLinkLocalService,
+		Portal portal) {
 
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
@@ -132,7 +124,7 @@ public class DDMFormDisplayContext {
 			workflowDefinitionLinkLocalService;
 		_portal = portal;
 
-		_containerId = StringUtil.randomString();
+		_containerId = "ddmForm".concat(StringUtil.randomString());
 
 		if (Validator.isNotNull(getPortletResource())) {
 			return;
@@ -142,7 +134,7 @@ public class DDMFormDisplayContext {
 			_ddmFormInstanceLocalService.fetchDDMFormInstance(
 				getFormInstanceId());
 
-		if ((ddmFormInstance == null) || !hasViewPermission()) {
+		if (ddmFormInstance == null) {
 			renderRequest.setAttribute(
 				WebKeys.PORTLET_CONFIGURATOR_VISIBILITY, Boolean.TRUE);
 		}
@@ -171,28 +163,6 @@ public class DDMFormDisplayContext {
 
 	public String getContainerId() {
 		return _containerId;
-	}
-
-	public JSONArray getDDMFormFieldTypesJSONArray() throws PortalException {
-		List<DDMFormFieldType> formFieldTypes =
-			_ddmFormFieldTypeServicesTracker.getDDMFormFieldTypes();
-
-		DDMFormFieldTypesSerializer ddmFormFieldTypesSerializer =
-			_ddmFormFieldTypesSerializerTracker.getDDMFormFieldTypesSerializer(
-				"json");
-
-		DDMFormFieldTypesSerializerSerializeRequest.Builder builder =
-			DDMFormFieldTypesSerializerSerializeRequest.Builder.newBuilder(
-				formFieldTypes);
-
-		DDMFormFieldTypesSerializerSerializeResponse
-			ddmFormFieldTypesSerializerSerializeResponse =
-				ddmFormFieldTypesSerializer.serialize(builder.build());
-
-		String serializedFormFieldTypes =
-			ddmFormFieldTypesSerializerSerializeResponse.getContent();
-
-		return _jsonFactory.createJSONArray(serializedFormFieldTypes);
 	}
 
 	public String getDDMFormHTML() throws PortalException {
@@ -228,18 +198,11 @@ public class DDMFormDisplayContext {
 			ddmFormRenderingContext.setDDMFormValues(mergedDDMFormValues);
 		}
 
-		boolean showSubmitButton = isShowSubmitButton();
-
-		ddmFormRenderingContext.setShowSubmitButton(showSubmitButton);
-
-		String submitLabel = getSubmitLabel(
-			ddmFormInstance, ddmFormRenderingContext.getLocale());
-
-		ddmFormRenderingContext.setSubmitLabel(submitLabel);
-
 		if (!hasAddFormInstanceRecordPermission()) {
 			ddmFormRenderingContext.setReadOnly(true);
 		}
+
+		ddmFormRenderingContext.setShowSubmitButton(isShowSubmitButton());
 
 		return _ddmFormRenderer.render(
 			ddmForm, ddmFormLayout, ddmFormRenderingContext);
@@ -323,6 +286,19 @@ public class DDMFormDisplayContext {
 		return ddmFormInstanceSettings.redirectURL();
 	}
 
+	public String getSubmitLabel() throws PortalException {
+		ResourceBundle resourceBundle = getResourceBundle(
+			getLocale(
+				PortalUtil.getHttpServletRequest(_renderRequest),
+				getDDMForm()));
+
+		if (hasWorkflowEnabled(getFormInstance(), getThemeDisplay())) {
+			return LanguageUtil.get(resourceBundle, "submit-for-publication");
+		}
+
+		return LanguageUtil.get(resourceBundle, "submit-form");
+	}
+
 	public boolean hasAddFormInstanceRecordPermission() throws PortalException {
 		if (_hasAddFormInstanceRecordPermission != null) {
 			return _hasAddFormInstanceRecordPermission;
@@ -342,6 +318,27 @@ public class DDMFormDisplayContext {
 		}
 
 		return _hasAddFormInstanceRecordPermission;
+	}
+
+	public boolean hasViewPermission() throws PortalException {
+		if (_hasViewPermission != null) {
+			return _hasViewPermission;
+		}
+
+		_hasViewPermission = true;
+
+		DDMFormInstance ddmFormInstance =
+			_ddmFormInstanceLocalService.fetchFormInstance(getFormInstanceId());
+
+		if (ddmFormInstance != null) {
+			ThemeDisplay themeDisplay = getThemeDisplay();
+
+			_hasViewPermission = DDMFormInstancePermission.contains(
+				themeDisplay.getPermissionChecker(), ddmFormInstance,
+				ActionKeys.VIEW);
+		}
+
+		return _hasViewPermission;
 	}
 
 	public boolean isAutosaveEnabled() throws PortalException {
@@ -424,6 +421,30 @@ public class DDMFormDisplayContext {
 		return false;
 	}
 
+	public Boolean isRequireAuthentication() throws PortalException {
+		DDMFormInstance ddmFormInstance = getFormInstance();
+
+		if (ddmFormInstance == null) {
+			return false;
+		}
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)_renderRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		DDMFormInstanceSettings ddmFormInstanceSettings =
+			ddmFormInstance.getSettingsModel();
+
+		Layout layout = themeDisplay.getLayout();
+
+		if (ddmFormInstanceSettings.requireAuthentication() &&
+			!layout.isPrivateLayout() && !themeDisplay.isSignedIn()) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean isShowConfigurationIcon() throws PortalException {
 		if (_showConfigurationIcon != null) {
 			return _showConfigurationIcon;
@@ -442,6 +463,10 @@ public class DDMFormDisplayContext {
 			getPortletId(), ActionKeys.CONFIGURATION);
 
 		return _showConfigurationIcon;
+	}
+
+	public boolean isShowSubmitButton() {
+		return !ParamUtil.getBoolean(_renderRequest, "preview");
 	}
 
 	public boolean isShowSuccessPage() throws PortalException {
@@ -661,23 +686,6 @@ public class DDMFormDisplayContext {
 			moduleResourceBundle, portalResourceBundle);
 	}
 
-	protected String getSubmitLabel(
-		DDMFormInstance ddmFormInstance, Locale locale) {
-
-		ThemeDisplay themeDisplay = getThemeDisplay();
-
-		boolean workflowEnabled = hasWorkflowEnabled(
-			ddmFormInstance, themeDisplay);
-
-		ResourceBundle resourceBundle = getResourceBundle(locale);
-
-		if (workflowEnabled) {
-			return LanguageUtil.get(resourceBundle, "submit-for-publication");
-		}
-
-		return LanguageUtil.get(resourceBundle, "submit-form");
-	}
-
 	protected ThemeDisplay getThemeDisplay() {
 		return (ThemeDisplay)_renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
 	}
@@ -692,26 +700,6 @@ public class DDMFormDisplayContext {
 		ThemeDisplay themeDisplay = getThemeDisplay();
 
 		return themeDisplay.getUserId();
-	}
-
-	protected boolean hasViewPermission() throws PortalException {
-		if (_hasViewPermission != null) {
-			return _hasViewPermission;
-		}
-
-		_hasViewPermission = true;
-
-		DDMFormInstance ddmFormInstance = getFormInstance();
-
-		if (ddmFormInstance != null) {
-			ThemeDisplay themeDisplay = getThemeDisplay();
-
-			_hasViewPermission = DDMFormInstancePermission.contains(
-				themeDisplay.getPermissionChecker(), ddmFormInstance,
-				ActionKeys.VIEW);
-		}
-
-		return _hasViewPermission;
 	}
 
 	protected boolean hasWorkflowEnabled(
@@ -757,16 +745,6 @@ public class DDMFormDisplayContext {
 		String urlCurrent = themeDisplay.getURLCurrent();
 
 		return urlCurrent.contains("/shared");
-	}
-
-	protected boolean isShowSubmitButton() {
-		boolean preview = ParamUtil.getBoolean(_renderRequest, "preview");
-
-		if (preview) {
-			return false;
-		}
-
-		return true;
 	}
 
 	private static final String _DDM_FORM_FIELD_NAME_CAPTCHA = "_CAPTCHA_";

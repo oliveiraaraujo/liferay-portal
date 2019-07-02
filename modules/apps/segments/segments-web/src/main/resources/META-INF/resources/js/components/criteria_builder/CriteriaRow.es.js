@@ -1,8 +1,24 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+
 import BooleanInput from '../inputs/BooleanInput.es';
-import ClayAlert from '../shared/ClayAlert.es';
-import ClayButton from '../shared/ClayButton.es';
-import ClayIcon from '../shared/ClayIcon.es';
-import ClaySelect from '../shared/ClaySelect.es';
+import ClayAlert from '@clayui/alert';
+import ClayButton from '@clayui/button';
+import ClayIcon from '@clayui/icon';
+import {ClaySelectWithOption} from '@clayui/select';
 import CollectionInput from '../inputs/CollectionInput.es';
 import DateInput from '../inputs/DateInput.es';
 import DateTimeInput from '../inputs/DateTimeInput.es';
@@ -334,10 +350,11 @@ class CriteriaRow extends Component {
 		return (
 			<ClayAlert
 				className='bg-transparent p-1 mt-1 border-0'
-				message={message}
+				displayType='danger'
 				title={Liferay.Language.get('error')}
-				type='danger'
-			/>
+			>
+				{message}
+			</ClayAlert>
 		);
 	}
 
@@ -368,7 +385,7 @@ class CriteriaRow extends Component {
 			<div className='edit-container'>
 				{connectDragSource(
 					<div className='drag-icon'>
-						<ClayIcon iconName='drag' />
+						<ClayIcon symbol='drag' />
 					</div>
 				)}
 
@@ -376,7 +393,7 @@ class CriteriaRow extends Component {
 					<b>{propertyLabel}</b>
 				</span>
 
-				<ClaySelect
+				<ClaySelectWithOption
 					className='criterion-input operator-input form-control'
 					disabled={disabledInput}
 					onChange={this._handleInputChange('operatorName')}
@@ -386,32 +403,37 @@ class CriteriaRow extends Component {
 							value: name
 						})
 					)}
-					selected={selectedOperator && selectedOperator.name}
+					value={selectedOperator && selectedOperator.name}
 				/>
 
 				{this._renderValueInput(selectedProperty, value, disabledInput)}
 
 				{error ? (
 					<ClayButton
-						label={Liferay.Language.get('delete')}
 						onClick={this._handleDelete}
-						style='outline-danger'
-					/>
+						className='btn-outline-danger'
+					>
+						{Liferay.Language.get('delete')}
+					</ClayButton>
 				) : (
 					<React.Fragment>
 						<ClayButton
-							borderless
-							iconName='paste'
+							className='btn-outline-borderless'
+							displayType='secondary'
 							monospaced
 							onClick={this._handleDuplicate}
-						/>
+						>
+							<ClayIcon symbol='paste' />
+						</ClayButton>
 
 						<ClayButton
-							borderless
-							iconName='times-circle'
+							className='btn-outline-borderless'
+							displayType='secondary'
 							monospaced
 							onClick={this._handleDelete}
-						/>
+						>
+							<ClayIcon symbol='times-circle' />
+						</ClayButton>
 					</React.Fragment>
 				)}
 			</div>

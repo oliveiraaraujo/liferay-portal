@@ -17,8 +17,11 @@ package com.liferay.bulk.rest.resource.v1_0;
 import com.liferay.bulk.rest.dto.v1_0.DocumentBulkSelection;
 import com.liferay.bulk.rest.dto.v1_0.Selection;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 
 import javax.annotation.Generated;
+
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * To access this resource, run:
@@ -29,11 +32,16 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
+@ProviderType
 public interface SelectionResource {
 
 	public Selection postBulkSelection(
 			DocumentBulkSelection documentBulkSelection)
 		throws Exception;
+
+	public default void setContextAcceptLanguage(
+		AcceptLanguage contextAcceptLanguage) {
+	}
 
 	public void setContextCompany(Company contextCompany);
 

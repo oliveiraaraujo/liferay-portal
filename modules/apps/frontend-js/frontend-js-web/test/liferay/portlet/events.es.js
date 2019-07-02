@@ -1,7 +1,24 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-undef: "warn" */
+/* eslint no-unused-vars: "warn" */
+
 import register from '../../../src/main/resources/META-INF/resources/liferay/portlet/register.es';
 
 describe('PortletHub', () => {
-	it('should add client event listener', () => {
+	it('adds client event listener', () => {
 		const stub = jest.fn();
 
 		return register('PortletA').then(hub => {
@@ -12,7 +29,7 @@ describe('PortletHub', () => {
 		});
 	});
 
-	it('should return number of listeners', () => {
+	it('returns number of listeners', () => {
 		const stub = jest.fn();
 
 		return register('PortletA').then(hub => {
@@ -29,7 +46,7 @@ describe('PortletHub', () => {
 		});
 	});
 
-	it('should throw error if addEventListener is called with invalid args', () => {
+	it('throws error if addEventListener is called with invalid args', () => {
 		return register('PortletA').then(hub => {
 			expect(() => {
 				hub.addEventListener(1, 2, 3);
@@ -45,7 +62,7 @@ describe('PortletHub', () => {
 		});
 	});
 
-	it('should not call listener if it is removed', () => {
+	it('does not call listener if it is removed', () => {
 		const stub = jest.fn();
 
 		return register('PortletA').then(hub => {
@@ -62,7 +79,7 @@ describe('PortletHub', () => {
 		});
 	});
 
-	it('should throw error if dispatchClientEvent is called with invalid args', () => {
+	it('throws error if dispatchClientEvent is called with invalid args', () => {
 		const stub = jest.fn();
 
 		return register('PortletA').then(hub => {
@@ -76,7 +93,7 @@ describe('PortletHub', () => {
 		});
 	});
 
-	it('should throw error when attempting to dispatch event with protected name', () => {
+	it('throws error when attempting to dispatch event with protected name', () => {
 		return register('PortletA').then(hub => {
 			expect(() => {
 				hub.dispatchClientEvent('portlet.clientEvent');
@@ -84,7 +101,7 @@ describe('PortletHub', () => {
 		});
 	});
 
-	it('should throw error if removeEventListener is called with invalid args', () => {
+	it('throws error if removeEventListener is called with invalid args', () => {
 		return register('PortletA').then(hub => {
 			expect(() => {
 				hub.removeEventListener(1, 2);
@@ -102,7 +119,7 @@ describe('PortletHub', () => {
 		});
 	});
 
-	it('should call listener with matching wildcard event types', () => {
+	it('calls listener with matching wildcard event types', () => {
 		const stub = jest.fn();
 
 		return register('PortletA').then(hub => {

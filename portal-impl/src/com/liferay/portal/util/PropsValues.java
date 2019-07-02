@@ -382,6 +382,10 @@ public class PropsValues {
 			PropsUtil.get(
 				PropsKeys.BUFFERED_INCREMENT_STANDBY_TIME_UPPER_LIMIT));
 
+	/**
+	 * @deprecated As of Mueller (7.2.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final boolean CACHE_CLEAR_ON_CONTEXT_INITIALIZATION =
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.CACHE_CLEAR_ON_CONTEXT_INITIALIZATION));
@@ -1958,6 +1962,12 @@ public class PropsValues {
 		MODULE_FRAMEWORK_WEB_GENERATOR_GENERATED_WABS_STORE_DIR = PropsUtil.get(
 			PropsKeys.MODULE_FRAMEWORK_WEB_GENERATOR_GENERATED_WABS_STORE_DIR);
 
+	public static final String[]
+		MODULE_FRAMEWORK_WEB_SERVLET_ANNOTATION_SCANNING_BLACKLIST =
+			PropsUtil.getArray(
+				PropsKeys.
+					MODULE_FRAMEWORK_WEB_SERVLET_ANNOTATION_SCANNING_BLACKLIST);
+
 	public static final String[] MY_SITES_DIRECTORY_SITE_EXCLUDES =
 		PropsUtil.getArray(PropsKeys.MY_SITES_DIRECTORY_SITE_EXCLUDES);
 
@@ -2952,6 +2962,9 @@ public class PropsValues {
 	@Deprecated
 	public static final String[] SPRING_PORTLET_CONFIGS = PropsUtil.getArray(
 		PropsKeys.SPRING_PORTLET_CONFIGS);
+
+	public static final boolean SPRITE_ENABLED = GetterUtil.getBoolean(
+		PropsUtil.get(PropsKeys.SPRITE_ENABLED));
 
 	public static final String SPRITE_FILE_NAME = PropsUtil.get(
 		PropsKeys.SPRITE_FILE_NAME);

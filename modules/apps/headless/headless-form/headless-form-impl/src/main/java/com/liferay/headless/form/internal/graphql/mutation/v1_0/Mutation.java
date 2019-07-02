@@ -24,11 +24,9 @@ import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
 import com.liferay.portal.vulcan.multipart.MultipartBody;
-
-import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLInvokeDetached;
-import graphql.annotations.annotationTypes.GraphQLName;
 
 import javax.annotation.Generated;
 
@@ -66,7 +64,6 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public FormContext postFormEvaluateContext(
 			@GraphQLName("formId") Long formId,
 			@GraphQLName("formContext") FormContext formContext)
@@ -80,7 +77,6 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	@GraphQLName("postFormFormDocumentFormIdMultipartBody")
 	public FormDocument postFormFormDocument(
 			@GraphQLName("formId") Long formId,
@@ -94,8 +90,8 @@ public class Mutation {
 				formId, multipartBody));
 	}
 
-	@GraphQLInvokeDetached
-	public void deleteFormDocument(
+	@GraphQLField
+	public boolean deleteFormDocument(
 			@GraphQLName("formDocumentId") Long formDocumentId)
 		throws Exception {
 
@@ -104,9 +100,11 @@ public class Mutation {
 			this::_populateResourceContext,
 			formDocumentResource -> formDocumentResource.deleteFormDocument(
 				formDocumentId));
+
+		return true;
 	}
 
-	@GraphQLInvokeDetached
+	@GraphQLField
 	public FormRecord putFormRecord(
 			@GraphQLName("formRecordId") Long formRecordId,
 			@GraphQLName("formRecord") FormRecord formRecord)
@@ -120,7 +118,6 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public FormRecord postFormFormRecord(
 			@GraphQLName("formId") Long formId,
 			@GraphQLName("formRecord") FormRecord formRecord)

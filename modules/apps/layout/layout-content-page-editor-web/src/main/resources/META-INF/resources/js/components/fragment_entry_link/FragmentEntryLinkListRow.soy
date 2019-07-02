@@ -48,7 +48,6 @@
 	{@param? store: ?}
 
 	{let $rowClasses kind="text"}
-		container-fluid
 		{sp}fragments-editor__drag-source
 		{sp}fragments-editor__drag-source--layout
 		{sp}fragments-editor__drop-target
@@ -96,18 +95,6 @@
 		{if $row and $row.config and $row.config.backgroundColorCssClass}
 			{sp}bg-{$row.config.backgroundColorCssClass}
 		{/if}
-
-		{if $row and $row.config}
-			{sp}px-{$row.config.paddingHorizontal ?: '3'}
-		{else}
-			{sp}px-3
-		{/if}
-
-		{if $row and $row.config}
-			{sp}py-{$row.config.paddingVertical ?: '3'}
-		{else}
-			{sp}py-3
-		{/if}
 	{/let}
 
 	{let $rowStyle kind="text"}
@@ -153,6 +140,15 @@
 				{sp}container-fluid
 			{else}
 				{sp}container
+			{/if}
+			{if $row and $row.config and $row.config.paddingHorizontal and $row.config.paddingHorizontal != '3'}
+				{sp}px-{$row.config.paddingHorizontal}
+			{/if}
+
+			{if $row and $row.config}
+				{sp}py-{$row.config.paddingVertical ?: '3'}
+			{else}
+				{sp}py-3
 			{/if}
 		{/let}
 

@@ -1,6 +1,21 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+
 import Component from 'metal-component';
 import Soy from 'metal-soy';
-import {CancellablePromise} from 'metal-promise';
 import {core} from 'metal';
 
 import componentTemplates from './RotateComponent.soy';
@@ -29,7 +44,7 @@ class RotateComponent extends Component {
 	 * Rotates the image to the current selected rotation angle.
 	 *
 	 * @param  {ImageData} imageData The image data representation of the image.
-	 * @return {CancellablePromise} A promise that resolves when processing is
+	 * @return {Promise} A promise that resolves when processing is
 	 * complete.
 	 */
 	preview(imageData) {
@@ -40,7 +55,7 @@ class RotateComponent extends Component {
 	 * Rotates the image to the current selected rotation angle.
 	 *
 	 * @param  {ImageData} imageData The image data representation of the image.
-	 * @return {CancellablePromise} A promise that resolves when processing is
+	 * @return {Promise} A promise that resolves when processing is
 	 * complete.
 	 */
 	process(imageData) {
@@ -62,26 +77,26 @@ class RotateComponent extends Component {
 	 * @param  {number} rotationAngle The normalized rotation angle (in degrees)
 	 * in the range [0-360).
 	 * @protected
-	 * @return {CancellablePromise} A promise that resolves when the image is
+	 * @return {Promise} A promise that resolves when the image is
 	 * rotated.
 	 */
 	rotate_(imageData, rotationAngle) {
-		let cancellablePromise = new CancellablePromise((resolve, reject) => {
-			let imageWidth = imageData.width;
-			let imageHeight = imageData.height;
+		const cancellablePromise = new Promise((resolve, reject) => {
+			const imageWidth = imageData.width;
+			const imageHeight = imageData.height;
 
-			let swapDimensions = (rotationAngle / 90) % 2;
+			const swapDimensions = (rotationAngle / 90) % 2;
 
-			let imageCanvas = document.createElement('canvas');
+			const imageCanvas = document.createElement('canvas');
 			imageCanvas.width = imageWidth;
 			imageCanvas.height = imageHeight;
 			imageCanvas.getContext('2d').putImageData(imageData, 0, 0);
 
-			let offscreenCanvas = document.createElement('canvas');
+			const offscreenCanvas = document.createElement('canvas');
 			offscreenCanvas.width = swapDimensions ? imageHeight : imageWidth;
 			offscreenCanvas.height = swapDimensions ? imageWidth : imageHeight;
 
-			let offscreenContext = offscreenCanvas.getContext('2d');
+			const offscreenContext = offscreenCanvas.getContext('2d');
 			offscreenContext.save();
 			offscreenContext.translate(
 				offscreenCanvas.width / 2,

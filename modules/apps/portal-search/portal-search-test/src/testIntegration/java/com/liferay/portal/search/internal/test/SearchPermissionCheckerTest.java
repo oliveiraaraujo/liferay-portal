@@ -23,8 +23,8 @@ import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.model.Role;
-import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.search.BooleanClause;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.SearchContext;
@@ -342,10 +342,10 @@ public class SearchPermissionCheckerTest {
 
 		@Override
 		public Void visit(TermsFilter termsFilter) {
-			if (_field.equals(termsFilter.getField())) {
-				if (ArrayUtil.contains(termsFilter.getValues(), _value)) {
-					_found = true;
-				}
+			if (_field.equals(termsFilter.getField()) &&
+				ArrayUtil.contains(termsFilter.getValues(), _value)) {
+
+				_found = true;
 			}
 
 			return null;

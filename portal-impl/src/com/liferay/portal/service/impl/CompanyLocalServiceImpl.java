@@ -20,7 +20,6 @@ import com.liferay.petra.encryptor.Encryptor;
 import com.liferay.petra.encryptor.EncryptorException;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.Property;
@@ -54,11 +53,11 @@ import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.model.PortalPreferences;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.Role;
-import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.SystemEvent;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.VirtualHost;
+import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchEngineHelperUtil;
@@ -68,8 +67,6 @@ import com.liferay.portal.kernel.search.facet.ScopeFacet;
 import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcher;
 import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcherManagerUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
-import com.liferay.portal.kernel.service.persistence.CompanyProvider;
-import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -309,9 +306,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		preregisterCompany(company.getCompanyId());
 
-		CompanyProvider currentCompanyProvider =
-			_companyProviderWrapper.getCompanyProvider();
-
 		Locale localeThreadLocalDefaultLocale =
 			LocaleThreadLocal.getDefaultLocale();
 		Locale localeThreadSiteDefaultLocale =
@@ -326,9 +320,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			LocaleThreadLocal.setSiteDefaultLocale(null);
 
 			final long companyId = company.getCompanyId();
-
-			_companyProviderWrapper.setCompanyProvider(
-				new CustomCompanyProvider(companyId));
 
 			// Key
 
@@ -464,8 +455,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				});
 		}
 		finally {
-			_companyProviderWrapper.setCompanyProvider(currentCompanyProvider);
-
 			LocaleThreadLocal.setDefaultLocale(localeThreadLocalDefaultLocale);
 			LocaleThreadLocal.setSiteDefaultLocale(
 				localeThreadSiteDefaultLocale);
@@ -839,10 +828,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		virtualHostname = StringUtil.toLowerCase(
 			StringUtil.trim(virtualHostname));
 
-		if (!active) {
-			if (companyId == PortalInstances.getDefaultCompanyId()) {
-				active = true;
-			}
+		if (!active && (companyId == PortalInstances.getDefaultCompanyId())) {
+			active = true;
 		}
 
 		Company company = companyPersistence.findByPrimaryKey(companyId);
@@ -874,7 +861,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	 * @param  virtualHostname the company's virtual host name
 	 * @param  mx the company's mail domain
 	 * @param  homeURL the company's home URL (optionally <code>null</code>)
-	 * @param  logo whether to update the company's logo
+	 * @param  hasLogo if the company has a custom logo
 	 * @param  logoBytes the new logo image data
 	 * @param  name the company's account name(optionally <code>null</code>)
 	 * @param  legalName the company's account legal name (optionally
@@ -896,7 +883,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	@Override
 	public Company updateCompany(
 			long companyId, String virtualHostname, String mx, String homeURL,
-			boolean logo, byte[] logoBytes, String name, String legalName,
+			boolean hasLogo, byte[] logoBytes, String name, String legalName,
 			String legalId, String legalType, String sicCode,
 			String tickerSymbol, String industry, String type, String size)
 		throws PortalException {
@@ -922,7 +909,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		company.setHomeURL(homeURL);
 
-		PortalUtil.updateImageId(company, logo, logoBytes, "logoId", 0, 0, 0);
+		PortalUtil.updateImageId(
+			company, hasLogo, logoBytes, "logoId", 0, 0, 0);
 
 		companyPersistence.update(company);
 
@@ -1881,33 +1869,10 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	private static final Log _log = LogFactoryUtil.getLog(
 		CompanyLocalServiceImpl.class);
 
-	@BeanReference(type = CompanyProviderWrapper.class)
-	private CompanyProviderWrapper _companyProviderWrapper;
-
 	private final Set<Company> _pendingCompanies = new HashSet<>();
 	private final ServiceTracker
 		<PortalInstanceLifecycleManager, PortalInstanceLifecycleManager>
 			_serviceTracker;
-
-	private static class CustomCompanyProvider implements CompanyProvider {
-
-		public CustomCompanyProvider(long companyId) {
-			_companyId = companyId;
-		}
-
-		@Override
-		public long getCompanyId() {
-			return _companyId;
-		}
-
-		@Override
-		public String getCompanyIdName() {
-			return "companyId";
-		}
-
-		private final long _companyId;
-
-	}
 
 	private class PortalInstanceLifecycleManagerServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer

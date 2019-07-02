@@ -14,22 +14,26 @@
 
 package com.liferay.talend.runtime.writer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import com.liferay.talend.avro.constants.AvroConstants;
 import com.liferay.talend.runtime.LiferaySink;
 import com.liferay.talend.tliferayoutput.Action;
 import com.liferay.talend.tliferayoutput.TLiferayOutputProperties;
 
 import java.io.IOException;
+import java.io.StringReader;
 
 import java.net.URI;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Map;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
 
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
@@ -52,6 +56,7 @@ import org.talend.daikon.i18n.I18nMessages;
 
 /**
  * @author Zoltán Takács
+ * @author Igor Beslic
  */
 public class LiferayWriter
 	implements WriterWithFeedback<Result, IndexedRecord, IndexedRecord> {
@@ -91,21 +96,19 @@ public class LiferayWriter
 	}
 
 	public void doInsert(IndexedRecord indexedRecord) throws IOException {
-		ObjectNode objectNode = _createEndpointRequestPayload(indexedRecord);
-
 		URI resourceURI = _tLiferayOutputProperties.resource.getEndpointURI();
 
 		_liferaySink.doPostRequest(
-			_runtimeContainer, resourceURI.toASCIIString(), objectNode);
+			_runtimeContainer, resourceURI.toASCIIString(),
+			_createEndpointRequestPayload(indexedRecord));
 	}
 
 	public void doUpdate(IndexedRecord indexedRecord) throws IOException {
-		ObjectNode objectNode = _createEndpointRequestPayload(indexedRecord);
-
 		URI resourceURI = _tLiferayOutputProperties.resource.getEndpointURI();
 
 		_liferaySink.doPatchRequest(
-			_runtimeContainer, resourceURI.toASCIIString(), objectNode);
+			_runtimeContainer, resourceURI.toASCIIString(),
+			_createEndpointRequestPayload(indexedRecord));
 	}
 
 	@Override
@@ -180,41 +183,6 @@ public class LiferayWriter
 		_result.totalCount++;
 	}
 
-	protected String getIndexedRecordId(IndexedRecord indexedRecord)
-		throws IOException {
-
-		Schema indexRecordSchema = indexedRecord.getSchema();
-
-		List<Schema.Field> indexRecordFields = indexRecordSchema.getFields();
-
-		Stream<Schema.Field> stream = indexRecordFields.stream();
-
-		Schema.Field idField = stream.filter(
-			field -> AvroConstants.ID.equals(field.name())
-		).findFirst(
-		).orElseThrow(
-			() -> new IOException(
-				String.format(
-					"Unable to find '%s' field in the incoming indexed record",
-					AvroConstants.ID))
-		);
-
-		Schema fieldSchema = idField.schema();
-
-		Schema unwrappedSchema = AvroUtils.unwrapIfNullable(fieldSchema);
-
-		Schema.Type fieldType = unwrappedSchema.getType();
-
-		if (fieldType == Schema.Type.STRING) {
-			return (String)indexedRecord.get(idField.pos());
-		}
-
-		throw new IOException(
-			i18nMessages.getMessage(
-				"error.unsupported.field.schema", idField.name(),
-				fieldType.getName()));
-	}
-
 	protected static final I18nMessages i18nMessages;
 
 	static {
@@ -224,7 +192,7 @@ public class LiferayWriter
 		i18nMessages = i18nMessageProvider.getI18nMessages(LiferayWriter.class);
 	}
 
-	private ObjectNode _createEndpointRequestPayload(
+	private JsonObject _createEndpointRequestPayload(
 			IndexedRecord indexedRecord)
 		throws IOException {
 
@@ -232,182 +200,104 @@ public class LiferayWriter
 
 		List<Schema.Field> indexRecordFields = indexRecordSchema.getFields();
 
-		ObjectNode objectNode = _mapper.createObjectNode();
+		JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+
+		Map<String, JsonObjectBuilder> nestedJsonObjectBuilders =
+			new HashMap<>();
 
 		for (Schema.Field field : indexRecordFields) {
 			String fieldName = field.name();
 
-			Schema fieldSchema = field.schema();
+			Schema unwrappedSchema = AvroUtils.unwrapIfNullable(field.schema());
 
-			Schema unwrappedSchema = AvroUtils.unwrapIfNullable(fieldSchema);
-
-			Schema.Type fieldType = unwrappedSchema.getType();
-
-			if (fieldType == Schema.Type.NULL) {
+			if (unwrappedSchema.getType() == Schema.Type.NULL) {
 				continue;
 			}
 
-			if (AvroUtils.isSameType(unwrappedSchema, AvroUtils._boolean())) {
-				if (fieldName.contains("_")) {
-					String[] nameParts = fieldName.split("_");
+			JsonObjectBuilder currentJsonObjectBuilder = objectBuilder;
 
-					objectNode.with(
-						nameParts[0]
-					).put(
-						nameParts[1], (boolean)indexedRecord.get(field.pos())
-					);
+			if (_isNestedFieldName(fieldName)) {
+				String[] nameParts = fieldName.split("_");
+
+				if (!nestedJsonObjectBuilders.containsKey(nameParts[0])) {
+					nestedJsonObjectBuilders.put(
+						nameParts[0], Json.createObjectBuilder());
 				}
-				else {
-					objectNode.put(
-						fieldName, (boolean)indexedRecord.get(field.pos()));
-				}
+
+				currentJsonObjectBuilder = nestedJsonObjectBuilders.get(
+					nameParts[0]);
+
+				fieldName = nameParts[1];
+			}
+
+			if (AvroUtils.isSameType(unwrappedSchema, AvroUtils._boolean())) {
+				currentJsonObjectBuilder.add(
+					fieldName, (boolean)indexedRecord.get(field.pos()));
 			}
 			else if (AvroUtils.isSameType(
 						unwrappedSchema, AvroUtils._bytes())) {
 
-				if (fieldName.contains("_")) {
-					String[] nameParts = fieldName.split("_");
+				Base64.Encoder encoder = Base64.getEncoder();
 
-					objectNode.with(
-						nameParts[0]
-					).put(
-						nameParts[1], (byte[])indexedRecord.get(field.pos())
-					);
-				}
-				else {
-					objectNode.put(
-						fieldName, (byte[])indexedRecord.get(field.pos()));
-				}
+				currentJsonObjectBuilder.add(
+					fieldName,
+					encoder.encodeToString(
+						(byte[])indexedRecord.get(field.pos())));
 			}
 			else if (AvroUtils.isSameType(
 						unwrappedSchema, AvroUtils._logicalTimestamp()) ||
 					 AvroUtils.isSameType(unwrappedSchema, AvroUtils._date())) {
 
-				if (fieldName.contains("_")) {
-					String[] nameParts = fieldName.split("_");
-
-					objectNode.with(
-						nameParts[0]
-					).put(
-						nameParts[1], (String)indexedRecord.get(field.pos())
-					);
-				}
-				else {
-					objectNode.put(
-						fieldName, (String)indexedRecord.get(field.pos()));
-				}
+				currentJsonObjectBuilder.add(
+					fieldName, (String)indexedRecord.get(field.pos()));
 			}
 			else if (AvroUtils.isSameType(
 						unwrappedSchema, AvroUtils._double())) {
 
-				if (fieldName.contains("_")) {
-					String[] nameParts = fieldName.split("_");
-
-					objectNode.with(
-						nameParts[0]
-					).put(
-						nameParts[1], (double)indexedRecord.get(field.pos())
-					);
-				}
-				else {
-					objectNode.put(
-						fieldName, (double)indexedRecord.get(field.pos()));
-				}
+				currentJsonObjectBuilder.add(
+					fieldName, (double)indexedRecord.get(field.pos()));
 			}
 			else if (AvroUtils.isSameType(
 						unwrappedSchema, AvroUtils._float())) {
 
-				if (fieldName.contains("_")) {
-					String[] nameParts = fieldName.split("_");
-
-					objectNode.with(
-						nameParts[0]
-					).put(
-						nameParts[1], (float)indexedRecord.get(field.pos())
-					);
-				}
-				else {
-					objectNode.put(
-						fieldName, (float)indexedRecord.get(field.pos()));
-				}
+				currentJsonObjectBuilder.add(
+					fieldName, (float)indexedRecord.get(field.pos()));
 			}
 			else if (AvroUtils.isSameType(unwrappedSchema, AvroUtils._int())) {
-				if (fieldName.contains("_")) {
-					String[] nameParts = fieldName.split("_");
-
-					objectNode.with(
-						nameParts[0]
-					).put(
-						nameParts[1], (int)indexedRecord.get(field.pos())
-					);
-				}
-				else {
-					objectNode.put(
-						fieldName, (int)indexedRecord.get(field.pos()));
-				}
+				currentJsonObjectBuilder.add(
+					fieldName, (int)indexedRecord.get(field.pos()));
 			}
 			else if (AvroUtils.isSameType(unwrappedSchema, AvroUtils._long())) {
-				if (fieldName.contains("_")) {
-					String[] nameParts = fieldName.split("_");
-
-					objectNode.with(
-						nameParts[0]
-					).put(
-						nameParts[1], (long)indexedRecord.get(field.pos())
-					);
-				}
-				else {
-					objectNode.put(
-						fieldName, (long)indexedRecord.get(field.pos()));
-				}
+				currentJsonObjectBuilder.add(
+					fieldName, (long)indexedRecord.get(field.pos()));
 			}
 			else if (AvroUtils.isSameType(
 						unwrappedSchema, AvroUtils._string())) {
 
-				try {
-					if (fieldName.contains("_")) {
-						String[] nameParts = fieldName.split("_");
+				StringReader stringReader = new StringReader(
+					(String)indexedRecord.get(field.pos()));
 
-						objectNode.with(
-							nameParts[0]
-						).put(
-							nameParts[1],
-							_mapper.readTree(
-								(String)indexedRecord.get(field.pos()))
-						);
-					}
-					else {
-						objectNode.put(
-							fieldName,
-							_mapper.readTree(
-								(String)indexedRecord.get(field.pos())));
-					}
-				}
-				catch (IOException ioe) {
-					if (fieldName.contains("_")) {
-						String[] nameParts = fieldName.split("_");
+				JsonReader jsonReader = Json.createReader(stringReader);
 
-						objectNode.with(
-							nameParts[0]
-						).put(
-							nameParts[1], (String)indexedRecord.get(field.pos())
-						);
-					}
-					else {
-						objectNode.put(
-							fieldName, (String)indexedRecord.get(field.pos()));
-					}
-				}
+				currentJsonObjectBuilder.add(fieldName, jsonReader.readValue());
 			}
 			else {
 				throw new IOException(
 					i18nMessages.getMessage(
 						"error.unsupported.field.schema", fieldName,
-						fieldType.getName()));
+						unwrappedSchema.getType()));
 			}
 		}
 
-		return objectNode;
+		for (Map.Entry<String, JsonObjectBuilder> nestedJsonObjectBuilder :
+				nestedJsonObjectBuilders.entrySet()) {
+
+			objectBuilder.add(
+				nestedJsonObjectBuilder.getKey(),
+				nestedJsonObjectBuilder.getValue());
+		}
+
+		return objectBuilder.build();
 	}
 
 	private void _handleRejectRecord(
@@ -467,6 +357,14 @@ public class LiferayWriter
 		_successWrites.add(indexedRecord);
 	}
 
+	private boolean _isNestedFieldName(String fieldName) {
+		if (fieldName.contains("_")) {
+			return true;
+		}
+
+		return false;
+	}
+
 	private static final Logger _log = LoggerFactory.getLogger(
 		LiferayWriter.class);
 
@@ -476,7 +374,6 @@ public class LiferayWriter
 	private final boolean _dieOnError;
 	private final LiferaySink _liferaySink;
 	private final LiferayWriteOperation _liferayWriteOperation;
-	private final ObjectMapper _mapper = new ObjectMapper();
 	private final Schema _rejectSchema;
 	private final List<IndexedRecord> _rejectWrites;
 	private Result _result;

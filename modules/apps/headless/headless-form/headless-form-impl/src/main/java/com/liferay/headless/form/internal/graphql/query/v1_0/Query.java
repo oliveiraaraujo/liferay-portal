@@ -16,6 +16,7 @@ package com.liferay.headless.form.internal.graphql.query.v1_0;
 
 import com.liferay.headless.form.dto.v1_0.Form;
 import com.liferay.headless.form.dto.v1_0.FormDocument;
+import com.liferay.headless.form.dto.v1_0.FormPage;
 import com.liferay.headless.form.dto.v1_0.FormRecord;
 import com.liferay.headless.form.dto.v1_0.FormStructure;
 import com.liferay.headless.form.resource.v1_0.FormDocumentResource;
@@ -26,12 +27,10 @@ import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
-
-import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLInvokeDetached;
-import graphql.annotations.annotationTypes.GraphQLName;
 
 import javax.annotation.Generated;
 
@@ -77,7 +76,6 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public Form getForm(@GraphQLName("formId") Long formId) throws Exception {
 		return _applyComponentServiceObjects(
 			_formResourceComponentServiceObjects,
@@ -86,8 +84,7 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<Form> getSiteFormsPage(
+	public FormPage getSiteFormsPage(
 			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("pageSize") int pageSize,
 			@GraphQLName("page") int page)
@@ -96,16 +93,12 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_formResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			formResource -> {
-				Page paginationPage = formResource.getSiteFormsPage(
-					siteId, Pagination.of(pageSize, page));
-
-				return paginationPage.getItems();
-			});
+			formResource -> new FormPage(
+				formResource.getSiteFormsPage(
+					siteId, Pagination.of(page, pageSize))));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public FormDocument getFormDocument(
 			@GraphQLName("formDocumentId") Long formDocumentId)
 		throws Exception {
@@ -118,7 +111,6 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public FormRecord getFormRecord(
 			@GraphQLName("formRecordId") Long formRecordId)
 		throws Exception {
@@ -131,8 +123,7 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<FormRecord> getFormFormRecordsPage(
+	public FormRecordPage getFormFormRecordsPage(
 			@GraphQLName("formId") Long formId,
 			@GraphQLName("pageSize") int pageSize,
 			@GraphQLName("page") int page)
@@ -141,16 +132,12 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_formRecordResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			formRecordResource -> {
-				Page paginationPage = formRecordResource.getFormFormRecordsPage(
-					formId, Pagination.of(pageSize, page));
-
-				return paginationPage.getItems();
-			});
+			formRecordResource -> new FormRecordPage(
+				formRecordResource.getFormFormRecordsPage(
+					formId, Pagination.of(page, pageSize))));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public FormRecord getFormFormRecordByLatestDraft(
 			@GraphQLName("formId") Long formId)
 		throws Exception {
@@ -163,7 +150,6 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public FormStructure getFormStructure(
 			@GraphQLName("formStructureId") Long formStructureId)
 		throws Exception {
@@ -176,8 +162,7 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<FormStructure> getSiteFormStructuresPage(
+	public FormStructurePage getSiteFormStructuresPage(
 			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("pageSize") int pageSize,
 			@GraphQLName("page") int page)
@@ -186,13 +171,105 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_formStructureResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			formStructureResource -> {
-				Page paginationPage =
-					formStructureResource.getSiteFormStructuresPage(
-						siteId, Pagination.of(pageSize, page));
+			formStructureResource -> new FormStructurePage(
+				formStructureResource.getSiteFormStructuresPage(
+					siteId, Pagination.of(page, pageSize))));
+	}
 
-				return paginationPage.getItems();
-			});
+	@GraphQLName("FormPage")
+	public class FormPage {
+
+		public FormPage(Page formPage) {
+			items = formPage.getItems();
+			page = formPage.getPage();
+			pageSize = formPage.getPageSize();
+			totalCount = formPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<Form> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("FormDocumentPage")
+	public class FormDocumentPage {
+
+		public FormDocumentPage(Page formDocumentPage) {
+			items = formDocumentPage.getItems();
+			page = formDocumentPage.getPage();
+			pageSize = formDocumentPage.getPageSize();
+			totalCount = formDocumentPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<FormDocument> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("FormRecordPage")
+	public class FormRecordPage {
+
+		public FormRecordPage(Page formRecordPage) {
+			items = formRecordPage.getItems();
+			page = formRecordPage.getPage();
+			pageSize = formRecordPage.getPageSize();
+			totalCount = formRecordPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<FormRecord> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("FormStructurePage")
+	public class FormStructurePage {
+
+		public FormStructurePage(Page formStructurePage) {
+			items = formStructurePage.getItems();
+			page = formStructurePage.getPage();
+			pageSize = formStructurePage.getPageSize();
+			totalCount = formStructurePage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<FormStructure> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
 	}
 
 	private <T, R, E1 extends Throwable, E2 extends Throwable> R

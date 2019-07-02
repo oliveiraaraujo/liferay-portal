@@ -1,17 +1,34 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-for-of-loops/no-for-of-loops: "warn" */
+/* eslint no-unused-vars: "warn" */
+
 import '../Calculator/Calculator.es';
-import '../Page/PageRenderer.es';
 import 'clay-alert';
 import 'clay-button';
 import 'clay-modal';
+import 'dynamic-data-mapping-form-renderer/js/components/PageRenderer/PageRenderer.es';
 
 import Component from 'metal-component';
 import Soy from 'metal-soy';
 import templates from './RuleEditor.soy.js';
 import {Config} from 'metal-state';
 import {getFieldProperty} from '../LayoutProvider/util/fields.es';
-import {makeFetch} from '../../util/fetch.es';
+import {makeFetch} from 'dynamic-data-mapping-form-renderer/js/util/fetch.es';
 import {maxPageIndex, pageOptions} from '../../util/pageSupport.es';
-import {PagesVisitor} from '../../util/visitors.es';
+import {PagesVisitor} from 'dynamic-data-mapping-form-renderer/js/util/visitors.es';
 
 const fieldOptionStructure = Config.shapeOf({
 	dataType: Config.string(),
@@ -78,7 +95,7 @@ class RuleEditor extends Component {
 
 	formatDataProviderParameter(actionParameters, parameters) {
 		return parameters.reduce(
-			(result, {name, value}, index) => ({
+			(result, {name, value}) => ({
 				...result,
 				[name]:
 					Object.keys(actionParameters).indexOf(name) !== -1
@@ -458,7 +475,7 @@ class RuleEditor extends Component {
 		return conditions;
 	}
 
-	_clearSelectedSecondOperand(secondOperandSelectedList, index) {
+	_clearSelectedSecondOperand(secondOperandSelectedList) {
 		return secondOperandSelectedList;
 	}
 
@@ -594,7 +611,11 @@ class RuleEditor extends Component {
 			}
 		}
 
-		return {dataType, repeatable, type};
+		return {
+			dataType,
+			repeatable,
+			type
+		};
 	}
 
 	_getIndex(fieldInstance, fieldClass) {
@@ -687,7 +708,7 @@ class RuleEditor extends Component {
 		});
 	}
 
-	_handleCancelRule(event) {
+	_handleCancelRule() {
 		this.emit('ruleCancel', {});
 	}
 
@@ -917,7 +938,7 @@ class RuleEditor extends Component {
 		});
 	}
 
-	_handleRuleAdded(event) {
+	_handleRuleAdded() {
 		const actions = this._removeActionInternalProperties();
 		const conditions = this._removeConditionInternalProperties();
 		const {ruleEditedIndex} = this;
@@ -1302,7 +1323,7 @@ class RuleEditor extends Component {
 
 		const visitor = new PagesVisitor(pages);
 
-		actions.forEach((action, index) => {
+		actions.forEach(action => {
 			let targetFieldExists = false;
 
 			visitor.mapFields(({fieldName}) => {
@@ -1434,29 +1455,22 @@ class RuleEditor extends Component {
 	_validateConditionsFilling() {
 		const {conditions} = this;
 
-		let allFieldsFilled = true;
-
-		for (const condition of conditions) {
+		for (let i = 0; i < conditions.length; i++) {
+			const condition = conditions[i];
 			const {operands, operator} = condition;
 
-			if (operands[0].value == '') {
-				allFieldsFilled = false;
-				break;
-			} else if (!operator) {
-				allFieldsFilled = false;
-				break;
-			} else if (operator && this._isBinary(operator)) {
-				allFieldsFilled =
-					operands[1] &&
-					!!operands[1].value &&
-					operands[1].value != '';
-				if (!allFieldsFilled) {
-					break;
-				}
+			if (operands[0].value == '' || !operator) {
+				return false;
+			} else if (
+				operator &&
+				this._isBinary(operator) &&
+				!(operands[1] && !!operands[1].value && operands[1].value != '')
+			) {
+				return false;
 			}
 		}
 
-		return allFieldsFilled;
+		return true;
 	}
 
 	_validateInputOutputs(autofillActions) {

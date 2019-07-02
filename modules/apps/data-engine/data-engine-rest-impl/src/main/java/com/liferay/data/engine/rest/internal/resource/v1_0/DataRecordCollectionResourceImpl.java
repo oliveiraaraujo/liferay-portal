@@ -28,6 +28,7 @@ import com.liferay.dynamic.data.lists.model.DDLRecordSetConstants;
 import com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -38,12 +39,14 @@ import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.ws.rs.BadRequestException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -76,21 +79,15 @@ public class DataRecordCollectionResourceImpl
 				Long dataDefinitionId, String keywords, Pagination pagination)
 		throws Exception {
 
+		if (pagination.getPageSize() > 250) {
+			throw new BadRequestException(
+				LanguageUtil.format(
+					contextAcceptLanguage.getPreferredLocale(),
+					"page-size-is-greater-than-x", 250));
+		}
+
 		DDMStructure ddmStructure = _ddmStructureLocalService.getStructure(
 			dataDefinitionId);
-
-		if (Validator.isNull(keywords)) {
-			return Page.of(
-				transform(
-					_ddlRecordSetLocalService.getRecordSets(
-						ddmStructure.getGroupId(),
-						pagination.getStartPosition(),
-						pagination.getEndPosition()),
-					DataRecordCollectionUtil::toDataRecordCollection),
-				pagination,
-				_ddlRecordSetLocalService.getRecordSetsCount(
-					ddmStructure.getGroupId()));
-		}
 
 		return Page.of(
 			transform(
@@ -120,19 +117,25 @@ public class DataRecordCollectionResourceImpl
 	}
 
 	@Override
+	public DataRecordCollection getSiteDataRecordCollection(
+			Long siteId, String dataRecordCollectionKey)
+		throws Exception {
+
+		return DataRecordCollectionUtil.toDataRecordCollection(
+			_ddlRecordSetLocalService.getRecordSet(
+				siteId, dataRecordCollectionKey));
+	}
+
+	@Override
 	public Page<DataRecordCollection> getSiteDataRecordCollectionsPage(
 			Long siteId, String keywords, Pagination pagination)
 		throws Exception {
 
-		if (Validator.isNull(keywords)) {
-			return Page.of(
-				transform(
-					_ddlRecordSetLocalService.getRecordSets(
-						siteId, pagination.getStartPosition(),
-						pagination.getEndPosition()),
-					DataRecordCollectionUtil::toDataRecordCollection),
-				pagination,
-				_ddlRecordSetLocalService.getRecordSetsCount(siteId));
+		if (pagination.getPageSize() > 250) {
+			throw new BadRequestException(
+				LanguageUtil.format(
+					contextAcceptLanguage.getPreferredLocale(),
+					"page-size-is-greater-than-x", 250));
 		}
 
 		Group group = _groupLocalService.getGroup(siteId);
@@ -168,7 +171,8 @@ public class DataRecordCollectionResourceImpl
 		dataRecordCollection = DataRecordCollectionUtil.toDataRecordCollection(
 			_ddlRecordSetLocalService.addRecordSet(
 				PrincipalThreadLocal.getUserId(), ddmStructure.getGroupId(),
-				dataDefinitionId, null,
+				dataDefinitionId,
+				dataRecordCollection.getDataRecordCollectionKey(),
 				LocalizedValueUtil.toLocaleStringMap(
 					dataRecordCollection.getName()),
 				LocalizedValueUtil.toLocaleStringMap(
@@ -198,35 +202,45 @@ public class DataRecordCollectionResourceImpl
 
 		List<String> actionIds = new ArrayList<>();
 
-		if (dataRecordCollectionPermission.getAddDataRecord()) {
+		if (GetterUtil.getBoolean(
+				dataRecordCollectionPermission.getAddDataRecord())) {
+
 			actionIds.add(DataActionKeys.ADD_DATA_RECORD);
 		}
 
-		if (dataRecordCollectionPermission.getDelete()) {
+		if (GetterUtil.getBoolean(dataRecordCollectionPermission.getDelete())) {
 			actionIds.add(ActionKeys.DELETE);
 		}
 
-		if (dataRecordCollectionPermission.getDeleteDataRecord()) {
+		if (GetterUtil.getBoolean(
+				dataRecordCollectionPermission.getDeleteDataRecord())) {
+
 			actionIds.add(DataActionKeys.DELETE_DATA_RECORD);
 		}
 
-		if (dataRecordCollectionPermission.getExportDataRecord()) {
+		if (GetterUtil.getBoolean(
+				dataRecordCollectionPermission.getExportDataRecord())) {
+
 			actionIds.add(DataActionKeys.EXPORT_DATA_RECORDS);
 		}
 
-		if (dataRecordCollectionPermission.getUpdate()) {
+		if (GetterUtil.getBoolean(dataRecordCollectionPermission.getUpdate())) {
 			actionIds.add(ActionKeys.UPDATE);
 		}
 
-		if (dataRecordCollectionPermission.getUpdateDataRecord()) {
+		if (GetterUtil.getBoolean(
+				dataRecordCollectionPermission.getUpdateDataRecord())) {
+
 			actionIds.add(DataActionKeys.UPDATE_DATA_RECORD);
 		}
 
-		if (dataRecordCollectionPermission.getView()) {
+		if (GetterUtil.getBoolean(dataRecordCollectionPermission.getView())) {
 			actionIds.add(ActionKeys.VIEW);
 		}
 
-		if (dataRecordCollectionPermission.getViewDataRecord()) {
+		if (GetterUtil.getBoolean(
+				dataRecordCollectionPermission.getViewDataRecord())) {
+
 			actionIds.add(DataActionKeys.VIEW_DATA_RECORD);
 		}
 
@@ -253,11 +267,15 @@ public class DataRecordCollectionResourceImpl
 
 		List<String> actionIds = new ArrayList<>();
 
-		if (dataRecordCollectionPermission.getAddDataRecordCollection()) {
+		if (GetterUtil.getBoolean(
+				dataRecordCollectionPermission.getAddDataRecordCollection())) {
+
 			actionIds.add(DataActionKeys.ADD_DATA_RECORD_COLLECTION);
 		}
 
-		if (dataRecordCollectionPermission.getDefinePermissions()) {
+		if (GetterUtil.getBoolean(
+				dataRecordCollectionPermission.getDefinePermissions())) {
+
 			actionIds.add(DataActionKeys.DEFINE_PERMISSIONS);
 		}
 

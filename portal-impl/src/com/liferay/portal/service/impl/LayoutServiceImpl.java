@@ -1008,7 +1008,7 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 	 *         To see how the URL is normalized when accessed see {@link
 	 *         com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil#normalize(
 	 *         String)}.
-	 * @param  iconImage whether the icon image will be updated
+	 * @param  hasIconImage if the layout has a custom icon image
 	 * @param  iconBytes the byte array of the layout's new icon image
 	 * @param  serviceContext the service context to be applied. Can set the
 	 *         modification date and expando bridge attributes for the layout.
@@ -1022,7 +1022,7 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 			Map<Locale, String> localeTitlesMap,
 			Map<Locale, String> descriptionMap, Map<Locale, String> keywordsMap,
 			Map<Locale, String> robotsMap, String type, boolean hidden,
-			Map<Locale, String> friendlyURLMap, boolean iconImage,
+			Map<Locale, String> friendlyURLMap, boolean hasIconImage,
 			byte[] iconBytes, ServiceContext serviceContext)
 		throws PortalException {
 
@@ -1035,7 +1035,7 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 		Layout updatedLayout = layoutLocalService.updateLayout(
 			groupId, privateLayout, layoutId, parentLayoutId, localeNamesMap,
 			localeTitlesMap, descriptionMap, keywordsMap, robotsMap, type,
-			hidden, friendlyURLMap, iconImage, iconBytes, serviceContext);
+			hidden, friendlyURLMap, hasIconImage, iconBytes, serviceContext);
 
 		if (!(layout.getLayoutType() instanceof LayoutTypePortlet)) {
 			checkLayoutTypeSettings(

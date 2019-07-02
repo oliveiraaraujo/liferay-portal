@@ -243,7 +243,7 @@
 </tr>
 <tr>
 	<td>PAGE_1</td>
-	<td>//div[contains(@id,'navbar')]/ul/li[1]/a</td>
+	<td>//section[@class='portlet']//div[contains(@id,'navbar')]/ul/li[1]/a</td>
 	<td>1st Page</td>
 </tr>
 <tr>
@@ -278,7 +278,7 @@
 </tr>
 <tr>
 	<td>PAGE_2</td>
-	<td>//div[contains(@id,'navbar')]/ul/li[2]/a</td>
+	<td>//section[@class='portlet']//div[contains(@id,'navbar')]/ul/li[2]/a</td>
 	<td>2nd Page</td>
 </tr>
 <tr>
@@ -305,6 +305,11 @@
 	<td>PAGE_3_STAGING_LIVE</td>
 	<td>//ul/li[@id='layout_3']/a</td>
 	<td></td>
+</tr>
+<tr>
+	<td>PAGE_4</td>
+	<td>//div[contains(@id,'navbar')]/ul/li[4]/a</td>
+	<td>4th Page</td>
 </tr>
 <tr>
 	<td>PAGE_TEMPLATE_3</td>

@@ -1,3 +1,20 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-console: "warn" */
+/* eslint no-unused-vars: "warn" */
+
 'use strict';
 
 import {
@@ -20,7 +37,7 @@ describe('Liferay', () => {
 	});
 
 	describe('Liferay.component', () => {
-		it('should store function inputs and invoke them lazily on component retrieval', () => {
+		it('stores function inputs and invoke them lazily on component retrieval', () => {
 			const myButton = {myButton: 'myButton'};
 			const spy = jest.fn(x => myButton);
 
@@ -31,7 +48,7 @@ describe('Liferay', () => {
 			expect(component('myButton')).toEqual(myButton);
 		});
 
-		it('should warn through console when a component is registered twice', () => {
+		it('warns through console when a component is registered twice', () => {
 			let msg = '';
 
 			console.warn = function() {
@@ -51,7 +68,7 @@ describe('Liferay', () => {
 	});
 
 	describe('Liferay.componentReady', () => {
-		it('should return a single component if called before it is registered', () => {
+		it('returns a single component if called before it is registered', () => {
 			const myButton = {myButton: 'myButton'};
 
 			const promise = componentReady('myButton').then(component => {
@@ -63,7 +80,7 @@ describe('Liferay', () => {
 			return promise;
 		});
 
-		it('should return a single component if called after it is registered', () => {
+		it('returns a single component if called after it is registered', () => {
 			const myButton = {myButton: 'myButton'};
 
 			component('myButton', myButton);
@@ -73,7 +90,7 @@ describe('Liferay', () => {
 			});
 		});
 
-		it('should return an array of components if called before they are registered', () => {
+		it('returns an array of components if called before they are registered', () => {
 			const myButton1 = {myButton1: 'myButton1'};
 			const myButton2 = {myButton2: 'myButton2'};
 
@@ -90,7 +107,7 @@ describe('Liferay', () => {
 			return promise;
 		});
 
-		it('should return an array of components if called after they are registered', () => {
+		it('returns an array of components if called after they are registered', () => {
 			const myButton1 = {myButton1: 'myButton1'};
 			const myButton2 = {myButton2: 'myButton2'};
 
@@ -107,7 +124,7 @@ describe('Liferay', () => {
 	});
 
 	describe('Liferay.destroyComponent', () => {
-		it('should destroy a registered component', () => {
+		it('destroys a registered component', () => {
 			const componentId = 'myComponent';
 
 			component(componentId, {});
@@ -117,7 +134,7 @@ describe('Liferay', () => {
 			expect(component(componentId)).toBeUndefined();
 		});
 
-		it('should ignore non registered components', () => {
+		it('ignores non registered components', () => {
 			component('componentId', {});
 
 			expect(() => {
@@ -125,7 +142,7 @@ describe('Liferay', () => {
 			}).not.toThrow();
 		});
 
-		it("should invoke a component's lifecyle destroy method if present when destroying it", () => {
+		it("invokes a component's lifecyle destroy method if present when destroying it", () => {
 			const componentId = 'myComponent';
 			const destroyFn = jest.fn();
 
@@ -138,7 +155,7 @@ describe('Liferay', () => {
 			expect(destroyFn).toHaveBeenCalled();
 		});
 
-		it("should invoke a component's lifecyle dispose method if present when destroying it", () => {
+		it("invokes a component's lifecyle dispose method if present when destroying it", () => {
 			const componentId = 'myComponent';
 			const disposeFn = jest.fn();
 
@@ -153,7 +170,7 @@ describe('Liferay', () => {
 	});
 
 	describe('Liferay.destroyComponents', () => {
-		it('should destroy all registered components if no filter function is provided', () => {
+		it('destroys all registered components if no filter function is provided', () => {
 			component('component1', 1);
 			component('component2', 2);
 			component('component3', 3);
@@ -165,7 +182,7 @@ describe('Liferay', () => {
 			expect(component('component3')).toBeUndefined();
 		});
 
-		it('should invoke the provided filter function for every component with the registered component and destroy config as params', () => {
+		it('invokes the provided filter function for every component with the registered component and destroy config as params', () => {
 			const filterFn = jest.fn();
 
 			const componentConfig = {destroy: true};
@@ -183,7 +200,7 @@ describe('Liferay', () => {
 			expect(filterFn.mock.calls[2]).toEqual([3, {}]);
 		});
 
-		it('should only destoy the components matched by the provided filter function', () => {
+		it('only destroys the components matched by the provided filter function', () => {
 			const filterFn = jest.fn(
 				(component, componentConfig) => componentConfig.destroy
 			);
@@ -203,7 +220,7 @@ describe('Liferay', () => {
 	});
 
 	describe('Liferay.destroyUnfulfilledPromises', () => {
-		it('should clean up all pending invocations of componentReady', () => {
+		it('cleans up all pending invocations of componentReady', () => {
 			const spy = jest.fn();
 
 			componentReady('component').then(spy);

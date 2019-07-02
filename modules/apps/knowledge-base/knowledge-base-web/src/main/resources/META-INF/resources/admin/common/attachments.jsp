@@ -114,11 +114,9 @@ if (kbArticle != null) {
 		window,
 		'<portlet:namespace />deleteFileEntry',
 		function(fileEntryId) {
-			var A = AUI();
+			var removeFileEntryIdsInput = document.getElementById('<portlet:namespace />removeFileEntryIds');
 
-			var removeFileEntryIdsInput = A.one('#<portlet:namespace />removeFileEntryIds');
-
-			var fileEntries = removeFileEntryIdsInput.val();
+			var fileEntries = removeFileEntryIdsInput.value;
 
 			if (fileEntries.length) {
 				fileEntries += ',';
@@ -126,14 +124,13 @@ if (kbArticle != null) {
 
 			fileEntries += fileEntryId;
 
-			removeFileEntryIdsInput.val(fileEntries);
+			removeFileEntryIdsInput.value = fileEntries;
 
-			var fileEntryIdWrapper = A.one('#<portlet:namespace />fileEntryIdWrapper' + fileEntryId);
+			var fileEntryIdWrapper = document.getElementById('<portlet:namespace />fileEntryIdWrapper' + fileEntryId);
 
 			if (fileEntryIdWrapper) {
 				fileEntryIdWrapper.hide();
 			}
-		},
-		['aui-base']
+		}
 	);
 </aui:script>

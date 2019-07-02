@@ -3,26 +3,15 @@ definition {
 	var orgName = "Organization Name";
 
 	macro addCategorizationCP {
-		var key_tagName = "${tagName}";
-
-		Click(locator1 = "AddTask#TASK_TAG_FIELD");
-
-		Type(
-			locator1 = "AddTask#TASK_TAG_FIELD",
-			value1 = "${tagName}");
-
-		AssertClick(
-			locator1 = "Button#ADD_TAGS",
-			value1 = "Add");
-
-		AssertElementPresent(locator1 = "UsersAndOrganizationsEditOrganization#CATEGORIZATION_TAG");
+		AssetCategorization.addTag(tagName = "${tagName}");
 
 		PortletEntry.save();
 
 		UsersAndOrganizationsNavigator.gotoMenuBarInformation();
 
 		AssertTextEquals(
-			locator1 = "UsersAndOrganizationsEditOrganization#CATEGORIZATION_TAG",
+			key_tagName = "${tagName}",
+			locator1 = "AssetCategorization#TAG",
 			value1 = "${tagName}");
 	}
 
@@ -281,6 +270,31 @@ definition {
 		PortletEntry.save();
 	}
 
+	macro addSitePG {
+		Organization.editOrganizationPG(orgName = "${orgName}");
+
+		UsersAndOrganizationsNavigator.gotoMenuBarOrganizationSite();
+
+		Check.checkToggleSwitch(
+			key_toggleSwitchLabel = "Create Site",
+			locator1 = "ToggleSwitch#ANY_TOGGLE_SWITCH");
+
+		if (("${organizationSite}" == "Community Site") || ("${organizationSite}" == "Intranet Site")) {
+			Select(
+				locator1 = "UserGroupsEditUserGroup#PUBLIC_PAGES_SELECT",
+				value1 = "${organizationSite}");
+
+			if ("${checkEnablePropagationCheckbox}" == "true") {
+				AssertChecked(locator1 = "UserGroupsEditUserGroup#ENABLE_PROPAGATION_PUBLIC_PAGE_CHECKBOX");
+			}
+			else {
+				Uncheck(locator1 = "UserGroupsEditUserGroup#ENABLE_PROPAGATION_PUBLIC_PAGE_CHECKBOX");
+			}
+		}
+
+		PortletEntry.save();
+	}
+
 	macro addWithLocalizedCountryCP {
 		Navigator.gotoNavItem(navItem = "${navItem}");
 
@@ -371,6 +385,28 @@ definition {
 		AssertElementNotPresent(locator1 = "UsersAndOrganizations#ORGANIZATION_TABLE_NAME");
 	}
 
+	macro deletePG {
+		var key_orgName = "${orgName}";
+
+		Search.searchPG(
+			portletName = "My Organizations",
+			searchTerm = "${orgName}");
+
+		AssertTextEquals(
+			locator1 = "UsersAndOrganizations#ORGANIZATION_TABLE_NAME",
+			value1 = "${orgName}");
+
+		LexiconEntry.openEntryMenu(rowEntry = "${orgName}");
+
+		MenuItem.clickNoError(menuItem = "Delete");
+
+		AssertConfirm(value1 = "Are you sure you want to delete this? It will be deleted immediately.");
+
+		Alert.viewSuccessMessage();
+
+		AssertElementNotPresent(locator1 = "UsersAndOrganizations#ORGANIZATION_TABLE_NAME");
+	}
+
 	macro editOrganizationCP {
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -379,6 +415,22 @@ definition {
 		var key_orgName = "${orgName}";
 
 		MenuItem.click(menuItem = "Edit");
+	}
+
+	macro editOrganizationPG {
+		var key_orgName = "${orgName}";
+
+		Search.searchPG(
+			portletName = "My Organizations",
+			searchTerm = "${orgName}");
+
+		AssertTextEquals(
+			locator1 = "UsersAndOrganizations#ORGANIZATION_TABLE_NAME",
+			value1 = "${orgName}");
+
+		LexiconEntry.openEntryMenu(rowEntry = "${orgName}");
+
+		MenuItem.clickNoError(menuItem = "Edit");
 	}
 
 	macro editSiteCP {
@@ -547,7 +599,8 @@ definition {
 			AssertConfirm(value1 = "Are you sure you want to delete this? It will be deleted immediately.");
 
 			Alert.viewSuccessMessage();
-		} else {
+		}
+		else {
 			while (IsElementPresent(locator1 = "UsersAndOrganizations#ORGANIZATION_TABLE_NAME_GENERIC", value1 = "${orgName}")) {
 				Click(
 					locator1 = "UsersAndOrganizations#ORGANIZATION_TABLE_NAME_GENERIC",
@@ -668,14 +721,14 @@ definition {
 
 		MenuItem.click(menuItem = "Edit");
 
-		AssertClick(
-			locator1 = "UsersAndOrganizationsEditOrganization#PARENT_ORGANIZATION_SELECT_BUTTON",
-			value1 = "Select");
-
-		SelectFrame(locator1 = "UsersAndOrganizationsSelectOrganization#SELECT_ORGANIZATION_IFRAME");
-
-		if ("${parentOrgExist}" == "true") {
+		if (isSet(parentOrgName)) {
 			var key_orgName = "${subOrgName}";
+
+			AssertClick(
+				locator1 = "UsersAndOrganizationsEditOrganization#PARENT_ORGANIZATION_SELECT_BUTTON",
+				value1 = "Change");
+
+			SelectFrame(locator1 = "UsersAndOrganizationsSelectOrganization#SELECT_ORGANIZATION_IFRAME");
 
 			AssertTextEquals(
 				locator1 = "ContentRow#ORGANIZATION_TABLE_NAME",
@@ -685,7 +738,13 @@ definition {
 				locator1 = "ContentRow#ORGANIZATION_TABLE_NAME_SECOND_COLUMN",
 				value1 = "${parentOrgName}");
 		}
-		else if ("${parentOrgExist}" == "false") {
+		else {
+			AssertClick(
+				locator1 = "UsersAndOrganizationsEditOrganization#PARENT_ORGANIZATION_SELECT_BUTTON",
+				value1 = "Select");
+
+			SelectFrame(locator1 = "UsersAndOrganizationsSelectOrganization#SELECT_ORGANIZATION_IFRAME");
+
 			AssertTextEquals(
 				locator1 = "ContentRow#ORGANIZATION_TABLE_NAME",
 				value1 = "${orgName}");

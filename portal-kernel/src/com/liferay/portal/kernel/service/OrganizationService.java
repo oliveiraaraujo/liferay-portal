@@ -319,7 +319,7 @@ public interface OrganizationService extends BaseService {
 	 * @param countryId the primary key of the organization's country
 	 * @param statusId the organization's workflow status
 	 * @param comments the comments about the organization
-	 * @param logo whether to update the ogranization's logo
+	 * @param hasLogo if the organization has a custom logo
 	 * @param logoBytes the new logo image data
 	 * @param site whether the organization is to be associated with a main
 	 site
@@ -337,7 +337,7 @@ public interface OrganizationService extends BaseService {
 	public Organization updateOrganization(
 			long organizationId, long parentOrganizationId, String name,
 			String type, long regionId, long countryId, long statusId,
-			String comments, boolean logo, byte[] logoBytes, boolean site,
+			String comments, boolean hasLogo, byte[] logoBytes, boolean site,
 			List<Address> addresses, List<EmailAddress> emailAddresses,
 			List<OrgLabor> orgLabors, List<Phone> phones,
 			List<Website> websites, ServiceContext serviceContext)

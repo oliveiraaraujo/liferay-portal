@@ -41,6 +41,7 @@ public class DataDefinitionUtil {
 					jsonObject.getJSONArray("fields"),
 					fieldJSONObject -> _toDataDefinitionField(fieldJSONObject),
 					DataDefinitionField.class);
+				dataDefinitionKey = ddmStructure.getStructureKey();
 				dataDefinitionRules = JSONUtil.toArray(
 					jsonObject.getJSONArray("rules"),
 					ruleJSONObject -> _toDataDefinitionRule(ruleJSONObject),

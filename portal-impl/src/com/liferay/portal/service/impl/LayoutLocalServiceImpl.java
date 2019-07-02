@@ -1056,6 +1056,8 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	public Layout fetchLayoutByFriendlyURL(
 		long groupId, boolean privateLayout, String friendlyURL) {
 
+		friendlyURL = layoutLocalServiceHelper.getFriendlyURL(friendlyURL);
+
 		return layoutPersistence.fetchByG_P_F_Head(
 			groupId, privateLayout, friendlyURL, false);
 	}
@@ -2234,9 +2236,10 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	public boolean hasLayouts(
 		long groupId, boolean privateLayout, long parentLayoutId) {
 
-		if (layoutPersistence.countByG_P_P_Head(
-				groupId, privateLayout, parentLayoutId, false) > 0) {
+		int count = layoutPersistence.countByG_P_P_Head(
+			groupId, privateLayout, parentLayoutId, false);
 
+		if (count > 0) {
 			return true;
 		}
 
@@ -2546,7 +2549,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	 *         To see how the URL is normalized when accessed, see {@link
 	 *         com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil#normalize(
 	 *         String)}.
-	 * @param  iconImage whether the icon image will be updated
+	 * @param  hasIconImage whether the icon image will be updated
 	 * @param  iconBytes the byte array of the layout's new icon image
 	 * @param  serviceContext the service context to be applied. Can set the
 	 *         modification date and expando bridge attributes for the layout.
@@ -2567,7 +2570,8 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			Map<Locale, String> titleMap, Map<Locale, String> descriptionMap,
 			Map<Locale, String> keywordsMap, Map<Locale, String> robotsMap,
 			String type, boolean hidden, Map<Locale, String> friendlyURLMap,
-			boolean iconImage, byte[] iconBytes, ServiceContext serviceContext)
+			boolean hasIconImage, byte[] iconBytes,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		// Layout
@@ -2619,7 +2623,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		draftLayout.setFriendlyURL(friendlyURL);
 
 		PortalUtil.updateImageId(
-			draftLayout, iconImage, iconBytes, "iconImageId", 0, 0, 0);
+			draftLayout, hasIconImage, iconBytes, "iconImageId", 0, 0, 0);
 
 		boolean layoutUpdateable = ParamUtil.getBoolean(
 			serviceContext, Sites.LAYOUT_UPDATEABLE, true);

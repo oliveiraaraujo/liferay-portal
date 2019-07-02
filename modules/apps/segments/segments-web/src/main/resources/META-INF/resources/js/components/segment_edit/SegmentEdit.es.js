@@ -1,4 +1,19 @@
-import ClayButton from '../shared/ClayButton.es';
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+import ClayButton from '@clayui/button';
+import ClayLink from '@clayui/link';
 import ClayToggle from '../shared/ClayToggle.es';
 import ContributorInputs from '../criteria_builder/ContributorInputs.es';
 import ContributorsBuilder from '../criteria_builder/ContributorsBuilder.es';
@@ -402,26 +417,27 @@ class SegmentEdit extends Component {
 
 								<div className='btn-group'>
 									<div className='btn-group-item'>
-										<ClayButton
+										<ClayLink
 											className='text-capitalize'
+											displayType='secondary'
 											href={redirect}
-											label={Liferay.Language.get(
-												'cancel'
-											)}
-											size='sm'
-										/>
+											outline={true}
+										>
+											{Liferay.Language.get('cancel')}
+										</ClayLink>
 									</div>
 
 									<div className='btn-group-item'>
 										<ClayButton
 											className='text-capitalize'
 											disabled={disabledSaveButton}
-											label={Liferay.Language.get('save')}
+											displayType='primary'
 											onClick={this._handleValidate}
-											size='sm'
-											style='primary'
+											small={true}
 											type='submit'
-										/>
+										>
+											{Liferay.Language.get('save')}
+										</ClayButton>
 									</div>
 								</div>
 							</div>

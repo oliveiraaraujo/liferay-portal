@@ -1,3 +1,19 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+
 import Component from 'metal-component';
 import {Config} from 'metal-state';
 import Soy from 'metal-soy';
@@ -13,11 +29,11 @@ class ContentsAffected extends Component {
 	}
 
 	_fetchAffectedContents(page) {
-		let headers = new Headers();
+		const headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('X-CSRF-Token', Liferay.authToken);
 
-		let init = {
+		const init = {
 			credentials: 'include',
 			headers,
 			method: 'GET'
@@ -35,13 +51,13 @@ class ContentsAffected extends Component {
 			page = 1;
 		}
 
-		let queryParam =
+		const queryParam =
 			'?pageSize=' +
 			this.pageSize +
 			(keywords.length > 0 ? '&keywords=' + keywords : '') +
 			(page > 1 ? '&page=' + page : '');
 
-		let url = this.urlAffectedContents + queryParam;
+		const url = this.urlAffectedContents + queryParam;
 
 		fetch(url, init)
 			.then(r => r.json())
@@ -84,7 +100,7 @@ class ContentsAffected extends Component {
 	}
 
 	_handleClickPageNumber(event) {
-		let page = event.target.getAttribute('data-page');
+		const page = event.target.getAttribute('data-page');
 
 		if (page >= 1 && page <= this.lastPage) {
 			this._fetchAffectedContents(page);
@@ -121,7 +137,7 @@ class ContentsAffected extends Component {
 
 		if (affectedContentsResult.items) {
 			affectedContentsResult.items.forEach(affectedContent => {
-				let entityNameTranslation = this.entityNameTranslations.find(
+				const entityNameTranslation = this.entityNameTranslations.find(
 					entityNameTranslation =>
 						entityNameTranslation.key ===
 						affectedContent.contentType

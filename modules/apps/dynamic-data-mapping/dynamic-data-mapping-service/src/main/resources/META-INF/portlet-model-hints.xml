@@ -177,6 +177,11 @@
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
+		<field name="classNameId" type="long" />
+		<field name="structureLayoutKey" type="String">
+			<hint name="upper-case">true</hint>
+			<hint name="auto-escape">false</hint>
+		</field>
 		<field name="structureVersionId" type="long" />
 		<field localized="true" name="name" type="String">
 			<hint-collection name="CLOB" />

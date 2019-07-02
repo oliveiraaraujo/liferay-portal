@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import MarkerBase from '../../src/main/resources/META-INF/resources/js/MarkerBase.es';
 
 describe('MarkerBase', () => {
@@ -23,7 +37,7 @@ describe('MarkerBase', () => {
 	});
 
 	describe('_handleNativeEvent', () => {
-		it('should call _getNormalizedEventData with the given event', () => {
+		it('calls _getNormalizedEventData with the given event', () => {
 			markerChild._handleNativeEvent(
 				{name: 'NativeEvent'},
 				'NonNativeEvent'
@@ -37,7 +51,7 @@ describe('MarkerBase', () => {
 			]);
 		});
 
-		it('should emit an event with the given event type', () => {
+		it('emits an event with the given event type', () => {
 			markerChild._handleNativeEvent(
 				{name: 'NativeEvent'},
 				'NonNativeEvent'
@@ -47,7 +61,7 @@ describe('MarkerBase', () => {
 			expect(markerChild.emit.mock.calls[0][0]).toBe('NonNativeEvent');
 		});
 
-		it('should add the normalized event data', () => {
+		it('adds the normalized event data', () => {
 			markerChild._handleNativeEvent(
 				{name: 'NativeEvent'},
 				'NonNativeEvent'
@@ -100,7 +114,7 @@ describe('MarkerBase', () => {
 	});
 
 	describe('_getNativeMarker', () => {
-		it('should throw a not implemented error', () => {
+		it('throws a not implemented error', () => {
 			expect(() => {
 				new MarkerBase()._getNativeMarker();
 			}).toThrow();
@@ -108,7 +122,7 @@ describe('MarkerBase', () => {
 	});
 
 	describe('_getNormalizedEventData', () => {
-		it('should throw a not implemented error', () => {
+		it('throws a not implemented error', () => {
 			expect(() => {
 				new MarkerBase()._getNormalizedEventData();
 			}).toThrow();

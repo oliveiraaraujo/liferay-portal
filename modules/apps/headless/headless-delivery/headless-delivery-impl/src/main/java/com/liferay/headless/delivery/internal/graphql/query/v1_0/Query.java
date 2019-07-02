@@ -53,12 +53,10 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
-
-import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLInvokeDetached;
-import graphql.annotations.annotationTypes.GraphQLName;
 
 import javax.annotation.Generated;
 
@@ -202,7 +200,6 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public BlogPosting getBlogPosting(
 			@GraphQLName("blogPostingId") Long blogPostingId)
 		throws Exception {
@@ -215,7 +212,6 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public Rating getBlogPostingMyRating(
 			@GraphQLName("blogPostingId") Long blogPostingId)
 		throws Exception {
@@ -228,8 +224,7 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<BlogPosting> getSiteBlogPostingsPage(
+	public BlogPostingPage getSiteBlogPostingsPage(
 			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("search") String search,
 			@GraphQLName("filter") Filter filter,
@@ -240,18 +235,13 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_blogPostingResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			blogPostingResource -> {
-				Page paginationPage =
-					blogPostingResource.getSiteBlogPostingsPage(
-						siteId, search, filter, Pagination.of(pageSize, page),
-						sorts);
-
-				return paginationPage.getItems();
-			});
+			blogPostingResource -> new BlogPostingPage(
+				blogPostingResource.getSiteBlogPostingsPage(
+					siteId, search, filter, Pagination.of(page, pageSize),
+					sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public BlogPostingImage getBlogPostingImage(
 			@GraphQLName("blogPostingImageId") Long blogPostingImageId)
 		throws Exception {
@@ -265,8 +255,7 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<BlogPostingImage> getSiteBlogPostingImagesPage(
+	public BlogPostingImagePage getSiteBlogPostingImagesPage(
 			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("search") String search,
 			@GraphQLName("filter") Filter filter,
@@ -277,19 +266,14 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_blogPostingImageResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			blogPostingImageResource -> {
-				Page paginationPage =
-					blogPostingImageResource.getSiteBlogPostingImagesPage(
-						siteId, search, filter, Pagination.of(pageSize, page),
-						sorts);
-
-				return paginationPage.getItems();
-			});
+			blogPostingImageResource -> new BlogPostingImagePage(
+				blogPostingImageResource.getSiteBlogPostingImagesPage(
+					siteId, search, filter, Pagination.of(page, pageSize),
+					sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<Comment> getBlogPostingCommentsPage(
+	public CommentPage getBlogPostingCommentsPage(
 			@GraphQLName("blogPostingId") Long blogPostingId,
 			@GraphQLName("search") String search,
 			@GraphQLName("filter") Filter filter,
@@ -300,18 +284,13 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_commentResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			commentResource -> {
-				Page paginationPage =
-					commentResource.getBlogPostingCommentsPage(
-						blogPostingId, search, filter,
-						Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			commentResource -> new CommentPage(
+				commentResource.getBlogPostingCommentsPage(
+					blogPostingId, search, filter,
+					Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public Comment getComment(@GraphQLName("commentId") Long commentId)
 		throws Exception {
 
@@ -322,8 +301,7 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<Comment> getCommentCommentsPage(
+	public CommentPage getCommentCommentsPage(
 			@GraphQLName("parentCommentId") Long parentCommentId,
 			@GraphQLName("search") String search,
 			@GraphQLName("filter") Filter filter,
@@ -334,18 +312,14 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_commentResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			commentResource -> {
-				Page paginationPage = commentResource.getCommentCommentsPage(
+			commentResource -> new CommentPage(
+				commentResource.getCommentCommentsPage(
 					parentCommentId, search, filter,
-					Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+					Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<Comment> getDocumentCommentsPage(
+	public CommentPage getDocumentCommentsPage(
 			@GraphQLName("documentId") Long documentId,
 			@GraphQLName("search") String search,
 			@GraphQLName("filter") Filter filter,
@@ -356,18 +330,14 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_commentResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			commentResource -> {
-				Page paginationPage = commentResource.getDocumentCommentsPage(
-					documentId, search, filter, Pagination.of(pageSize, page),
-					sorts);
-
-				return paginationPage.getItems();
-			});
+			commentResource -> new CommentPage(
+				commentResource.getDocumentCommentsPage(
+					documentId, search, filter, Pagination.of(page, pageSize),
+					sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<Comment> getStructuredContentCommentsPage(
+	public CommentPage getStructuredContentCommentsPage(
 			@GraphQLName("structuredContentId") Long structuredContentId,
 			@GraphQLName("search") String search,
 			@GraphQLName("filter") Filter filter,
@@ -378,86 +348,61 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_commentResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			commentResource -> {
-				Page paginationPage =
-					commentResource.getStructuredContentCommentsPage(
-						structuredContentId, search, filter,
-						Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			commentResource -> new CommentPage(
+				commentResource.getStructuredContentCommentsPage(
+					structuredContentId, search, filter,
+					Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<ContentSetElement>
-			getContentSetContentSetElementsPage(
-				@GraphQLName("contentSetId") Long contentSetId,
-				@GraphQLName("pageSize") int pageSize,
-				@GraphQLName("page") int page)
+	public ContentSetElementPage getContentSetContentSetElementsPage(
+			@GraphQLName("contentSetId") Long contentSetId,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_contentSetElementResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			contentSetElementResource -> {
-				Page paginationPage =
-					contentSetElementResource.
-						getContentSetContentSetElementsPage(
-							contentSetId, Pagination.of(pageSize, page));
-
-				return paginationPage.getItems();
-			});
+			contentSetElementResource -> new ContentSetElementPage(
+				contentSetElementResource.getContentSetContentSetElementsPage(
+					contentSetId, Pagination.of(page, pageSize))));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<ContentSetElement>
-			getSiteContentSetByKeyContentSetElementsPage(
-				@GraphQLName("siteId") Long siteId,
-				@GraphQLName("key") String key,
-				@GraphQLName("pageSize") int pageSize,
-				@GraphQLName("page") int page)
+	public ContentSetElementPage getSiteContentSetByKeyContentSetElementsPage(
+			@GraphQLName("siteId") Long siteId, @GraphQLName("key") String key,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_contentSetElementResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			contentSetElementResource -> {
-				Page paginationPage =
-					contentSetElementResource.
-						getSiteContentSetByKeyContentSetElementsPage(
-							siteId, key, Pagination.of(pageSize, page));
-
-				return paginationPage.getItems();
-			});
+			contentSetElementResource -> new ContentSetElementPage(
+				contentSetElementResource.
+					getSiteContentSetByKeyContentSetElementsPage(
+						siteId, key, Pagination.of(page, pageSize))));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<ContentSetElement>
-			getSiteContentSetByUuidContentSetElementsPage(
-				@GraphQLName("siteId") Long siteId,
-				@GraphQLName("uuid") String uuid,
-				@GraphQLName("pageSize") int pageSize,
-				@GraphQLName("page") int page)
+	public ContentSetElementPage getSiteContentSetByUuidContentSetElementsPage(
+			@GraphQLName("siteId") Long siteId,
+			@GraphQLName("uuid") String uuid,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_contentSetElementResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			contentSetElementResource -> {
-				Page paginationPage =
-					contentSetElementResource.
-						getSiteContentSetByUuidContentSetElementsPage(
-							siteId, uuid, Pagination.of(pageSize, page));
-
-				return paginationPage.getItems();
-			});
+			contentSetElementResource -> new ContentSetElementPage(
+				contentSetElementResource.
+					getSiteContentSetByUuidContentSetElementsPage(
+						siteId, uuid, Pagination.of(page, pageSize))));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public ContentStructure getContentStructure(
 			@GraphQLName("contentStructureId") Long contentStructureId)
 		throws Exception {
@@ -471,8 +416,7 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<ContentStructure> getSiteContentStructuresPage(
+	public ContentStructurePage getSiteContentStructuresPage(
 			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("search") String search,
 			@GraphQLName("filter") Filter filter,
@@ -483,19 +427,14 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_contentStructureResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			contentStructureResource -> {
-				Page paginationPage =
-					contentStructureResource.getSiteContentStructuresPage(
-						siteId, search, filter, Pagination.of(pageSize, page),
-						sorts);
-
-				return paginationPage.getItems();
-			});
+			contentStructureResource -> new ContentStructurePage(
+				contentStructureResource.getSiteContentStructuresPage(
+					siteId, search, filter, Pagination.of(page, pageSize),
+					sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<Document> getDocumentFolderDocumentsPage(
+	public DocumentPage getDocumentFolderDocumentsPage(
 			@GraphQLName("documentFolderId") Long documentFolderId,
 			@GraphQLName("search") String search,
 			@GraphQLName("filter") Filter filter,
@@ -506,18 +445,13 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_documentResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			documentResource -> {
-				Page paginationPage =
-					documentResource.getDocumentFolderDocumentsPage(
-						documentFolderId, search, filter,
-						Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			documentResource -> new DocumentPage(
+				documentResource.getDocumentFolderDocumentsPage(
+					documentFolderId, search, filter,
+					Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public Document getDocument(@GraphQLName("documentId") Long documentId)
 		throws Exception {
 
@@ -528,7 +462,6 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public Rating getDocumentMyRating(
 			@GraphQLName("documentId") Long documentId)
 		throws Exception {
@@ -541,8 +474,7 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<Document> getSiteDocumentsPage(
+	public DocumentPage getSiteDocumentsPage(
 			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("flatten") Boolean flatten,
 			@GraphQLName("search") String search,
@@ -554,17 +486,13 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_documentResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			documentResource -> {
-				Page paginationPage = documentResource.getSiteDocumentsPage(
+			documentResource -> new DocumentPage(
+				documentResource.getSiteDocumentsPage(
 					siteId, flatten, search, filter,
-					Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+					Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public DocumentFolder getDocumentFolder(
 			@GraphQLName("documentFolderId") Long documentFolderId)
 		throws Exception {
@@ -577,34 +505,25 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<DocumentFolder>
-			getDocumentFolderDocumentFoldersPage(
-				@GraphQLName("parentDocumentFolderId") Long
-					parentDocumentFolderId,
-				@GraphQLName("search") String search,
-				@GraphQLName("filter") Filter filter,
-				@GraphQLName("pageSize") int pageSize,
-				@GraphQLName("page") int page,
-				@GraphQLName("sorts") Sort[] sorts)
+	public DocumentFolderPage getDocumentFolderDocumentFoldersPage(
+			@GraphQLName("parentDocumentFolderId") Long parentDocumentFolderId,
+			@GraphQLName("search") String search,
+			@GraphQLName("filter") Filter filter,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page, @GraphQLName("sorts") Sort[] sorts)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_documentFolderResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			documentFolderResource -> {
-				Page paginationPage =
-					documentFolderResource.getDocumentFolderDocumentFoldersPage(
-						parentDocumentFolderId, search, filter,
-						Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			documentFolderResource -> new DocumentFolderPage(
+				documentFolderResource.getDocumentFolderDocumentFoldersPage(
+					parentDocumentFolderId, search, filter,
+					Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<DocumentFolder> getSiteDocumentFoldersPage(
+	public DocumentFolderPage getSiteDocumentFoldersPage(
 			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("flatten") Boolean flatten,
 			@GraphQLName("search") String search,
@@ -616,18 +535,13 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_documentFolderResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			documentFolderResource -> {
-				Page paginationPage =
-					documentFolderResource.getSiteDocumentFoldersPage(
-						siteId, flatten, search, filter,
-						Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			documentFolderResource -> new DocumentFolderPage(
+				documentFolderResource.getSiteDocumentFoldersPage(
+					siteId, flatten, search, filter,
+					Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public KnowledgeBaseArticle getKnowledgeBaseArticle(
 			@GraphQLName("knowledgeBaseArticleId") Long knowledgeBaseArticleId)
 		throws Exception {
@@ -641,7 +555,6 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public Rating getKnowledgeBaseArticleMyRating(
 			@GraphQLName("knowledgeBaseArticleId") Long knowledgeBaseArticleId)
 		throws Exception {
@@ -655,8 +568,7 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<KnowledgeBaseArticle>
+	public KnowledgeBaseArticlePage
 			getKnowledgeBaseArticleKnowledgeBaseArticlesPage(
 				@GraphQLName("parentKnowledgeBaseArticleId") Long
 					parentKnowledgeBaseArticleId,
@@ -670,20 +582,15 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_knowledgeBaseArticleResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			knowledgeBaseArticleResource -> {
-				Page paginationPage =
-					knowledgeBaseArticleResource.
-						getKnowledgeBaseArticleKnowledgeBaseArticlesPage(
-							parentKnowledgeBaseArticleId, search, filter,
-							Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			knowledgeBaseArticleResource -> new KnowledgeBaseArticlePage(
+				knowledgeBaseArticleResource.
+					getKnowledgeBaseArticleKnowledgeBaseArticlesPage(
+						parentKnowledgeBaseArticleId, search, filter,
+						Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<KnowledgeBaseArticle>
+	public KnowledgeBaseArticlePage
 			getKnowledgeBaseFolderKnowledgeBaseArticlesPage(
 				@GraphQLName("knowledgeBaseFolderId") Long
 					knowledgeBaseFolderId,
@@ -698,47 +605,34 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_knowledgeBaseArticleResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			knowledgeBaseArticleResource -> {
-				Page paginationPage =
-					knowledgeBaseArticleResource.
-						getKnowledgeBaseFolderKnowledgeBaseArticlesPage(
-							knowledgeBaseFolderId, flatten, search, filter,
-							Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			knowledgeBaseArticleResource -> new KnowledgeBaseArticlePage(
+				knowledgeBaseArticleResource.
+					getKnowledgeBaseFolderKnowledgeBaseArticlesPage(
+						knowledgeBaseFolderId, flatten, search, filter,
+						Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<KnowledgeBaseArticle>
-			getSiteKnowledgeBaseArticlesPage(
-				@GraphQLName("siteId") Long siteId,
-				@GraphQLName("flatten") Boolean flatten,
-				@GraphQLName("search") String search,
-				@GraphQLName("filter") Filter filter,
-				@GraphQLName("pageSize") int pageSize,
-				@GraphQLName("page") int page,
-				@GraphQLName("sorts") Sort[] sorts)
+	public KnowledgeBaseArticlePage getSiteKnowledgeBaseArticlesPage(
+			@GraphQLName("siteId") Long siteId,
+			@GraphQLName("flatten") Boolean flatten,
+			@GraphQLName("search") String search,
+			@GraphQLName("filter") Filter filter,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page, @GraphQLName("sorts") Sort[] sorts)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_knowledgeBaseArticleResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			knowledgeBaseArticleResource -> {
-				Page paginationPage =
-					knowledgeBaseArticleResource.
-						getSiteKnowledgeBaseArticlesPage(
-							siteId, flatten, search, filter,
-							Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			knowledgeBaseArticleResource -> new KnowledgeBaseArticlePage(
+				knowledgeBaseArticleResource.getSiteKnowledgeBaseArticlesPage(
+					siteId, flatten, search, filter,
+					Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<KnowledgeBaseAttachment>
+	public KnowledgeBaseAttachmentPage
 			getKnowledgeBaseArticleKnowledgeBaseAttachmentsPage(
 				@GraphQLName("knowledgeBaseArticleId") Long
 					knowledgeBaseArticleId)
@@ -747,18 +641,13 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_knowledgeBaseAttachmentResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			knowledgeBaseAttachmentResource -> {
-				Page paginationPage =
-					knowledgeBaseAttachmentResource.
-						getKnowledgeBaseArticleKnowledgeBaseAttachmentsPage(
-							knowledgeBaseArticleId);
-
-				return paginationPage.getItems();
-			});
+			knowledgeBaseAttachmentResource -> new KnowledgeBaseAttachmentPage(
+				knowledgeBaseAttachmentResource.
+					getKnowledgeBaseArticleKnowledgeBaseAttachmentsPage(
+						knowledgeBaseArticleId)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public KnowledgeBaseAttachment getKnowledgeBaseAttachment(
 			@GraphQLName("knowledgeBaseAttachmentId") Long
 				knowledgeBaseAttachmentId)
@@ -773,7 +662,6 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public KnowledgeBaseFolder getKnowledgeBaseFolder(
 			@GraphQLName("knowledgeBaseFolderId") Long knowledgeBaseFolderId)
 		throws Exception {
@@ -787,8 +675,7 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<KnowledgeBaseFolder>
+	public KnowledgeBaseFolderPage
 			getKnowledgeBaseFolderKnowledgeBaseFoldersPage(
 				@GraphQLName("parentKnowledgeBaseFolderId") Long
 					parentKnowledgeBaseFolderId,
@@ -799,40 +686,29 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_knowledgeBaseFolderResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			knowledgeBaseFolderResource -> {
-				Page paginationPage =
-					knowledgeBaseFolderResource.
-						getKnowledgeBaseFolderKnowledgeBaseFoldersPage(
-							parentKnowledgeBaseFolderId,
-							Pagination.of(pageSize, page));
-
-				return paginationPage.getItems();
-			});
+			knowledgeBaseFolderResource -> new KnowledgeBaseFolderPage(
+				knowledgeBaseFolderResource.
+					getKnowledgeBaseFolderKnowledgeBaseFoldersPage(
+						parentKnowledgeBaseFolderId,
+						Pagination.of(page, pageSize))));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<KnowledgeBaseFolder>
-			getSiteKnowledgeBaseFoldersPage(
-				@GraphQLName("siteId") Long siteId,
-				@GraphQLName("pageSize") int pageSize,
-				@GraphQLName("page") int page)
+	public KnowledgeBaseFolderPage getSiteKnowledgeBaseFoldersPage(
+			@GraphQLName("siteId") Long siteId,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_knowledgeBaseFolderResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			knowledgeBaseFolderResource -> {
-				Page paginationPage =
-					knowledgeBaseFolderResource.getSiteKnowledgeBaseFoldersPage(
-						siteId, Pagination.of(pageSize, page));
-
-				return paginationPage.getItems();
-			});
+			knowledgeBaseFolderResource -> new KnowledgeBaseFolderPage(
+				knowledgeBaseFolderResource.getSiteKnowledgeBaseFoldersPage(
+					siteId, Pagination.of(page, pageSize))));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public MessageBoardAttachment getMessageBoardAttachment(
 			@GraphQLName("messageBoardAttachmentId") Long
 				messageBoardAttachmentId)
@@ -847,8 +723,7 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<MessageBoardAttachment>
+	public MessageBoardAttachmentPage
 			getMessageBoardMessageMessageBoardAttachmentsPage(
 				@GraphQLName("messageBoardMessageId") Long
 					messageBoardMessageId)
@@ -857,19 +732,14 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_messageBoardAttachmentResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			messageBoardAttachmentResource -> {
-				Page paginationPage =
-					messageBoardAttachmentResource.
-						getMessageBoardMessageMessageBoardAttachmentsPage(
-							messageBoardMessageId);
-
-				return paginationPage.getItems();
-			});
+			messageBoardAttachmentResource -> new MessageBoardAttachmentPage(
+				messageBoardAttachmentResource.
+					getMessageBoardMessageMessageBoardAttachmentsPage(
+						messageBoardMessageId)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<MessageBoardAttachment>
+	public MessageBoardAttachmentPage
 			getMessageBoardThreadMessageBoardAttachmentsPage(
 				@GraphQLName("messageBoardThreadId") Long messageBoardThreadId)
 		throws Exception {
@@ -877,18 +747,13 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_messageBoardAttachmentResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			messageBoardAttachmentResource -> {
-				Page paginationPage =
-					messageBoardAttachmentResource.
-						getMessageBoardThreadMessageBoardAttachmentsPage(
-							messageBoardThreadId);
-
-				return paginationPage.getItems();
-			});
+			messageBoardAttachmentResource -> new MessageBoardAttachmentPage(
+				messageBoardAttachmentResource.
+					getMessageBoardThreadMessageBoardAttachmentsPage(
+						messageBoardThreadId)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public MessageBoardMessage getMessageBoardMessage(
 			@GraphQLName("messageBoardMessageId") Long messageBoardMessageId)
 		throws Exception {
@@ -902,7 +767,6 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public Rating getMessageBoardMessageMyRating(
 			@GraphQLName("messageBoardMessageId") Long messageBoardMessageId)
 		throws Exception {
@@ -916,8 +780,7 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<MessageBoardMessage>
+	public MessageBoardMessagePage
 			getMessageBoardMessageMessageBoardMessagesPage(
 				@GraphQLName("parentMessageBoardMessageId") Long
 					parentMessageBoardMessageId,
@@ -931,20 +794,15 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_messageBoardMessageResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			messageBoardMessageResource -> {
-				Page paginationPage =
-					messageBoardMessageResource.
-						getMessageBoardMessageMessageBoardMessagesPage(
-							parentMessageBoardMessageId, search, filter,
-							Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			messageBoardMessageResource -> new MessageBoardMessagePage(
+				messageBoardMessageResource.
+					getMessageBoardMessageMessageBoardMessagesPage(
+						parentMessageBoardMessageId, search, filter,
+						Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<MessageBoardMessage>
+	public MessageBoardMessagePage
 			getMessageBoardThreadMessageBoardMessagesPage(
 				@GraphQLName("messageBoardThreadId") Long messageBoardThreadId,
 				@GraphQLName("search") String search,
@@ -957,19 +815,14 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_messageBoardMessageResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			messageBoardMessageResource -> {
-				Page paginationPage =
-					messageBoardMessageResource.
-						getMessageBoardThreadMessageBoardMessagesPage(
-							messageBoardThreadId, search, filter,
-							Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			messageBoardMessageResource -> new MessageBoardMessagePage(
+				messageBoardMessageResource.
+					getMessageBoardThreadMessageBoardMessagesPage(
+						messageBoardThreadId, search, filter,
+						Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public MessageBoardSection getMessageBoardSection(
 			@GraphQLName("messageBoardSectionId") Long messageBoardSectionId)
 		throws Exception {
@@ -983,8 +836,7 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<MessageBoardSection>
+	public MessageBoardSectionPage
 			getMessageBoardSectionMessageBoardSectionsPage(
 				@GraphQLName("parentMessageBoardSectionId") Long
 					parentMessageBoardSectionId,
@@ -998,72 +850,52 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_messageBoardSectionResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			messageBoardSectionResource -> {
-				Page paginationPage =
-					messageBoardSectionResource.
-						getMessageBoardSectionMessageBoardSectionsPage(
-							parentMessageBoardSectionId, search, filter,
-							Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			messageBoardSectionResource -> new MessageBoardSectionPage(
+				messageBoardSectionResource.
+					getMessageBoardSectionMessageBoardSectionsPage(
+						parentMessageBoardSectionId, search, filter,
+						Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<MessageBoardSection>
-			getSiteMessageBoardSectionsPage(
-				@GraphQLName("siteId") Long siteId,
-				@GraphQLName("flatten") Boolean flatten,
-				@GraphQLName("search") String search,
-				@GraphQLName("filter") Filter filter,
-				@GraphQLName("pageSize") int pageSize,
-				@GraphQLName("page") int page,
-				@GraphQLName("sorts") Sort[] sorts)
+	public MessageBoardSectionPage getSiteMessageBoardSectionsPage(
+			@GraphQLName("siteId") Long siteId,
+			@GraphQLName("flatten") Boolean flatten,
+			@GraphQLName("search") String search,
+			@GraphQLName("filter") Filter filter,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page, @GraphQLName("sorts") Sort[] sorts)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_messageBoardSectionResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			messageBoardSectionResource -> {
-				Page paginationPage =
-					messageBoardSectionResource.getSiteMessageBoardSectionsPage(
-						siteId, flatten, search, filter,
-						Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			messageBoardSectionResource -> new MessageBoardSectionPage(
+				messageBoardSectionResource.getSiteMessageBoardSectionsPage(
+					siteId, flatten, search, filter,
+					Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<MessageBoardThread>
-			getMessageBoardSectionMessageBoardThreadsPage(
-				@GraphQLName("messageBoardSectionId") Long
-					messageBoardSectionId,
-				@GraphQLName("search") String search,
-				@GraphQLName("filter") Filter filter,
-				@GraphQLName("pageSize") int pageSize,
-				@GraphQLName("page") int page,
-				@GraphQLName("sorts") Sort[] sorts)
+	public MessageBoardThreadPage getMessageBoardSectionMessageBoardThreadsPage(
+			@GraphQLName("messageBoardSectionId") Long messageBoardSectionId,
+			@GraphQLName("search") String search,
+			@GraphQLName("filter") Filter filter,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page, @GraphQLName("sorts") Sort[] sorts)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_messageBoardThreadResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			messageBoardThreadResource -> {
-				Page paginationPage =
-					messageBoardThreadResource.
-						getMessageBoardSectionMessageBoardThreadsPage(
-							messageBoardSectionId, search, filter,
-							Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			messageBoardThreadResource -> new MessageBoardThreadPage(
+				messageBoardThreadResource.
+					getMessageBoardSectionMessageBoardThreadsPage(
+						messageBoardSectionId, search, filter,
+						Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public MessageBoardThread getMessageBoardThread(
 			@GraphQLName("messageBoardThreadId") Long messageBoardThreadId)
 		throws Exception {
@@ -1077,7 +909,6 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public Rating getMessageBoardThreadMyRating(
 			@GraphQLName("messageBoardThreadId") Long messageBoardThreadId)
 		throws Exception {
@@ -1091,85 +922,63 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<MessageBoardThread>
-			getSiteMessageBoardThreadsPage(
-				@GraphQLName("siteId") Long siteId,
-				@GraphQLName("flatten") Boolean flatten,
-				@GraphQLName("search") String search,
-				@GraphQLName("filter") Filter filter,
-				@GraphQLName("pageSize") int pageSize,
-				@GraphQLName("page") int page,
-				@GraphQLName("sorts") Sort[] sorts)
+	public MessageBoardThreadPage getSiteMessageBoardThreadsPage(
+			@GraphQLName("siteId") Long siteId,
+			@GraphQLName("flatten") Boolean flatten,
+			@GraphQLName("search") String search,
+			@GraphQLName("filter") Filter filter,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page, @GraphQLName("sorts") Sort[] sorts)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_messageBoardThreadResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			messageBoardThreadResource -> {
-				Page paginationPage =
-					messageBoardThreadResource.getSiteMessageBoardThreadsPage(
-						siteId, flatten, search, filter,
-						Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			messageBoardThreadResource -> new MessageBoardThreadPage(
+				messageBoardThreadResource.getSiteMessageBoardThreadsPage(
+					siteId, flatten, search, filter,
+					Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<StructuredContent>
-			getContentStructureStructuredContentsPage(
-				@GraphQLName("contentStructureId") Long contentStructureId,
-				@GraphQLName("search") String search,
-				@GraphQLName("filter") Filter filter,
-				@GraphQLName("pageSize") int pageSize,
-				@GraphQLName("page") int page,
-				@GraphQLName("sorts") Sort[] sorts)
+	public StructuredContentPage getContentStructureStructuredContentsPage(
+			@GraphQLName("contentStructureId") Long contentStructureId,
+			@GraphQLName("search") String search,
+			@GraphQLName("filter") Filter filter,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page, @GraphQLName("sorts") Sort[] sorts)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_structuredContentResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			structuredContentResource -> {
-				Page paginationPage =
-					structuredContentResource.
-						getContentStructureStructuredContentsPage(
-							contentStructureId, search, filter,
-							Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			structuredContentResource -> new StructuredContentPage(
+				structuredContentResource.
+					getContentStructureStructuredContentsPage(
+						contentStructureId, search, filter,
+						Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<StructuredContent>
-			getSiteStructuredContentsPage(
-				@GraphQLName("siteId") Long siteId,
-				@GraphQLName("flatten") Boolean flatten,
-				@GraphQLName("search") String search,
-				@GraphQLName("filter") Filter filter,
-				@GraphQLName("pageSize") int pageSize,
-				@GraphQLName("page") int page,
-				@GraphQLName("sorts") Sort[] sorts)
+	public StructuredContentPage getSiteStructuredContentsPage(
+			@GraphQLName("siteId") Long siteId,
+			@GraphQLName("flatten") Boolean flatten,
+			@GraphQLName("search") String search,
+			@GraphQLName("filter") Filter filter,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page, @GraphQLName("sorts") Sort[] sorts)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_structuredContentResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			structuredContentResource -> {
-				Page paginationPage =
-					structuredContentResource.getSiteStructuredContentsPage(
-						siteId, flatten, search, filter,
-						Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			structuredContentResource -> new StructuredContentPage(
+				structuredContentResource.getSiteStructuredContentsPage(
+					siteId, flatten, search, filter,
+					Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public StructuredContent getSiteStructuredContentByKey(
 			@GraphQLName("siteId") Long siteId, @GraphQLName("key") String key)
 		throws Exception {
@@ -1183,7 +992,6 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public StructuredContent getSiteStructuredContentByUuid(
 			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("uuid") String uuid)
@@ -1198,8 +1006,7 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<StructuredContent>
+	public StructuredContentPage
 			getStructuredContentFolderStructuredContentsPage(
 				@GraphQLName("structuredContentFolderId") Long
 					structuredContentFolderId,
@@ -1213,19 +1020,14 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_structuredContentResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			structuredContentResource -> {
-				Page paginationPage =
-					structuredContentResource.
-						getStructuredContentFolderStructuredContentsPage(
-							structuredContentFolderId, search, filter,
-							Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			structuredContentResource -> new StructuredContentPage(
+				structuredContentResource.
+					getStructuredContentFolderStructuredContentsPage(
+						structuredContentFolderId, search, filter,
+						Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public StructuredContent getStructuredContent(
 			@GraphQLName("structuredContentId") Long structuredContentId)
 		throws Exception {
@@ -1239,7 +1041,6 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public Rating getStructuredContentMyRating(
 			@GraphQLName("structuredContentId") Long structuredContentId)
 		throws Exception {
@@ -1253,7 +1054,6 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public String getStructuredContentRenderedContentTemplate(
 			@GraphQLName("structuredContentId") Long structuredContentId,
 			@GraphQLName("templateId") Long templateId)
@@ -1269,35 +1069,27 @@ public class Query {
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<StructuredContentFolder>
-			getSiteStructuredContentFoldersPage(
-				@GraphQLName("siteId") Long siteId,
-				@GraphQLName("flatten") Boolean flatten,
-				@GraphQLName("search") String search,
-				@GraphQLName("filter") Filter filter,
-				@GraphQLName("pageSize") int pageSize,
-				@GraphQLName("page") int page,
-				@GraphQLName("sorts") Sort[] sorts)
+	public StructuredContentFolderPage getSiteStructuredContentFoldersPage(
+			@GraphQLName("siteId") Long siteId,
+			@GraphQLName("flatten") Boolean flatten,
+			@GraphQLName("search") String search,
+			@GraphQLName("filter") Filter filter,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page, @GraphQLName("sorts") Sort[] sorts)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_structuredContentFolderResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			structuredContentFolderResource -> {
-				Page paginationPage =
-					structuredContentFolderResource.
-						getSiteStructuredContentFoldersPage(
-							siteId, flatten, search, filter,
-							Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			structuredContentFolderResource -> new StructuredContentFolderPage(
+				structuredContentFolderResource.
+					getSiteStructuredContentFoldersPage(
+						siteId, flatten, search, filter,
+						Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
-	public java.util.Collection<StructuredContentFolder>
+	public StructuredContentFolderPage
 			getStructuredContentFolderStructuredContentFoldersPage(
 				@GraphQLName("parentStructuredContentFolderId") Long
 					parentStructuredContentFolderId,
@@ -1311,19 +1103,14 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_structuredContentFolderResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			structuredContentFolderResource -> {
-				Page paginationPage =
-					structuredContentFolderResource.
-						getStructuredContentFolderStructuredContentFoldersPage(
-							parentStructuredContentFolderId, search, filter,
-							Pagination.of(pageSize, page), sorts);
-
-				return paginationPage.getItems();
-			});
+			structuredContentFolderResource -> new StructuredContentFolderPage(
+				structuredContentFolderResource.
+					getStructuredContentFolderStructuredContentFoldersPage(
+						parentStructuredContentFolderId, search, filter,
+						Pagination.of(page, pageSize), sorts)));
 	}
 
 	@GraphQLField
-	@GraphQLInvokeDetached
 	public StructuredContentFolder getStructuredContentFolder(
 			@GraphQLName("structuredContentFolderId") Long
 				structuredContentFolderId)
@@ -1335,6 +1122,390 @@ public class Query {
 			structuredContentFolderResource ->
 				structuredContentFolderResource.getStructuredContentFolder(
 					structuredContentFolderId));
+	}
+
+	@GraphQLName("BlogPostingPage")
+	public class BlogPostingPage {
+
+		public BlogPostingPage(Page blogPostingPage) {
+			items = blogPostingPage.getItems();
+			page = blogPostingPage.getPage();
+			pageSize = blogPostingPage.getPageSize();
+			totalCount = blogPostingPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<BlogPosting> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("BlogPostingImagePage")
+	public class BlogPostingImagePage {
+
+		public BlogPostingImagePage(Page blogPostingImagePage) {
+			items = blogPostingImagePage.getItems();
+			page = blogPostingImagePage.getPage();
+			pageSize = blogPostingImagePage.getPageSize();
+			totalCount = blogPostingImagePage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<BlogPostingImage> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("CommentPage")
+	public class CommentPage {
+
+		public CommentPage(Page commentPage) {
+			items = commentPage.getItems();
+			page = commentPage.getPage();
+			pageSize = commentPage.getPageSize();
+			totalCount = commentPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<Comment> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("ContentSetElementPage")
+	public class ContentSetElementPage {
+
+		public ContentSetElementPage(Page contentSetElementPage) {
+			items = contentSetElementPage.getItems();
+			page = contentSetElementPage.getPage();
+			pageSize = contentSetElementPage.getPageSize();
+			totalCount = contentSetElementPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<ContentSetElement> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("ContentStructurePage")
+	public class ContentStructurePage {
+
+		public ContentStructurePage(Page contentStructurePage) {
+			items = contentStructurePage.getItems();
+			page = contentStructurePage.getPage();
+			pageSize = contentStructurePage.getPageSize();
+			totalCount = contentStructurePage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<ContentStructure> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("DocumentPage")
+	public class DocumentPage {
+
+		public DocumentPage(Page documentPage) {
+			items = documentPage.getItems();
+			page = documentPage.getPage();
+			pageSize = documentPage.getPageSize();
+			totalCount = documentPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<Document> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("DocumentFolderPage")
+	public class DocumentFolderPage {
+
+		public DocumentFolderPage(Page documentFolderPage) {
+			items = documentFolderPage.getItems();
+			page = documentFolderPage.getPage();
+			pageSize = documentFolderPage.getPageSize();
+			totalCount = documentFolderPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<DocumentFolder> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("KnowledgeBaseArticlePage")
+	public class KnowledgeBaseArticlePage {
+
+		public KnowledgeBaseArticlePage(Page knowledgeBaseArticlePage) {
+			items = knowledgeBaseArticlePage.getItems();
+			page = knowledgeBaseArticlePage.getPage();
+			pageSize = knowledgeBaseArticlePage.getPageSize();
+			totalCount = knowledgeBaseArticlePage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<KnowledgeBaseArticle> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("KnowledgeBaseAttachmentPage")
+	public class KnowledgeBaseAttachmentPage {
+
+		public KnowledgeBaseAttachmentPage(Page knowledgeBaseAttachmentPage) {
+			items = knowledgeBaseAttachmentPage.getItems();
+			page = knowledgeBaseAttachmentPage.getPage();
+			pageSize = knowledgeBaseAttachmentPage.getPageSize();
+			totalCount = knowledgeBaseAttachmentPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<KnowledgeBaseAttachment> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("KnowledgeBaseFolderPage")
+	public class KnowledgeBaseFolderPage {
+
+		public KnowledgeBaseFolderPage(Page knowledgeBaseFolderPage) {
+			items = knowledgeBaseFolderPage.getItems();
+			page = knowledgeBaseFolderPage.getPage();
+			pageSize = knowledgeBaseFolderPage.getPageSize();
+			totalCount = knowledgeBaseFolderPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<KnowledgeBaseFolder> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("MessageBoardAttachmentPage")
+	public class MessageBoardAttachmentPage {
+
+		public MessageBoardAttachmentPage(Page messageBoardAttachmentPage) {
+			items = messageBoardAttachmentPage.getItems();
+			page = messageBoardAttachmentPage.getPage();
+			pageSize = messageBoardAttachmentPage.getPageSize();
+			totalCount = messageBoardAttachmentPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<MessageBoardAttachment> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("MessageBoardMessagePage")
+	public class MessageBoardMessagePage {
+
+		public MessageBoardMessagePage(Page messageBoardMessagePage) {
+			items = messageBoardMessagePage.getItems();
+			page = messageBoardMessagePage.getPage();
+			pageSize = messageBoardMessagePage.getPageSize();
+			totalCount = messageBoardMessagePage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<MessageBoardMessage> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("MessageBoardSectionPage")
+	public class MessageBoardSectionPage {
+
+		public MessageBoardSectionPage(Page messageBoardSectionPage) {
+			items = messageBoardSectionPage.getItems();
+			page = messageBoardSectionPage.getPage();
+			pageSize = messageBoardSectionPage.getPageSize();
+			totalCount = messageBoardSectionPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<MessageBoardSection> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("MessageBoardThreadPage")
+	public class MessageBoardThreadPage {
+
+		public MessageBoardThreadPage(Page messageBoardThreadPage) {
+			items = messageBoardThreadPage.getItems();
+			page = messageBoardThreadPage.getPage();
+			pageSize = messageBoardThreadPage.getPageSize();
+			totalCount = messageBoardThreadPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<MessageBoardThread> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("StructuredContentPage")
+	public class StructuredContentPage {
+
+		public StructuredContentPage(Page structuredContentPage) {
+			items = structuredContentPage.getItems();
+			page = structuredContentPage.getPage();
+			pageSize = structuredContentPage.getPageSize();
+			totalCount = structuredContentPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<StructuredContent> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("StructuredContentFolderPage")
+	public class StructuredContentFolderPage {
+
+		public StructuredContentFolderPage(Page structuredContentFolderPage) {
+			items = structuredContentFolderPage.getItems();
+			page = structuredContentFolderPage.getPage();
+			pageSize = structuredContentFolderPage.getPageSize();
+			totalCount = structuredContentFolderPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<StructuredContentFolder> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
 	}
 
 	private <T, R, E1 extends Throwable, E2 extends Throwable> R

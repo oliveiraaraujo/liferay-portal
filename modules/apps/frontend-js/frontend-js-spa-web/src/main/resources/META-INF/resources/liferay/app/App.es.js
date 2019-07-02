@@ -1,5 +1,21 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-console: "warn" */
+/* eslint no-unused-vars: "warn" */
+
 import {App} from 'senna';
-import {CancellablePromise} from 'metal-promise';
 import {openToast} from 'frontend-js-web';
 import core from 'metal';
 import dom from 'metal-dom';
@@ -315,7 +331,7 @@ class LiferayApp extends App {
 			Liferay.Data.layoutConfig = this.dataLayoutConfig_;
 
 			this._createNotification({
-				message: message,
+				message,
 				title: Liferay.Language.get('error'),
 				type: 'danger'
 			});
@@ -386,12 +402,12 @@ class LiferayApp extends App {
 	/**
 	 * Creates a user notification
 	 * @param  {!Object} configuration object that's passed to `Liferay.Notification`
-	 * @return {!CancellablePromise} A promise that renders a notification when
+	 * @return {!Promise} A promise that renders a notification when
 	 * resolved
 	 */
 
 	_createNotification(config) {
-		return new CancellablePromise(resolve => {
+		return new Promise(resolve => {
 			resolve(
 				openToast(
 					Object.assign(
@@ -451,7 +467,7 @@ class LiferayApp extends App {
 		if (Liferay.SPA.userNotification.timeout > 0) {
 			this.requestTimer = setTimeout(() => {
 				Liferay.fire('spaRequestTimeout', {
-					path: path
+					path
 				});
 
 				this._hideTimeoutAlert();

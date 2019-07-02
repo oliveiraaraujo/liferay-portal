@@ -18,6 +18,7 @@ import aQute.bnd.cdi.Discover;
 import aQute.bnd.component.DSAnnotations;
 import aQute.bnd.header.Attrs;
 import aQute.bnd.header.Parameters;
+import aQute.bnd.make.component.ServiceComponent;
 import aQute.bnd.osgi.Analyzer;
 import aQute.bnd.osgi.Builder;
 import aQute.bnd.osgi.Constants;
@@ -1141,19 +1142,31 @@ public class WabProcessor {
 		analyzer.setProperty("-jsp", "*.jsp,*.jspf");
 		analyzer.setProperty("Web-ContextPath", getWebContextPath());
 
+		List<Object> disabledPlugins = new ArrayList<>();
+		Properties properties = PropsUtil.getProperties(
+			"module.framework.web.generator.bnd.plugin.enabled[", true);
+
 		Set<Object> plugins = analyzer.getPlugins();
 
-		Object dsAnnotationsPlugin = null;
-
 		for (Object plugin : plugins) {
-			if (plugin instanceof DSAnnotations) {
-				dsAnnotationsPlugin = plugin;
+			if (plugin instanceof DSAnnotations ||
+				plugin instanceof ServiceComponent) {
+
+				disabledPlugins.add(plugin);
+
+				continue;
+			}
+
+			Class<?> clazz = plugin.getClass();
+
+			String name = clazz.getName() + "]";
+
+			if (!GetterUtil.getBoolean(properties.getProperty(name), true)) {
+				disabledPlugins.add(plugin);
 			}
 		}
 
-		if (dsAnnotationsPlugin != null) {
-			plugins.remove(dsAnnotationsPlugin);
-		}
+		plugins.removeAll(disabledPlugins);
 
 		plugins.add(new JspAnalyzerPlugin());
 

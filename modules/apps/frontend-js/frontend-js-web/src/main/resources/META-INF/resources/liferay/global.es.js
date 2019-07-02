@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import {
 	component,
 	componentReady,
@@ -9,6 +23,7 @@ import {
 } from './component.es';
 import escape from 'lodash.escape';
 import fetch from './util/fetch.es';
+import formatStorage from './util/format_storage.es';
 import formatXML from './util/format_xml.es';
 import getCountries from './util/address/get_countries.es';
 import getCropRegion from './util/get_crop_region.es';
@@ -35,14 +50,15 @@ Liferay.getComponentCache = getComponentCache;
 Liferay.initComponentCache = initComponentCache;
 
 Liferay.Address = {
-	getCountries: getCountries,
-	getRegions: getRegions
+	getCountries,
+	getRegions
 };
 
 Liferay.SideNavigation = SideNavigation;
 
 Liferay.Util.escape = escape;
 Liferay.Util.fetch = fetch;
+Liferay.Util.formatStorage = formatStorage;
 Liferay.Util.formatXML = formatXML;
 Liferay.Util.getCropRegion = getCropRegion;
 Liferay.Util.getFormElement = getFormElement;

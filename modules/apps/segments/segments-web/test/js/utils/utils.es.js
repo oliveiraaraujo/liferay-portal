@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import * as Utils from 'utils/utils.es';
 import {CONJUNCTIONS} from 'utils/constants.es';
 import {mockCriteria, mockCriteriaNested} from 'test/data';
@@ -6,7 +20,7 @@ const GROUP_ID = 'group_1';
 
 describe('utils', () => {
 	describe('createNewGroup', () => {
-		it('should return a new group object with the passed in items', () => {
+		it('returns a new group object with the passed in items', () => {
 			expect(Utils.createNewGroup([])).toEqual({
 				conjunctionName: CONJUNCTIONS.AND,
 				groupId: GROUP_ID,
@@ -16,12 +30,12 @@ describe('utils', () => {
 	});
 
 	describe('getChildGroupIds', () => {
-		it('should return an empty array if there are no child groups', () => {
+		it('returns an empty array if there are no child groups', () => {
 			expect(Utils.getChildGroupIds(mockCriteria(1))).toEqual([]);
 			expect(Utils.getChildGroupIds(mockCriteria(3))).toEqual([]);
 		});
 
-		it('should return the child group ids', () => {
+		it('returns the child group ids', () => {
 			expect(Utils.getChildGroupIds(mockCriteriaNested())).toEqual([
 				'group_02',
 				'group_03',
@@ -31,7 +45,7 @@ describe('utils', () => {
 	});
 
 	describe('getSupportedOperatorsFromType', () => {
-		it('should return an array of supported operators', () => {
+		it('returns an array of supported operators', () => {
 			const operators = [
 				{
 					label: Liferay.Language.get('equals'),
@@ -75,7 +89,7 @@ describe('utils', () => {
 	});
 
 	describe('insertAtIndex', () => {
-		it('should insert an item at the beginning', () => {
+		it('inserts an item at the beginning', () => {
 			expect(Utils.insertAtIndex('c', ['a', 'b'], 0)).toEqual([
 				'c',
 				'a',
@@ -83,7 +97,7 @@ describe('utils', () => {
 			]);
 		});
 
-		it('should insert an item at the middle', () => {
+		it('inserts an item at the middle', () => {
 			expect(Utils.insertAtIndex('c', ['a', 'b'], 1)).toEqual([
 				'a',
 				'c',
@@ -91,7 +105,7 @@ describe('utils', () => {
 			]);
 		});
 
-		it('should insert an item at the end', () => {
+		it('inserts an item at the end', () => {
 			expect(Utils.insertAtIndex('c', ['a', 'b'], 2)).toEqual([
 				'a',
 				'b',
@@ -101,7 +115,7 @@ describe('utils', () => {
 	});
 
 	describe('objectToFormData', () => {
-		it('should take an object of key value pairs and return a form data object with the same values', () => {
+		it('takes an object of key value pairs and return a form data object with the same values', () => {
 			const testData = {
 				bar: 'bar',
 				foo: 'foo'
@@ -115,21 +129,21 @@ describe('utils', () => {
 	});
 
 	describe('removeAtIndex', () => {
-		it('should remove the item at the beginning', () => {
+		it('removes the item at the beginning', () => {
 			expect(Utils.removeAtIndex(['a', 'b', 'c'], 0)).toEqual(['b', 'c']);
 		});
 
-		it('should remove the item at the middle', () => {
+		it('removes the item at the middle', () => {
 			expect(Utils.removeAtIndex(['a', 'b', 'c'], 1)).toEqual(['a', 'c']);
 		});
 
-		it('should remove the item at the end', () => {
+		it('removes the item at the end', () => {
 			expect(Utils.removeAtIndex(['a', 'b', 'c'], 2)).toEqual(['a', 'b']);
 		});
 	});
 
 	describe('replaceAtIndex', () => {
-		it('should replace the item at the beginning', () => {
+		it('replaces the item at the beginning', () => {
 			expect(Utils.replaceAtIndex('x', ['a', 'b', 'c'], 0)).toEqual([
 				'x',
 				'b',
@@ -137,7 +151,7 @@ describe('utils', () => {
 			]);
 		});
 
-		it('should replace the item at the middle', () => {
+		it('replaces the item at the middle', () => {
 			expect(Utils.replaceAtIndex('x', ['a', 'b', 'c'], 1)).toEqual([
 				'a',
 				'x',
@@ -145,7 +159,7 @@ describe('utils', () => {
 			]);
 		});
 
-		it('should replace the item at the end', () => {
+		it('replaces the item at the end', () => {
 			expect(Utils.replaceAtIndex('x', ['a', 'b', 'c'], 2)).toEqual([
 				'a',
 				'b',
@@ -155,25 +169,25 @@ describe('utils', () => {
 	});
 
 	describe('sub', () => {
-		it('should return an array', () => {
+		it('returns an array', () => {
 			const res = Utils.sub('hello world', [''], false);
 
 			expect(res).toEqual(['hello world']);
 		});
 
-		it('should return a string', () => {
+		it('returns a string', () => {
 			const res = Utils.sub('hello world', ['']);
 
 			expect(res).toEqual('hello world');
 		});
 
-		it('should return with a subbed value for {0}', () => {
+		it('returns with a subbed value for {0}', () => {
 			const res = Utils.sub('hello {0}', ['world']);
 
 			expect(res).toEqual('hello world');
 		});
 
-		it('should return with multiple subbed values', () => {
+		it('returns with multiple subbed values', () => {
 			const res = Utils.sub('My name is {0} {1}', ['hello', 'world']);
 
 			expect(res).toEqual('My name is hello world');

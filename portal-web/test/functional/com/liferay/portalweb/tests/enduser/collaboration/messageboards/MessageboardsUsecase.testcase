@@ -33,24 +33,15 @@ definition {
 
 	@priority = "4"
 	test CopyAndPasteTextInAlloyEditor {
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			panel = "Site Administration",
-			portlet = "Pages");
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Message Boards Page");
 
-		SitePages.addPublicPage(
-			pageName = "Message Boards Page",
-			sitePageType = "Widget Page");
-
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "Message Boards Page",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
-
-		Navigator.gotoPage(pageName = "Message Boards Page");
-
-		Portlet.addPG(portletName = "Message Boards");
+		JSONLayout.addWidgetToPublicLayout(
+			column = "1",
+			groupName = "Guest",
+			layoutName = "Message Boards Page",
+			widgetName = "Message Boards");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -93,6 +84,7 @@ definition {
 	@priority = "5"
 	test DeleteMessageboardsThread {
 		JSONMBMessage.addMessage(
+			groupName = "Guest",
 			threadBody = "MB Thread Message Body",
 			threadSubject = "MB Thread Message Subject");
 
@@ -154,24 +146,15 @@ definition {
 
 	@priority = "3"
 	test SearchMessageBoardsAttachment {
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			panel = "Site Administration",
-			portlet = "Pages");
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Message Boards Page");
 
-		SitePages.addPublicPage(
-			pageName = "Message Boards Page",
-			sitePageType = "Widget Page");
-
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "Message Boards Page",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
-
-		Navigator.gotoPage(pageName = "Message Boards Page");
-
-		Portlet.addPG(portletName = "Message Boards");
+		JSONLayout.addWidgetToPublicLayout(
+			column = "1",
+			groupName = "Guest",
+			layoutName = "Message Boards Page",
+			widgetName = "Message Boards");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -196,24 +179,15 @@ definition {
 
 	@priority = "3"
 	test SplitMBThread {
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			panel = "Site Administration",
-			portlet = "Pages");
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Message Boards Page");
 
-		SitePages.addPublicPage(
-			pageName = "Message Boards Page",
-			sitePageType = "Widget Page");
-
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "Message Boards Page",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
-
-		Navigator.gotoPage(pageName = "Message Boards Page");
-
-		Portlet.addPG(portletName = "Message Boards");
+		JSONLayout.addWidgetToPublicLayout(
+			column = "1",
+			groupName = "Guest",
+			layoutName = "Message Boards Page",
+			widgetName = "Message Boards");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -260,24 +234,15 @@ definition {
 	test ViewBBCodeNoXSSWithRemoteServices {
 		property custom.properties = "message.boards.message.formats.default=bbcode";
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			panel = "Site Administration",
-			portlet = "Pages");
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Message Boards Page");
 
-		SitePages.addPublicPage(
-			pageName = "Message Boards Page",
-			sitePageType = "Widget Page");
-
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "Message Boards Page",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
-
-		Navigator.gotoPage(pageName = "Message Boards Page");
-
-		Portlet.addPG(portletName = "Message Boards");
+		JSONLayout.addWidgetToPublicLayout(
+			column = "1",
+			groupName = "Guest",
+			layoutName = "Message Boards Page",
+			widgetName = "Message Boards");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -529,24 +494,17 @@ definition {
 
 	@priority = "3"
 	test ViewMessageBoardsBannedUsers {
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			panel = "Site Administration",
-			portlet = "Pages");
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Message Boards Page");
 
-		SitePages.addPublicPage(
-			pageName = "Message Boards Page",
-			sitePageType = "Widget Page");
-
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "Message Boards Page",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		JSONLayout.addWidgetToPublicLayout(
+			column = "1",
+			groupName = "Guest",
+			layoutName = "Message Boards Page",
+			widgetName = "Message Boards");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
-
-		Portlet.addPG(portletName = "Message Boards");
 
 		JSONUser.addUser(
 			userEmailAddress = "userea1@liferay.com",
@@ -657,30 +615,25 @@ definition {
 	test ViewMessageBoardsRSS {
 		var siteName = TestCase.getSiteName(siteName = "${siteName}");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			panel = "Site Administration",
-			portlet = "Pages");
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Message Boards Page");
 
-		SitePages.addPublicPage(
-			pageName = "Message Boards Page",
-			sitePageType = "Widget Page");
-
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "Message Boards Page",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		JSONLayout.addWidgetToPublicLayout(
+			column = "1",
+			groupName = "Guest",
+			layoutName = "Message Boards Page",
+			widgetName = "Message Boards");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
-		Portlet.addPG(portletName = "Message Boards");
-
 		JSONMBMessage.addMessage(
+			groupName = "Guest",
 			threadBody = "MB Thread Message Body 1",
 			threadSubject = "MB Thread Message Subject 1");
 
 		JSONMBMessage.addMessage(
+			groupName = "Guest",
 			threadBody = "MB Thread Message Body 2",
 			threadSubject = "MB Thread Message Subject 2");
 
@@ -718,24 +671,15 @@ definition {
 
 	@priority = "4"
 	test ViewMessageBoardsThreadStatistics {
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			panel = "Site Administration",
-			portlet = "Pages");
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Message Boards Page");
 
-		SitePages.addPublicPage(
-			pageName = "Message Boards Page",
-			sitePageType = "Widget Page");
-
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "Message Boards Page",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
-
-		Navigator.gotoPage(pageName = "Message Boards Page");
-
-		Portlet.addPG(portletName = "Message Boards");
+		JSONLayout.addWidgetToPublicLayout(
+			column = "1",
+			groupName = "Guest",
+			layoutName = "Message Boards Page",
+			widgetName = "Message Boards");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -779,6 +723,7 @@ definition {
 			threadPostNumber = "1");
 
 		JSONMBMessage.addMessage(
+			groupName = "Guest",
 			threadBody = "MB Thread2 Message Body",
 			threadSubject = "MB Thread2 Message Subject");
 
@@ -803,24 +748,15 @@ definition {
 	test ViewNoHTMLXSS {
 		property custom.properties = "message.boards.message.formats.default=html";
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			panel = "Site Administration",
-			portlet = "Pages");
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Message Boards Page");
 
-		SitePages.addPublicPage(
-			pageName = "Message Boards Page",
-			sitePageType = "Widget Page");
-
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "Message Boards Page",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
-
-		Navigator.gotoPage(pageName = "Message Boards Page");
-
-		Portlet.addPG(portletName = "Message Boards");
+		JSONLayout.addWidgetToPublicLayout(
+			column = "1",
+			groupName = "Guest",
+			layoutName = "Message Boards Page",
+			widgetName = "Message Boards");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -843,24 +779,15 @@ definition {
 
 	@priority = "4"
 	test ViewNoMBThreadXSS {
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			panel = "Site Administration",
-			portlet = "Pages");
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Message Boards Page");
 
-		SitePages.addPublicPage(
-			pageName = "Message Boards Page",
-			sitePageType = "Widget Page");
-
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "Message Boards Page",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
-
-		Navigator.gotoPage(pageName = "Message Boards Page");
-
-		Portlet.addPG(portletName = "Message Boards");
+		JSONLayout.addWidgetToPublicLayout(
+			column = "1",
+			groupName = "Guest",
+			layoutName = "Message Boards Page",
+			widgetName = "Message Boards");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -877,31 +804,26 @@ definition {
 
 	@priority = "4"
 	test ViewNoSubscribeLinksNoWithEmailNotificationsDisabled {
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			panel = "Site Administration",
-			portlet = "Pages");
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Message Boards Page");
 
-		SitePages.addPublicPage(
-			pageName = "Message Boards Page",
-			sitePageType = "Widget Page");
-
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "Message Boards Page",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		JSONLayout.addWidgetToPublicLayout(
+			column = "1",
+			groupName = "Guest",
+			layoutName = "Message Boards Page",
+			widgetName = "Message Boards");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
-
-		Portlet.addPG(portletName = "Message Boards");
 
 		MessageboardsCategory.addPG(
 			categoryName = "MB Category Name",
 			threadBody = "MB Thread Message Body",
 			threadSubject = "MB Thread Message Subject");
 
-		JSONMBMessage.addMessage(
+		Navigator.gotoPage(pageName = "Message Boards Page");
+
+		MessageboardsThread.addPG(
 			threadBody = "MB Thread Message Body",
 			threadSubject = "MB Thread Message Subject");
 
@@ -975,24 +897,15 @@ definition {
 
 	@priority = "3"
 	test ViewQuestionOnSplitThread {
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			panel = "Site Administration",
-			portlet = "Pages");
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Message Boards Page");
 
-		SitePages.addPublicPage(
-			pageName = "Message Boards Page",
-			sitePageType = "Widget Page");
-
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "Message Boards Page",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
-
-		Navigator.gotoPage(pageName = "Message Boards Page");
-
-		Portlet.addPG(portletName = "Message Boards");
+		JSONLayout.addWidgetToPublicLayout(
+			column = "1",
+			groupName = "Guest",
+			layoutName = "Message Boards Page",
+			widgetName = "Message Boards");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -1041,24 +954,17 @@ definition {
 
 	@priority = "3"
 	test ViewThreadDefaultQuestion {
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			panel = "Site Administration",
-			portlet = "Pages");
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Message Boards Page");
 
-		SitePages.addPublicPage(
-			pageName = "Message Boards Page",
-			sitePageType = "Widget Page");
-
-		SitePages.configurePage(
-			columnName = "1 Column",
-			pageName = "Message Boards Page",
-			privacy = "Public Pages",
-			sitePageType = "Widget Page");
+		JSONLayout.addWidgetToPublicLayout(
+			column = "1",
+			groupName = "Guest",
+			layoutName = "Message Boards Page",
+			widgetName = "Message Boards");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
-
-		Portlet.addPG(portletName = "Message Boards");
 
 		MessageBoardsAdmin.openMessageBoardsAdmin(siteURLKey = "guest");
 
@@ -1070,11 +976,11 @@ definition {
 
 		MessageboardsThread.viewMarkAsQuestionCheckedCP(threadSubject = "Thread Subject");
 
+		Navigator.gotoPage(pageName = "Message Boards Page");
+
 		MessageboardsThread.addPG(
 			threadBody = "Thread Body",
 			threadSubject = "Thread Subject");
-
-		Navigator.openURL();
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 

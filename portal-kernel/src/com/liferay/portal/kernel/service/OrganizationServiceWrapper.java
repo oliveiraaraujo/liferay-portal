@@ -389,7 +389,7 @@ public class OrganizationServiceWrapper
 	 * @param countryId the primary key of the organization's country
 	 * @param statusId the organization's workflow status
 	 * @param comments the comments about the organization
-	 * @param logo whether to update the ogranization's logo
+	 * @param hasLogo if the organization has a custom logo
 	 * @param logoBytes the new logo image data
 	 * @param site whether the organization is to be associated with a main
 	 site
@@ -408,7 +408,7 @@ public class OrganizationServiceWrapper
 	public com.liferay.portal.kernel.model.Organization updateOrganization(
 			long organizationId, long parentOrganizationId, String name,
 			String type, long regionId, long countryId, long statusId,
-			String comments, boolean logo, byte[] logoBytes, boolean site,
+			String comments, boolean hasLogo, byte[] logoBytes, boolean site,
 			java.util.List<com.liferay.portal.kernel.model.Address> addresses,
 			java.util.List<com.liferay.portal.kernel.model.EmailAddress>
 				emailAddresses,
@@ -420,7 +420,7 @@ public class OrganizationServiceWrapper
 
 		return _organizationService.updateOrganization(
 			organizationId, parentOrganizationId, name, type, regionId,
-			countryId, statusId, comments, logo, logoBytes, site, addresses,
+			countryId, statusId, comments, hasLogo, logoBytes, site, addresses,
 			emailAddresses, orgLabors, phones, websites, serviceContext);
 	}
 

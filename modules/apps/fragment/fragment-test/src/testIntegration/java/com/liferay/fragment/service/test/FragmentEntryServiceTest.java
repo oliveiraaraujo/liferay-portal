@@ -32,8 +32,8 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
-import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
@@ -214,7 +214,7 @@ public class FragmentEntryServiceTest {
 
 		_fragmentEntryService.addFragmentEntry(
 			_group.getGroupId(), _fragmentCollection.getFragmentCollectionId(),
-			RandomTestUtil.randomString(), null, "test", null,
+			RandomTestUtil.randomString(), null, null, null,
 			WorkflowConstants.STATUS_APPROVED, serviceContext);
 	}
 
@@ -359,8 +359,6 @@ public class FragmentEntryServiceTest {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
 				_group.getGroupId(), _groupUser.getUserId());
-
-		_setRolePermissions(FragmentActionKeys.MANAGE_FRAGMENT_ENTRIES);
 
 		ServiceTestUtil.setUser(_groupUser);
 
@@ -640,17 +638,6 @@ public class FragmentEntryServiceTest {
 				fragmentEntry.getFragmentEntryId());
 
 		Assert.assertEquals("Fragment Entry", persistedFragmentEntry.getName());
-	}
-
-	@Test(expected = PrincipalException.MustHavePermission.class)
-	public void testFetchFragmentEntryWithoutPermissions() throws Exception {
-		FragmentEntry fragmentEntry = FragmentEntryTestUtil.addFragmentEntry(
-			_fragmentCollection.getFragmentCollectionId(), "Fragment Entry");
-
-		ServiceTestUtil.setUser(_groupUser);
-
-		_fragmentEntryService.fetchFragmentEntry(
-			fragmentEntry.getFragmentEntryId());
 	}
 
 	@Test

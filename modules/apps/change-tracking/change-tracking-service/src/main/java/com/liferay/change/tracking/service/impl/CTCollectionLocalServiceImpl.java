@@ -14,7 +14,6 @@
 
 package com.liferay.change.tracking.service.impl;
 
-import com.liferay.change.tracking.constants.CTConstants;
 import com.liferay.change.tracking.exception.CTCollectionDescriptionException;
 import com.liferay.change.tracking.exception.CTCollectionNameException;
 import com.liferay.change.tracking.model.CTCollection;
@@ -184,11 +183,6 @@ public class CTCollectionLocalServiceImpl
 		Property companyIdProperty = PropertyFactoryUtil.forName("companyId");
 
 		dynamicQuery.add(companyIdProperty.eq(companyId));
-
-		Property nameProperty = PropertyFactoryUtil.forName("name");
-
-		dynamicQuery.add(
-			nameProperty.ne(CTConstants.CT_COLLECTION_NAME_PRODUCTION));
 
 		boolean includeActive = GetterUtil.getBoolean(
 			queryDefinition.getAttribute("includeActive"));

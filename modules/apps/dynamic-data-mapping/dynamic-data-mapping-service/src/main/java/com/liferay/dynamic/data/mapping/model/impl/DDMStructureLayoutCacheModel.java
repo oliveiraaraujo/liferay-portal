@@ -67,7 +67,7 @@ public class DDMStructureLayoutCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -85,6 +85,10 @@ public class DDMStructureLayoutCacheModel
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
+		sb.append(", classNameId=");
+		sb.append(classNameId);
+		sb.append(", structureLayoutKey=");
+		sb.append(structureLayoutKey);
 		sb.append(", structureVersionId=");
 		sb.append(structureVersionId);
 		sb.append(", name=");
@@ -136,6 +140,15 @@ public class DDMStructureLayoutCacheModel
 			ddmStructureLayoutImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
+		ddmStructureLayoutImpl.setClassNameId(classNameId);
+
+		if (structureLayoutKey == null) {
+			ddmStructureLayoutImpl.setStructureLayoutKey("");
+		}
+		else {
+			ddmStructureLayoutImpl.setStructureLayoutKey(structureLayoutKey);
+		}
+
 		ddmStructureLayoutImpl.setStructureVersionId(structureVersionId);
 
 		if (name == null) {
@@ -183,6 +196,9 @@ public class DDMStructureLayoutCacheModel
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 
+		classNameId = objectInput.readLong();
+		structureLayoutKey = objectInput.readUTF();
+
 		structureVersionId = objectInput.readLong();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
@@ -220,6 +236,15 @@ public class DDMStructureLayoutCacheModel
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
 
+		objectOutput.writeLong(classNameId);
+
+		if (structureLayoutKey == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(structureLayoutKey);
+		}
+
 		objectOutput.writeLong(structureVersionId);
 
 		if (name == null) {
@@ -254,6 +279,8 @@ public class DDMStructureLayoutCacheModel
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
+	public long classNameId;
+	public String structureLayoutKey;
 	public long structureVersionId;
 	public String name;
 	public String description;

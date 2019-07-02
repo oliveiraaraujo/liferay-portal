@@ -23,7 +23,7 @@ definition {
 	}
 
 	test AddAndEditApplication {
-		property app.server.types = "jboss,resin,tcserver,tomcat,weblogic,websphere,wildfly";
+		property app.server.types = "jboss,tcserver,tomcat,weblogic,websphere,wildfly";
 		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
 		property environment.acceptance = "true";
 		property portal.acceptance = "true";
@@ -109,6 +109,132 @@ definition {
 		OAuth2.deleteApplication(applicationName = "OAuth Application Edited");
 	}
 
+	test AddAndEditOAuthSAPEntries {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Service Access Policy");
+
+		ServiceAccessPolicy.addServiceAccessPolicy(
+			enabled = "true",
+			methodName = "getVersion",
+			policyName = "OAUTH2_read.portalversion",
+			serviceClass = "com.liferay.portal.kernel.service.PortalService",
+			title = "read Portal version");
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "OAuth 2 Administration");
+
+		OAuth2.addApplication(
+			applicationName = "OAuth Application",
+			checkboxUncheckList = "Authorization Code");
+
+		var generatedClientId = selenium.getElementValue("OAuth2#ADMIN_INPUT_FORM_CLIENT_ID");
+		var generatedClientSecret = selenium.getElementValue("OAuth2#ADMIN_INPUT_FORM_CLIENT_SECRET");
+
+		Navigator.gotoBack();
+
+		OAuth2.editScopes(
+			applicationName = "OAuth Application",
+			resourceCheckList = "liferay-json-web-services.read.portalversion",
+			resourcePanels = "Portal Services");
+
+		var accessToken = OAuth2.getAccessToken(
+			clientId = "${generatedClientId}",
+			clientSecret = "${generatedClientSecret}",
+			grantFlow = "clientCredentials");
+
+		var portalURL = PropsUtil.get("portal.url");
+
+		var portalVersionCurl = '''
+			-H 'Authorization: Bearer ${accessToken}' ${portalURL}/api/jsonws/portal/get-version
+		''';
+
+		var portalVersionOutput = JSONCurlUtil.post("${portalVersionCurl}");
+
+		if (!(contains("${portalVersionOutput}", "7.2"))) {
+			fail("JSON-WS call failed to return Portal version");
+		}
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Service Access Policy");
+
+		ServiceAccessPolicy.editServiceAccessPolicy(
+			enabled = "false",
+			policyName = "OAUTH2_read.portalversion");
+
+		var portalVersionOutput = JSONCurlUtil.post("${portalVersionCurl}");
+
+		if (!(contains("${portalVersionOutput}", "Access denied to com.liferay.portal.kernel.service.PortalService#getVersion"))) {
+			fail("Access denied message was not returned");
+		}
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "OAuth 2 Administration");
+
+		OAuth2.viewScopes(
+			applicationName = "OAuth Application",
+			removedScope = "read.portalversion",
+			resourcePanels = "Portal Services");
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Service Access Policy");
+
+		ServiceAccessPolicy.editServiceAccessPolicy(
+			enabled = "true",
+			policyName = "OAUTH2_read.portalversion");
+
+		var portalVersionOutput = JSONCurlUtil.post("${portalVersionCurl}");
+
+		if (!(contains("${portalVersionOutput}", "7.2"))) {
+			fail("JSON-WS call failed to return Portal version");
+		}
+
+		ServiceAccessPolicy.editServiceAccessPolicy(
+			methodName = "getBuildNumber",
+			newName = "OAUTH2_read.buildnumber",
+			policyName = "OAUTH2_read.portalversion",
+			title = "read Portal build number");
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "OAuth 2 Administration");
+
+		OAuth2.viewScopes(
+			applicationName = "OAuth Application",
+			removedScope = "read.portalversion",
+			resourcePanels = "Portal Services");
+
+		OAuth2.editScopes(
+			applicationName = "OAuth Application",
+			resourceCheckList = "liferay-json-web-services.read.buildnumber",
+			resourcePanels = "Portal Services");
+
+		var accessToken = OAuth2.getAccessToken(
+			clientId = "${generatedClientId}",
+			clientSecret = "${generatedClientSecret}",
+			grantFlow = "clientCredentials");
+
+		var buildNumberCurl = '''
+			-H 'Authorization: Bearer ${accessToken}' ${portalURL}/api/jsonws/portal/get-build-number
+		''';
+
+		var buildNumberOutput = JSONCurlUtil.post("${buildNumberCurl}");
+
+		if (!(contains("${buildNumberOutput}", "72"))) {
+			fail("JSON-WS call failed to return build number");
+		}
+	}
+
 	@description = "This is a use case for OAUTH2-242."
 	@priority = "5"
 	test AssertAuthorizationCodeWorksInCluster {
@@ -162,11 +288,11 @@ definition {
 			portlet = "Service Access Policy");
 
 		ServiceAccessPolicy.addServiceAccessPolicy(
-			SAPEnabled = "true",
-			SAPMethodName = "deleteArticle",
-			SAPName = "OAUTH2_delete.journalarticles",
-			SAPServiceClass = "com.liferay.journal.service.JournalArticleService",
-			SAPTitle = "delete journal articles");
+			enabled = "true",
+			methodName = "deleteArticle",
+			policyName = "OAUTH2_delete.journalarticles",
+			serviceClass = "com.liferay.journal.service.JournalArticleService",
+			title = "delete journal articles");
 
 		JSONUser.addUser(
 			userEmailAddress = "userea@liferay.com",
@@ -202,7 +328,7 @@ definition {
 				--data grant_type=client_credentials&client_id=abc123&client_secret=abc123
 		''';
 
-		var accessToken = OAuth2.getAccessToken(curl = "${tokenCurl}");
+		var accessToken = OAuth2.getAccessToken(tokenCurl = "${tokenCurl}");
 
 		var articleId = JSONWebcontent.getWebContentIdByURLTitle(
 			groupName = "Guest",
@@ -331,9 +457,7 @@ definition {
 			AssertElementNotPresent(locator1 = "OAuth2#ADMIN_RESOURCE_PANEL_COLLAPSED");
 		}
 
-		//Removed "Change Tracking" as workaround for LPS-96560
-
-		for (var resourcePanel : list "Analytics,Bulk Processing,Content Delivery,Dynamic Data Lists,Forms,Portal Services,Taxonomy Administration,User Administration,Workflow Administration") {
+		for (var resourcePanel : list "Analytics,Bulk Processing,Change Tracking,Content Delivery,Dynamic Data Lists,Forms,Portal Services,Taxonomy Administration,User Administration,Workflow Administration") {
 			var key_panel = "${resourcePanel}";
 
 			AssertElementPresent(locator1 = "OAuth2#ADMIN_RESOURCE_PANEL_COLLAPSED");
@@ -411,7 +535,7 @@ definition {
 	}
 
 	test ViewAndRevokeGrantedAuthorizations {
-		property app.server.types = "jboss,resin,tcserver,tomcat,weblogic,websphere,wildfly";
+		property app.server.types = "jboss,tcserver,tomcat,weblogic,websphere,wildfly";
 		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
 		property environment.acceptance = "true";
 		property portal.acceptance = "true";

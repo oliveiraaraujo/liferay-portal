@@ -40,6 +40,7 @@ import javax.validation.constraints.NotNull;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -51,7 +52,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 /**
- * @author Mate Thurzo
+ * @author Máté Thurzó
  * @generated
  */
 @Generated("")
@@ -62,8 +63,8 @@ public abstract class BaseCollectionResourceImpl implements CollectionResource {
 	@GET
 	@Parameters(
 		value = {
+			@Parameter(in = ParameterIn.QUERY, name = "collectionType"),
 			@Parameter(in = ParameterIn.QUERY, name = "companyId"),
-			@Parameter(in = ParameterIn.QUERY, name = "type"),
 			@Parameter(in = ParameterIn.QUERY, name = "userId"),
 			@Parameter(in = ParameterIn.QUERY, name = "page"),
 			@Parameter(in = ParameterIn.QUERY, name = "pageSize"),
@@ -74,8 +75,11 @@ public abstract class BaseCollectionResourceImpl implements CollectionResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Collection")})
 	public Page<Collection> getCollectionsPage(
+			@DefaultValue("all") @Parameter(hidden = true)
+			@QueryParam("collectionType")
+				com.liferay.change.tracking.rest.constant.v1_0.CollectionType
+					collectionType,
 			@Parameter(hidden = true) @QueryParam("companyId") Long companyId,
-			@Parameter(hidden = true) @QueryParam("type") String type,
 			@Parameter(hidden = true) @QueryParam("userId") Long userId,
 			@Context Pagination pagination, @Context Sort[] sorts)
 		throws Exception {
@@ -109,14 +113,19 @@ public abstract class BaseCollectionResourceImpl implements CollectionResource {
 	@Override
 	@DELETE
 	@Parameters(
-		value = {@Parameter(in = ParameterIn.PATH, name = "collectionId")}
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "collectionId"),
+			@Parameter(in = ParameterIn.QUERY, name = "companyId")
+		}
 	)
 	@Path("/collections/{collectionId}")
 	@Produces("text/plain")
 	@Tags(value = {@Tag(name = "Collection")})
 	public Response deleteCollection(
 			@NotNull @Parameter(hidden = true) @PathParam("collectionId") Long
-				collectionId)
+				collectionId,
+			@NotNull @Parameter(hidden = true) @QueryParam("companyId") Long
+				companyId)
 		throws Exception {
 
 		Response.ResponseBuilder responseBuilder = Response.ok();
@@ -127,14 +136,19 @@ public abstract class BaseCollectionResourceImpl implements CollectionResource {
 	@Override
 	@GET
 	@Parameters(
-		value = {@Parameter(in = ParameterIn.PATH, name = "collectionId")}
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "collectionId"),
+			@Parameter(in = ParameterIn.QUERY, name = "companyId")
+		}
 	)
 	@Path("/collections/{collectionId}")
 	@Produces({"application/json", "application/xml", "text/plain"})
 	@Tags(value = {@Tag(name = "Collection")})
 	public Collection getCollection(
 			@NotNull @Parameter(hidden = true) @PathParam("collectionId") Long
-				collectionId)
+				collectionId,
+			@NotNull @Parameter(hidden = true) @QueryParam("companyId") Long
+				companyId)
 		throws Exception {
 
 		return new Collection();

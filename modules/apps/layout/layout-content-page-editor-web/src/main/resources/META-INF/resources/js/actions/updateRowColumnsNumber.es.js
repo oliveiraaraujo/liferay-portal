@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import {
 	disableSavingChangesStatusAction,
 	enableSavingChangesStatusAction,
@@ -32,7 +46,9 @@ function updateRowColumnsNumberAction(numberOfColumns, rowId) {
 		const columnsSize = Math.floor(MAX_COLUMNS / numberOfColumns);
 		const rowIndex = getRowIndex(state.layoutData.structure, rowId);
 
-		let columns = state.layoutData.structure[rowIndex].columns;
+		const columns = state.layoutData.structure[rowIndex].columns;
+
+		let fragmentEntryLinkIdsToRemove = [];
 		let nextData;
 
 		if (numberOfColumns > columns.length) {
@@ -51,9 +67,11 @@ function updateRowColumnsNumberAction(numberOfColumns, rowId) {
 			);
 		}
 
-		let fragmentEntryLinkIdsToRemove = getRowFragmentEntryLinkIds({
-			columns: columns.slice(numberOfColumns - columns.length)
-		});
+		if (columns.length > numberOfColumns) {
+			fragmentEntryLinkIdsToRemove = getRowFragmentEntryLinkIds({
+				columns: columns.slice(numberOfColumns - columns.length)
+			});
+		}
 
 		dispatch(updateRowColumnsNumberLoadingAction());
 		dispatch(enableSavingChangesStatusAction());
@@ -205,7 +223,7 @@ function _getColumnSize(numberOfColumns, columnsSize, columnIndex) {
  * @return {object}
  */
 function _removeColumns(layoutData, rowIndex, numberOfColumns, columnsSize) {
-	let nextData = updateIn(
+	const nextData = updateIn(
 		layoutData,
 		['structure', rowIndex, 'columns'],
 		columns => {

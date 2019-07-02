@@ -1,4 +1,18 @@
-import {CancellablePromise} from 'metal-promise';
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
 
 /**
  * Image Editor History Entry
@@ -14,7 +28,7 @@ class ImageEditorHistoryEntry {
 	 * @review
 	 */
 	constructor(image) {
-		this.dataPromise_ = new CancellablePromise((resolve, reject) => {
+		this.dataPromise_ = new Promise((resolve, reject) => {
 			// Preemtively fetch the imageData when all we have is the image url
 
 			if (image.url && !image.data) {
@@ -32,15 +46,15 @@ class ImageEditorHistoryEntry {
 	 * @review
 	 */
 	loadData_(imageURL) {
-		return new CancellablePromise((resolve, reject) => {
-			let bufferImage = new Image();
+		return new Promise((resolve, reject) => {
+			const bufferImage = new Image();
 
 			bufferImage.onload = () => {
-				let bufferCanvas = document.createElement('canvas');
-				let bufferContext = bufferCanvas.getContext('2d');
+				const bufferCanvas = document.createElement('canvas');
+				const bufferContext = bufferCanvas.getContext('2d');
 
-				let height = bufferImage.height;
-				let width = bufferImage.width;
+				const height = bufferImage.height;
+				const width = bufferImage.width;
 
 				bufferCanvas.width = width;
 				bufferCanvas.height = height;
@@ -56,7 +70,7 @@ class ImageEditorHistoryEntry {
 
 	/**
 	 * Fetches the stored ImageData of this history entry
-	 * @return {CancellablePromise} A promise that will resolve with the stored ImageData value
+	 * @return {Promise} A promise that will resolve with the stored ImageData value
 	 * @review
 	 */
 	getImageData() {

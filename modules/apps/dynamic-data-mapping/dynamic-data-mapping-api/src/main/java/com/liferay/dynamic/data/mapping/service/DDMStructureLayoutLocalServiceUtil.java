@@ -66,6 +66,12 @@ public class DDMStructureLayoutLocalServiceUtil {
 			userId, groupId, structureVersionId, ddmFormLayout, serviceContext);
 	}
 
+	/**
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link
+	 #addStructureLayout(long, long, long, long, Map, Map, String,
+	 String, ServiceContext)}
+	 */
+	@Deprecated
 	public static com.liferay.dynamic.data.mapping.model.DDMStructureLayout
 			addStructureLayout(
 				long userId, long groupId, long structureVersionId,
@@ -78,6 +84,21 @@ public class DDMStructureLayoutLocalServiceUtil {
 		return getService().addStructureLayout(
 			userId, groupId, structureVersionId, name, description, definition,
 			serviceContext);
+	}
+
+	public static com.liferay.dynamic.data.mapping.model.DDMStructureLayout
+			addStructureLayout(
+				long userId, long groupId, long classNameId,
+				String structureLayoutKey, long structureVersionId,
+				java.util.Map<java.util.Locale, String> name,
+				java.util.Map<java.util.Locale, String> description,
+				String definition,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().addStructureLayout(
+			userId, groupId, classNameId, structureLayoutKey,
+			structureVersionId, name, description, definition, serviceContext);
 	}
 
 	/**
@@ -249,6 +270,14 @@ public class DDMStructureLayoutLocalServiceUtil {
 			uuid, groupId);
 	}
 
+	public static com.liferay.dynamic.data.mapping.model.DDMStructureLayout
+		fetchStructureLayout(
+			long groupId, long classNameId, String structureLayoutKey) {
+
+		return getService().fetchStructureLayout(
+			groupId, classNameId, structureLayoutKey);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
@@ -386,6 +415,15 @@ public class DDMStructureLayoutLocalServiceUtil {
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().getStructureLayout(structureLayoutId);
+	}
+
+	public static com.liferay.dynamic.data.mapping.model.DDMStructureLayout
+			getStructureLayout(
+				long groupId, long classNameId, String structureLayoutKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().getStructureLayout(
+			groupId, classNameId, structureLayoutKey);
 	}
 
 	public static com.liferay.dynamic.data.mapping.model.DDMStructureLayout

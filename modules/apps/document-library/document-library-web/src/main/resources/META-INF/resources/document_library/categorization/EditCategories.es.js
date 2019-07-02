@@ -1,3 +1,19 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+
 import 'clay-multi-select';
 import 'clay-radio';
 import Component from 'metal-component';
@@ -69,7 +85,7 @@ class EditCategories extends Component {
 	 * @return {Boolean} true if it has a category, false if is empty.
 	 */
 	_checkRequiredVocabulary(vocabularyId) {
-		let inputNode = this._getVocabularyInputNode(vocabularyId);
+		const inputNode = this._getVocabularyInputNode(vocabularyId);
 		let valid = true;
 
 		if (inputNode.value) {
@@ -77,7 +93,7 @@ class EditCategories extends Component {
 		} else {
 			inputNode.parentElement.parentElement.classList.add('has-error');
 
-			let feedbackErrorNode = inputNode.parentElement.querySelector(
+			const feedbackErrorNode = inputNode.parentElement.querySelector(
 				'.' + this._feedbackErrorClass
 			);
 
@@ -113,9 +129,9 @@ class EditCategories extends Component {
 	 * @param {Function} callback Callback function
 	 */
 	_fetchCategoriesRequest(url, method, bodyData) {
-		let body = JSON.stringify(bodyData);
+		const body = JSON.stringify(bodyData);
 
-		let headers = new Headers();
+		const headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('X-CSRF-Token', Liferay.authToken);
 
@@ -143,7 +159,7 @@ class EditCategories extends Component {
 	_getCommonCategories() {
 		this.loading = true;
 
-		let selection = this._getSelection();
+		const selection = this._getSelection();
 
 		Promise.all([
 			this._fetchCategoriesRequest(this.urlCategories, 'POST', selection),
@@ -262,7 +278,7 @@ class EditCategories extends Component {
 				return;
 			}
 
-			let finalCategories = this._getFinalCategories();
+			const finalCategories = this._getFinalCategories();
 
 			let addedCategories = [];
 
@@ -275,11 +291,11 @@ class EditCategories extends Component {
 				);
 			}
 
-			let removedCategories = this.initialCategories.filter(
+			const removedCategories = this.initialCategories.filter(
 				category => finalCategories.indexOf(category) == -1
 			);
 
-			let instance = this;
+			const instance = this;
 
 			this._fetchCategoriesRequest(
 				this.urlUpdateCategories,
@@ -301,17 +317,17 @@ class EditCategories extends Component {
 
 	_parseVocabularies(vocabularies) {
 		let initialCategories = [];
-		let requiredVocabularies = [];
-		let vocabulariesList = [];
+		const requiredVocabularies = [];
+		const vocabulariesList = [];
 
 		vocabularies.forEach(vocabulary => {
-			let categories = this._parseCategories(
+			const categories = this._parseCategories(
 				vocabulary.taxonomyCategories || []
 			);
 
-			let categoryIds = categories.map(item => item.value);
+			const categoryIds = categories.map(item => item.value);
 
-			let obj = {
+			const obj = {
 				id: vocabulary.taxonomyVocabularyId.toString(),
 				required: vocabulary.required,
 				selectedCategoryIds: categoryIds.join(','),
@@ -343,11 +359,11 @@ class EditCategories extends Component {
 	 * @return {List<{label, value}>} new commonItems object list
 	 */
 	_parseCategories(categories) {
-		let categoriesObjList = [];
+		const categoriesObjList = [];
 
 		if (categories.length > 0) {
 			categories.forEach(item => {
-				let itemObj = {
+				const itemObj = {
 					label: item.taxonomyCategoryName,
 					value: item.taxonomyCategoryId
 				};

@@ -1,4 +1,17 @@
-import {CancellablePromise} from 'metal-promise';
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import globals from 'senna/lib/globals/globals';
 import {HtmlScreen} from 'senna';
 
@@ -153,7 +166,7 @@ class EventScreen extends HtmlScreen {
 	flip(surfaces) {
 		this.copyBodyAttributes();
 
-		return CancellablePromise.resolve(this.beforeScreenFlip())
+		return Promise.resolve(this.beforeScreenFlip())
 			.then(super.flip(surfaces))
 			.then(() => {
 				this.runBodyOnLoad();
@@ -221,7 +234,7 @@ class EventScreen extends HtmlScreen {
 
 			Liferay.fire('screenLoad', {
 				app: Liferay.SPA.app,
-				content: content,
+				content,
 				screen: this
 			});
 
@@ -286,7 +299,7 @@ class EventScreen extends HtmlScreen {
 	 * this ensures that it works fine in IE 11.
 	 * @param {!Array<Element>} elements
 	 * @private
-	 * @return {CancellablePromise}
+	 * @return {Promise}
 	 */
 
 	runFaviconInElement_(elements) {

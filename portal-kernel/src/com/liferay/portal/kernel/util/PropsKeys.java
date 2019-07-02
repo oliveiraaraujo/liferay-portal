@@ -394,6 +394,10 @@ public interface PropsKeys {
 	public static final String BUFFERED_INCREMENT_THREADPOOL_MAX_SIZE =
 		"buffered.increment.threadpool.max.size";
 
+	/**
+	 * @deprecated As of Mueller (7.2.x), with no direct replacement
+	 */
+	@Deprecated
 	public static final String CACHE_CLEAR_ON_CONTEXT_INITIALIZATION =
 		"cache.clear.on.context.initialization";
 
@@ -2281,6 +2285,10 @@ public interface PropsKeys {
 		MODULE_FRAMEWORK_WEB_GENERATOR_JSP_COMPILER_DEPENDENCIES =
 			"module.framework.web.generator.jsp.compiler.dependencies";
 
+	public static final String
+		MODULE_FRAMEWORK_WEB_SERVLET_ANNOTATION_SCANNING_BLACKLIST =
+			"module.framework.web.servlet.annotation.scanning.blacklist";
+
 	public static final String MULTI_VALUE_MAP = "multi.value.map.";
 
 	public static final String MY_SITES_DIRECTORY_SITE_EXCLUDES =
@@ -3359,6 +3367,8 @@ public interface PropsKeys {
 	@Deprecated
 	public static final String SPRING_PORTLET_CONFIGS =
 		"spring.portlet.configs";
+
+	public static final String SPRITE_ENABLED = "sprite.enabled";
 
 	public static final String SPRITE_FILE_NAME = "sprite.file.name";
 

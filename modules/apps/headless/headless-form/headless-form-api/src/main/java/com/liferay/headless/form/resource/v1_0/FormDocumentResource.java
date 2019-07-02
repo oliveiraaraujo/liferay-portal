@@ -20,6 +20,8 @@ import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 
 import javax.annotation.Generated;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
  * To access this resource, run:
  *
@@ -29,6 +31,7 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
+@ProviderType
 public interface FormDocumentResource {
 
 	public void deleteFormDocument(Long formDocumentId) throws Exception;

@@ -84,7 +84,8 @@ public class JournalContentPortletToolbarContributor
 			PortletRequest.RENDER_PHASE);
 
 		portletURL.setParameter("mvcPath", "/edit_article.jsp");
-		portletURL.setParameter("redirect", themeDisplay.getURLCurrent());
+		portletURL.setParameter(
+			"redirect", _portal.getLayoutFullURL(themeDisplay));
 		portletURL.setParameter("portletResource", portletDisplay.getId());
 		portletURL.setParameter("refererPlid", String.valueOf(plid));
 		portletURL.setParameter("groupId", String.valueOf(scopeGroupId));

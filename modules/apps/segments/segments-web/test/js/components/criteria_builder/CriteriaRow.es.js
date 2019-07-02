@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import CriteriaRow from 'components/criteria_builder/CriteriaRow.es';
 import React from 'react';
 import {cleanup, render} from 'react-testing-library';
@@ -8,7 +22,7 @@ const connectDnd = jest.fn(el => el);
 describe('CriteriaRow', () => {
 	afterEach(cleanup);
 
-	it('should render', () => {
+	it('renders', () => {
 		const OriginalCriteriaRow = CriteriaRow.DecoratedComponent;
 
 		const {asFragment} = render(
@@ -41,7 +55,7 @@ describe('CriteriaRow', () => {
 		expect(asFragment()).toMatchSnapshot();
 	});
 
-	it('should render and inform there is an unknown property', () => {
+	it('renders and inform there is an unknown property', () => {
 		const OriginalCriteriaRow = CriteriaRow.DecoratedComponent;
 
 		const {asFragment} = render(

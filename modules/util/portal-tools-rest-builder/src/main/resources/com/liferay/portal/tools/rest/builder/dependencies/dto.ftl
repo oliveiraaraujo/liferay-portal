@@ -14,9 +14,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.petra.string.StringBundler;
-
-import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLName;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -188,6 +187,9 @@ public class ${schemaName} <#if dtoParentClassName?has_content>extends ${dtoPare
 			}
 		}
 
+		<#if propertySchema.deprecated>
+			@Deprecated
+		</#if>
 		@GraphQLField
 		@JsonProperty(
 			<#if propertySchema.readOnly>

@@ -83,20 +83,20 @@ public interface LayoutSetService extends BaseService {
 		throws PortalException;
 
 	public void updateLogo(
-			long groupId, boolean privateLayout, boolean logo, byte[] bytes)
+			long groupId, boolean privateLayout, boolean hasLogo, byte[] bytes)
 		throws PortalException;
 
 	public void updateLogo(
-			long groupId, boolean privateLayout, boolean logo, File file)
+			long groupId, boolean privateLayout, boolean hasLogo, File file)
 		throws PortalException;
 
 	public void updateLogo(
-			long groupId, boolean privateLayout, boolean logo,
+			long groupId, boolean privateLayout, boolean hasLogo,
 			InputStream inputStream)
 		throws PortalException;
 
 	public void updateLogo(
-			long groupId, boolean privateLayout, boolean logo,
+			long groupId, boolean privateLayout, boolean hasLogo,
 			InputStream inputStream, boolean cleanUpStream)
 		throws PortalException;
 

@@ -42,7 +42,8 @@ definition {
 	test AddMBCategorySubcategory {
 		JSONMBMessage.addCategory(
 			categoryDescription = "MB Category Description",
-			categoryName = "MB Category Name");
+			categoryName = "MB Category Name",
+			userEmailAddress = "test@liferay.com");
 
 		MessageBoardsAdmin.openMessageBoardsAdmin(siteURLKey = "guest");
 
@@ -56,7 +57,7 @@ definition {
 
 	@priority = "5"
 	test AddMBThread {
-		property app.server.types = "jboss,resin,tcserver,tomcat,weblogic,websphere,wildfly";
+		property app.server.types = "jboss,tcserver,tomcat,weblogic,websphere,wildfly";
 		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
 		property environment.acceptance = "true";
 
@@ -156,6 +157,7 @@ definition {
 	@priority = "5"
 	test EditMBThreadSubjectAndBody {
 		JSONMBMessage.addMessage(
+			groupName = "Guest",
 			threadBody = "MB Thread Message Body",
 			threadSubject = "MB Thread Message Subject");
 
@@ -194,6 +196,8 @@ definition {
 
 	@priority = "3"
 	test ViewAnonymousPostingAllowedCheckboxConfiguration {
+		property test.name.skip.portal.instance = "CPMessageboards#ViewAnonymousPostingAllowedCheckboxConfiguration";
+
 		MessageBoardsAdmin.openMessageBoardsAdmin(siteURLKey = "guest");
 
 		MessageboardsThread.viewAnonymousPostingCheckboxCP();

@@ -52,6 +52,14 @@ public class FragmentServiceUpgrade implements UpgradeStepRegistrator {
 				com.liferay.fragment.internal.upgrade.v2_1_1.util.
 					FragmentEntryLinkTable.class,
 				"TEXT null", "css", "html", "js", "editableValues"));
+
+		registry.register(
+			"2.1.1", "2.2.0",
+			new com.liferay.fragment.internal.upgrade.v2_2_0.UpgradeSchema());
+
+		registry.register(
+			"2.2.0", "2.3.0",
+			new com.liferay.fragment.internal.upgrade.v2_3_0.UpgradeSchema());
 	}
 
 }

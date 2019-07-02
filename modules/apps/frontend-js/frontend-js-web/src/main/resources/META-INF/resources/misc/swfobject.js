@@ -1,3 +1,5 @@
+/* eslint-disable notice/notice */
+
 /**
  * SWFObject v1.5.1: Flash Player detection and embed - http://blog.deconcept.com/swfobject/
  *

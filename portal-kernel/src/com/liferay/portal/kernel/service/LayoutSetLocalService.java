@@ -368,20 +368,21 @@ public interface LayoutSetLocalService
 		throws PortalException;
 
 	public LayoutSet updateLogo(
-			long groupId, boolean privateLayout, boolean logo, byte[] bytes)
+			long groupId, boolean privateLayout, boolean hasLogo, byte[] bytes)
 		throws PortalException;
 
 	public LayoutSet updateLogo(
-			long groupId, boolean privateLayout, boolean logo, File file)
+			long groupId, boolean privateLayout, boolean hasLogo, File file)
 		throws PortalException;
 
 	public LayoutSet updateLogo(
-			long groupId, boolean privateLayout, boolean logo, InputStream is)
+			long groupId, boolean privateLayout, boolean hasLogo,
+			InputStream is)
 		throws PortalException;
 
 	public LayoutSet updateLogo(
-			long groupId, boolean privateLayout, boolean logo, InputStream is,
-			boolean cleanUpStream)
+			long groupId, boolean privateLayout, boolean hasLogo,
+			InputStream is, boolean cleanUpStream)
 		throws PortalException;
 
 	public LayoutSet updateLookAndFeel(

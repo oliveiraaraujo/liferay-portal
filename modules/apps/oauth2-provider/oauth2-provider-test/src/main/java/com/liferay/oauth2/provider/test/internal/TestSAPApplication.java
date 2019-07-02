@@ -14,10 +14,14 @@
 
 package com.liferay.oauth2.provider.test.internal;
 
-import com.liferay.portal.kernel.security.service.access.policy.ServiceAccessPolicyThreadLocal;
+import com.liferay.portal.kernel.security.access.control.AccessControlUtil;
+import com.liferay.portal.kernel.security.auth.AccessControlContext;
+import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierResult;
+import com.liferay.portal.kernel.security.service.access.policy.ServiceAccessPolicy;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.ws.rs.GET;
@@ -39,10 +43,22 @@ public class TestSAPApplication extends Application {
 	@GET
 	@Path("/{sapName}")
 	public boolean isSapActive(@PathParam("sapName") String sapName) {
-		List<String> activeServiceAccessPolicyNames =
-			ServiceAccessPolicyThreadLocal.getActiveServiceAccessPolicyNames();
+		AccessControlContext accessControlContext =
+			AccessControlUtil.getAccessControlContext();
 
-		return activeServiceAccessPolicyNames.contains(sapName);
+		AuthVerifierResult authVerifierResult =
+			accessControlContext.getAuthVerifierResult();
+
+		if (authVerifierResult != null) {
+			Map<String, Object> settings = authVerifierResult.getSettings();
+
+			List<String> serviceAccessPolicyNames = (List<String>)settings.get(
+				ServiceAccessPolicy.SERVICE_ACCESS_POLICY_NAMES);
+
+			return serviceAccessPolicyNames.contains(sapName);
+		}
+
+		return false;
 	}
 
 	@POST

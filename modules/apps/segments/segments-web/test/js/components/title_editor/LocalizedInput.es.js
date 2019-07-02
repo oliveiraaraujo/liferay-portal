@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import LocalizedInput from 'components/title_editor/LocalizedInput.es';
 import React from 'react';
 import {cleanup, fireEvent, render} from 'react-testing-library';
@@ -14,12 +28,12 @@ describe('LocalizedInput', () => {
 	describe('with minimal configuration', () => {
 		afterEach(cleanup);
 
-		it('should render', () => {
+		it('renders', () => {
 			const {asFragment} = setUpComponent();
 			expect(asFragment()).toMatchSnapshot();
 		});
 
-		it('should have main input with empty value', () => {
+		it('has main input with empty value', () => {
 			const {getByTestId} = setUpComponent();
 			const mainInput = getByTestId(LOCALIZED_MAIN_INPUT_ID);
 
@@ -40,21 +54,21 @@ describe('LocalizedInput', () => {
 		}
 	});
 
-	describe('should render with pre-existing value', () => {
+	describe('rendering with pre-existing value', () => {
 		afterEach(cleanup);
 
-		it('should render', () => {
+		it('renders', () => {
 			const {asFragment} = setUpComponent();
 			expect(asFragment()).toMatchSnapshot();
 		});
 
-		it('should have main input with value', () => {
+		it('has main input with value', () => {
 			const {getByTestId} = setUpComponent();
 			const mainInput = getByTestId(LOCALIZED_MAIN_INPUT_ID);
 			expect(mainInput.value).toBe(PRE_EXISTING_VALUE);
 		});
 
-		it('should have dropdown with options', () => {
+		it('has dropdown with options', () => {
 			const {asFragment, getByTestId} = setUpComponent();
 			const dropdownButton = getByTestId(LOCALIZED_DROPDOWN_BUTTON);
 			fireEvent.click(dropdownButton);
@@ -62,7 +76,7 @@ describe('LocalizedInput', () => {
 			expect(asFragment()).toMatchSnapshot();
 		});
 
-		it('should switch main input value on language selection', () => {
+		it('switches main input value on language selection', () => {
 			const {getByTestId, getByText} = setUpComponent();
 			const dropdownButton = getByTestId(LOCALIZED_DROPDOWN_BUTTON);
 			const mainInput = getByTestId(LOCALIZED_MAIN_INPUT_ID);

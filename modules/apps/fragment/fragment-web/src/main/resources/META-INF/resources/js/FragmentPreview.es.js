@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import {Config} from 'metal-state';
 import debounce from 'metal-debounce';
 import {PortletBase} from 'frontend-js-web';
@@ -52,6 +66,14 @@ class FragmentPreview extends PortletBase {
 		this.on('cssChanged', this._updatePreview);
 		this.on('htmlChanged', this._updatePreview);
 		this.on('jsChanged', this._updatePreview);
+
+		if (this.refs.previewFrame && this.refs.previewFrame.contentWindow) {
+			this.refs.previewFrame.contentWindow.addEventListener(
+				'click',
+				this._handleIframeClick,
+				true
+			);
+		}
 	}
 
 	/**
@@ -69,6 +91,10 @@ class FragmentPreview extends PortletBase {
 				JSON.stringify({data: ''}),
 				'*'
 			);
+			this.refs.previewFrame.contentWindow.removeEventListener(
+				'click',
+				this._handleIframeClick
+			);
 		}
 	}
 
@@ -77,6 +103,16 @@ class FragmentPreview extends PortletBase {
 	 */
 	shouldUpdate(changes) {
 		return !!changes._currentPreviewSize;
+	}
+
+	/**
+	 * Handle iframe clicks, preventing any click event to be executed
+	 * @param {Event} event
+	 * @review
+	 */
+	_handleIframeClick(event) {
+		event.preventDefault();
+		event.stopPropagation();
 	}
 
 	/**

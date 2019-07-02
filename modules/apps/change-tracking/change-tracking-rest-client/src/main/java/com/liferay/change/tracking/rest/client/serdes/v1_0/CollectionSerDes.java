@@ -15,6 +15,7 @@
 package com.liferay.change.tracking.rest.client.serdes.v1_0;
 
 import com.liferay.change.tracking.rest.client.dto.v1_0.Collection;
+import com.liferay.change.tracking.rest.client.dto.v1_0.Entry;
 import com.liferay.change.tracking.rest.client.json.BaseJSONParser;
 
 import java.text.DateFormat;
@@ -29,7 +30,7 @@ import java.util.Set;
 import javax.annotation.Generated;
 
 /**
- * @author Mate Thurzo
+ * @author Máté Thurzó
  * @generated
  */
 @Generated("")
@@ -87,6 +88,21 @@ public class CollectionSerDes {
 			sb.append("\"companyId\": ");
 
 			sb.append(collection.getCompanyId());
+		}
+
+		if (collection.getDateStatus() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"dateStatus\": ");
+
+			sb.append("\"");
+
+			sb.append(
+				liferayToJSONDateFormat.format(collection.getDateStatus()));
+
+			sb.append("\"");
 		}
 
 		if (collection.getDeletionCount() != null) {
@@ -151,21 +167,6 @@ public class CollectionSerDes {
 			sb.append("\"");
 		}
 
-		if (collection.getStatusDate() != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"statusDate\": ");
-
-			sb.append("\"");
-
-			sb.append(
-				liferayToJSONDateFormat.format(collection.getStatusDate()));
-
-			sb.append("\"");
-		}
-
 		sb.append("}");
 
 		return sb.toString();
@@ -210,6 +211,10 @@ public class CollectionSerDes {
 			map.put("companyId", String.valueOf(collection.getCompanyId()));
 		}
 
+		map.put(
+			"dateStatus",
+			liferayToJSONDateFormat.format(collection.getDateStatus()));
+
 		if (collection.getDeletionCount() == null) {
 			map.put("deletionCount", null);
 		}
@@ -249,10 +254,6 @@ public class CollectionSerDes {
 				"statusByUserName",
 				String.valueOf(collection.getStatusByUserName()));
 		}
-
-		map.put(
-			"statusDate",
-			liferayToJSONDateFormat.format(collection.getStatusDate()));
 
 		return map;
 	}
@@ -330,6 +331,12 @@ public class CollectionSerDes {
 						Long.valueOf((String)jsonParserFieldValue));
 				}
 			}
+			else if (Objects.equals(jsonParserFieldName, "dateStatus")) {
+				if (jsonParserFieldValue != null) {
+					collection.setDateStatus(
+						toDate((String)jsonParserFieldValue));
+				}
+			}
 			else if (Objects.equals(jsonParserFieldName, "deletionCount")) {
 				if (jsonParserFieldValue != null) {
 					collection.setDeletionCount(
@@ -356,12 +363,6 @@ public class CollectionSerDes {
 				if (jsonParserFieldValue != null) {
 					collection.setStatusByUserName(
 						(String)jsonParserFieldValue);
-				}
-			}
-			else if (Objects.equals(jsonParserFieldName, "statusDate")) {
-				if (jsonParserFieldValue != null) {
-					collection.setStatusDate(
-						toDate((String)jsonParserFieldValue));
 				}
 			}
 			else {

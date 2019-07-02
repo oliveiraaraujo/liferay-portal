@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 import {
 	actionItemsValidator,
 	creationMenuItemsValidator,
@@ -89,6 +103,14 @@ class ManagementToolbar extends ClayComponent {
 	disposed(...args) {
 		super.disposed(...args);
 
+		if (this.infoPanelId) {
+			const sidenavToggle = this.refs.managementToolbar.refs.infoButton;
+
+			if (sidenavToggle) {
+				Liferay.SideNavigation.destroy(sidenavToggle);
+			}
+		}
+
 		if (this._eventHandler) {
 			this._eventHandler.forEach(eventHandler => {
 				eventHandler.detach();
@@ -153,7 +175,7 @@ class ManagementToolbar extends ClayComponent {
 	}
 
 	_handleFilterLabelCloseClicked(event) {
-		let removeLabelURL =
+		const removeLabelURL =
 			event.data.label.data && event.data.label.data.removeLabelURL;
 
 		if (removeLabelURL) {
@@ -169,7 +191,7 @@ class ManagementToolbar extends ClayComponent {
 
 	_handleSelectPageCheckboxChanged(event) {
 		if (this._searchContainer) {
-			let checkboxStatus = event.data.checked;
+			const checkboxStatus = event.data.checked;
 
 			if (checkboxStatus) {
 				this._searchContainer.select.toggleAllRows(true);

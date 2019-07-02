@@ -1,3 +1,19 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+/* eslint no-unused-vars: "warn" */
+
 import 'clay-multi-select';
 import 'clay-radio';
 import Component from 'metal-component';
@@ -56,9 +72,9 @@ class EditTags extends Component {
 	 * @param {Function} callback Callback function
 	 */
 	_fetchTagsRequest(url, method, bodyData) {
-		let body = JSON.stringify(bodyData);
+		const body = JSON.stringify(bodyData);
 
-		let headers = new Headers();
+		const headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('X-CSRF-Token', Liferay.authToken);
 
@@ -105,7 +121,7 @@ class EditTags extends Component {
 	_getCommonTags() {
 		this._loading = true;
 
-		let selection = this._getSelection();
+		const selection = this._getSelection();
 
 		Promise.all([
 			this._fetchTagsRequest(this.urlTags, 'POST', selection),
@@ -152,7 +168,7 @@ class EditTags extends Component {
 	_handleFormSubmit(event) {
 		event.preventDefault();
 
-		let finalTags = this._commonTags.map(tag => tag.label);
+		const finalTags = this._commonTags.map(tag => tag.label);
 
 		let addedTags = [];
 
@@ -164,11 +180,11 @@ class EditTags extends Component {
 			);
 		}
 
-		let removedTags = this._initialTags.filter(
+		const removedTags = this._initialTags.filter(
 			tag => finalTags.indexOf(tag) == -1
 		);
 
-		let instance = this;
+		const instance = this;
 
 		this._fetchTagsRequest(
 			this.urlUpdateTags,
@@ -197,11 +213,11 @@ class EditTags extends Component {
 	_setCommonTags(commonTags) {
 		this._initialTags = commonTags;
 
-		let commonTagsObjList = [];
+		const commonTagsObjList = [];
 
 		if (commonTags.length > 0) {
 			commonTags.forEach(tag => {
-				let tagObj = {
+				const tagObj = {
 					label: tag,
 					value: tag
 				};

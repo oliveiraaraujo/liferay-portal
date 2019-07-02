@@ -38,7 +38,7 @@ import com.liferay.portal.kernel.model.LayoutTypeController;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
-import com.liferay.portal.kernel.model.RoleConstants;
+import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.portlet.FriendlyURLMapper;
 import com.liferay.portal.kernel.portlet.FriendlyURLResolverRegistryUtil;
@@ -293,9 +293,10 @@ public class LayoutLocalServiceHelper implements IdentifiableOSGiService {
 		}
 
 		if (!layoutTypeController.isParentable()) {
-			if (layoutPersistence.countByG_P_P_Head(
-					groupId, privateLayout, layoutId, false) > 0) {
+			int count = layoutPersistence.countByG_P_P_Head(
+				groupId, privateLayout, layoutId, false);
 
+			if (count > 0) {
 				throw new LayoutTypeException(
 					LayoutTypeException.NOT_PARENTABLE);
 			}

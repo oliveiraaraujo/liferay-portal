@@ -44,6 +44,7 @@ import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,18 +88,18 @@ public class CTManagerImpl implements CTManager {
 			return Optional.empty();
 		}
 
-		long activeCTCollectionId = activeCTCollectionOptional.map(
-			CTCollection::getCtCollectionId
-		).orElse(
-			0L
-		);
+		CTCollection activeCTCollection = activeCTCollectionOptional.get();
+
+		if (activeCTCollection.isProduction()) {
+			return Optional.empty();
+		}
 
 		try {
 			CTEntryAggregate ctEntryAggregate = TransactionInvokerUtil.invoke(
 				_transactionConfig,
 				() -> _addCTEntryAggregate(
-					userId, activeCTCollectionId, ownerCTEntry, relatedCTEntry,
-					force));
+					userId, activeCTCollection.getCtCollectionId(),
+					ownerCTEntry, relatedCTEntry, force));
 
 			return Optional.of(ctEntryAggregate);
 		}
@@ -177,20 +178,10 @@ public class CTManagerImpl implements CTManager {
 		long recentCTCollectionId = _ctEngineManager.getRecentCTCollectionId(
 			userId);
 
-		if (recentCTCollectionId == 0L) {
-			Optional<CTCollection> productionCTCollectionOptional =
-				_ctEngineManager.getProductionCTCollectionOptional(companyId);
+		_ctEngineManager.checkoutCTCollection(userId, recentCTCollectionId);
 
-			recentCTCollectionId = productionCTCollectionOptional.map(
-				CTCollection::getCtCollectionId
-			).orElse(
-				0L
-			);
-
-			_ctEngineManager.checkoutCTCollection(userId, recentCTCollectionId);
-		}
-
-		return _ctEngineManager.getCTCollectionOptional(recentCTCollectionId);
+		return _ctEngineManager.getCTCollectionOptional(
+			companyId, recentCTCollectionId);
 	}
 
 	@Override
@@ -417,8 +408,62 @@ public class CTManagerImpl implements CTManager {
 	}
 
 	@Override
+	public boolean isDraftChange(long modelClassNameId, long modelClassPK) {
+		CTEntry ctEntry = _ctEntryLocalService.fetchCTEntry(
+			modelClassNameId, modelClassPK);
+
+		if (ctEntry == null) {
+			return false;
+		}
+
+		if (ctEntry.getStatus() == WorkflowConstants.STATUS_DRAFT) {
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
 	public boolean isModelUpdateInProgress() {
 		return ChangeTrackingThreadLocal.isModelUpdateInProgress();
+	}
+
+	@Override
+	public boolean isProductionCheckedOut(long companyId, long userId) {
+		Optional<CTCollection> activeCTCollectionOptional =
+			getActiveCTCollectionOptional(companyId, userId);
+
+		return activeCTCollectionOptional.map(
+			CTCollection::isProduction
+		).orElse(
+			true
+		);
+	}
+
+	@Override
+	public boolean isRetrievableVersion(
+		long companyId, long userId, long modelClassNameId, long modelClassPK) {
+
+		if (!_ctEngineManager.isChangeTrackingEnabled(companyId) ||
+			!_ctEngineManager.isChangeTrackingSupported(
+				companyId, modelClassNameId)) {
+
+			return true;
+		}
+
+		if (!isDraftChange(modelClassNameId, modelClassPK)) {
+			return true;
+		}
+
+		if (isProductionCheckedOut(companyId, userId)) {
+			return false;
+		}
+
+		Optional<CTEntry> ctEntryOptional =
+			getActiveCTCollectionCTEntryOptional(
+				companyId, userId, modelClassNameId, modelClassPK);
+
+		return ctEntryOptional.isPresent();
 	}
 
 	@Override
@@ -454,6 +499,13 @@ public class CTManagerImpl implements CTManager {
 		}
 
 		CTCollection ctCollection = ctCollectionOptional.get();
+
+		if (ctCollection.isProduction()) {
+			CTEntryCollisionUtil.checkCollidingCTEntries(
+				companyId, modelClassPK, modelResourcePrimKey);
+
+			return Optional.empty();
+		}
 
 		Optional<CTEntry> ctEntryOptional = Optional.empty();
 
@@ -492,6 +544,19 @@ public class CTManagerImpl implements CTManager {
 			!_ctEngineManager.isChangeTrackingSupported(
 				companyId, classNameId)) {
 
+			return;
+		}
+
+		Optional<CTCollection> ctCollectionOptional =
+			getActiveCTCollectionOptional(companyId, userId);
+
+		if (!ctCollectionOptional.isPresent()) {
+			return;
+		}
+
+		CTCollection ctCollection = ctCollectionOptional.get();
+
+		if (ctCollection.isProduction()) {
 			return;
 		}
 
@@ -572,14 +637,6 @@ public class CTManagerImpl implements CTManager {
 		}
 
 		return ctEntryAggregate;
-	}
-
-	private void _checkCollisions(CTCollection ctCollection, CTEntry ctEntry) {
-		if (!ctCollection.isProduction()) {
-			return;
-		}
-
-		CTEntryCollisionUtil.checkCollidingCTEntries(ctEntry);
 	}
 
 	private boolean _containsResource(
@@ -664,8 +721,6 @@ public class CTManagerImpl implements CTManager {
 			CTEntry ctEntry = _ctEntryLocalService.addCTEntry(
 				userId, modelClassNameId, modelClassPK, modelResourcePrimKey,
 				changeType, ctCollection.getCtCollectionId(), serviceContext);
-
-			_checkCollisions(ctCollection, ctEntry);
 
 			// Updating existing related change tracking entry aggregate
 
