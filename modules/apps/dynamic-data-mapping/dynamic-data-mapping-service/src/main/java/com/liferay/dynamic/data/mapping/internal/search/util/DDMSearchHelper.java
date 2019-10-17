@@ -88,6 +88,19 @@ public class DDMSearchHelper {
 		searchContext.setAttribute(Field.CLASS_PK, classPK);
 		searchContext.setAttribute(Field.DESCRIPTION, description);
 		searchContext.setAttribute(Field.NAME, name);
+
+		try {
+			searchContext.setAttribute(
+				"resourcePermissionName",
+				_ddmPermissionSupport.getStructureModelResourceName(
+					classNameId));
+		}
+		catch (PortalException pe) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(pe, pe);
+			}
+		}
+
 		searchContext.setAttribute(Field.STATUS, status);
 
 		try {
