@@ -4444,7 +4444,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 			}
 
 			if ((throwException == null) ||
-				!Boolean.parseBoolean(throwException)) {
+				Boolean.parseBoolean(throwException)) {
 
 				assertTrue();
 			}
