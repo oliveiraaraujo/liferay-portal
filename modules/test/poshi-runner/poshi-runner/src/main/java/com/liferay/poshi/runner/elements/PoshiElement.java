@@ -696,6 +696,14 @@ public abstract class PoshiElement
 			}
 		}
 
+		String poshiScriptSnippet = sb.toString();
+
+		poshiScriptSnippet = poshiScriptSnippet.trim();
+
+		if (!poshiScriptSnippet.isEmpty()) {
+			poshiScriptSnippets.add(poshiScriptSnippet);
+		}
+
 		return poshiScriptSnippets;
 	}
 
