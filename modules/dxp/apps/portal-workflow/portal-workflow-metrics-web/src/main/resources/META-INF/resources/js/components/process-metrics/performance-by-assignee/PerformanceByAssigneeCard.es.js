@@ -9,11 +9,13 @@
  * distribution rights of the Software.
  */
 
-import React from 'react';
+import React, {useContext, useMemo, useEffect} from 'react';
 
 import Icon from '../../../shared/components/Icon.es';
 import Panel from '../../../shared/components/Panel.es';
 import PromisesResolver from '../../../shared/components/request/PromisesResolver.es';
+import { AppContext } from '../../AppContext.es';
+import { ProcessStepContext } from '../filter/store/ProcessStepStore.es';
 import Filter from './PerformanceByAssignee.Filter.es';
 
 const Body = ({data}) => {
@@ -59,7 +61,7 @@ const Header = (props) => {
 	);
 };
 
-const PerformanceByAssigneeCard = ({processId, query}) => {
+const PerformanceByAssigneeCard = ({page, pageSize, processId, query}) => {
    const data = {totalCount: 5};
    const functions = [Promise.resolve];
 
@@ -67,13 +69,33 @@ const PerformanceByAssigneeCard = ({processId, query}) => {
 		<Panel>
 			<PromisesResolver promises={functions}>
 				<PerformanceByAssigneeCard.Header processId={processId} query={query} />
-            <PerformanceByAssigneeCard.Body data={data} />
+            <PerformanceByAssigneeCard.Body data={data} page={page} pageSize={pageSize} />
 			</PromisesResolver>
 		</Panel>
 	);
 };
 
-const Table = () => {
+const Table = ({page, pageSize, processId, query, sort}) => {
+   const {client} = useContext(AppContext);
+   const {getSelectedProcessSteps} = useContext(ProcessStepContext);
+   const processSteps = useMemo(getSelectedProcessSteps, [query]);
+   const url = `/processes/:${processId}/assignee-users?`;
+
+   useEffect(()=>{
+      const params = {
+         page,
+			pageSize,
+			sort,
+			taskKeys: processSteps,
+      };
+
+      client.get(url, {params})
+      .then(({data}) => {
+			return data;
+      });
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   },[page, pageSize, processId, query, sort]);
 
       return (
          <div className="mb-3 table-fit-panel">

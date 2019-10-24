@@ -20,19 +20,20 @@ import {TimeRangeProvider} from '../filter/store/TimeRangeStore.es';
 
 export default function Filter({processId, query}) {
 	const filters = getFiltersParam(query);
-	const {assigneeTaskKeys = [], performanceTimeRange = []} = filters;
+	const {assigneeProcessStep = [], assigneeTimeRange = []} = filters;
 
 	return (
 		<Request>
 			<ProcessStepProvider
 				processId={processId}
-				processStepKeys={assigneeTaskKeys}
+				processStepKeys={assigneeProcessStep}
 				withAllSteps={true}
 			>
-				<TimeRangeProvider timeRangeKeys={performanceTimeRange}>
+				<TimeRangeProvider timeRangeKeys={assigneeTimeRange}>
 					<div className="autofit-col m-0 management-bar management-bar-light navbar">
 						<ul className="navbar-nav">
 							<ProcessStepFilter
+								filterKey="assigneeProcessStep"
 								hideControl={true}
 								multiple={false}
 								position="right"
