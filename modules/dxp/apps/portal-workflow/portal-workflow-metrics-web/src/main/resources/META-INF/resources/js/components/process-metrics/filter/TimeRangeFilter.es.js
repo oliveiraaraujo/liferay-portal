@@ -19,6 +19,7 @@ import {
 } from './store/TimeRangeStore.es';
 
 const TimeRangeFilter = ({
+	className,
 	filterKey = 'timeRange',
 	hideControl = false,
 	position = 'left',
@@ -59,6 +60,7 @@ const TimeRangeFilter = ({
 	return (
 		<Filter
 			defaultItem={defaultTimeRange}
+			elementClasses={className}
 			filterKey={filterKey}
 			hideControl={hideControl}
 			items={[...timeRanges]}

@@ -15,6 +15,7 @@ import Filter from '../../../shared/components/filter/Filter.es';
 import {ProcessStepContext} from './store/ProcessStepStore.es';
 
 const ProcessStepFilter = ({
+	classNames,
 	filterKey = 'taskKeys',
 	hideControl = false,
 	multiple = true,
@@ -45,6 +46,7 @@ const ProcessStepFilter = ({
 	return (
 		<Filter
 			defaultItem={defaultProcessStep}
+			elementClasses={classNames}
 			filterKey={filterKey}
 			hideControl={hideControl}
 			items={processSteps}
