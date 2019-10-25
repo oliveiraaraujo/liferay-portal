@@ -13,39 +13,49 @@ import React, {useContext, useMemo, useEffect} from 'react';
 
 import Icon from '../../../shared/components/Icon.es';
 import Panel from '../../../shared/components/Panel.es';
+import {getFiltersParam} from '../../../shared/components/filter/util/filterUtil.es';
 import PromisesResolver from '../../../shared/components/request/PromisesResolver.es';
-import { AppContext } from '../../AppContext.es';
-import { ProcessStepContext } from '../filter/store/ProcessStepStore.es';
+import Request from '../../../shared/components/request/Request.es';
+import {AppContext} from '../../AppContext.es';
+import {ProcessStepProvider, ProcessStepContext} from '../filter/store/ProcessStepStore.es';
+import {TimeRangeProvider} from '../filter/store/TimeRangeStore.es';
 import Filter from './PerformanceByAssignee.Filter.es';
 
-const Body = ({data}) => {
-
-   return (
-      <Panel.Body>
-         <PromisesResolver.Resolved>
-            <PerformanceByAssigneeCard.Bottom totalCount={data.totalCount} />
-         </PromisesResolver.Resolved>   
-      </Panel.Body>
-   );
+const Body = ({page, pageSize, processId, query, sort}) => {
+	return (
+		<Panel.Body>
+			<PromisesResolver.Resolved>
+				<PerformanceByAssigneeCard.Table
+					page={page}
+					pageSize={pageSize}
+					processId={processId}
+					query={query}
+					sort={sort}
+				/>
+			</PromisesResolver.Resolved>
+		</Panel.Body>
+	);
 };
 
-const Bottom = ({totalCount}) => {
+const Footer = ({totalCount}) => {
+	return (
+		<PromisesResolver.Resolved>
+			<div className="mb-1 text-right">
+				<button className="border-0 btn btn-secondary btn-sm">
+					<span className="mr-2" data-testid="viewAllSteps">
+						{`${Liferay.Language.get(
+							'view-all-assignees'
+						)} (${totalCount})`}
+					</span>
 
-   return (
-      <div className="mb-1 text-right">
-         <button className="border-0 btn btn-secondary btn-sm">
-            <span className="mr-2" data-testid="viewAllSteps">
-               {`${Liferay.Language.get('view-all-assignees')} (${totalCount})`}
-            </span>
-
-            <Icon iconName="caret-right-l" />
-         </button>
-      </div>
-   );
+					<Icon iconName="caret-right-l" />
+				</button>
+			</div>
+		</PromisesResolver.Resolved>
+	);
 };
 
-const Header = (props) => {
-
+const Header = ({processId, query}) => {
 	return (
 		<Panel.HeaderWithOptions
 			description={Liferay.Language.get(
@@ -55,7 +65,10 @@ const Header = (props) => {
 			title={Liferay.Language.get('performance-by-step')}
 		>
 			<PromisesResolver.Resolved>
-				<PerformanceByAssigneeCard.Filter {...props}></PerformanceByAssigneeCard.Filter>
+				<PerformanceByAssigneeCard.Filter
+					processId={processId}
+               query={query}
+				></PerformanceByAssigneeCard.Filter>
 			</PromisesResolver.Resolved>
 		</Panel.HeaderWithOptions>
 	);
@@ -63,59 +76,93 @@ const Header = (props) => {
 
 const PerformanceByAssigneeCard = ({page, pageSize, processId, query}) => {
    const data = {totalCount: 5};
-   const functions = [Promise.resolve];
+
+   const filters = getFiltersParam(query);
+   const {assigneeProcessStep = [], assigneeTimeRange = []} = filters;
+   
+	const functions = [Promise.resolve];
+	const {totalCount} = data;
 
 	return (
 		<Panel>
-			<PromisesResolver promises={functions}>
-				<PerformanceByAssigneeCard.Header processId={processId} query={query} />
-            <PerformanceByAssigneeCard.Body data={data} page={page} pageSize={pageSize} />
-			</PromisesResolver>
+         <Request>	
+            <ProcessStepProvider
+               processId={processId}
+               processStepKeys={assigneeProcessStep}
+               withAllSteps={true}
+            >
+               <TimeRangeProvider timeRangeKeys={assigneeTimeRange}>
+                  <PromisesResolver promises={functions}>
+                     <PerformanceByAssigneeCard.Header
+                        processId={processId}
+                        query={query}
+                     />
+
+                     <PerformanceByAssigneeCard.Body
+                        page={page}
+                        pageSize={pageSize}
+                        processId={processId}
+                        query={query}
+                     />
+
+                     <PerformanceByAssigneeCard.Footer totalCount={totalCount} />
+                  </PromisesResolver>
+
+               </TimeRangeProvider>
+            </ProcessStepProvider>
+         </Request>
 		</Panel>
 	);
 };
 
 const Table = ({page, pageSize, processId, query, sort}) => {
-   const {client} = useContext(AppContext);
-   const {getSelectedProcessSteps} = useContext(ProcessStepContext);
-   const processSteps = useMemo(getSelectedProcessSteps, [query]);
-   const url = `/processes/:${processId}/assignee-users?`;
+	const {client} = useContext(AppContext);
+	const {getSelectedProcessSteps} = useContext(ProcessStepContext);
+	const processSteps = useMemo(getSelectedProcessSteps, [query]);
 
-   useEffect(()=>{
+   const fetchData = (page, pageSize, processId, sort) => {
+
+	   const url = `/processes/:${processId}/assignee-users?`;
       const params = {
-         page,
+			page,
 			pageSize,
 			sort,
-			taskKeys: processSteps,
       };
+      
+      if(params && processSteps.length > 0 && processSteps[0] !== 'allSteps'){
+         params.taskKeys = processSteps[0];
+      }
 
-      client.get(url, {params})
-      .then(({data}) => {
+		client.get(url, {params}).then(({data}) => {
 			return data;
-      });
+		});
+   }
 
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   },[page, pageSize, processId, query, sort]);
+	useEffect(() => {
+		fetchData(page, pageSize, processId, query, sort);
 
-      return (
-         <div className="mb-3 table-fit-panel">
-         <table className="table table-autofit table-hover">
-            <tbody>
-               {/* {items.map((item, index) => (
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [page, pageSize, processId, query, sort]);
+
+	return (
+		<div className="mb-3 table-fit-panel">
+			<table className="table table-autofit table-hover">
+				<tbody>
+					{/* {items.map((item, index) => (
                   <WorkloadByAssigneeCard.Item
                      {...item}
                      currentTab={currentTab}
                      key={index}
                   />
                ))} */}
-            </tbody>
-         </table>
-      </div>
-      );
+				</tbody>
+			</table>
+		</div>
+	);
 };
 
 PerformanceByAssigneeCard.Body = Body;
-PerformanceByAssigneeCard.Bottom = Bottom;
+PerformanceByAssigneeCard.Footer = Footer;
 PerformanceByAssigneeCard.Filter = Filter;
 PerformanceByAssigneeCard.Header = Header;
 PerformanceByAssigneeCard.Table = Table;
