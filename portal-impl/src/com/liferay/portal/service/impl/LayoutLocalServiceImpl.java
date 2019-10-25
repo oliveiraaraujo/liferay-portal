@@ -72,6 +72,7 @@ import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLoca
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -169,8 +170,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	 *         See {@link UnicodeProperties #fastLoad(String)}.
 	 * @param  hidden whether the layout is hidden
 	 * @param  system whether the layout is of system type
-	 * @param  masterLayoutPageTemplateEntryId the primary key of the master
-	 *         layout page template entry
+	 * @param  masterLayoutPlid the primary key of the master layout
 	 * @param  friendlyURLMap the layout's locales and localized friendly URLs.
 	 *         To see how the URL is normalized when accessed, see {@link
 	 *         com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil#normalize(
@@ -199,8 +199,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			Map<Locale, String> nameMap, Map<Locale, String> titleMap,
 			Map<Locale, String> descriptionMap, Map<Locale, String> keywordsMap,
 			Map<Locale, String> robotsMap, String type, String typeSettings,
-			boolean hidden, boolean system,
-			long masterLayoutPageTemplateEntryId,
+			boolean hidden, boolean system, long masterLayoutPlid,
 			Map<Locale, String> friendlyURLMap, ServiceContext serviceContext)
 		throws PortalException {
 
@@ -268,8 +267,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		layout.setSystem(system);
 		layout.setFriendlyURL(friendlyURL);
 		layout.setPriority(priority);
-		layout.setMasterLayoutPageTemplateEntryId(
-			masterLayoutPageTemplateEntryId);
+		layout.setMasterLayoutPlid(masterLayoutPlid);
 		layout.setPublishDate(serviceContext.getModifiedDate(now));
 
 		boolean layoutUpdateable = ParamUtil.getBoolean(
@@ -377,8 +375,8 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 				classNameLocalService.getClassNameId(Layout.class),
 				layout.getPlid(), nameMap, titleMap, descriptionMap,
 				keywordsMap, robotsMap, type, typeSettings, true, true,
-				layout.getMasterLayoutPageTemplateEntryId(),
-				Collections.emptyMap(), serviceContext);
+				layout.getMasterLayoutPlid(), Collections.emptyMap(),
+				serviceContext);
 		}
 
 		return layoutLocalService.getLayout(layout.getPlid());
@@ -641,21 +639,21 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 
 		Locale locale = LocaleUtil.getSiteDefault();
 
-		Map<Locale, String> nameMap = new HashMap<>();
+		Map<Locale, String> nameMap = HashMapBuilder.put(
+			locale, name
+		).build();
 
-		nameMap.put(locale, name);
+		Map<Locale, String> titleMap = HashMapBuilder.put(
+			locale, title
+		).build();
 
-		Map<Locale, String> titleMap = new HashMap<>();
+		Map<Locale, String> descriptionMap = HashMapBuilder.put(
+			locale, description
+		).build();
 
-		titleMap.put(locale, title);
-
-		Map<Locale, String> descriptionMap = new HashMap<>();
-
-		descriptionMap.put(locale, description);
-
-		Map<Locale, String> friendlyURLMap = new HashMap<>();
-
-		friendlyURLMap.put(LocaleUtil.getSiteDefault(), friendlyURL);
+		Map<Locale, String> friendlyURLMap = HashMapBuilder.put(
+			LocaleUtil.getSiteDefault(), friendlyURL
+		).build();
 
 		return addLayout(
 			userId, groupId, privateLayout, parentLayoutId, nameMap, titleMap,
@@ -1646,11 +1644,8 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	}
 
 	@Override
-	public List<Layout> getLayouts(
-		long groupId, long masterLayoutPageTemplateEntryId) {
-
-		return layoutPersistence.findByG_MLPTEI(
-			groupId, masterLayoutPageTemplateEntryId);
+	public List<Layout> getLayouts(long groupId, long masterLayoutPlid) {
+		return layoutPersistence.findByG_MLP(groupId, masterLayoutPlid);
 	}
 
 	/**
@@ -1864,11 +1859,8 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	}
 
 	@Override
-	public int getLayoutsCount(
-		long groupId, long masterLayoutPageTemplateEntryId) {
-
-		return layoutPersistence.countByG_MLPTEI(
-			groupId, masterLayoutPageTemplateEntryId);
+	public int getLayoutsCount(long groupId, long masterLayoutPlid) {
+		return layoutPersistence.countByG_MLP(groupId, masterLayoutPlid);
 	}
 
 	@Override
@@ -1937,31 +1929,6 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		}
 
 		return nextLayoutId;
-	}
-
-	/**
-	 * Returns all the layouts without resource permissions
-	 *
-	 * @param      roleId the primary key of the role
-	 * @return     all the layouts without resource permissions
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public List<Layout> getNoPermissionLayouts(long roleId) {
-		return layoutFinder.findByNoPermissions(roleId);
-	}
-
-	/**
-	 * Returns all the layouts whose friendly URLs are <code>null</code>
-	 *
-	 * @return     all the layouts whose friendly URLs are <code>null</code>
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public List<Layout> getNullFriendlyURLLayouts() {
-		return layoutFinder.findByNullFriendlyURL();
 	}
 
 	@Override

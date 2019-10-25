@@ -16,6 +16,7 @@ import {getFragmentEntryLinkContent} from '../reducers/fragments.es';
 import {updateEditableValues} from '../utils/FragmentsEditorFetchUtils.es';
 import {setIn, updateIn} from '../utils/FragmentsEditorUpdateUtils.es';
 import {FREEMARKER_FRAGMENT_ENTRY_PROCESSOR} from '../utils/constants';
+import {isNullOrUndefined} from '../utils/isNullOrUndefined.es';
 import {prefixSegmentsExperienceId} from '../utils/prefixSegmentsExperienceId.es';
 import {
 	UPDATE_EDITABLE_VALUE_ERROR,
@@ -220,7 +221,7 @@ const _getSegmentsExperienceId = getState => {
  * @param {{path: string[], content: any}} change
  */
 const _mergeChange = (editableValues, change) => {
-	if (!change.content) {
+	if (isNullOrUndefined(change.content)) {
 		return updateIn(editableValues, change.path, editable => {
 			let newEditable = undefined;
 

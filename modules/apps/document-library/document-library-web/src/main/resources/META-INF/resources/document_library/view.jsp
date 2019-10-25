@@ -306,30 +306,39 @@ String navigation = ParamUtil.getString(request, "navigation");
 		</aui:script>
 
 		<%
-		String pathModule = PortalUtil.getPathModule();
+		Map<String, Object> data = new HashMap<>();
 
-		Map<String, Object> tagsContext = new HashMap<>();
+		data.put("context", Collections.singletonMap("namespace", liferayPortletResponse.getNamespace()));
+
+		Map<String, Object> props = new HashMap<>();
+
+		props.put("componentId", liferayPortletResponse.getNamespace() + "EditTagsComponent");
 
 		long groupIds[] = PortalUtil.getCurrentAndAncestorSiteGroupIds(scopeGroupId);
 
-		tagsContext.put("groupIds", groupIds);
-		tagsContext.put("pathModule", pathModule);
-		tagsContext.put("repositoryId", String.valueOf(repositoryId));
+		props.put("groupIds", groupIds);
 
+		props.put("pathModule", PortalUtil.getPathModule());
+		props.put("repositoryId", String.valueOf(repositoryId));
+
+		data.put("props", props);
+		%>
+
+		<div>
+			<react:component
+				data="<%= data %>"
+				module="document_library/js/categorization/tags/EditTags.es"
+			/>
+		</div>
+
+		<%
 		Map<String, Object> categoriesContext = new HashMap<>();
 
 		categoriesContext.put("groupIds", groupIds);
-		categoriesContext.put("pathModule", pathModule);
+		categoriesContext.put("pathModule", PortalUtil.getPathModule());
 		categoriesContext.put("repositoryId", String.valueOf(repositoryId));
 		categoriesContext.put("selectCategoriesUrl", selectCategoriesURL.toString());
 		%>
-
-		<liferay-frontend:component
-			componentId='<%= liferayPortletResponse.getNamespace() + "EditTagsComponent" %>'
-			containerId='<%= "#" + liferayPortletResponse.getNamespace() + "documentLibraryModal" %>'
-			context="<%= tagsContext %>"
-			module="document_library/js/categorization/EditTags.es"
-		/>
 
 		<liferay-frontend:component
 			componentId='<%= liferayPortletResponse.getNamespace() + "EditCategoriesComponent" %>'

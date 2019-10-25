@@ -8,49 +8,30 @@ buildscript {
 task checkoutDXPScript
 task removeDXPScript
 
-String repositoryURL = "git@github.com:liferay/liferay-portal-ee.git"
-
-if (System.getenv("JENKINS_HOME")) {
-	repositoryURL = "git@github-dev.liferay.com:liferay/liferay-portal-ee.git"
-}
+File gitRepositoryDir = new File(projectDir.parentFile, "git-clone-profile-dxp")
+String gitRepositoryURL = "git@github.com:liferay/liferay-portal-ee.git"
 
 checkoutDXPScript {
 	doLast {
-		String branchName = GradleUtil.getProperty(project, "git.working.branch.name", (String)null)
-
-		if (!branchName.endsWith("-private")) {
-			branchName = branchName + "-private"
-		}
-
-		logger.lifecycle "git fetch --depth=1 --force --no-tags {} {}", repositoryURL, branchName + ":" + branchName
+		logger.lifecycle "git clone --branch=master-private --depth=1 --no-checkout --single-branch {} {}", gitRepositoryURL, gitRepositoryDir.name
 
 		exec {
-			commandLine "git", "fetch", "--depth=1", "--force", "--no-tags", repositoryURL, branchName + ":" + branchName
+			commandLine "git", "clone", "--branch=master-private", "--depth=1", "--no-checkout", "--single-branch", gitRepositoryURL, gitRepositoryDir.name
 			workingDir = projectDir.parentFile
 		}
 
 		exec {
-			commandLine "git", "tag", "--force", "git-commit-portal-private", branchName
-			workingDir = projectDir.parentFile
+			commandLine "git", "checkout", "refs/heads/master-private", "--", "build-working-dir.xml", "working.dir.properties"
+			workingDir = gitRepositoryDir
 		}
 
-		exec {
-			commandLine "git", "checkout", "refs/tags/git-commit-portal-private", "--", "build-working-dir.xml", "working.dir.properties"
-			workingDir = projectDir.parentFile
-		}
-
-		exec {
-			commandLine "git", "tag", "--delete", "git-commit-portal-private"
-			workingDir = projectDir.parentFile
-		}
+		ant.move(file: new File(gitRepositoryDir, "build-working-dir.xml"), todir: projectDir.parentFile)
+		ant.move(file: new File(gitRepositoryDir, "working.dir.properties"), todir: projectDir.parentFile)
 	}
 }
 
 removeDXPScript {
 	doLast {
-		exec {
-			commandLine "git", "rm", "--force", "build-working-dir.xml", "working.dir.properties"
-			workingDir = projectDir.parentFile
-		}
+		delete gitRepositoryDir, new File(projectDir.parentFile, "build-working-dir.xml"), new File(projectDir.parentFile, "working.dir.properties")
 	}
 }

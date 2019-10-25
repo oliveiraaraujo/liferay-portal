@@ -13,9 +13,9 @@
  */
 
 import ClayIcon from '@clayui/icon';
-import {createPortal} from 'react-dom';
-import {Link, withRouter} from 'react-router-dom';
 import React, {useEffect, useState} from 'react';
+import {createPortal} from 'react-dom';
+import {Link as InternalLink, withRouter} from 'react-router-dom';
 
 const CONTROL_MENU_CONTENT = '.control-menu-nav-item-content';
 
@@ -33,7 +33,15 @@ const Portal = ({children, containerSelector}) => {
 	return createPortal(children, container);
 };
 
-export default withRouter(({backURL, match: {url}, title, tooltip}) => {
+const ExternalLink = ({children, to, ...props}) => {
+	return (
+		<a href={to} {...props}>
+			{children}
+		</a>
+	);
+};
+
+export const ControlMenuBase = ({backURL, title, tooltip, url}) => {
 	useEffect(() => {
 		document.querySelector(CONTROL_MENU_CONTENT).innerHTML = '';
 
@@ -51,6 +59,9 @@ export default withRouter(({backURL, match: {url}, title, tooltip}) => {
 		paths.pop();
 		backURL = paths.join('/');
 	}
+
+	const Link =
+		backURL && backURL.startsWith('http') ? ExternalLink : InternalLink;
 
 	return (
 		<>
@@ -79,7 +90,7 @@ export default withRouter(({backURL, match: {url}, title, tooltip}) => {
 			{tooltip && (
 				<Portal containerSelector={CONTROL_MENU_CONTENT}>
 					<span
-						className="taglib-icon-help lfr-portal-tooltip"
+						className="lfr-portal-tooltip taglib-icon-help"
 						data-title={tooltip}
 					>
 						<ClayIcon symbol="question-circle-full" />
@@ -88,4 +99,8 @@ export default withRouter(({backURL, match: {url}, title, tooltip}) => {
 			)}
 		</>
 	);
+};
+
+export default withRouter(({match: {url}, ...props}) => {
+	return <ControlMenuBase {...props} url={url} />;
 });

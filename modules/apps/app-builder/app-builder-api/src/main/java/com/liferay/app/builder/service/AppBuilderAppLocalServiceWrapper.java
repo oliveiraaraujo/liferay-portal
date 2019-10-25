@@ -99,6 +99,13 @@ public class AppBuilderAppLocalServiceWrapper
 		return _appBuilderAppLocalService.deleteAppBuilderApp(appBuilderAppId);
 	}
 
+	@Override
+	public void deleteAppBuilderApps(long ddmStructureId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_appBuilderAppLocalService.deleteAppBuilderApps(ddmStructureId);
+	}
+
 	/**
 	 * @throws PortalException
 	 */
@@ -283,6 +290,13 @@ public class AppBuilderAppLocalServiceWrapper
 		getAppBuilderApps(int start, int end) {
 
 		return _appBuilderAppLocalService.getAppBuilderApps(start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.app.builder.model.AppBuilderApp>
+		getAppBuilderApps(long ddmStructureId) {
+
+		return _appBuilderAppLocalService.getAppBuilderApps(ddmStructureId);
 	}
 
 	@Override

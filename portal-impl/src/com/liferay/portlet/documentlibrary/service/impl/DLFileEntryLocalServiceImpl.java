@@ -95,7 +95,6 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.DateRange;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -116,7 +115,6 @@ import com.liferay.portal.util.RepositoryUtil;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileEntryImpl;
 import com.liferay.portlet.documentlibrary.service.base.DLFileEntryLocalServiceBaseImpl;
 import com.liferay.portlet.documentlibrary.util.DLAppUtil;
-import com.liferay.portlet.documentlibrary.util.DLFileVersionPolicyImpl;
 
 import java.awt.image.RenderedImage;
 
@@ -298,24 +296,6 @@ public class DLFileEntryLocalServiceImpl
 		removeFileVersion(dlFileEntry, dlFileVersion);
 
 		return dlFileVersion;
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             #checkInFileEntry(long, long, DLVersionNumberIncrease,
-	 *             String, ServiceContext)}
-	 */
-	@Deprecated
-	@Override
-	public void checkInFileEntry(
-			long userId, long fileEntryId, boolean majorVersion,
-			String changeLog, ServiceContext serviceContext)
-		throws PortalException {
-
-		dlFileEntryLocalService.checkInFileEntry(
-			userId, fileEntryId,
-			DLVersionNumberIncrease.fromMajorVersion(majorVersion), changeLog,
-			serviceContext);
 	}
 
 	@Override
@@ -1015,19 +995,6 @@ public class DLFileEntryLocalServiceImpl
 
 	/**
 	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 *             #getFileAsStream(long, String)}
-	 */
-	@Deprecated
-	@Override
-	public InputStream getFileAsStream(
-			long userId, long fileEntryId, String version)
-		throws PortalException {
-
-		return getFileAsStream(fileEntryId, version, true, 1);
-	}
-
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
 	 *             #getFileAsStream(long, String, boolean)}
 	 */
 	@Deprecated
@@ -1038,21 +1005,6 @@ public class DLFileEntryLocalServiceImpl
 		throws PortalException {
 
 		return getFileAsStream(fileEntryId, version, incrementCounter, 1);
-	}
-
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 *             #getFileAsStream(long, String, boolean, int)}
-	 */
-	@Deprecated
-	@Override
-	public InputStream getFileAsStream(
-			long userId, long fileEntryId, String version,
-			boolean incrementCounter, int increment)
-		throws PortalException {
-
-		return getFileAsStream(
-			fileEntryId, version, incrementCounter, increment);
 	}
 
 	@Override
@@ -1153,18 +1105,6 @@ public class DLFileEntryLocalServiceImpl
 		return dlFileEntryPersistence.countAll();
 	}
 
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public int getFileEntriesCount(
-		long groupId, DateRange dateRange, long repositoryId,
-		QueryDefinition<DLFileEntry> queryDefinition) {
-
-		return 0;
-	}
-
 	@Override
 	public int getFileEntriesCount(long groupId, long folderId) {
 		return dlFileEntryPersistence.countByG_F(groupId, folderId);
@@ -1173,7 +1113,8 @@ public class DLFileEntryLocalServiceImpl
 	@Override
 	public int getFileEntriesCount(long groupId, long folderId, int status) {
 		return dlFileEntryFinder.countByG_F(
-			groupId, ListUtil.toList(folderId), new QueryDefinition<>(status));
+			groupId, ListUtil.fromArray(folderId),
+			new QueryDefinition<>(status));
 	}
 
 	@Override
@@ -1357,27 +1298,9 @@ public class DLFileEntryLocalServiceImpl
 		return dlFileEntryPersistence.countByG_U(groupId, userId);
 	}
 
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public List<DLFileEntry> getMisversionedFileEntries() {
-		return dlFileEntryFinder.findByMisversioned();
-	}
-
 	@Override
 	public List<DLFileEntry> getNoAssetFileEntries() {
 		return dlFileEntryFinder.findByNoAssets();
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public List<DLFileEntry> getOrphanedFileEntries() {
-		return dlFileEntryFinder.findByOrphanedFileEntries();
 	}
 
 	@Override
@@ -1491,52 +1414,6 @@ public class DLFileEntryLocalServiceImpl
 		}
 
 		return false;
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public boolean isKeepFileVersionLabel(
-			long fileEntryId, boolean majorVersion,
-			ServiceContext serviceContext)
-		throws PortalException {
-
-		DLFileEntry dlFileEntry = dlFileEntryPersistence.findByPrimaryKey(
-			fileEntryId);
-
-		DLFileVersion lastDLFileVersion =
-			dlFileVersionLocalService.getFileVersion(
-				dlFileEntry.getFileEntryId(), dlFileEntry.getVersion());
-
-		DLFileVersion latestDLFileVersion =
-			dlFileVersionLocalService.getLatestFileVersion(fileEntryId, false);
-
-		DLFileVersionPolicyImpl dlFileVersionPolicyImpl =
-			new DLFileVersionPolicyImpl();
-
-		try {
-			return dlFileVersionPolicyImpl.isKeepFileVersionLabel(
-				lastDLFileVersion, latestDLFileVersion, majorVersion,
-				serviceContext);
-		}
-		finally {
-			dlFileVersionPolicyImpl.destroy();
-		}
-	}
-
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 *             #isKeepFileVersionLabel(long, boolean, ServiceContext)}
-	 */
-	@Deprecated
-	@Override
-	public boolean isKeepFileVersionLabel(
-			long fileEntryId, ServiceContext serviceContext)
-		throws PortalException {
-
-		return isKeepFileVersionLabel(fileEntryId, false, serviceContext);
 	}
 
 	@Override
@@ -2673,27 +2550,6 @@ public class DLFileEntryLocalServiceImpl
 			StringBundler.concat(
 				"Invalid file entry type ", fileEntryTypeId, " for folder ",
 				folderId));
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             #validateFileExtension(String, String)}
-	 */
-	@Deprecated
-	protected void validateFileExtension(String extension)
-		throws PortalException {
-
-		if (Validator.isNull(extension)) {
-			return;
-		}
-
-		int maxLength = ModelHintsUtil.getMaxLength(
-			DLFileEntry.class.getName(), "extension");
-
-		if (extension.length() > maxLength) {
-			throw new FileExtensionException(
-				extension + " exceeds max length of " + maxLength);
-		}
 	}
 
 	protected void validateFileExtension(String fileName, String extension)

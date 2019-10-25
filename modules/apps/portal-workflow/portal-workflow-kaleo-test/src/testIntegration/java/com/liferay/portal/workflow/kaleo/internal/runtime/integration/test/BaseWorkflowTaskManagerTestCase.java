@@ -74,6 +74,7 @@ import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserNotificationEventLocalServiceUtil;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalServiceUtil;
@@ -89,6 +90,7 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestDataConstants;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
@@ -319,15 +321,13 @@ public abstract class BaseWorkflowTaskManagerTestCase {
 				group.getGroupId(), ddmStructure.getStructureId(),
 				PortalUtil.getClassNameId(JournalArticle.class));
 
-			Map<Locale, String> titleMap = new HashMap<>();
+			Map<Locale, String> titleMap = HashMapBuilder.put(
+				LocaleUtil.getDefault(), RandomTestUtil.randomString()
+			).build();
 
-			titleMap.put(
-				LocaleUtil.getDefault(), RandomTestUtil.randomString());
-
-			Map<Locale, String> descriptionMap = new HashMap<>();
-
-			descriptionMap.put(
-				LocaleUtil.getDefault(), RandomTestUtil.randomString());
+			Map<Locale, String> descriptionMap = HashMapBuilder.put(
+				LocaleUtil.getDefault(), RandomTestUtil.randomString()
+			).build();
 
 			String content = DDMStructureTestUtil.getSampleStructuredContent();
 
@@ -397,9 +397,9 @@ public abstract class BaseWorkflowTaskManagerTestCase {
 		DDMStructure ddmStructure = ddmStructureTestHelper.addStructure(
 			ddmForm, StorageType.JSON.toString());
 
-		Map<Locale, String> nameMap = new HashMap<>();
-
-		nameMap.put(LocaleUtil.US, RandomTestUtil.randomString());
+		Map<Locale, String> nameMap = HashMapBuilder.put(
+			LocaleUtil.US, RandomTestUtil.randomString()
+		).build();
 
 		return DDLRecordSetLocalServiceUtil.addRecordSet(
 			adminUser.getUserId(), group.getGroupId(),
@@ -545,14 +545,9 @@ public abstract class BaseWorkflowTaskManagerTestCase {
 			long parentOrganizationId, boolean site)
 		throws PortalException {
 
-		Organization organization =
-			OrganizationLocalServiceUtil.addOrganization(
-				adminUser.getUserId(), parentOrganizationId,
-				StringUtil.randomString(), site);
-
-		_organizations.add(0, organization);
-
-		return organization;
+		return OrganizationLocalServiceUtil.addOrganization(
+			adminUser.getUserId(), parentOrganizationId,
+			StringUtil.randomString(), site);
 	}
 
 	protected void createScriptedAssignmentWorkflow() throws Exception {
@@ -612,8 +607,6 @@ public abstract class BaseWorkflowTaskManagerTestCase {
 			LocaleUtil.getDefault(), RandomTestUtil.randomString(),
 			RandomTestUtil.randomString(), new long[] {group.getGroupId()},
 			ServiceContextTestUtil.getServiceContext());
-
-		_users.add(user);
 
 		Role role = RoleLocalServiceUtil.getRole(
 			company.getCompanyId(), roleName);
@@ -895,6 +888,9 @@ public abstract class BaseWorkflowTaskManagerTestCase {
 	protected User siteContentReviewerUser;
 	protected User siteMemberUser;
 
+	@Inject
+	protected UserLocalService userLocalService;
+
 	private List<WorkflowTask> _getWorkflowTasks(User user, boolean completed)
 		throws Exception {
 
@@ -943,13 +939,6 @@ public abstract class BaseWorkflowTaskManagerTestCase {
 	private final List<DLFolder> _dlFolders = new ArrayList<>();
 
 	private String _name;
-
-	@DeleteAfterTestRun
-	private final List<Organization> _organizations = new ArrayList<>();
-
 	private PermissionChecker _permissionChecker;
-
-	@DeleteAfterTestRun
-	private final List<User> _users = new ArrayList<>();
 
 }

@@ -45,6 +45,34 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ChangeTransition {
 
 	@Schema
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	@JsonIgnore
+	public void setComment(
+		UnsafeSupplier<String, Exception> commentUnsafeSupplier) {
+
+		try {
+			comment = commentUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	protected String comment;
+
+	@Schema
 	public String getTransition() {
 		return transition;
 	}
@@ -98,6 +126,20 @@ public class ChangeTransition {
 		StringBundler sb = new StringBundler();
 
 		sb.append("{");
+
+		if (comment != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"comment\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(comment));
+
+			sb.append("\"");
+		}
 
 		if (transition != null) {
 			if (sb.length() > 1) {

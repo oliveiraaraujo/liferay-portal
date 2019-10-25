@@ -101,6 +101,19 @@ public class LayoutPageTemplateEntryServiceWrapper
 	}
 
 	@Override
+	public com.liferay.layout.page.template.model.LayoutPageTemplateEntry
+			copyLayoutPageTemplateEntry(
+				long groupId, long layoutPageTemplateCollectionId,
+				long layoutPageTemplateEntryId,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _layoutPageTemplateEntryService.copyLayoutPageTemplateEntry(
+			groupId, layoutPageTemplateCollectionId, layoutPageTemplateEntryId,
+			serviceContext);
+	}
+
+	@Override
 	public void deleteLayoutPageTemplateEntries(
 			long[] layoutPageTemplateEntryIds)
 		throws com.liferay.portal.kernel.exception.PortalException {

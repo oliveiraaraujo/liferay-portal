@@ -18,6 +18,8 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
 
+import java.io.Serializable;
+
 import java.sql.Blob;
 
 import java.util.Date;
@@ -60,6 +62,7 @@ public class BatchEngineTaskWrapper
 		attributes.put("endTime", getEndTime());
 		attributes.put("errorMessage", getErrorMessage());
 		attributes.put("executeStatus", getExecuteStatus());
+		attributes.put("fieldNameMapping", getFieldNameMapping());
 		attributes.put("operation", getOperation());
 		attributes.put("startTime", getStartTime());
 		attributes.put("version", getVersion());
@@ -157,6 +160,13 @@ public class BatchEngineTaskWrapper
 
 		if (executeStatus != null) {
 			setExecuteStatus(executeStatus);
+		}
+
+		Map<String, Serializable> fieldNameMapping =
+			(Map<String, Serializable>)attributes.get("fieldNameMapping");
+
+		if (fieldNameMapping != null) {
+			setFieldNameMapping(fieldNameMapping);
 		}
 
 		String operation = (String)attributes.get("operation");
@@ -286,6 +296,16 @@ public class BatchEngineTaskWrapper
 	@Override
 	public String getExecuteStatus() {
 		return model.getExecuteStatus();
+	}
+
+	/**
+	 * Returns the field name mapping of this batch engine task.
+	 *
+	 * @return the field name mapping of this batch engine task
+	 */
+	@Override
+	public Map<String, Serializable> getFieldNameMapping() {
+		return model.getFieldNameMapping();
 	}
 
 	/**
@@ -496,6 +516,18 @@ public class BatchEngineTaskWrapper
 	@Override
 	public void setExecuteStatus(String executeStatus) {
 		model.setExecuteStatus(executeStatus);
+	}
+
+	/**
+	 * Sets the field name mapping of this batch engine task.
+	 *
+	 * @param fieldNameMapping the field name mapping of this batch engine task
+	 */
+	@Override
+	public void setFieldNameMapping(
+		Map<String, Serializable> fieldNameMapping) {
+
+		model.setFieldNameMapping(fieldNameMapping);
 	}
 
 	/**

@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.util.RepositoryUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.PortletRequest;
@@ -120,7 +119,11 @@ public class DeleteFolderPortletConfigurationIcon
 				portletRequest, DLPortletKeys.DOCUMENT_LIBRARY_ADMIN,
 				PortletRequest.RENDER_PHASE);
 
-			long parentFolderId = folder.getParentFolderId();
+			long parentFolderId = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;
+
+			if (!folder.isRoot()) {
+				parentFolderId = folder.getParentFolderId();
+			}
 
 			if (parentFolderId == DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
 				redirectURL.setParameter(
@@ -135,8 +138,15 @@ public class DeleteFolderPortletConfigurationIcon
 				"folderId", String.valueOf(parentFolderId));
 
 			portletURL.setParameter("redirect", redirectURL.toString());
-			portletURL.setParameter(
-				"folderId", String.valueOf(folder.getFolderId()));
+
+			if (folder.isMountPoint() || folder.isRoot()) {
+				portletURL.setParameter(
+					"repositoryId", String.valueOf(folder.getRepositoryId()));
+			}
+			else {
+				portletURL.setParameter(
+					"folderId", String.valueOf(folder.getFolderId()));
+			}
 
 			return portletURL.toString();
 		}
@@ -155,19 +165,11 @@ public class DeleteFolderPortletConfigurationIcon
 		return DLPortletConfigurationIconUtil.runWithDefaultValueOnError(
 			false,
 			() -> {
-				Folder folder = ActionUtil.getFolder(portletRequest);
-
-				if (folder.isMountPoint() ||
-					(RepositoryUtil.isExternalRepository(
-						folder.getRepositoryId()) &&
-					 folder.isRoot())) {
-
-					return false;
-				}
-
 				ThemeDisplay themeDisplay =
 					(ThemeDisplay)portletRequest.getAttribute(
 						WebKeys.THEME_DISPLAY);
+
+				Folder folder = ActionUtil.getFolder(portletRequest);
 
 				return ModelResourcePermissionHelper.contains(
 					_folderModelResourcePermission,

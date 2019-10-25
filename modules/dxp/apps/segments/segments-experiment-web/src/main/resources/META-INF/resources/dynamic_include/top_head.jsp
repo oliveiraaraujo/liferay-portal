@@ -2,15 +2,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 --%>
 
@@ -22,17 +22,16 @@ SegmentsExperiment segmentsExperiment = (SegmentsExperiment)request.getAttribute
 
 <aui:script sandbox="<%= true %>">
 	<c:if test='<%= (segmentsExperiment != null) && Objects.equals(segmentsExperiment.getGoal(), "click") && Validator.isNotNull(segmentsExperiment.getGoalTarget()) %>'>
-		var element = document.querySelector('<%= segmentsExperiment.getGoalTarget() %>');
+		var element = document.querySelector(
+			'<%= segmentsExperiment.getGoalTarget() %>'
+		);
 
 		if (element) {
-			element.addEventListener(
-				'click',
-				function(event) {
-					if (window.Analytics) {
-						Analytics.send('ctaClicked', 'Page', {'elementId': event.target.id});
-					}
+			element.addEventListener('click', function(event) {
+				if (window.Analytics) {
+					Analytics.send('ctaClicked', 'Page', {elementId: event.target.id});
 				}
-			);
+			});
 		}
 	</c:if>
 </aui:script>

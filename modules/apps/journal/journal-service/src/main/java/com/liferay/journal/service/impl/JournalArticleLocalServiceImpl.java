@@ -139,6 +139,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.GroupSubscriptionCheckSubscriptionSender;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -3679,7 +3680,7 @@ public class JournalArticleLocalServiceImpl
 			WorkflowConstants.STATUS_ANY);
 
 		return journalArticleFinder.countByG_F(
-			groupId, ListUtil.toList(folderId), queryDefinition);
+			groupId, ListUtil.fromArray(folderId), queryDefinition);
 	}
 
 	/**
@@ -4596,7 +4597,7 @@ public class JournalArticleLocalServiceImpl
 		long groupId, long folderId, int status, int start, int end) {
 
 		return search(
-			groupId, ListUtil.toList(folderId),
+			groupId, ListUtil.fromArray(folderId),
 			LocaleUtil.getMostRelevantLocale(), status, start, end);
 	}
 
@@ -5098,7 +5099,7 @@ public class JournalArticleLocalServiceImpl
 	 */
 	@Override
 	public int searchCount(long groupId, long folderId, int status) {
-		return searchCount(groupId, ListUtil.toList(folderId), status);
+		return searchCount(groupId, ListUtil.fromArray(folderId), status);
 	}
 
 	/**
@@ -7183,17 +7184,26 @@ public class JournalArticleLocalServiceImpl
 
 		searchContext.setAndSearch(andSearch);
 
-		Map<String, Serializable> attributes = new HashMap<>();
-
-		attributes.put(Field.ARTICLE_ID, articleId);
-		attributes.put(Field.CLASS_NAME_ID, classNameId);
-		attributes.put(Field.CONTENT, content);
-		attributes.put(Field.DESCRIPTION, description);
-		attributes.put(Field.STATUS, status);
-		attributes.put(Field.TITLE, title);
-		attributes.put("ddmStructureKey", ddmStructureKey);
-		attributes.put("ddmTemplateKey", ddmTemplateKey);
-		attributes.put("params", params);
+		Map<String, Serializable> attributes =
+			HashMapBuilder.<String, Serializable>put(
+				Field.ARTICLE_ID, articleId
+			).put(
+				Field.CLASS_NAME_ID, classNameId
+			).put(
+				Field.CONTENT, content
+			).put(
+				Field.DESCRIPTION, description
+			).put(
+				Field.STATUS, status
+			).put(
+				Field.TITLE, title
+			).put(
+				"ddmStructureKey", ddmStructureKey
+			).put(
+				"ddmTemplateKey", ddmTemplateKey
+			).put(
+				"params", params
+			).build();
 
 		searchContext.setAttributes(attributes);
 
@@ -9104,11 +9114,9 @@ public class JournalArticleLocalServiceImpl
 			}
 		}
 
-		Map<Locale, String> defaultFriendlyURLMap = new HashMap<>();
-
-		defaultFriendlyURLMap.put(defaultLocale, titleMap.get(defaultLocale));
-
-		return defaultFriendlyURLMap;
+		return HashMapBuilder.put(
+			defaultLocale, titleMap.get(defaultLocale)
+		).build();
 	}
 
 	private void _deleteDDMStructurePredefinedValues(

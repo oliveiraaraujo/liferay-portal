@@ -20,9 +20,12 @@ import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.model.StagedModel;
 
+import java.io.Serializable;
+
 import java.sql.Blob;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -300,6 +303,20 @@ public interface BatchEngineTaskModel
 	 * @param executeStatus the execute status of this batch engine task
 	 */
 	public void setExecuteStatus(String executeStatus);
+
+	/**
+	 * Returns the field name mapping of this batch engine task.
+	 *
+	 * @return the field name mapping of this batch engine task
+	 */
+	public Map<String, Serializable> getFieldNameMapping();
+
+	/**
+	 * Sets the field name mapping of this batch engine task.
+	 *
+	 * @param fieldNameMapping the field name mapping of this batch engine task
+	 */
+	public void setFieldNameMapping(Map<String, Serializable> fieldNameMapping);
 
 	/**
 	 * Returns the operation of this batch engine task.

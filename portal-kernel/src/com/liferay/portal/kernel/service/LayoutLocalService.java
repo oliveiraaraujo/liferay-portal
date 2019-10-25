@@ -111,8 +111,7 @@ public interface LayoutLocalService
 	 See {@link UnicodeProperties #fastLoad(String)}.
 	 * @param hidden whether the layout is hidden
 	 * @param system whether the layout is of system type
-	 * @param masterLayoutPageTemplateEntryId the primary key of the master
-	 layout page template entry
+	 * @param masterLayoutPlid the primary key of the master layout
 	 * @param friendlyURLMap the layout's locales and localized friendly URLs.
 	 To see how the URL is normalized when accessed, see {@link
 	 com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil#normalize(
@@ -140,8 +139,7 @@ public interface LayoutLocalService
 			Map<Locale, String> nameMap, Map<Locale, String> titleMap,
 			Map<Locale, String> descriptionMap, Map<Locale, String> keywordsMap,
 			Map<Locale, String> robotsMap, String type, String typeSettings,
-			boolean hidden, boolean system,
-			long masterLayoutPageTemplateEntryId,
+			boolean hidden, boolean system, long masterLayoutPlid,
 			Map<Locale, String> friendlyURLMap, ServiceContext serviceContext)
 		throws PortalException;
 
@@ -948,8 +946,7 @@ public interface LayoutLocalService
 		long groupId, int start, int end, OrderByComparator<Layout> obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Layout> getLayouts(
-		long groupId, long masterLayoutPageTemplateEntryId);
+	public List<Layout> getLayouts(long groupId, long masterLayoutPlid);
 
 	/**
 	 * Returns the layout references for all the layouts that belong to the
@@ -1051,8 +1048,7 @@ public interface LayoutLocalService
 	public int getLayoutsCount(long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getLayoutsCount(
-		long groupId, long masterLayoutPageTemplateEntryId);
+	public int getLayoutsCount(long groupId, long masterLayoutPlid);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getLayoutsCount(long groupId, String keywords, String[] types)
@@ -1076,27 +1072,6 @@ public interface LayoutLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long getNextLayoutId(long groupId, boolean privateLayout);
-
-	/**
-	 * Returns all the layouts without resource permissions
-	 *
-	 * @param roleId the primary key of the role
-	 * @return all the layouts without resource permissions
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Layout> getNoPermissionLayouts(long roleId);
-
-	/**
-	 * Returns all the layouts whose friendly URLs are <code>null</code>
-	 *
-	 * @return all the layouts whose friendly URLs are <code>null</code>
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Layout> getNullFriendlyURLLayouts();
 
 	/**
 	 * Returns the OSGi service identifier.

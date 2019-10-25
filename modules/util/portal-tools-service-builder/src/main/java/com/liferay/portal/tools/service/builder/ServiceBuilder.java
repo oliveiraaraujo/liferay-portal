@@ -5391,7 +5391,9 @@ public class ServiceBuilder {
 				if (properties.containsKey("project.path.prefix")) {
 					String s = properties.getProperty("project.path.prefix");
 
-					if (s.startsWith(":private:apps")) {
+					if (s.startsWith(":dxp:apps") ||
+						s.startsWith(":private:apps")) {
+
 						return true;
 					}
 
@@ -6307,7 +6309,7 @@ public class ServiceBuilder {
 		if (entity.isUADEnabled()) {
 			if (!_uadApplicationEntities.containsKey(uadApplicationName)) {
 				_uadApplicationEntities.put(
-					uadApplicationName, ListUtil.toList(entity));
+					uadApplicationName, ListUtil.fromArray(entity));
 			}
 			else {
 				List<Entity> uadApplicationEntities =

@@ -13,12 +13,13 @@
  */
 
 import classNames from 'classnames';
+import React, {useLayoutEffect, useRef, useState} from 'react';
 import {useDrop} from 'react-dnd';
-import React from 'react';
 
-import Button from '../../components/button/Button.es';
 import Table from '../../components/table/Table.es';
 import {DRAG_FIELD_TYPE} from '../../utils/dragTypes.es';
+import ColumnOverlay from './ColumnOverlay.es';
+import DropZonePlaceholder from './DropZonePlaceholder.es';
 
 const generateItems = (columns, rows = 10) => {
 	const items = [];
@@ -30,11 +31,11 @@ const generateItems = (columns, rows = 10) => {
 	return items;
 };
 
-const generateItem = (columns, index) =>
+const generateItem = columns =>
 	columns.reduce(
 		(acc, column) => ({
 			...acc,
-			[column]: `${column} ${index + 1}`
+			[column]: `-`
 		}),
 		{}
 	);
@@ -51,49 +52,72 @@ const DropZone = ({fields, onAddFieldName, onRemoveFieldName}) => {
 		}
 	});
 
-	if (fields.length == 0) {
+	const [container, setContainer] = useState();
+	const containerRef = useRef();
+	const empty = fields.length === 0;
+
+	useLayoutEffect(() => {
+		if (containerRef.current) {
+			setContainer(containerRef.current);
+		}
+	}, [empty]);
+
+	if (empty) {
 		return (
-			<div
-				className={classNames('empty-drop-zone', {
-					'target-droppable': canDrop,
-					'target-over': overTarget
-				})}
-				ref={drop}
-			>
-				<p className="m-0">
-					{Liferay.Language.get(
-						'drag-columns-from-the-sidebar-and-drop-here'
-					)}
-				</p>
+			<div className="p-4 sheet">
+				<div className="empty-drop-zone-header"></div>
+				<div
+					className={classNames('empty-drop-zone', {
+						'target-droppable': canDrop,
+						'target-over': overTarget
+					})}
+					ref={drop}
+				>
+					<p className="m-0">
+						{Liferay.Language.get(
+							'drag-columns-from-the-sidebar-and-drop-here'
+						)}
+					</p>
+				</div>
 			</div>
 		);
 	}
 
 	return (
-		<Table
-			actions={[]}
-			columns={fields.map(({label: {en_US: label}, name}) => ({
-				key: label,
-				value: (
-					<div className="container p-0">
-						<div className="row align-items-center">
-							<div className="col">{label}</div>
-							<div className="col-md-auto">
-								<Button
-									borderless
-									displayType="secondary"
-									onClick={() => onRemoveFieldName(name)}
-									symbol="trash"
-									tooltip={Liferay.Language.get('remove')}
-								/>
+		<div ref={containerRef}>
+			<Table
+				actions={[]}
+				checkable={true}
+				columns={fields.map(({label: {en_US: label}}) => ({
+					key: label,
+					value: (
+						<div className="container p-0">
+							<div className="align-items-center row">
+								<div className="col">{label}</div>
 							</div>
 						</div>
-					</div>
-				)
-			}))}
-			items={generateItems(fields.map(field => field.label.en_US))}
-			ref={drop}
-		/>
+					)
+				}))}
+				items={generateItems(fields.map(field => field.label.en_US))}
+				ref={drop}
+			/>
+
+			{container && (
+				<>
+					<DropZonePlaceholder
+						container={container}
+						fields={fields}
+						onAddFieldName={onAddFieldName}
+					/>
+
+					<ColumnOverlay
+						container={container}
+						fields={fields}
+						onRemoveFieldName={onRemoveFieldName}
+					/>
+				</>
+			)}
+		</div>
 	);
 };
 

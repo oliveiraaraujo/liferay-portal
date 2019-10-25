@@ -21,6 +21,7 @@ import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class is used by SOAP remote services.
@@ -48,6 +49,7 @@ public class BatchEngineTaskSoap implements Serializable {
 		soapModel.setEndTime(model.getEndTime());
 		soapModel.setErrorMessage(model.getErrorMessage());
 		soapModel.setExecuteStatus(model.getExecuteStatus());
+		soapModel.setFieldNameMapping(model.getFieldNameMapping());
 		soapModel.setOperation(model.getOperation());
 		soapModel.setStartTime(model.getStartTime());
 		soapModel.setVersion(model.getVersion());
@@ -230,6 +232,16 @@ public class BatchEngineTaskSoap implements Serializable {
 		_executeStatus = executeStatus;
 	}
 
+	public Map<String, Serializable> getFieldNameMapping() {
+		return _fieldNameMapping;
+	}
+
+	public void setFieldNameMapping(
+		Map<String, Serializable> fieldNameMapping) {
+
+		_fieldNameMapping = fieldNameMapping;
+	}
+
 	public String getOperation() {
 		return _operation;
 	}
@@ -269,6 +281,7 @@ public class BatchEngineTaskSoap implements Serializable {
 	private Date _endTime;
 	private String _errorMessage;
 	private String _executeStatus;
+	private Map<String, Serializable> _fieldNameMapping;
 	private String _operation;
 	private Date _startTime;
 	private String _version;

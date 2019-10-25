@@ -86,6 +86,11 @@ public interface LayoutPageTemplateEntryService extends BaseService {
 			ServiceContext serviceContext)
 		throws PortalException;
 
+	public LayoutPageTemplateEntry copyLayoutPageTemplateEntry(
+			long groupId, long layoutPageTemplateCollectionId,
+			long layoutPageTemplateEntryId, ServiceContext serviceContext)
+		throws PortalException;
+
 	public void deleteLayoutPageTemplateEntries(
 			long[] layoutPageTemplateEntryIds)
 		throws PortalException;

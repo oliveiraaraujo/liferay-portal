@@ -64,7 +64,6 @@ import com.liferay.portal.kernel.model.Image;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.LayoutFriendlyURL;
-import com.liferay.portal.kernel.model.LayoutFriendlyURLComposite;
 import com.liferay.portal.kernel.model.LayoutQueryStringComposite;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutType;
@@ -213,7 +212,6 @@ import com.liferay.portlet.LiferayPortletUtil;
 import com.liferay.portlet.PortletPreferencesImpl;
 import com.liferay.portlet.PortletPreferencesWrapper;
 import com.liferay.portlet.admin.util.OmniadminUtil;
-import com.liferay.portlet.social.util.FacebookUtil;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 import com.liferay.registry.ServiceReference;
@@ -263,7 +261,6 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -2380,27 +2377,6 @@ public class PortalImpl implements Portal {
 			(HttpServletRequest)uploadPortletRequest, name, type, displayType);
 	}
 
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public String getFacebookURL(
-			Portlet portlet, String facebookCanvasPageURL,
-			ThemeDisplay themeDisplay)
-		throws PortalException {
-
-		String facebookURL = getServletURL(
-			portlet, FacebookUtil.FACEBOOK_SERVLET_PATH + facebookCanvasPageURL,
-			themeDisplay);
-
-		if (!facebookURL.endsWith(StringPool.SLASH)) {
-			facebookURL += StringPool.SLASH;
-		}
-
-		return facebookURL;
-	}
-
 	@Override
 	public String getFirstPageLayoutTypes(
 		HttpServletRequest httpServletRequest) {
@@ -2553,114 +2529,6 @@ public class PortalImpl implements Portal {
 		}
 
 		return null;
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public String[] getGroupPermissions(HttpServletRequest httpServletRequest) {
-		return httpServletRequest.getParameterValues("groupPermissions");
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public String[] getGroupPermissions(
-		HttpServletRequest httpServletRequest, String className) {
-
-		String[] groupPermissions = httpServletRequest.getParameterValues(
-			"groupPermissions_" + className);
-
-		String inputPermissionsShowOptions = httpServletRequest.getParameter(
-			"inputPermissionsShowOptions");
-
-		return getGroupPermissions(
-			groupPermissions, className, inputPermissionsShowOptions);
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public String[] getGroupPermissions(PortletRequest portletRequest) {
-		return portletRequest.getParameterValues("groupPermissions");
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public String[] getGroupPermissions(
-		PortletRequest portletRequest, String className) {
-
-		String[] groupPermissions = portletRequest.getParameterValues(
-			"groupPermissions_" + className);
-
-		String inputPermissionsShowOptions = portletRequest.getParameter(
-			"inputPermissionsShowOptions");
-
-		return getGroupPermissions(
-			groupPermissions, className, inputPermissionsShowOptions);
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public String[] getGuestPermissions(HttpServletRequest httpServletRequest) {
-		return httpServletRequest.getParameterValues("guestPermissions");
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public String[] getGuestPermissions(
-		HttpServletRequest httpServletRequest, String className) {
-
-		String[] guestPermissions = httpServletRequest.getParameterValues(
-			"guestPermissions_" + className);
-
-		String inputPermissionsShowOptions = httpServletRequest.getParameter(
-			"inputPermissionsShowOptions");
-
-		return getGuestPermissions(
-			guestPermissions, className, inputPermissionsShowOptions);
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public String[] getGuestPermissions(PortletRequest portletRequest) {
-		return portletRequest.getParameterValues("guestPermissions");
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public String[] getGuestPermissions(
-		PortletRequest portletRequest, String className) {
-
-		String[] guestPermissions = portletRequest.getParameterValues(
-			"guestPermissions_" + className);
-
-		String inputPermissionsShowOptions = portletRequest.getParameter(
-			"inputPermissionsShowOptions");
-
-		return getGuestPermissions(
-			guestPermissions, className, inputPermissionsShowOptions);
 	}
 
 	@Override
@@ -2944,27 +2812,6 @@ public class PortalImpl implements Portal {
 
 		return groupFriendlyURL.concat(
 			themeDisplay.getLayoutFriendlyURL(layout));
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             #getLayoutFriendlyURLSeparatorComposite(long, boolean,
-	 *             String, Map<String, String[]>, Map<String, Object>)}
-	 */
-	@Deprecated
-	@Override
-	public LayoutFriendlyURLComposite getLayoutFriendlyURLComposite(
-			long groupId, boolean privateLayout, String friendlyURL,
-			Map<String, String[]> params, Map<String, Object> requestContext)
-		throws PortalException {
-
-		LayoutFriendlyURLSeparatorComposite
-			layoutFriendlyURLSeparatorComposite =
-				getLayoutFriendlyURLSeparatorComposite(
-					groupId, privateLayout, friendlyURL, params,
-					requestContext);
-
-		return (LayoutFriendlyURLComposite)layoutFriendlyURLSeparatorComposite;
 	}
 
 	@Override
@@ -5101,44 +4948,6 @@ public class PortalImpl implements Portal {
 		}
 
 		return groupIds;
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             #getSiteAdminURL(ThemeDisplay, String, Map)}
-	 */
-	@Deprecated
-	@Override
-	public String getSiteAdminURL(
-			Company company, Group group, String ppid,
-			Map<String, String[]> params)
-		throws PortalException {
-
-		return _getSiteAdminURL(
-			getPortalURL(
-				company.getVirtualHostname(), getPortalServerPort(false),
-				false),
-			group, ppid, params);
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             #getSiteAdminURL(ThemeDisplay, String, Map)}
-	 */
-	@Deprecated
-	@Override
-	public String getSiteAdminURL(
-			Group group, String ppid, Map<String, String[]> params)
-		throws PortalException {
-
-		Company company = CompanyLocalServiceUtil.getCompany(
-			group.getCompanyId());
-
-		return _getSiteAdminURL(
-			getPortalURL(
-				company.getVirtualHostname(), getPortalServerPort(false),
-				false),
-			group, ppid, params);
 	}
 
 	@Override
@@ -7359,51 +7168,6 @@ public class PortalImpl implements Portal {
 		return windowState;
 	}
 
-	/**
-	 * @deprecated As of Wilberforce (7.0.x)
-	 */
-	@Deprecated
-	protected void addDefaultResource(
-			long companyId, Layout layout, Portlet portlet,
-			boolean portletActions)
-		throws PortalException {
-
-		long groupId = getScopeGroupId(layout, portlet.getPortletId());
-
-		addRootModelResource(companyId, groupId, portlet);
-	}
-
-	/**
-	 * @deprecated As of Wilberforce (7.0.x)
-	 */
-	@Deprecated
-	protected void addDefaultResource(
-			long companyId, long groupId, Layout layout, Portlet portlet,
-			boolean portletActions)
-		throws PortalException {
-
-		addRootModelResource(companyId, groupId, portlet);
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             #addRootModelResource(long, long, String)}
-	 */
-	@Deprecated
-	protected void addRootModelResource(
-			long companyId, long groupId, Portlet portlet)
-		throws PortalException {
-
-		String name = ResourceActionsUtil.getPortletBaseResource(
-			portlet.getRootPortletId());
-
-		if (Validator.isNull(name)) {
-			return;
-		}
-
-		addRootModelResource(companyId, groupId, name);
-	}
-
 	protected void addRootModelResource(
 			long companyId, long groupId, String name)
 		throws PortalException {
@@ -7427,16 +7191,6 @@ public class PortalImpl implements Portal {
 
 		ResourceLocalServiceUtil.addResources(
 			companyId, groupId, 0, name, primaryKey, false, true, true);
-	}
-
-	/**
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	protected String buildI18NPath(Locale locale) {
-		String languageId = LocaleUtil.toLanguageId(locale);
-
-		return _buildI18NPath(languageId, locale);
 	}
 
 	protected long doGetPlidFromPortletId(
@@ -8910,27 +8664,11 @@ public class PortalImpl implements Portal {
 		_portalInetSocketAddressEventListeners = new CopyOnWriteArraySet<>();
 	private final AtomicReference<InetSocketAddress>
 		_portalLocalInetSocketAddress = new AtomicReference<>();
-
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 *             #_portalServerInetSocketAddress}
-	 */
-	@Deprecated
-	private final AtomicInteger _portalPort = new AtomicInteger(-1);
-
 	private final AtomicReference<InetSocketAddress>
 		_portalServerInetSocketAddress = new AtomicReference<>();
 	private final Set<String> _reservedParams;
 	private final AtomicReference<InetSocketAddress>
 		_securePortalLocalInetSocketAddress = new AtomicReference<>();
-
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 *             #_securePortalServerInetSocketAddress}
-	 */
-	@Deprecated
-	private final AtomicInteger _securePortalPort = new AtomicInteger(-1);
-
 	private final AtomicReference<InetSocketAddress>
 		_securePortalServerInetSocketAddress = new AtomicReference<>();
 	private final String _servletContextName;

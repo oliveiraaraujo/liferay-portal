@@ -55,6 +55,20 @@ public class ChangeTransitionSerDes {
 
 		sb.append("{");
 
+		if (changeTransition.getComment() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"comment\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(changeTransition.getComment()));
+
+			sb.append("\"");
+		}
+
 		if (changeTransition.getTransition() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -88,6 +102,13 @@ public class ChangeTransitionSerDes {
 
 		Map<String, String> map = new TreeMap<>();
 
+		if (changeTransition.getComment() == null) {
+			map.put("comment", null);
+		}
+		else {
+			map.put("comment", String.valueOf(changeTransition.getComment()));
+		}
+
 		if (changeTransition.getTransition() == null) {
 			map.put("transition", null);
 		}
@@ -117,7 +138,12 @@ public class ChangeTransitionSerDes {
 			ChangeTransition changeTransition, String jsonParserFieldName,
 			Object jsonParserFieldValue) {
 
-			if (Objects.equals(jsonParserFieldName, "transition")) {
+			if (Objects.equals(jsonParserFieldName, "comment")) {
+				if (jsonParserFieldValue != null) {
+					changeTransition.setComment((String)jsonParserFieldValue);
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "transition")) {
 				if (jsonParserFieldValue != null) {
 					changeTransition.setTransition(
 						(String)jsonParserFieldValue);

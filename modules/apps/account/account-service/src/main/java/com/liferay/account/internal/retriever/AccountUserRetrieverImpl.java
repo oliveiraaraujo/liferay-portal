@@ -14,7 +14,7 @@
 
 package com.liferay.account.internal.retriever;
 
-import com.liferay.account.model.AccountEntry;
+import com.liferay.account.constants.AccountConstants;
 import com.liferay.account.retriever.AccountUserRetriever;
 import com.liferay.account.service.AccountEntryLocalService;
 import com.liferay.account.service.AccountEntryUserRelLocalService;
@@ -23,7 +23,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.hits.SearchHits;
@@ -40,7 +42,6 @@ import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.io.Serializable;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,8 +70,19 @@ public class AccountUserRetrieverImpl implements AccountUserRetriever {
 			int delta, String sortField, boolean reverse)
 		throws PortalException {
 
+		return searchAccountUsers(
+			new long[] {accountEntryId}, keywords, status, cur, delta,
+			sortField, reverse);
+	}
+
+	@Override
+	public BaseModelSearchResult<User> searchAccountUsers(
+			long[] accountEntryIds, String keywords, int status, int cur,
+			int delta, String sortField, boolean reverse)
+		throws PortalException {
+
 		SearchResponse searchResponse = _getSearchResponse(
-			accountEntryId, keywords, status, cur, delta, sortField, reverse);
+			accountEntryIds, keywords, status, cur, delta, sortField, reverse);
 
 		SearchHits searchHits = searchResponse.getSearchHits();
 
@@ -89,21 +101,24 @@ public class AccountUserRetrieverImpl implements AccountUserRetriever {
 	}
 
 	private SearchResponse _getSearchResponse(
-			long accountEntryId, String keywords, int status, int cur,
+			long[] accountEntryIds, String keywords, int status, int cur,
 			int delta, String sortField, boolean reverse)
 		throws PortalException {
 
-		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
-			accountEntryId);
-
 		SearchRequestBuilder searchRequestBuilder =
 			_searchRequestBuilderFactory.builder();
+
+		for (long accountEntryId : accountEntryIds) {
+			if (accountEntryId != AccountConstants.ACCOUNT_ENTRY_ID_DEFAULT) {
+				_accountEntryLocalService.getAccountEntry(accountEntryId);
+			}
+		}
 
 		searchRequestBuilder.entryClassNames(
 			User.class.getName()
 		).withSearchContext(
 			searchContext -> _populateSearchContext(
-				searchContext, accountEntry, keywords, status)
+				searchContext, accountEntryIds, keywords, status)
 		).emptySearchEnabled(
 			true
 		).highlightEnabled(
@@ -138,7 +153,7 @@ public class AccountUserRetrieverImpl implements AccountUserRetriever {
 	}
 
 	private void _populateSearchContext(
-		SearchContext searchContext, AccountEntry accountEntry, String keywords,
+		SearchContext searchContext, long[] accountEntryIds, String keywords,
 		int status) {
 
 		boolean andSearch = false;
@@ -152,27 +167,40 @@ public class AccountUserRetrieverImpl implements AccountUserRetriever {
 
 		searchContext.setAndSearch(andSearch);
 
-		Map<String, Serializable> attributes = new HashMap<>();
-
-		attributes.put(
-			"accountEntryIds", new long[] {accountEntry.getAccountEntryId()});
-		attributes.put("city", keywords);
-		attributes.put("country", keywords);
-		attributes.put("emailAddress", keywords);
-		attributes.put("firstName", keywords);
-		attributes.put("fullName", keywords);
-		attributes.put("lastName", keywords);
-		attributes.put("middleName", keywords);
-		attributes.put("params", new LinkedHashMap<>());
-		attributes.put("region", keywords);
-		attributes.put("screenName", keywords);
-		attributes.put("status", status);
-		attributes.put("street", keywords);
-		attributes.put("zip", keywords);
+		Map<String, Serializable> attributes =
+			HashMapBuilder.<String, Serializable>put(
+				"accountEntryIds", accountEntryIds
+			).put(
+				"city", keywords
+			).put(
+				"country", keywords
+			).put(
+				"emailAddress", keywords
+			).put(
+				"firstName", keywords
+			).put(
+				"fullName", keywords
+			).put(
+				"lastName", keywords
+			).put(
+				"middleName", keywords
+			).put(
+				"params", new LinkedHashMap<>()
+			).put(
+				"region", keywords
+			).put(
+				"screenName", keywords
+			).put(
+				"status", status
+			).put(
+				"street", keywords
+			).put(
+				"zip", keywords
+			).build();
 
 		searchContext.setAttributes(attributes);
 
-		searchContext.setCompanyId(accountEntry.getCompanyId());
+		searchContext.setCompanyId(CompanyThreadLocal.getCompanyId());
 	}
 
 	@Reference

@@ -17,48 +17,17 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String backURL = ParamUtil.getString(request, "redirect");
-
-DepotEntry depotEntry = (DepotEntry)request.getAttribute("depotEntry");
-
-Group group = GroupServiceUtil.getGroup(depotEntry.getGroupId());
-
-portletDisplay.setShowBackIcon(true);
-portletDisplay.setURLBack(backURL);
-
-renderResponse.setTitle(HtmlUtil.escape(group.getDescriptiveName(locale)));
+DepotEntry depotEntry = (DepotEntry)request.getAttribute(DepotAdminWebKeys.DEPOT_ENTRY);
 %>
 
-<liferay-ui:success key='<%= DepotPortletKeys.DEPOT_ADMIN + "requestProcessed" %>' message="repository-was-added" />
-
-<liferay-frontend:edit-form
-	action="<%= DepotEntryURLUtil.getEditDepotEntryActionURL(liferayPortletResponse) %>"
-	method="post"
-	name="fm"
->
-	<aui:input name="redirect" type="hidden" value="<%= backURL %>" />
-	<aui:input name="depotEntryId" type="hidden" value="<%= depotEntry.getDepotEntryId() %>" />
-
-	<liferay-frontend:edit-form-body>
-		<liferay-frontend:fieldset-group>
-			<liferay-frontend:fieldset
-				collapsible="false"
-				label='<%= LanguageUtil.get(request, "details") %>'
-			>
-				<aui:model-context bean="<%= group %>" model="<%= Group.class %>" />
-
-				<aui:input name="repositoryId" type="resource" value="<%= String.valueOf(depotEntry.getDepotEntryId()) %>" />
-
-				<aui:input name="name" placeholder="name" required="<%= true %>" value="<%= String.valueOf(group.getName(locale)) %>" />
-
-				<aui:input name="description" placeholder="description" />
-			</liferay-frontend:fieldset>
-		</liferay-frontend:fieldset-group>
-	</liferay-frontend:edit-form-body>
-
-	<liferay-frontend:edit-form-footer>
-		<aui:button type="submit" />
-
-		<aui:button href="<%= backURL %>" type="cancel" />
-	</liferay-frontend:edit-form-footer>
-</liferay-frontend:edit-form>
+<liferay-frontend:screen-navigation
+	containerCssClass="col-lg-8"
+	containerWrapperCssClass="container-fluid container-fluid-max-xl container-form-lg"
+	context="<%= depotEntry %>"
+	headerContainerCssClass=""
+	inverted="<%= true %>"
+	key="<%= DepotScreenNavigationEntryConstants.SCREEN_NAVIGATION_KEY_DEPOT %>"
+	menubarCssClass="menubar menubar-transparent menubar-vertical-expand-lg"
+	navCssClass="col-lg-3"
+	portletURL="<%= currentURLObj %>"
+/>

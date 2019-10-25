@@ -161,6 +161,11 @@ public interface LayoutPageTemplateEntryLocalService
 			String name, ServiceContext serviceContext)
 		throws PortalException;
 
+	public LayoutPageTemplateEntry copyLayoutPageTemplateEntry(
+			long userId, long groupId, long layoutPageTemplateCollectionId,
+			long layoutPageTemplateEntryId, ServiceContext serviceContext)
+		throws PortalException;
+
 	/**
 	 * Creates a new layout page template entry with the primary key. Does not add the layout page template entry to the database.
 	 *
@@ -280,9 +285,18 @@ public interface LayoutPageTemplateEntryLocalService
 	public LayoutPageTemplateEntry fetchLayoutPageTemplateEntry(
 		long layoutPageTemplateEntryId);
 
+	/**
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link
+	 #fetchLayoutPageTemplateEntry(long, String, int)}
+	 */
+	@Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LayoutPageTemplateEntry fetchLayoutPageTemplateEntry(
 		long groupId, String name);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public LayoutPageTemplateEntry fetchLayoutPageTemplateEntry(
+		long groupId, String name, int type);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LayoutPageTemplateEntry fetchLayoutPageTemplateEntryByPlid(

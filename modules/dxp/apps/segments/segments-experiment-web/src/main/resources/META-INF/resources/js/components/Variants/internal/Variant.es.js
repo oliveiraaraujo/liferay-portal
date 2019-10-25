@@ -1,23 +1,21 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  */
 
-import React, {useState, useContext} from 'react';
-import PropTypes from 'prop-types';
+import ClayButton from '@clayui/button';
 import ClayDropDown from '@clayui/drop-down';
 import ClayIcon from '@clayui/icon';
 import ClayList from '@clayui/list';
-import ClayButton from '@clayui/button';
+import PropTypes from 'prop-types';
+import React, {useState, useContext} from 'react';
+
 import SegmentsExperimentsContext from '../../../context.es';
 import {navigateToExperience} from '../../../util/navigation.es';
 import {indexToPercentageString} from '../../../util/percentages.es';
@@ -119,7 +117,7 @@ function Variant({
 				<ClayList.ItemField>
 					<span
 						aria-label={Liferay.Language.get('traffic-split')}
-						className="text-secondary font-weight-normal list-group-title mr-1"
+						className="font-weight-normal list-group-title mr-1 text-secondary"
 					>
 						{indexToPercentageString(split)}
 					</span>

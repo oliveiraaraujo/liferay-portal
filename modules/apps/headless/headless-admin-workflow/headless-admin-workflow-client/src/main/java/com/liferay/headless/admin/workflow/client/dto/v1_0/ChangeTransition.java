@@ -28,6 +28,27 @@ import javax.annotation.Generated;
 @Generated("")
 public class ChangeTransition {
 
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public void setComment(
+		UnsafeSupplier<String, Exception> commentUnsafeSupplier) {
+
+		try {
+			comment = commentUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected String comment;
+
 	public String getTransition() {
 		return transition;
 	}

@@ -1,15 +1,12 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  */
 
 import '@testing-library/jest-dom/extend-expect';
@@ -22,13 +19,7 @@ import {
 	waitForElementToBeRemoved
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import renderApp from '../renderApp.es';
-import {
-	segmentsExperiment,
-	segmentsExperiences,
-	segmentsVariants,
-	DEFAULT_ESTIMATED_DAYS
-} from '../fixtures.es';
+
 import {INITIAL_CONFIDENCE_LEVEL} from '../../../src/main/resources/META-INF/resources/js/util/percentages.es';
 import {
 	STATUS_FINISHED_WINNER,
@@ -37,6 +28,13 @@ import {
 	STATUS_TERMINATED,
 	STATUS_FINISHED_NO_WINNER
 } from '../../../src/main/resources/META-INF/resources/js/util/statuses.es';
+import {
+	segmentsExperiment,
+	segmentsExperiences,
+	segmentsVariants,
+	DEFAULT_ESTIMATED_DAYS
+} from '../fixtures.es';
+import renderApp from '../renderApp.es';
 
 jest.mock(
 	'../../../src/main/resources/META-INF/resources/js/util/toasts.es',
@@ -51,7 +49,7 @@ jest.mock(
 describe('SegmentsExperimentsSidebar', () => {
 	afterEach(cleanup);
 
-	it('renders info message ab testing panel only available for content pages', () => {
+	it('Renders info message ab testing panel only available for content pages', () => {
 		const {getByText} = renderApp({
 			type: 'widget'
 		});
@@ -63,8 +61,8 @@ describe('SegmentsExperimentsSidebar', () => {
 		expect(message).not.toBe(null);
 	});
 
-	it('renders ab testing panel with experience selected and zero experiments', () => {
-		const {getByText, getByDisplayValue} = renderApp({
+	it('Renders ab testing panel with experience selected and zero experiments', () => {
+		const {getByDisplayValue, getByText} = renderApp({
 			initialSegmentsExperiences: segmentsExperiences
 		});
 
@@ -74,8 +72,8 @@ describe('SegmentsExperimentsSidebar', () => {
 		getByText('create-test');
 	});
 
-	it('renders ab testing panel with experience selected and an experiment', () => {
-		const {getByText, getByDisplayValue} = renderApp({
+	it('Renders ab testing panel with experience selected and an experiment', () => {
+		const {getByDisplayValue, getByText} = renderApp({
 			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: segmentsExperiment
 		});
@@ -93,7 +91,7 @@ describe('SegmentsExperimentsSidebar', () => {
 		getByText('edit');
 	});
 
-	it('renders modal to create experiment when the user clicks on create test button', async () => {
+	it('Renders modal to create experiment when the user clicks on create test button', async () => {
 		const {getByText} = renderApp({
 			initialSegmentsExperiences: segmentsExperiences
 		});
@@ -110,7 +108,7 @@ describe('SegmentsExperimentsSidebar', () => {
 		getByText('cancel');
 	});
 
-	it('renders experiment status label', () => {
+	it('Renders experiment status label', () => {
 		const {getByText} = renderApp({
 			initialSegmentsExperiment: segmentsExperiment
 		});
@@ -119,7 +117,7 @@ describe('SegmentsExperimentsSidebar', () => {
 		expect(statusLabel).not.toBe(null);
 	});
 
-	it("renders experiment without actions when it's not editable", () => {
+	it("Renders experiment without actions when it's not editable", () => {
 		segmentsExperiment.editable = false;
 
 		const {queryByTestId} = renderApp({
@@ -135,7 +133,7 @@ describe('SegmentsExperimentsSidebar', () => {
 describe('Variants', () => {
 	afterEach(cleanup);
 
-	it('renders no variants message', () => {
+	it('Renders no variants message', () => {
 		const {getByText} = renderApp({
 			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: segmentsExperiment,
@@ -153,7 +151,7 @@ describe('Variants', () => {
 		expect(variantsHelp).not.toBe(null);
 	});
 
-	it('renders variant list', () => {
+	it('Renders variant list', () => {
 		const {getByText} = renderApp({
 			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: segmentsExperiment,
@@ -169,8 +167,8 @@ describe('Variants', () => {
 		expect(variant).not.toBe(null);
 	});
 
-	it('create variant button', async () => {
-		const {APIServiceMocks, getByText, getByLabelText} = renderApp({
+	it('Create variant button', async () => {
+		const {APIServiceMocks, getByLabelText, getByText} = renderApp({
 			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: segmentsExperiment,
 			initialSegmentsVariants: segmentsVariants,
@@ -205,7 +203,7 @@ describe('Variants', () => {
 		);
 	});
 
-	it("renders variants without create variant button when it's not editable", () => {
+	it("Renders variants without create variant button when it's not editable", () => {
 		segmentsExperiment.editable = false;
 
 		const {queryByTestId} = renderApp({
@@ -218,11 +216,11 @@ describe('Variants', () => {
 	});
 });
 
-describe('Run and review test', () => {
+describe('Review and Run test', () => {
 	afterEach(cleanup);
 
-	it('can view Review Experiment Modal', async () => {
-		const {getByText, getByDisplayValue, getAllByDisplayValue} = renderApp({
+	it('Can view review experiment modal', async () => {
+		const {getAllByDisplayValue, getByDisplayValue, getByText} = renderApp({
 			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: segmentsExperiment,
 			initialSegmentsVariants: segmentsVariants
@@ -248,7 +246,7 @@ describe('Run and review test', () => {
 		expect(splitSliders.length).toBe(2);
 	});
 
-	it('can view estimation time', async () => {
+	it('Can view estimation time', async () => {
 		const {APIServiceMocks, getByText} = renderApp({
 			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: segmentsExperiment,
@@ -265,8 +263,8 @@ describe('Run and review test', () => {
 		expect(getEstimatedTime).toHaveBeenCalledTimes(1);
 	});
 
-	test("can run test that won't be editable", async () => {
-		const {APIServiceMocks, queryAllByLabelText, getByText} = renderApp({
+	it("Can run test that won't be editable", async () => {
+		const {APIServiceMocks, getByText, queryAllByLabelText} = renderApp({
 			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: segmentsExperiment,
 			initialSegmentsVariants: segmentsVariants
@@ -340,48 +338,10 @@ describe('Run and review test', () => {
 	});
 });
 
-describe('Click Target selection', () => {
-	test.todo(
-		'Set Click Target section appears when draft test has goal set to click'
-	);
-
-	test.todo(
-		'All clickable elements highlighted when the user clicks on Set Target Button'
-	);
-
-	test.todo(
-		'A tooltip Click Element to Set as Click Target for your Goal appears when the user clicks on Set Target Button'
-	);
-
-	test.todo('Selectable as target elements show tooltips on hover');
-
-	test.todo(
-		'When the user Set Element as Click Target, then The element is set as the Click Target and the id of the element as a link'
-	);
-
-	test.todo(
-		'Cancel selection click target element proccess when clickign out of selection zone'
-	);
-
-	test.todo(
-		'When hovering over to invalid click target elements, the mouse is displayed in not-allowed mode'
-	);
-
-	test.todo(
-		'The user can edit a selected click target in a draft experiment'
-	);
-
-	test.todo('The user can remove a selected click target in a draft element');
-
-	test.todo(
-		'The user clicks in the UI reference to the selected click target element, the page scrolls to make it visible'
-	);
-});
-
-describe('Experiment history tab', () => {
+describe('Experiment History Tab', () => {
 	afterEach(cleanup);
 
-	test('test is archived after terminating it', async () => {
+	it('Experiment is archived after terminating it', async () => {
 		window.confirm = jest.fn(() => true);
 
 		const runningExperiment = {
@@ -420,7 +380,7 @@ describe('Experiment history tab', () => {
 		getByText('create-test');
 	});
 
-	test('test is archive after completing it', async () => {
+	it('Experiment is archive after completing it', async () => {
 		const noWinnerDeclaredExperiment = {
 			...segmentsExperiment,
 			editable: false,
@@ -469,7 +429,7 @@ describe('Experiment history tab', () => {
 		await waitForElement(() => getByText(segmentsExperiment.name));
 	});
 
-	test('tests have name, description and status label', async () => {
+	it('Experiments have name, description and status label', async () => {
 		const experimentHistory = [
 			{
 				...segmentsExperiment,
@@ -523,11 +483,112 @@ describe('Experiment history tab', () => {
 	});
 });
 
+describe('No Winner Declared', () => {
+	afterEach(cleanup);
+
+	it('Experiment has basic no winner declared elements', () => {
+		const {getAllByText, getByText} = renderApp({
+			initialSegmentsExperiences: segmentsExperiences,
+			initialSegmentsExperiment: {
+				...segmentsExperiment,
+				editable: false,
+				status: {
+					label: 'No Winner Declared',
+					value: STATUS_FINISHED_NO_WINNER
+				}
+			},
+			initialSegmentsVariants: segmentsVariants,
+			winnerSegmentsVariantId: ''
+		});
+
+		getByText('discard-test');
+		getByText('No Winner Declared');
+		const allPublishButtons = getAllByText('publish');
+
+		expect(allPublishButtons.length).toBe(segmentsVariants.length - 1);
+	});
+
+	it('Variant publish action button when confirming in no winner declared status', async () => {
+		/**
+		 * The user accepts the confirmation message
+		 */
+		global.confirm = jest.fn(() => true);
+
+		const {APIServiceMocks, getByText} = renderApp({
+			initialSegmentsExperiences: segmentsExperiences,
+			initialSegmentsExperiment: {
+				...segmentsExperiment,
+				editable: false,
+				status: {
+					label: 'No Winner Declared',
+					value: STATUS_FINISHED_NO_WINNER
+				}
+			},
+			initialSegmentsVariants: segmentsVariants,
+			winnerSegmentsVariantId: ''
+		});
+		const {publishExperience} = APIServiceMocks;
+
+		const publishButton = getByText('publish');
+
+		userEvent.click(publishButton);
+
+		/**
+		 * The user has accepted one confirmation message
+		 */
+		expect(global.confirm).toHaveBeenCalledTimes(1);
+
+		expect(publishExperience).toHaveBeenCalledWith({
+			segmentsExperimentId: segmentsExperiment.segmentsExperimentId,
+			status: STATUS_COMPLETED,
+			winnerSegmentsExperienceId: segmentsVariants[1].segmentsExperienceId
+		});
+
+		await waitForElement(() => getByText('completed'));
+	});
+
+	it('Variant publish action button when not confirming in no winner declared status', async () => {
+		/**
+		 * The user rejects the confirmation message
+		 */
+		global.confirm = jest.fn(() => false);
+
+		const {APIServiceMocks, getByText} = renderApp({
+			initialSegmentsExperiences: segmentsExperiences,
+			initialSegmentsExperiment: {
+				...segmentsExperiment,
+				editable: false,
+				status: {
+					label: 'No Winner Declared',
+					value: STATUS_FINISHED_NO_WINNER
+				}
+			},
+			initialSegmentsVariants: segmentsVariants,
+			winnerSegmentsVariantId: ''
+		});
+		const {publishExperience} = APIServiceMocks;
+
+		const publishButton = getByText('publish');
+
+		userEvent.click(publishButton);
+
+		/**
+		 * The user has rejected one confirmation message
+		 */
+		expect(global.confirm).toHaveBeenCalledTimes(1);
+
+		/**
+		 * API has not been called
+		 */
+		expect(publishExperience).toHaveBeenCalledTimes(0);
+	});
+});
+
 describe('Winner declared', () => {
 	afterEach(cleanup);
 
-	it('experiment has basic Winner Declared basic elements', () => {
-		const {getByText, getAllByText} = renderApp({
+	it('Experiment has basic winner declared elements', () => {
+		const {getAllByText, getByText} = renderApp({
 			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: {
 				...segmentsExperiment,
@@ -548,7 +609,7 @@ describe('Winner declared', () => {
 		expect(allPublishButtons.length).toBe(segmentsVariants.length - 1);
 	});
 
-	it('variants publish action button confirming', async () => {
+	it('Variant publish action button when confirming in winner declared status', async () => {
 		/**
 		 * The user accepts the confirmation message
 		 */
@@ -587,7 +648,7 @@ describe('Winner declared', () => {
 		await waitForElement(() => getByText('completed'));
 	});
 
-	it('variants publish action not confirming', async () => {
+	it('Variant publish action button when not confirming in winner declared status', async () => {
 		/**
 		 * The user rejects the confirmation message
 		 */
@@ -623,7 +684,7 @@ describe('Winner declared', () => {
 		expect(publishExperience).toHaveBeenCalledTimes(0);
 	});
 
-	it('discard button action', async () => {
+	it('Discard button action', async () => {
 		const {APIServiceMocks, getByText} = renderApp({
 			initialSegmentsExperiences: segmentsExperiences,
 			initialSegmentsExperiment: {

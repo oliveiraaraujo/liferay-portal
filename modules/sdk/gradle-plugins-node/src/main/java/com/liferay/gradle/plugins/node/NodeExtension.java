@@ -158,27 +158,15 @@ public class NodeExtension {
 					return null;
 				}
 
-				if (!FileUtil.exists(project, "package-lock.json")) {
-					File dir = project.getProjectDir();
+				if (isUseNpm()) {
+					File npmDir = NodePluginUtil.getNpmDir(nodeDir);
 
-					while (true) {
-						File[] files = FileUtil.getFiles(dir, "yarn-", ".js");
-
-						if ((files != null) && (files.length > 0)) {
-							return files[0];
-						}
-
-						dir = dir.getParentFile();
-
-						if (dir == null) {
-							break;
-						}
-					}
+					return new File(npmDir, "bin/npm-cli.js");
 				}
 
-				File npmDir = NodePluginUtil.getNpmDir(nodeDir);
+				File projectDir = project.getProjectDir();
 
-				return new File(npmDir, "bin/npm-cli.js");
+				return NodePluginUtil.getYarnScriptFile(projectDir);
 			}
 
 		};
@@ -191,15 +179,11 @@ public class NodeExtension {
 					return true;
 				}
 
-				File scriptFile = getScriptFile();
+				File projectDir = project.getProjectDir();
 
-				if (scriptFile == null) {
-					return true;
-				}
+				File file = NodePluginUtil.getYarnScriptFile(projectDir);
 
-				String scriptFileName = scriptFile.getName();
-
-				if (scriptFileName.startsWith("npm-")) {
+				if (file == null) {
 					return true;
 				}
 

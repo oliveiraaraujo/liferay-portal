@@ -125,6 +125,21 @@ public class LayoutPageTemplateEntryServiceImpl
 	}
 
 	@Override
+	public LayoutPageTemplateEntry copyLayoutPageTemplateEntry(
+			long groupId, long layoutPageTemplateCollectionId,
+			long layoutPageTemplateEntryId, ServiceContext serviceContext)
+		throws PortalException {
+
+		_portletResourcePermission.check(
+			getPermissionChecker(), groupId,
+			LayoutPageTemplateActionKeys.ADD_LAYOUT_PAGE_TEMPLATE_ENTRY);
+
+		return layoutPageTemplateEntryLocalService.copyLayoutPageTemplateEntry(
+			getUserId(), groupId, layoutPageTemplateCollectionId,
+			layoutPageTemplateEntryId, serviceContext);
+	}
+
+	@Override
 	public void deleteLayoutPageTemplateEntries(
 			long[] layoutPageTemplateEntryIds)
 		throws PortalException {
@@ -178,6 +193,10 @@ public class LayoutPageTemplateEntryServiceImpl
 		return layoutPageTemplateEntry;
 	}
 
+	/**
+	 * @deprecated As of Mueller (7.2.x), with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public LayoutPageTemplateEntry fetchLayoutPageTemplateEntry(
 			long groupId, String name)

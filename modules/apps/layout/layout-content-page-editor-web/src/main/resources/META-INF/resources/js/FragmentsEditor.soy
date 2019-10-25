@@ -4,17 +4,11 @@
  * FragmentsEditor
  */
 {template .render}
-	{@param defaultEditorConfigurations: ?}
-	{@param defaultLanguageId: string}
 	{@param fragmentEntryLinks: ?}
-	{@param imageSelectorURL: string}
-	{@param languageId: string}
 	{@param layoutData: ?}
-	{@param portletNamespace: string}
-	{@param? defaultSegmentsExperienceId: string}
+	{@param masterPageLayoutData: ?}
 	{@param? hasUpdatePermissions: bool}
 	{@param? id: string}
-	{@param? mappingFieldsURL: string}
 	{@param? store: ?}
 
 	{let $fragmentsEditorClasses kind="text"}
@@ -31,19 +25,19 @@
 			{param store: $store /}
 		{/call}
 
-		{call com.liferay.layout.content.page.editor.web.FragmentEntryLinkList.render}
-			{param defaultEditorConfigurations: $defaultEditorConfigurations /}
-			{param defaultLanguageId: $defaultLanguageId /}
-			{param defaultSegmentsExperienceId: $defaultSegmentsExperienceId /}
-			{param fragmentEntryLinks: $fragmentEntryLinks /}
-			{param imageSelectorURL: $imageSelectorURL /}
-			{param languageId: $languageId /}
-			{param layoutData: $layoutData /}
-			{param mappingFieldsURL: $mappingFieldsURL /}
-			{param portletNamespace: $portletNamespace /}
-			{param ref: 'fragmentsEditorRender' /}
-			{param store: $store /}
-			{param translating: $languageId != $defaultLanguageId /}
-		{/call}
+		{if $masterPageLayoutData and $masterPageLayoutData.structure and (length($masterPageLayoutData.structure) > 0)}
+			{call com.liferay.layout.content.page.editor.web.MasterFragmentEntryLinkList.render}
+				{param fragmentEntryLinks: $fragmentEntryLinks /}
+				{param layoutData: $layoutData /}
+				{param masterPageLayoutData: $masterPageLayoutData /}
+				{param store: $store /}
+			{/call}
+		{else}
+			{call com.liferay.layout.content.page.editor.web.FragmentEntryLinkList.render}
+				{param fragmentEntryLinks: $fragmentEntryLinks /}
+				{param layoutData: $layoutData /}
+				{param store: $store /}
+			{/call}
+		{/if}
 	</div>
 {/template}

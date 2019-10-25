@@ -116,6 +116,7 @@ import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -1766,7 +1767,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		Company company = companyPersistence.findByPrimaryKey(
 			user.getCompanyId());
 
-		if (company.isStrangersVerify()) {
+		if (company.isStrangersVerify() && (user.getLdapServerId() < 0)) {
 			sendEmailAddressVerification(
 				user, user.getEmailAddress(), serviceContext);
 		}
@@ -2306,18 +2307,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	@Override
 	public List<User> getNoAnnouncementsDeliveries(String type) {
 		return userFinder.findByNoAnnouncementsDeliveries(type);
-	}
-
-	/**
-	 * Returns all the users who do not have any contacts.
-	 *
-	 * @return     the users who do not have any contacts
-	 * @deprecated As of Judson (7.1.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public List<User> getNoContacts() {
-		return userFinder.findByNoContacts();
 	}
 
 	/**
@@ -2960,52 +2949,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			long elapsedTime = currentTime - passwordModifiedTime;
 
 			if (elapsedTime > (passwordPolicy.getMaxAge() * 1000)) {
-				return true;
-			}
-
-			return false;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Returns <code>true</code> if the password policy is configured to warn
-	 * the user that his password is expiring and the remaining time until
-	 * expiration is equal or less than the configured warning time.
-	 *
-	 * @param      user the user
-	 * @return     <code>true</code> if the user's password is expiring soon;
-	 *             <code>false</code> otherwise
-	 * @deprecated As of Judson (7.1.x)
-	 */
-	@Deprecated
-	@Override
-	public boolean isPasswordExpiringSoon(User user) throws PortalException {
-		PasswordPolicy passwordPolicy = user.getPasswordPolicy();
-
-		if ((passwordPolicy != null) && passwordPolicy.isExpireable() &&
-			(passwordPolicy.getWarningTime() > 0)) {
-
-			Date now = new Date();
-
-			if (user.getPasswordModifiedDate() == null) {
-				user.setPasswordModifiedDate(now);
-
-				userLocalService.updateUser(user);
-			}
-
-			Date passwordModifiedDate = user.getPasswordModifiedDate();
-
-			long timeModified = passwordModifiedDate.getTime();
-
-			long passwordExpiresOn =
-				(passwordPolicy.getMaxAge() * 1000) + timeModified;
-
-			long timeStartWarning =
-				passwordExpiresOn - (passwordPolicy.getWarningTime() * 1000);
-
-			if (now.getTime() > timeStartWarning) {
 				return true;
 			}
 
@@ -5742,21 +5685,34 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		searchContext.setAndSearch(andSearch);
 
-		Map<String, Serializable> attributes = new HashMap<>();
-
-		attributes.put("city", city);
-		attributes.put("country", country);
-		attributes.put("emailAddress", emailAddress);
-		attributes.put("firstName", firstName);
-		attributes.put("fullName", fullName);
-		attributes.put("lastName", lastName);
-		attributes.put("middleName", middleName);
-		attributes.put("params", params);
-		attributes.put("region", region);
-		attributes.put("screenName", screenName);
-		attributes.put("status", status);
-		attributes.put("street", street);
-		attributes.put("zip", zip);
+		Map<String, Serializable> attributes =
+			HashMapBuilder.<String, Serializable>put(
+				"city", city
+			).put(
+				"country", country
+			).put(
+				"emailAddress", emailAddress
+			).put(
+				"firstName", firstName
+			).put(
+				"fullName", fullName
+			).put(
+				"lastName", lastName
+			).put(
+				"middleName", middleName
+			).put(
+				"params", params
+			).put(
+				"region", region
+			).put(
+				"screenName", screenName
+			).put(
+				"status", status
+			).put(
+				"street", street
+			).put(
+				"zip", zip
+			).build();
 
 		searchContext.setAttributes(attributes);
 
@@ -6473,7 +6429,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			return;
 		}
 
-		List<Long> oldGroupIds = ListUtil.toList(getGroupPrimaryKeys(userId));
+		List<Long> oldGroupIds = ListUtil.fromArray(
+			getGroupPrimaryKeys(userId));
 
 		for (long newGroupId : newGroupIds) {
 			oldGroupIds.remove(newGroupId);
@@ -6502,7 +6459,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			return;
 		}
 
-		List<Long> oldOrganizationIds = ListUtil.toList(
+		List<Long> oldOrganizationIds = ListUtil.fromArray(
 			getOrganizationPrimaryKeys(userId));
 
 		for (long newOrganizationId : newOrganizationIds) {

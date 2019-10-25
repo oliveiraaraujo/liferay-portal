@@ -72,20 +72,14 @@ public class DLExportImportPortletPreferencesProcessor
 
 	@Override
 	public List<Capability> getExportCapabilities() {
-		return ListUtil.toList(
-			new Capability[] {
-				_dlCommentsAndRatingsExporterImporterCapability,
-				_exportCapability
-			});
+		return ListUtil.fromArray(
+			_dlCommentsAndRatingsExporterImporterCapability, _exportCapability);
 	}
 
 	@Override
 	public List<Capability> getImportCapabilities() {
-		return ListUtil.toList(
-			new Capability[] {
-				_dlCommentsAndRatingsExporterImporterCapability,
-				_importCapability
-			});
+		return ListUtil.fromArray(
+			_dlCommentsAndRatingsExporterImporterCapability, _importCapability);
 	}
 
 	@Override

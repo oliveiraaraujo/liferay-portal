@@ -1,26 +1,24 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  */
 
-import React, {useState} from 'react';
-import PropTypes from 'prop-types';
-import ClayModal from '@clayui/modal';
-import ClayButton from '@clayui/button';
 import ClayAlert from '@clayui/alert';
-import ValidatedInput from './ValidatedInput/ValidatedInput.es';
-import ClayIcon from '@clayui/icon';
+import ClayButton from '@clayui/button';
 import {ClaySelect} from '@clayui/form';
+import ClayIcon from '@clayui/icon';
+import ClayModal from '@clayui/modal';
+import PropTypes from 'prop-types';
+import React, {useState} from 'react';
+
 import {SegmentsExperimentGoal} from '../types.es';
+import ValidatedInput from './ValidatedInput/ValidatedInput.es';
 
 function SegmentsExperimentsModal({
 	description = '',
@@ -83,7 +81,7 @@ function SegmentsExperimentsModal({
 							<label className="w100">
 								{Liferay.Language.get('select-goal')}
 								<ClayIcon
-									className="reference-mark text-warning ml-1"
+									className="ml-1 reference-mark text-warning"
 									symbol="asterisk"
 								/>
 								<ClaySelect

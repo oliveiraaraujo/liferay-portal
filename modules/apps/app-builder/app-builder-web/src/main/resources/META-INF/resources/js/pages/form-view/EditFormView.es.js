@@ -12,9 +12,11 @@
  * details.
  */
 
+import React, {useState, useContext} from 'react';
 import {createPortal} from 'react-dom';
-import React, {useState} from 'react';
 
+import {AppContext} from '../../AppContext.es';
+import {ControlMenuBase} from '../../components/control-menu/ControlMenu.es';
 import CustomObjectSidebar from './CustomObjectSidebar.es';
 import DataLayoutBuilderDragAndDrop from './DataLayoutBuilderDragAndDrop.es';
 import DataLayoutBuilderSidebar from './DataLayoutBuilderSidebar.es';
@@ -27,6 +29,18 @@ const parseProps = ({dataDefinitionId, dataLayoutId, ...props}) => ({
 	dataLayoutId: Number(dataLayoutId)
 });
 
+const FormViewControlMenu = ({backURL, dataLayoutId}) => {
+	let title = Liferay.Language.get('new-form-view');
+
+	if (dataLayoutId > 0) {
+		title = Liferay.Language.get('edit-form-view');
+	}
+
+	return (
+		<ControlMenuBase backURL={backURL} title={title} url={location.href} />
+	);
+};
+
 const EditFormView = props => {
 	const {
 		customObjectSidebarElementId,
@@ -36,6 +50,13 @@ const EditFormView = props => {
 		dataLayoutId,
 		newCustomObject
 	} = parseProps(props);
+	const {basePortletURL} = useContext(AppContext);
+
+	let backURL = `${basePortletURL}/#/custom-object/${dataDefinitionId}/form-views`;
+
+	if (newCustomObject) {
+		backURL = basePortletURL;
+	}
 
 	return (
 		<FormViewContextProvider
@@ -43,6 +64,11 @@ const EditFormView = props => {
 			dataLayoutBuilder={dataLayoutBuilder}
 			dataLayoutId={dataLayoutId}
 		>
+			<FormViewControlMenu
+				backURL={backURL}
+				dataLayoutId={dataLayoutId}
+			/>
+
 			<FormViewUpperToolbar newCustomObject={newCustomObject} />
 
 			{createPortal(

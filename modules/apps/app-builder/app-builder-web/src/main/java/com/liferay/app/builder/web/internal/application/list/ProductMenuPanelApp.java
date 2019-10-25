@@ -41,6 +41,11 @@ public class ProductMenuPanelApp extends BasePanelApp {
 	}
 
 	@Override
+	public String getKey() {
+		return _portletId;
+	}
+
+	@Override
 	public String getPortletId() {
 		return _portletId;
 	}

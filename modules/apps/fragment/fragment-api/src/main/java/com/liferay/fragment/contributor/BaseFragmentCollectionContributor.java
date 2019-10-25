@@ -69,6 +69,21 @@ public abstract class BaseFragmentCollectionContributor
 	implements FragmentCollectionContributor {
 
 	@Override
+	public List<FragmentEntry> getFragmentEntries() {
+		_initialize();
+
+		List<FragmentEntry> fragmentEntries = new ArrayList<>();
+
+		for (Map.Entry<Integer, List<FragmentEntry>> entry :
+				_fragmentEntries.entrySet()) {
+
+			fragmentEntries.addAll(entry.getValue());
+		}
+
+		return fragmentEntries;
+	}
+
+	@Override
 	public List<FragmentEntry> getFragmentEntries(int type) {
 		_initialize();
 
@@ -77,31 +92,14 @@ public abstract class BaseFragmentCollectionContributor
 
 	@Override
 	public List<FragmentEntry> getFragmentEntries(int type, Locale locale) {
+		return _getFragmentEntries(getFragmentEntries(type), locale);
+	}
+
+	@Override
+	public List<FragmentEntry> getFragmentEntries(Locale locale) {
 		_initialize();
 
-		List<FragmentEntry> fragmentEntries = _fragmentEntries.getOrDefault(
-			type, Collections.emptyList());
-
-		Stream<FragmentEntry> stream = fragmentEntries.stream();
-
-		return stream.map(
-			fragmentEntry -> {
-				Map<Locale, String> names = _fragmentEntryNames.getOrDefault(
-					fragmentEntry.getFragmentEntryKey(),
-					Collections.emptyMap());
-
-				fragmentEntry.setName(
-					names.getOrDefault(
-						locale,
-						names.getOrDefault(
-							LocaleUtil.toLanguageId(LocaleUtil.getDefault()),
-							fragmentEntry.getName())));
-
-				return fragmentEntry;
-			}
-		).collect(
-			Collectors.toList()
-		);
+		return _getFragmentEntries(getFragmentEntries(), locale);
 	}
 
 	@Override
@@ -219,6 +217,31 @@ public abstract class BaseFragmentCollectionContributor
 		_setLocalizedNames(name, names, getResourceBundleLoader());
 
 		return names;
+	}
+
+	private List<FragmentEntry> _getFragmentEntries(
+		List<FragmentEntry> fragmentEntries, Locale locale) {
+
+		Stream<FragmentEntry> stream = fragmentEntries.stream();
+
+		return stream.map(
+			fragmentEntry -> {
+				Map<Locale, String> names = _fragmentEntryNames.getOrDefault(
+					fragmentEntry.getFragmentEntryKey(),
+					Collections.emptyMap());
+
+				fragmentEntry.setName(
+					names.getOrDefault(
+						locale,
+						names.getOrDefault(
+							LocaleUtil.toLanguageId(LocaleUtil.getDefault()),
+							fragmentEntry.getName())));
+
+				return fragmentEntry;
+			}
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	private FragmentEntry _getFragmentEntry(URL url) throws Exception {

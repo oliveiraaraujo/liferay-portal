@@ -50,6 +50,7 @@ import {
 	CREATE_PROCESSOR_EVENT_TYPES
 } from '../../utils/constants';
 import debouncedAlert from '../../utils/debouncedAlert.es';
+import {isNullOrUndefined} from '../../utils/isNullOrUndefined.es';
 import {prefixSegmentsExperienceId} from '../../utils/prefixSegmentsExperienceId.es';
 import FloatingToolbar from '../floating_toolbar/FloatingToolbar.es';
 import FragmentProcessors from '../fragment_processors/FragmentProcessors.es';
@@ -125,8 +126,12 @@ class FragmentEditableField extends PortletBase {
 		const mapped = editableIsMapped(this.editableValues);
 
 		const value = mapped
-			? this._mappedFieldValue || this.editableValues.defaultValue
-			: translatedValue || this.editableValues.defaultValue;
+			? isNullOrUndefined(this._mappedFieldValue)
+				? this.editableValues.defaultValue
+				: this._mappedFieldValue
+			: isNullOrUndefined(translatedValue)
+			? this.editableValues.defaultValue
+			: translatedValue;
 
 		const processor =
 			FragmentProcessors[this.type] || FragmentProcessors.fallback;
@@ -535,7 +540,7 @@ class FragmentEditableField extends PortletBase {
 				.then(response => {
 					const {fieldValue} = response;
 
-					if (fieldValue) {
+					if (!isNullOrUndefined(fieldValue)) {
 						if (
 							this.type === 'image' &&
 							typeof fieldValue.url === 'string'

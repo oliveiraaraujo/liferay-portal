@@ -208,6 +208,18 @@ public class LayoutPageTemplateEntryLocalServiceUtil {
 			serviceContext);
 	}
 
+	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntry
+			copyLayoutPageTemplateEntry(
+				long userId, long groupId, long layoutPageTemplateCollectionId,
+				long layoutPageTemplateEntryId,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().copyLayoutPageTemplateEntry(
+			userId, groupId, layoutPageTemplateCollectionId,
+			layoutPageTemplateEntryId, serviceContext);
+	}
+
 	/**
 	 * Creates a new layout page template entry with the primary key. Does not add the layout page template entry to the database.
 	 *
@@ -371,10 +383,21 @@ public class LayoutPageTemplateEntryLocalServiceUtil {
 			layoutPageTemplateEntryId);
 	}
 
+	/**
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link
+	 #fetchLayoutPageTemplateEntry(long, String, int)}
+	 */
+	@Deprecated
 	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntry
 		fetchLayoutPageTemplateEntry(long groupId, String name) {
 
 		return getService().fetchLayoutPageTemplateEntry(groupId, name);
+	}
+
+	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntry
+		fetchLayoutPageTemplateEntry(long groupId, String name, int type) {
+
+		return getService().fetchLayoutPageTemplateEntry(groupId, name, type);
 	}
 
 	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntry

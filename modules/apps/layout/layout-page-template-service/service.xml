@@ -108,7 +108,7 @@
 			<finder-column name="groupId" />
 			<finder-column name="layoutPageTemplateCollectionId" />
 		</finder>
-		<finder name="G_N" return-type="LayoutPageTemplateEntry" unique="true">
+		<finder name="G_N" return-type="Collection">
 			<finder-column name="groupId" />
 			<finder-column name="name" />
 		</finder>
@@ -130,6 +130,11 @@
 			<finder-column name="groupId" />
 			<finder-column name="layoutPageTemplateCollectionId" />
 			<finder-column name="status" />
+		</finder>
+		<finder name="G_N_T" return-type="LayoutPageTemplateEntry" unique="true">
+			<finder-column name="groupId" />
+			<finder-column name="name" />
+			<finder-column name="type" />
 		</finder>
 		<finder name="G_T_LikeN" return-type="Collection">
 			<finder-column name="groupId" />

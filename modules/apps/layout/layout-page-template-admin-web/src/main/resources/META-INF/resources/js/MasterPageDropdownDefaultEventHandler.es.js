@@ -16,6 +16,10 @@ import {DefaultEventHandler, openSimpleInputModal} from 'frontend-js-web';
 import {Config} from 'metal-state';
 
 class MasterPageDropdownDefaultEventHandler extends DefaultEventHandler {
+	copyMasterPage(itemData) {
+		this._send(itemData.copyMasterPageURL);
+	}
+
 	deleteMasterPage(itemData) {
 		if (
 			confirm(

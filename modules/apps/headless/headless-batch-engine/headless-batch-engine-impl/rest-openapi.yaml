@@ -1,49 +1,112 @@
 components:
     schemas:
-        ImportTask:
+        ExportTask:
             #@review
             properties:
                 className:
-                    description: The item class name for which data will be processed in batch.
+                    description:
+                        The item class name for which data will be exported in batch.
                     example: com.liferay.headless.delivery.dto.v1_0.BlogPosting
                     type: string
+                contentType:
+                    description:
+                        The file content type.
+                    example: JSON
+                    type: string
                 endTime:
-                    description: The end time of import task operation.
+                    description:
+                        The end time of import task operation.
                     example: 2019-27-09'T'08:33:33'Z'
                     format: date-time
                     type: string
                 errorMessage:
-                    description: The error message in case of import task's failed execution.
+                    description:
+                        The error message in case of import task's failed execution.
                     example: File import failed
                     type: string
                 executeStatus:
-                    description: The status of import task's execution.
+                    description:
+                        The status of import task's execution.
                     enum: [COMPLETED, FAILED, INITIAL, STARTED]
                     example: INITIALIZED
                     type: string
                 id:
-                    description: The task's ID.
+                    description:
+                        The task's ID.
+                    example: 30130
+                    format: int64
+                    minimum: 0
+                    type: integer
+                startTime:
+                    description:
+                        The start time of import task operation.
+                    example: 2019-27-09'T'08:23:33'Z'
+                    format: date-time
+                    type: string
+                version:
+                    description:
+                        The version of item class.
+                    example: v1.0
+                    type: string
+            type: object
+        ImportTask:
+            #@review
+            properties:
+                className:
+                    description:
+                        The item class name for which data will be processed in batch.
+                    example: com.liferay.headless.delivery.dto.v1_0.BlogPosting
+                    type: string
+                contentType:
+                    description:
+                        The file content type.
+                    example: JSON
+                    type: string
+                endTime:
+                    description:
+                        The end time of import task operation.
+                    example: 2019-27-09'T'08:33:33'Z'
+                    format: date-time
+                    type: string
+                errorMessage:
+                    description:
+                        The error message in case of import task's failed execution.
+                    example: File import failed
+                    type: string
+                executeStatus:
+                    description:
+                        The status of import task's execution.
+                    enum: [COMPLETED, FAILED, INITIAL, STARTED]
+                    example: INITIALIZED
+                    type: string
+                id:
+                    description:
+                        The task's ID.
                     example: 30130
                     format: int64
                     minimum: 0
                     type: integer
                 operation:
-                    description: The operation of import task.
+                    description:
+                        The operation of import task.
                     enum: [CREATE, DELETE, UPDATE]
                     example: CREATE
                     type: string
                 startTime:
-                    description: The start time of import task operation.
+                    description:
+                        The start time of import task operation.
                     example: 2019-27-09'T'08:23:33'Z'
                     format: date-time
                     type: string
                 version:
-                    description: The version of item class.
+                    description:
+                        The version of item class.
                     example: v1.0
                     type: string
             type: object
 info:
-    description: ""
+    description:
+        ""
     license:
         name: "Apache 2.0"
         url: "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -51,10 +114,74 @@ info:
     version: v1.0
 openapi: 3.0.1
 paths:
+    /export-task/{className}/{version}:
+        #@review
+        post:
+            description:
+                Submits a request for exporting items to a file.
+            operationId: postExportTask
+            parameters:
+                - in: path
+                  name: className
+                  required: true
+                  schema:
+                      type: string
+                - in: path
+                  name: contentType
+                  required: true
+                  schema:
+                      type: string
+                - in: path
+                  name: version
+                  required: true
+                  schema:
+                      type: string
+                - in: query
+                  name: callbackURL
+                  schema:
+                      type: string
+            responses:
+                202:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ExportTask"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/ExportTask"
+                    description:
+                        Async
+            tags: ["ExportTask"]
+    /export-task/{exportTaskId}/:
+        #@review
+        get:
+            description:
+                Retrieves the export task.
+            operationId: getExportTask
+            parameters:
+                - in: path
+                  name: exportTaskId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+            responses:
+                202:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ExportTask"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/ExportTask"
+                    description:
+                        ""
+            tags: ["ExportTask"]
     /import-task/{className}/{version}:
         #@review
         delete:
-            description: Uploads a new file for deleting items in batch.
+            description:
+                Uploads a new file for deleting items in batch.
             operationId: deleteImportTask
             parameters:
                 - in: path
@@ -84,10 +211,12 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/ImportTask"
-                    description: Async
+                    description:
+                        Async
             tags: ["ImportTask"]
         post:
-            description: Uploads a new file for creating new items in batch.
+            description:
+                Uploads a new file for creating new items in batch.
             operationId: postImportTask
             parameters:
                 - in: path
@@ -102,6 +231,10 @@ paths:
                       type: string
                 - in: query
                   name: callbackURL
+                  schema:
+                      type: string
+                - in: query
+                  name: fieldNameMapping
                   schema:
                       type: string
             requestBody:
@@ -122,10 +255,12 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/ImportTask"
-                    description: Async
+                    description:
+                        Async
             tags: ["ImportTask"]
         put:
-            description: Uploads a new file for updating items in batch.
+            description:
+                Uploads a new file for updating items in batch.
             operationId: putImportTask
             parameters:
                 - in: path
@@ -160,11 +295,14 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/ImportTask"
-                    description: Async
+                    description:
+                        Async
             tags: ["ImportTask"]
     /import-task/{importTaskId}/:
         #@review
         get:
+            description:
+                Retrieves the import task.
             operationId: getImportTask
             parameters:
                 - in: path
@@ -174,7 +312,7 @@ paths:
                       format: int64
                       type: integer
             responses:
-                202:
+                200:
                     content:
                         application/json:
                             schema:
@@ -182,5 +320,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/ImportTask"
-                    description: Async
+                    description:
+                        ""
             tags: ["ImportTask"]

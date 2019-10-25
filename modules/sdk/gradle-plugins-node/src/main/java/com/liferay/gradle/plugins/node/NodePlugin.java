@@ -657,7 +657,9 @@ public class NodePlugin implements Plugin<Project> {
 
 		File yarnWorkingDir = packageRunBuildTask.getYarnWorkingDir();
 
-		if (_hasLiferayNpmScripts10Dependency(project, yarnWorkingDir)) {
+		if ((yarnWorkingDir != null) &&
+			_hasLiferayNpmScripts12Dependency(project, yarnWorkingDir)) {
+
 			final File destinationDir = new File(
 				project.getBuildDir(), "node/packageRunBuild/resources");
 
@@ -961,26 +963,6 @@ public class NodePlugin implements Plugin<Project> {
 		}
 	}
 
-	private boolean _hasLiferayNpmScripts10Dependency(
-		Project project, File yarnWorkingDir) {
-
-		File packageJSONFile = project.file("package.json");
-
-		if (_hasLiferayNpmScripts12Dependency(packageJSONFile)) {
-			return true;
-		}
-
-		if (yarnWorkingDir != null) {
-			packageJSONFile = new File(yarnWorkingDir, "package.json");
-
-			if (_hasLiferayNpmScripts12Dependency(packageJSONFile)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	@SuppressWarnings("unchecked")
 	private boolean _hasLiferayNpmScripts12Dependency(File packageJSONFile) {
 		if ((packageJSONFile == null) || !packageJSONFile.exists()) {
@@ -1011,6 +993,24 @@ public class NodePlugin implements Plugin<Project> {
 		}
 
 		return true;
+	}
+
+	private boolean _hasLiferayNpmScripts12Dependency(
+		Project project, File yarnWorkingDir) {
+
+		File packageJSONFile = project.file("package.json");
+
+		if (_hasLiferayNpmScripts12Dependency(packageJSONFile)) {
+			return true;
+		}
+
+		packageJSONFile = new File(yarnWorkingDir, "package.json");
+
+		if (_hasLiferayNpmScripts12Dependency(packageJSONFile)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	@SuppressWarnings("unchecked")

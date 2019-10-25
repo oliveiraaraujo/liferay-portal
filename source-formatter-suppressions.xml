@@ -23,7 +23,6 @@
 		<suppress checks="JavadocCheck" files="portal-kernel/src/com/liferay/portal/kernel/cal/Recurrence\.java" />
 		<suppress checks="JSONNamingCheck" files="portal-impl/src/com/liferay/portal/action/JSONServiceAction\.java" />
 		<suppress checks="JSONNamingCheck" files="portal-kernel/src/com/liferay/portal/kernel/backgroundtask/display/BaseBackgroundTaskDisplay\.java" />
-		<suppress checks="JSONNamingCheck" files="util-java/src/com/liferay/util/Autocomplete\.java" />
 		<suppress checks="JSONUtilCheck" files="portal-impl/test/unit/com/liferay/portal/json/JSONUtilTest\.java" />
 		<suppress checks="MemberNameCheck" files="portal-impl/src/com/liferay/portlet/trash/util/TrashImpl\.java" />
 		<suppress checks="MemberNameCheck" files="portal-impl/test/unit/com/liferay/portal/bean/ConstantsBeanFactoryImplTest\.java" />
@@ -77,7 +76,6 @@
 		<suppress checks="JavaDiamondOperatorCheck" files="portal-kernel/src/com/liferay/portal/kernel/util/ListUtil\.java" />
 		<suppress checks="JavaFinderImplCustomSQLCheck" files="portal-impl/src/com/liferay/portlet/asset/service/persistence/impl/AssetCategoryPropertyFinderImpl\.java" />
 		<suppress checks="JavaIllegalImportsCheck" files="util-slf4j/src/com/liferay/util/sl4fj/LiferayLoggerFactory\.java" />
-		<suppress checks="JavaReleaseInfoCheck" files="portal-kernel/src/com/liferay/portal/kernel/util/ReleaseInfo\.java" />
 		<suppress checks="JavaStringBundlerConcatCheck" files="portal-kernel/test/unit/com/liferay/portal/kernel/util/StringBundlerTest\.java" />
 		<suppress checks="JavaStringBundlerInitialCapacityCheck" files="portal-kernel/test/unit/com/liferay/portal/kernel/util/StringBundlerTest\.java" />
 		<suppress checks="JavaTaglibMethodCheck" files="util-taglib/src/com/liferay/taglib/ui/SearchFormTag\.java" />
@@ -96,7 +94,6 @@
 		<suppress checks="JavaXMLSecurityCheck" files="portal-impl/src/com/liferay/portal/util/MimeTypesImpl\.java" />
 		<suppress checks="JavaXMLSecurityCheck" files="portal-impl/src/com/liferay/portal/xml/SAXReaderFactory\.java" />
 		<suppress checks="JavaXMLSecurityCheck" files="util-java/src/com/liferay/util/ant/Java2WsddTask\.java" />
-		<suppress checks="JavaXMLSecurityCheck" files="util-java/src/com/liferay/util/xml/Dom4jUtil\.java" />
 		<suppress checks="JavaXMLSecurityCheck" files="util-java/src/com/liferay/util/xml/XMLMergerRunner\.java" />
 		<suppress checks="JSPLineBreakCheck" files="portal-web/docroot/html/portal/progress_poller\.jsp" />
 		<suppress checks="JSPStylingCheck" files="portal-web/docroot/html/portal/api/jsonws/action\.jsp" />
@@ -170,12 +167,5 @@
 		<!-- Temporary suppressions for frontend React setup (LPS-99901, wincent) -->
 
 		<suppress checks="JSONPackageJSONCheck" files="modules/apps/frontend-js/frontend-js-react-web/package\.json" />
-
-		<!-- Temporary suppressions for YMLLongLinesCheck (Alan Huang) -->
-
-		<suppress checks="YMLLongLinesCheck" files="modules/apps/headless/headless-admin-taxonomy/headless-admin-taxonomy-impl/rest-openapi\.yaml" />
-		<suppress checks="YMLLongLinesCheck" files="modules/apps/headless/headless-admin-user/headless-admin-user-impl/rest-openapi\.yaml" />
-		<suppress checks="YMLLongLinesCheck" files="modules/apps/headless/headless-admin-workflow/headless-admin-workflow-impl/rest-openapi\.yaml" />
-		<suppress checks="YMLLongLinesCheck" files="modules/apps/headless/headless-delivery/headless-delivery-impl/rest-openapi\.yaml" />
 	</source-check>
 </suppressions>

@@ -101,6 +101,11 @@ public class DEDataListViewLocalServiceWrapper
 			deDataListViewId);
 	}
 
+	@Override
+	public void deleteDEDataListViews(long ddmStructureId) {
+		_deDataListViewLocalService.deleteDEDataListViews(ddmStructureId);
+	}
+
 	/**
 	 * @throws PortalException
 	 */

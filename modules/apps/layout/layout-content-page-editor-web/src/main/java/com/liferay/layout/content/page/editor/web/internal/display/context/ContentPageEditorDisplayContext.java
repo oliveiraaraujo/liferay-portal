@@ -16,7 +16,6 @@ package com.liferay.layout.content.page.editor.web.internal.display.context;
 
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.fragment.constants.FragmentActionKeys;
-import com.liferay.fragment.constants.FragmentConstants;
 import com.liferay.fragment.constants.FragmentEntryLinkConstants;
 import com.liferay.fragment.contributor.FragmentCollectionContributor;
 import com.liferay.fragment.contributor.FragmentCollectionContributorTracker;
@@ -51,7 +50,9 @@ import com.liferay.layout.content.page.editor.web.internal.configuration.Content
 import com.liferay.layout.content.page.editor.web.internal.configuration.util.ContentCreationContentPageEditorConfigurationUtil;
 import com.liferay.layout.content.page.editor.web.internal.configuration.util.ContentPageEditorConfigurationUtil;
 import com.liferay.layout.content.page.editor.web.internal.util.ContentUtil;
+import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
+import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalServiceUtil;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalServiceUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
@@ -171,7 +172,8 @@ public class ContentPageEditorDisplayContext {
 	}
 
 	public String getDiscardDraftURL() {
-		return getFragmentEntryActionURL("/content_layout/publish_layout");
+		return getFragmentEntryActionURL(
+			"/content_layout/discard_draft_layout");
 	}
 
 	public Map<String, Object> getEditorReactContext() throws Exception {
@@ -240,8 +242,7 @@ public class ContentPageEditorDisplayContext {
 			getFragmentEntryActionURL(
 				"/content_layout/edit_fragment_entry_link")
 		).put(
-			"elements",
-			_getFragmentCollectionsSoyContexts(FragmentConstants.TYPE_COMPONENT)
+			"elements", _getFragmentCollectionsSoyContexts()
 		).put(
 			"fragmentEntryLinks", _getFragmentEntryLinksSoyContext()
 		).put(
@@ -281,6 +282,9 @@ public class ContentPageEditorDisplayContext {
 		).put(
 			"mappedAssetEntries", _getMappedAssetEntriesSoyContexts()
 		).put(
+			"masterPageLayoutData",
+			JSONFactoryUtil.createJSONObject(_getMasterPageLayoutData())
+		).put(
 			"pageContents",
 			ContentUtil.getPageContentsJSONArray(
 				themeDisplay.getPlid(), themeDisplay.getURLCurrent(), request)
@@ -293,9 +297,6 @@ public class ContentPageEditorDisplayContext {
 		).put(
 			"renderFragmentEntryURL",
 			getFragmentEntryActionURL("/content_layout/render_fragment_entry")
-		).put(
-			"sections",
-			_getFragmentCollectionsSoyContexts(FragmentConstants.TYPE_SECTION)
 		).put(
 			"spritemap",
 			themeDisplay.getPathThemeImages() + "/lexicon/icons.svg"
@@ -361,8 +362,7 @@ public class ContentPageEditorDisplayContext {
 	}
 
 	public String getPublishURL() {
-		return getFragmentEntryActionURL(
-			"/content_layout/discard_draft_layout");
+		return getFragmentEntryActionURL("/content_layout/publish_layout");
 	}
 
 	public boolean isSingleSegmentsExperienceMode() {
@@ -543,7 +543,7 @@ public class ContentPageEditorDisplayContext {
 		return _defaultConfigurations;
 	}
 
-	private List<SoyContext> _getDynamicFragmentsSoyContexts(int type) {
+	private List<SoyContext> _getDynamicFragmentsSoyContexts() {
 		List<SoyContext> soyContexts = new ArrayList<>();
 
 		Map<String, List<SoyContext>> fragmentCollectionSoyContextsMap =
@@ -552,7 +552,7 @@ public class ContentPageEditorDisplayContext {
 			new HashMap<>();
 
 		List<FragmentRenderer> fragmentRenderers =
-			_fragmentRendererTracker.getFragmentRenderers(type);
+			_fragmentRendererTracker.getFragmentRenderers();
 
 		for (FragmentRenderer fragmentRenderer : fragmentRenderers) {
 			if (!fragmentRenderer.isSelectable(request)) {
@@ -620,9 +620,7 @@ public class ContentPageEditorDisplayContext {
 		return soyContexts;
 	}
 
-	private List<SoyContext> _getFragmentCollectionContributorSoyContexts(
-		int type) {
-
+	private List<SoyContext> _getFragmentCollectionContributorSoyContexts() {
 		List<SoyContext> soyContexts = new ArrayList<>();
 
 		List<FragmentCollectionContributor> fragmentCollectionContributors =
@@ -639,7 +637,7 @@ public class ContentPageEditorDisplayContext {
 
 			List<FragmentEntry> fragmentEntries =
 				fragmentCollectionContributor.getFragmentEntries(
-					type, themeDisplay.getLocale());
+					themeDisplay.getLocale());
 
 			if (ListUtil.isEmpty(fragmentEntries)) {
 				continue;
@@ -664,11 +662,11 @@ public class ContentPageEditorDisplayContext {
 		return soyContexts;
 	}
 
-	private List<SoyContext> _getFragmentCollectionsSoyContexts(int type) {
+	private List<SoyContext> _getFragmentCollectionsSoyContexts() {
 		List<SoyContext> soyContexts =
-			_getFragmentCollectionContributorSoyContexts(type);
+			_getFragmentCollectionContributorSoyContexts();
 
-		soyContexts.addAll(_getDynamicFragmentsSoyContexts(type));
+		soyContexts.addAll(_getDynamicFragmentsSoyContexts());
 
 		long[] groupIds = {themeDisplay.getCompanyGroupId(), getGroupId()};
 
@@ -677,9 +675,9 @@ public class ContentPageEditorDisplayContext {
 
 		for (FragmentCollection fragmentCollection : fragmentCollections) {
 			List<FragmentEntry> fragmentEntries =
-				FragmentEntryServiceUtil.getFragmentEntriesByTypeAndStatus(
+				FragmentEntryServiceUtil.getFragmentEntriesByStatus(
 					fragmentCollection.getGroupId(),
-					fragmentCollection.getFragmentCollectionId(), type,
+					fragmentCollection.getFragmentCollectionId(),
 					WorkflowConstants.STATUS_APPROVED);
 
 			if (ListUtil.isEmpty(fragmentEntries)) {
@@ -780,10 +778,25 @@ public class ContentPageEditorDisplayContext {
 
 		SoyContext soyContexts = SoyContextFactoryUtil.createSoyContext();
 
-		List<FragmentEntryLink> fragmentEntryLinks =
+		List<FragmentEntryLink> fragmentEntryLinks = new ArrayList<>(
 			FragmentEntryLinkLocalServiceUtil.getFragmentEntryLinks(
 				getGroupId(), PortalUtil.getClassNameId(Layout.class.getName()),
-				themeDisplay.getPlid());
+				themeDisplay.getPlid()));
+
+		Layout layout = themeDisplay.getLayout();
+
+		if (layout.getMasterLayoutPlid() > 0) {
+			LayoutPageTemplateEntry masterLayoutPageTemplateEntry =
+				LayoutPageTemplateEntryLocalServiceUtil.
+					fetchLayoutPageTemplateEntryByPlid(
+						layout.getMasterLayoutPlid());
+
+			fragmentEntryLinks.addAll(
+				FragmentEntryLinkLocalServiceUtil.getFragmentEntryLinks(
+					getGroupId(),
+					PortalUtil.getClassNameId(Layout.class.getName()),
+					masterLayoutPageTemplateEntry.getPlid()));
+		}
 
 		boolean isolated = themeDisplay.isIsolated();
 
@@ -1055,6 +1068,42 @@ public class ContentPageEditorDisplayContext {
 		}
 
 		return mappedAssetEntriesSoyContexts;
+	}
+
+	private String _getMasterPageLayoutData() {
+		Layout layout = themeDisplay.getLayout();
+
+		if (layout.getMasterLayoutPlid() <= 0) {
+			return null;
+		}
+
+		LayoutPageTemplateEntry masterLayoutPageTemplateEntry =
+			LayoutPageTemplateEntryLocalServiceUtil.
+				fetchLayoutPageTemplateEntryByPlid(
+					layout.getMasterLayoutPlid());
+
+		if (masterLayoutPageTemplateEntry == null) {
+			return null;
+		}
+
+		try {
+			LayoutPageTemplateStructure layoutPageTemplateStructure =
+				LayoutPageTemplateStructureLocalServiceUtil.
+					fetchLayoutPageTemplateStructure(
+						getGroupId(),
+						PortalUtil.getClassNameId(Layout.class.getName()),
+						masterLayoutPageTemplateEntry.getPlid(), true);
+
+			return layoutPageTemplateStructure.getData(
+				SegmentsExperienceConstants.ID_DEFAULT);
+		}
+		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Unable to get structure JSON array", e);
+			}
+		}
+
+		return null;
 	}
 
 	private String _getPortletCategoryTitle(PortletCategory portletCategory) {

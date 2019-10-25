@@ -81,6 +81,8 @@ public class MasterPageActionDropdownItemsProvider {
 					}
 
 					add(_getRenameMasterPageActionUnsafeConsumer());
+
+					add(_getCopyMasterPageActionUnsafeConsumer());
 				}
 
 				if (LayoutPageTemplateEntryPermission.contains(
@@ -90,6 +92,34 @@ public class MasterPageActionDropdownItemsProvider {
 					add(_getDeleteMasterPageActionUnsafeConsumer());
 				}
 			}
+		};
+	}
+
+	private UnsafeConsumer<DropdownItem, Exception>
+		_getCopyMasterPageActionUnsafeConsumer() {
+
+		PortletURL copyMasterPageURL = _renderResponse.createActionURL();
+
+		copyMasterPageURL.setParameter(
+			ActionRequest.ACTION_NAME,
+			"/layout_page_template/copy_layout_page_template_entry");
+		copyMasterPageURL.setParameter(
+			"redirect", _themeDisplay.getURLCurrent());
+		copyMasterPageURL.setParameter(
+			"layoutPageTemplateCollectionId",
+			String.valueOf(
+				_layoutPageTemplateEntry.getLayoutPageTemplateCollectionId()));
+		copyMasterPageURL.setParameter(
+			"layoutPageTemplateEntryId",
+			String.valueOf(
+				_layoutPageTemplateEntry.getLayoutPageTemplateEntryId()));
+
+		return dropdownItem -> {
+			dropdownItem.putData("action", "copyMasterPage");
+			dropdownItem.putData(
+				"copyMasterPageURL", copyMasterPageURL.toString());
+			dropdownItem.setLabel(
+				LanguageUtil.get(_httpServletRequest, "make-a-copy"));
 		};
 	}
 

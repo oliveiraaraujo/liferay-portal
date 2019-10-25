@@ -110,6 +110,9 @@ public interface AppBuilderAppLocalService
 	public AppBuilderApp deleteAppBuilderApp(long appBuilderAppId)
 		throws PortalException;
 
+	public void deleteAppBuilderApps(long ddmStructureId)
+		throws PortalException;
+
 	/**
 	 * @throws PortalException
 	 */
@@ -240,6 +243,9 @@ public interface AppBuilderAppLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AppBuilderApp> getAppBuilderApps(int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AppBuilderApp> getAppBuilderApps(long ddmStructureId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AppBuilderApp> getAppBuilderApps(long companyId, int status);

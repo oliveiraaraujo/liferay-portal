@@ -429,17 +429,6 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 		return userAgent;
 	}
 
-	/**
-	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 *             BrowserMetadata#isIe()}
-	 */
-	@Deprecated
-	protected boolean isIe(String userAgent) {
-		BrowserMetadata browserMetadata = new BrowserMetadata(userAgent);
-
-		return browserMetadata.isIe();
-	}
-
 	protected static String[] revisionLeadings = {
 		"rv", "it", "ra", "trident", "ie"
 	};

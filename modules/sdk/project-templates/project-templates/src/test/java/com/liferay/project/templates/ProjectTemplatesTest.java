@@ -2758,6 +2758,35 @@ public class ProjectTemplatesTest implements BaseProjectTemplatesTestCase {
 	}
 
 	@Test
+	public void testCompareAntBndPluginVersions() throws Exception {
+		String template = "mvc-portlet";
+		String name = "foo";
+
+		File gradleProjectDir = _buildTemplateWithGradle(template, name);
+
+		Optional<String> gradleResult = executeGradle(
+			gradleProjectDir, true, _gradleDistribution,
+			GRADLE_TASK_PATH_BUILD);
+
+		String gradleAntBndVersion = null;
+
+		Matcher matcher = _antBndPluginVersionPattern.matcher(
+			gradleResult.get());
+
+		if (matcher.matches()) {
+			gradleAntBndVersion = matcher.group(1);
+		}
+
+		File mavenProjectDir = _buildTemplateWithMaven(
+			template, name, name, "-DclassName=foo");
+
+		testContains(
+			mavenProjectDir, "pom.xml",
+			"<artifactId>com.liferay.ant.bnd</artifactId>\n", "<version>",
+			gradleAntBndVersion);
+	}
+
+	@Test
 	public void testCompareGradlePluginVersions() throws Exception {
 		String template = "mvc-portlet";
 		String name = "foo";
@@ -3881,6 +3910,9 @@ public class ProjectTemplatesTest implements BaseProjectTemplatesTestCase {
 	private static final String _NODEJS_NPM_CI_SASS_BINARY_SITE =
 		System.getProperty("nodejs.npm.ci.sass.binary.site");
 
+	private static final Pattern _antBndPluginVersionPattern = Pattern.compile(
+		".*com\\.liferay\\.ant\\.bnd[:-]([0-9]+\\.[0-9]+\\.[0-9]+).*",
+		Pattern.DOTALL | Pattern.MULTILINE);
 	private static URI _gradleDistribution;
 	private static final Pattern _gradlePluginVersionPattern = Pattern.compile(
 		".*com\\.liferay\\.gradle\\.plugins:([0-9]+\\.[0-9]+\\.[0-9]+).*",

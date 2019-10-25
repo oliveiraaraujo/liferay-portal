@@ -504,6 +504,12 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					public List getTestUtilModules() {
 						List appBndFiles = findFiles(new File(projectDir, "modules/apps"), ".+/app.bnd");
 
+						File dxpAppsDir = new File(projectDir, "modules/dxp/apps");
+
+						if (dxpAppsDir.exists()) {
+							appBndFiles.addAll(findFiles(dxpAppsDir, ".+/app.bnd"));
+						}
+
 						File privateAppsDir = new File(projectDir, "modules/private/apps");
 
 						if (privateAppsDir.exists()) {
@@ -4074,7 +4080,7 @@ log.sanitizer.enabled=false</echo>
 					<path>
 						<dirset
 							dir="modules"
-							excludes="private/**,node_modules/**,**/node_modules/**,${base.dir}/**/test/stories/**"
+							excludes="dxp/**,node_modules/**,**/node_modules/**,${base.dir}/**/test/stories/**"
 							includes="**/test"
 						/>
 					</path>
@@ -4146,7 +4152,7 @@ log.sanitizer.enabled=false</echo>
 	<target name="js-unit-private-jdk8">
 		<run-batch-test>
 			<test-action>
-				<gradle-execute dir="modules/private" task="packageRunTest">
+				<gradle-execute dir="modules/dxp" task="packageRunTest">
 					<arg value="--continue" />
 					<arg value="--parallel" />
 					<arg value="-DpackageRunTest.ignore.failures=true" />
@@ -4276,7 +4282,7 @@ log.sanitizer.enabled=false</echo>
 					<then>
 						<gradle-execute dir="modules" outputproperty="modules.project.paths" task="printProjectPath">
 							<arg value="--quiet" />
-							<arg value="-Dbuild.exclude.dirs=dxp/apps/osb-lcs,third-party" />
+							<arg value="-Dbuild.exclude.dirs=private/apps/osb-lcs,third-party" />
 						</gradle-execute>
 
 						<loadresource property="modules.test.class.group">
@@ -4734,13 +4740,16 @@ log.sanitizer.enabled=false</echo>
 
 						<antcall inheritAll="false" target="install-portal-snapshots" />
 
-						<echo>tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf --gzip --to-stdout --verbose > modules/core/portal-bootstrap/system.packages.extra.mf</echo>
+						<echo>tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf --gzip --to-stdout --verbose > modules/core/portal-bootstrap/system.packages.extra.mf
+tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'</echo>
 
 						<execute>
 							<![CDATA[
 								mkdir -p modules/core/portal-bootstrap
 
 								tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf --gzip --to-stdout --verbose > modules/core/portal-bootstrap/system.packages.extra.mf
+
+								tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'
 							]]>
 						</execute>
 					</then>
@@ -5424,12 +5433,15 @@ ${output.content}</echo>
 
 			<test-set-up>
 				<echo>tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf --gzip --verbose
-tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/lib/biz.aQute.bnd.annotation.jar --gzip --verbose</echo>
+tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/lib/biz.aQute.bnd.annotation.jar --gzip --verbose
+tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'
+				</echo>
 
 				<execute>
 					<![CDATA[
 						tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf --gzip --verbose
 						tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/lib/biz.aQute.bnd.annotation.jar --gzip --verbose
+						tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'
 					]]>
 				</execute>
 

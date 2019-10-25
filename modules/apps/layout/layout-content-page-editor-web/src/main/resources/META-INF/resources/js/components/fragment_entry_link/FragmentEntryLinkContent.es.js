@@ -12,11 +12,11 @@
  * details.
  */
 
+import {isFunction, isObject} from 'metal';
 import Component from 'metal-component';
 import {closest, globalEval} from 'metal-dom';
 import Soy from 'metal-soy';
 import {Config} from 'metal-state';
-import {isFunction, isObject} from 'metal';
 
 import {getConnectedComponent} from '../../store/ConnectedComponent.es';
 import {shouldUpdateOnChangeProperties} from '../../utils/FragmentsEditorComponentUtils.es';
@@ -85,8 +85,7 @@ class FragmentEntryLinkContent extends Component {
 			'content',
 			'languageId',
 			'segmentsExperienceId',
-			'selectedMappingTypes',
-			'showMapping'
+			'selectedMappingTypes'
 		]);
 	}
 
@@ -181,7 +180,6 @@ class FragmentEntryLinkContent extends Component {
 				element,
 				fragmentEntryLinkId: this.fragmentEntryLinkId,
 				processor: BACKGROUND_IMAGE_FRAGMENT_ENTRY_PROCESSOR,
-				showMapping: this.showMapping,
 				store: this.store
 			});
 		});
@@ -220,7 +218,6 @@ class FragmentEntryLinkContent extends Component {
 				},
 
 				segmentsExperienceId: this.segmentsExperienceId,
-				showMapping: this.showMapping,
 				store: this.store,
 				type: editable.getAttribute('type')
 			});
@@ -372,16 +369,7 @@ FragmentEntryLinkContent.STATE = {
 	 * @memberOf FragmentEntryLinkContent
 	 * @type {!string}
 	 */
-	fragmentEntryLinkId: Config.string().required(),
-
-	/**
-	 * If <code>true</code>, the asset mapping is enabled.
-	 * @default false
-	 * @instance
-	 * @memberOf FragmentEntryLink
-	 * @type {boolean}
-	 */
-	showMapping: Config.bool().value(false)
+	fragmentEntryLinkId: Config.string().required()
 };
 
 const ConnectedFragmentEntryLinkContent = getConnectedComponent(

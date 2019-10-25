@@ -615,7 +615,8 @@ public abstract class BaseSourceCheck implements SourceCheck {
 	}
 
 	protected boolean isModulesApp(String absolutePath, boolean privateOnly) {
-		if (absolutePath.contains("/modules/private/apps/") ||
+		if (absolutePath.contains("/modules/dxp/apps") ||
+			absolutePath.contains("/modules/private/apps/") ||
 			(!privateOnly && absolutePath.contains("/modules/apps/"))) {
 
 			return true;
@@ -675,7 +676,7 @@ public abstract class BaseSourceCheck implements SourceCheck {
 	}
 
 	protected String stripQuotes(String s, char... delimeters) {
-		List<Character> delimetersList = ListUtil.toList(delimeters);
+		List<Character> delimetersList = ListUtil.fromArray(delimeters);
 
 		char delimeter = CharPool.SPACE;
 		boolean insideQuotes = false;
