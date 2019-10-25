@@ -128,8 +128,8 @@ const Table = ({page, pageSize, processId, query, sort}) => {
 			pageSize,
 			sort,
       };
-      
-      if(params && processSteps.length > 0 && processSteps[0] !== 'allSteps'){
+
+      if(processSteps && processSteps.length && processSteps[0] !== 'allSteps'){
          params.taskKeys = processSteps[0];
       }
 
