@@ -127,7 +127,7 @@
 
 	{if $displayStyle == 'multiline'}
 		<textarea {$attributes}>{$inputValue}</textarea>
-	{elseif ($displayStyle == 'singleline' and $readOnly) or not($autocompleteEnabled)}
+	{elseif ($displayStyle == 'singleline' and $readOnly) or not($autocompleteEnabled) or (isNonnull($options) and length($options) == 0)}
 		<input {$attributes}>
 	{elseif $autocompleteEnabled and isNonnull($options) and length($options) > 0}
 		{call ClayAutocomplete.render}
