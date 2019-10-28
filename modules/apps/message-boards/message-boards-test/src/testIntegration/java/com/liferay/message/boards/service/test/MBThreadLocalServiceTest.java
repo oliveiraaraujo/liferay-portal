@@ -15,6 +15,13 @@
 package com.liferay.message.boards.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.document.library.kernel.model.DLFileEntry;
+import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.expando.kernel.model.ExpandoColumnConstants;
+import com.liferay.expando.kernel.model.ExpandoTable;
+import com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil;
+import com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil;
+import com.liferay.expando.kernel.service.ExpandoValueLocalServiceUtil;
 import com.liferay.message.boards.constants.MBCategoryConstants;
 import com.liferay.message.boards.constants.MBMessageConstants;
 import com.liferay.message.boards.model.MBMessage;
@@ -31,13 +38,19 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ObjectValuePair;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 
 import java.io.InputStream;
+import java.io.Serializable;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -55,7 +68,9 @@ public class MBThreadLocalServiceTest {
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
-		new LiferayIntegrationTestRule();
+		new AggregateTestRule(
+				new LiferayIntegrationTestRule(),
+				PermissionCheckerMethodTestRule.INSTANCE);
 
 	@Before
 	public void setUp() throws Exception {
@@ -113,6 +128,36 @@ public class MBThreadLocalServiceTest {
 		Assert.assertEquals(1, rootMessage.getAttachmentsFileEntriesCount());
 		Assert.assertEquals(1, splitMessage.getAttachmentsFileEntriesCount());
 		Assert.assertEquals(1, childMessage.getAttachmentsFileEntriesCount());
+	}
+
+	@Test
+	public void testDeleteThreadWithExpandoMessages() throws Exception {
+
+		int expandoCount = ExpandoValueLocalServiceUtil.getExpandoValuesCount();
+
+		Assert.assertEquals(0, expandoCount);
+
+		MBMessage message = addMessageWithExpando();
+
+		ExpandoBridge expandoBridge = message.getExpandoBridge();
+
+		String attributeValue = GetterUtil.getString(
+			expandoBridge.getAttribute("testExpandoName"));
+
+		Assert.assertEquals("testExpandoValue", attributeValue);
+
+		expandoCount = ExpandoValueLocalServiceUtil.getExpandoValuesCount();
+
+		Assert.assertEquals(1, expandoCount);
+
+		MBThreadLocalServiceUtil.deleteThread(message.getThreadId());
+
+		expandoCount = ExpandoValueLocalServiceUtil.getExpandoValuesCount();
+
+		Assert.assertEquals(0, expandoCount);
+
+		ExpandoTableLocalServiceUtil.deleteTables(
+			PortalUtil.getDefaultCompanyId(), MBMessage.class.getName());
 	}
 
 	@Test
@@ -246,6 +291,40 @@ public class MBThreadLocalServiceTest {
 			_group.getGroupId(), categoryId, threadId, parentMessageId,
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 			MBMessageConstants.DEFAULT_FORMAT, inputStreamOVPs, false, 0.0,
+			false, serviceContext);
+	}
+
+	protected MBMessage addMessageWithExpando()
+		throws Exception {
+
+		ExpandoTable expandoTable =
+			ExpandoTableLocalServiceUtil.addDefaultTable(
+				PortalUtil.getDefaultCompanyId(), MBMessage.class.getName());
+
+		ExpandoColumnLocalServiceUtil.addColumn(
+			expandoTable.getTableId(), "testExpandoName",
+			ExpandoColumnConstants.STRING, StringPool.BLANK);
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(
+				_group.getGroupId(), TestPropsValues.getUserId());
+
+		long categoryId = MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID;
+		long threadId = 0;
+		long parentMessageId = MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID;
+
+		Map<String, Serializable> expandoBridgeAttributes =
+			HashMapBuilder.<String, Serializable>put(
+				"testExpandoName", "testExpandoValue"
+			).build();
+
+		serviceContext.setExpandoBridgeAttributes(expandoBridgeAttributes);
+
+		return MBMessageLocalServiceUtil.addMessage(
+			TestPropsValues.getUserId(), RandomTestUtil.randomString(),
+			_group.getGroupId(), categoryId, threadId, parentMessageId,
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			MBMessageConstants.DEFAULT_FORMAT, null, false, 0.0,
 			false, serviceContext);
 	}
 
