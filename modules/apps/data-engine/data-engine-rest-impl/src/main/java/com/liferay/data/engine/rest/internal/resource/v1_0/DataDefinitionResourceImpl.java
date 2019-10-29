@@ -14,8 +14,6 @@
 
 package com.liferay.data.engine.rest.internal.resource.v1_0;
 
-import com.liferay.data.engine.field.type.FieldType;
-import com.liferay.data.engine.field.type.FieldTypeTracker;
 import com.liferay.data.engine.field.type.util.LocalizedValueUtil;
 import com.liferay.data.engine.model.DEDataListView;
 import com.liferay.data.engine.rest.dto.v1_0.DataDefinition;
@@ -35,24 +33,40 @@ import com.liferay.data.engine.rest.resource.v1_0.DataDefinitionResource;
 import com.liferay.data.engine.service.DEDataDefinitionFieldLinkLocalService;
 import com.liferay.data.engine.service.DEDataListViewLocalService;
 import com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService;
+import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldType;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServicesTracker;
+import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderingContext;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormTemplateContextFactory;
 import com.liferay.dynamic.data.mapping.form.values.factory.DDMFormValuesFactory;
+import com.liferay.dynamic.data.mapping.io.DDMFormSerializer;
+import com.liferay.dynamic.data.mapping.io.DDMFormSerializerSerializeRequest;
+import com.liferay.dynamic.data.mapping.io.DDMFormSerializerSerializeResponse;
+import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMStructureConstants;
 import com.liferay.dynamic.data.mapping.model.DDMStructureLayout;
 import com.liferay.dynamic.data.mapping.model.DDMStructureVersion;
+import com.liferay.dynamic.data.mapping.model.UnlocalizedValue;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLayoutLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureVersionLocalService;
+import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
+import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
+import com.liferay.dynamic.data.mapping.util.DDMFormFactory;
+import com.liferay.dynamic.data.mapping.util.DDMFormLayoutFactory;
 import com.liferay.dynamic.data.mapping.util.comparator.StructureCreateDateComparator;
 import com.liferay.dynamic.data.mapping.util.comparator.StructureModifiedDateComparator;
 import com.liferay.dynamic.data.mapping.util.comparator.StructureNameComparator;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
@@ -67,23 +81,29 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.AggregateResourceBundle;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.SearchUtil;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.stream.Stream;
+
+import javax.servlet.http.HttpServletRequest;
 
 import javax.validation.ValidationException;
 
@@ -142,8 +162,7 @@ public class DataDefinitionResourceImpl
 			ActionKeys.VIEW);
 
 		return DataDefinitionUtil.toDataDefinition(
-			_ddmStructureLocalService.getStructure(dataDefinitionId),
-			_fieldTypeTracker);
+			_ddmStructureLocalService.getStructure(dataDefinitionId));
 	}
 
 	@Override
@@ -152,16 +171,15 @@ public class DataDefinitionResourceImpl
 
 		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
-		Collection<FieldType> fieldTypes = _fieldTypeTracker.getFieldTypes();
+		Set<String> ddmFormFieldTypeNames =
+			_ddmFormFieldTypeServicesTracker.getDDMFormFieldTypeNames();
 
-		Stream<FieldType> stream = fieldTypes.stream();
+		Stream<String> stream = ddmFormFieldTypeNames.stream();
 
 		stream.map(
-			fieldType -> DataDefinitionUtil.getFieldTypeMetadataJSONObject(
-				contextAcceptLanguage, _ddmFormFieldTypeServicesTracker,
-				_ddmFormTemplateContextFactory, _ddmFormValuesFactory,
-				fieldType, _fieldTypeTracker, contextHttpServletRequest,
-				_npmResolver,
+			ddmFormFieldTypeName -> _getFieldTypeMetadataJSONObject(
+				contextAcceptLanguage, ddmFormFieldTypeName,
+				contextHttpServletRequest,
 				_getResourceBundle(contextAcceptLanguage.getPreferredLocale()))
 		).filter(
 			jsonObject -> !jsonObject.getBoolean("system")
@@ -226,8 +244,7 @@ public class DataDefinitionResourceImpl
 
 		return DataDefinitionUtil.toDataDefinition(
 			_ddmStructureLocalService.getStructure(
-				siteId, _getClassNameId(), dataDefinitionKey),
-			_fieldTypeTracker);
+				siteId, _getClassNameId(), dataDefinitionKey));
 	}
 
 	@Override
@@ -284,8 +301,7 @@ public class DataDefinitionResourceImpl
 			},
 			document -> DataDefinitionUtil.toDataDefinition(
 				_ddmStructureLocalService.getStructure(
-					GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK))),
-				_fieldTypeTracker),
+					GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))),
 			sorts);
 	}
 
@@ -336,6 +352,14 @@ public class DataDefinitionResourceImpl
 
 		ServiceContext serviceContext = new ServiceContext();
 
+		DDMFormSerializerSerializeRequest.Builder builder =
+			DDMFormSerializerSerializeRequest.Builder.newBuilder(
+				DataDefinitionUtil.toDDMForm(
+					dataDefinition, _ddmFormFieldTypeServicesTracker));
+
+		DDMFormSerializerSerializeResponse ddmFormSerializerSerializeResponse =
+			_ddmFormSerializer.serialize(builder.build());
+
 		dataDefinition = DataDefinitionUtil.toDataDefinition(
 			_ddmStructureLocalService.addStructure(
 				PrincipalThreadLocal.getUserId(), siteId,
@@ -344,10 +368,9 @@ public class DataDefinitionResourceImpl
 				LocalizedValueUtil.toLocaleStringMap(dataDefinition.getName()),
 				LocalizedValueUtil.toLocaleStringMap(
 					dataDefinition.getDescription()),
-				DataDefinitionUtil.toJSON(dataDefinition, _fieldTypeTracker),
+				ddmFormSerializerSerializeResponse.getContent(),
 				GetterUtil.getString(dataDefinition.getStorageType(), "json"),
-				serviceContext),
-			_fieldTypeTracker);
+				serviceContext));
 
 		_resourceLocalService.addModelResources(
 			contextCompany.getCompanyId(), siteId,
@@ -416,6 +439,14 @@ public class DataDefinitionResourceImpl
 			PermissionThreadLocal.getPermissionChecker(), dataDefinitionId,
 			ActionKeys.UPDATE);
 
+		DDMFormSerializerSerializeRequest.Builder builder =
+			DDMFormSerializerSerializeRequest.Builder.newBuilder(
+				DataDefinitionUtil.toDDMForm(
+					dataDefinition, _ddmFormFieldTypeServicesTracker));
+
+		DDMFormSerializerSerializeResponse ddmFormSerializerSerializeResponse =
+			_ddmFormSerializer.serialize(builder.build());
+
 		return DataDefinitionUtil.toDataDefinition(
 			_ddmStructureLocalService.updateStructure(
 				PrincipalThreadLocal.getUserId(), dataDefinitionId,
@@ -423,9 +454,8 @@ public class DataDefinitionResourceImpl
 				LocalizedValueUtil.toLocaleStringMap(dataDefinition.getName()),
 				LocalizedValueUtil.toLocaleStringMap(
 					dataDefinition.getDescription()),
-				DataDefinitionUtil.toJSON(dataDefinition, _fieldTypeTracker),
-				new ServiceContext()),
-			_fieldTypeTracker);
+				ddmFormSerializerSerializeResponse.getContent(),
+				new ServiceContext()));
 	}
 
 	@Reference(
@@ -439,8 +469,102 @@ public class DataDefinitionResourceImpl
 		_modelResourcePermission = modelResourcePermission;
 	}
 
+	private JSONObject _createFieldContextJSONObject(
+		DDMFormFieldType ddmFormFieldType,
+		HttpServletRequest httpServletRequest, Locale locale, String type) {
+
+		try {
+			DDMForm ddmFormFieldTypeSettingsDDMForm = DDMFormFactory.create(
+				ddmFormFieldType.getDDMFormFieldTypeSettings());
+
+			DDMFormRenderingContext ddmFormRenderingContext =
+				new DDMFormRenderingContext();
+
+			ddmFormRenderingContext.setContainerId("settings");
+
+			DDMFormValues ddmFormValues = _ddmFormValuesFactory.create(
+				httpServletRequest, ddmFormFieldTypeSettingsDDMForm);
+
+			_setTypeDDMFormFieldValue(ddmFormValues, type);
+
+			ddmFormRenderingContext.setDDMFormValues(ddmFormValues);
+
+			ddmFormRenderingContext.setHttpServletRequest(httpServletRequest);
+			ddmFormRenderingContext.setLocale(locale);
+			ddmFormRenderingContext.setPortletNamespace(
+				ParamUtil.getString(httpServletRequest, "portletNamespace"));
+			ddmFormRenderingContext.setReturnFullContext(true);
+
+			return JSONFactoryUtil.createJSONObject(
+				JSONFactoryUtil.looseSerializeDeep(
+					_ddmFormTemplateContextFactory.create(
+						ddmFormFieldTypeSettingsDDMForm,
+						DDMFormLayoutFactory.create(
+							ddmFormFieldType.getDDMFormFieldTypeSettings()),
+						ddmFormRenderingContext)));
+		}
+		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
+		}
+
+		return null;
+	}
+
 	private long _getClassNameId() {
 		return _portal.getClassNameId(InternalDataDefinition.class);
+	}
+
+	private JSONObject _getFieldTypeMetadataJSONObject(
+		AcceptLanguage acceptLanguage, String ddmFormFieldName,
+		HttpServletRequest httpServletRequest, ResourceBundle resourceBundle) {
+
+		Map<String, Object> ddmFormFieldTypeProperties =
+			_ddmFormFieldTypeServicesTracker.getDDMFormFieldTypeProperties(
+				ddmFormFieldName);
+
+		DDMFormFieldType ddmFormFieldType =
+			_ddmFormFieldTypeServicesTracker.getDDMFormFieldType(
+				ddmFormFieldName);
+
+		return JSONUtil.put(
+			"description",
+			_translate(
+				MapUtil.getString(
+					ddmFormFieldTypeProperties,
+					"ddm.form.field.type.description"),
+				resourceBundle)
+		).put(
+			"group",
+			MapUtil.getString(
+				ddmFormFieldTypeProperties, "ddm.form.field.type.group")
+		).put(
+			"icon",
+			MapUtil.getString(
+				ddmFormFieldTypeProperties, "ddm.form.field.type.icon")
+		).put(
+			"javaScriptModule",
+			_resolveModuleName(
+				GetterUtil.getString(ddmFormFieldType.getModuleName()))
+		).put(
+			"label",
+			_translate(
+				MapUtil.getString(
+					ddmFormFieldTypeProperties, "ddm.form.field.type.label"),
+				resourceBundle)
+		).put(
+			"name", ddmFormFieldName
+		).put(
+			"settingsContext",
+			_createFieldContextJSONObject(
+				ddmFormFieldType, httpServletRequest,
+				acceptLanguage.getPreferredLocale(), ddmFormFieldName)
+		).put(
+			"system",
+			MapUtil.getBoolean(
+				ddmFormFieldTypeProperties, "ddm.form.field.type.system")
+		);
 	}
 
 	private ResourceBundle _getResourceBundle(Locale locale) {
@@ -450,11 +574,32 @@ public class DataDefinitionResourceImpl
 			_portal.getResourceBundle(locale));
 	}
 
+	private String _resolveModuleName(String moduleName) {
+		if (Validator.isNull(moduleName)) {
+			return StringPool.BLANK;
+		}
+
+		return _npmResolver.resolveModuleName(moduleName);
+	}
+
+	private void _setTypeDDMFormFieldValue(
+		DDMFormValues ddmFormValues, String type) {
+
+		Map<String, List<DDMFormFieldValue>> ddmFormFieldValuesMap =
+			ddmFormValues.getDDMFormFieldValuesMap();
+
+		List<DDMFormFieldValue> ddmFormFieldValues = ddmFormFieldValuesMap.get(
+			"type");
+
+		DDMFormFieldValue ddmFormFieldValue = ddmFormFieldValues.get(0);
+
+		ddmFormFieldValue.setValue(new UnlocalizedValue(type));
+	}
+
 	private DataDefinition _toDataDefinition(DDMStructure ddmStructure)
 		throws Exception {
 
-		return DataDefinitionUtil.toDataDefinition(
-			ddmStructure, _fieldTypeTracker);
+		return DataDefinitionUtil.toDataDefinition(ddmStructure);
 	}
 
 	private OrderByComparator<DDMStructure> _toOrderByComparator(Sort sort) {
@@ -472,6 +617,18 @@ public class DataDefinitionResourceImpl
 		return new StructureModifiedDateComparator(ascending);
 	}
 
+	private String _translate(String key, ResourceBundle resourceBundle) {
+		if (Validator.isNull(key)) {
+			return StringPool.BLANK;
+		}
+
+		return GetterUtil.getString(
+			ResourceBundleUtil.getString(resourceBundle, key), key);
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		DataDefinitionResourceImpl.class);
+
 	private static final EntityModel _entityModel =
 		new DataDefinitionEntityModel();
 
@@ -486,6 +643,9 @@ public class DataDefinitionResourceImpl
 
 	@Reference
 	private DDMFormFieldTypeServicesTracker _ddmFormFieldTypeServicesTracker;
+
+	@Reference(target = "(ddm.form.serializer.type=json)")
+	private DDMFormSerializer _ddmFormSerializer;
 
 	@Reference
 	private DDMFormTemplateContextFactory _ddmFormTemplateContextFactory;
@@ -508,9 +668,6 @@ public class DataDefinitionResourceImpl
 
 	@Reference
 	private DEDataListViewLocalService _deDataListViewLocalService;
-
-	@Reference
-	private FieldTypeTracker _fieldTypeTracker;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

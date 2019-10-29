@@ -29,6 +29,10 @@ import com.liferay.data.engine.rest.internal.odata.entity.v1_0.DataLayoutEntityM
 import com.liferay.data.engine.rest.internal.resource.v1_0.util.DataEnginePermissionUtil;
 import com.liferay.data.engine.rest.resource.v1_0.DataLayoutResource;
 import com.liferay.data.engine.service.DEDataDefinitionFieldLinkLocalService;
+import com.liferay.dynamic.data.mapping.io.DDMFormLayoutSerializer;
+import com.liferay.dynamic.data.mapping.io.DDMFormLayoutSerializerSerializeRequest;
+import com.liferay.dynamic.data.mapping.io.DDMFormLayoutSerializerSerializeResponse;
+import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMStructureLayout;
 import com.liferay.dynamic.data.mapping.model.DDMStructureVersion;
@@ -264,7 +268,16 @@ public class DataLayoutResourceImpl
 			DataActionKeys.ADD_DATA_LAYOUT, _groupLocalService,
 			ddmStructure.getGroupId());
 
-		String dataLayoutJSON = DataLayoutUtil.toJSON(dataLayout);
+		DDMFormLayout ddmFormLayout = DataLayoutUtil.toDDMFormLayout(
+			dataLayout);
+
+		DDMFormLayoutSerializerSerializeRequest.Builder builder =
+			DDMFormLayoutSerializerSerializeRequest.Builder.newBuilder(
+				ddmFormLayout);
+
+		DDMFormLayoutSerializerSerializeResponse
+			ddmFormLayoutSerializerSerializeResponse =
+				_ddmFormLayoutSerializer.serialize(builder.build());
 
 		ServiceContext serviceContext = new ServiceContext();
 
@@ -276,7 +289,8 @@ public class DataLayoutResourceImpl
 				LocalizedValueUtil.toLocaleStringMap(dataLayout.getName()),
 				LocalizedValueUtil.toLocaleStringMap(
 					dataLayout.getDescription()),
-				dataLayoutJSON, serviceContext));
+				ddmFormLayoutSerializerSerializeResponse.getContent(),
+				serviceContext));
 
 		_resourceLocalService.addModelResources(
 			contextCompany.getCompanyId(), ddmStructure.getGroupId(),
@@ -285,7 +299,8 @@ public class DataLayoutResourceImpl
 			serviceContext.getModelPermissions());
 
 		_addDataDefinitionFieldLinks(
-			dataDefinitionId, dataLayout.getId(), dataLayoutJSON,
+			dataDefinitionId, dataLayout.getId(),
+			ddmFormLayoutSerializerSerializeResponse.getContent(),
 			dataLayout.getSiteId());
 
 		return dataLayout;
@@ -370,7 +385,16 @@ public class DataLayoutResourceImpl
 			PermissionThreadLocal.getPermissionChecker(), dataLayoutId,
 			ActionKeys.UPDATE);
 
-		String dataLayoutJSON = DataLayoutUtil.toJSON(dataLayout);
+		DDMFormLayout ddmFormLayout = DataLayoutUtil.toDDMFormLayout(
+			dataLayout);
+
+		DDMFormLayoutSerializerSerializeRequest.Builder builder =
+			DDMFormLayoutSerializerSerializeRequest.Builder.newBuilder(
+				ddmFormLayout);
+
+		DDMFormLayoutSerializerSerializeResponse
+			ddmFormLayoutSerializerSerializeResponse =
+				_ddmFormLayoutSerializer.serialize(builder.build());
 
 		dataLayout = _toDataLayout(
 			_ddmStructureLayoutLocalService.updateStructureLayout(
@@ -379,13 +403,15 @@ public class DataLayoutResourceImpl
 				LocalizedValueUtil.toLocaleStringMap(dataLayout.getName()),
 				LocalizedValueUtil.toLocaleStringMap(
 					dataLayout.getDescription()),
-				dataLayoutJSON, new ServiceContext()));
+				ddmFormLayoutSerializerSerializeResponse.getContent(),
+				new ServiceContext()));
 
 		_deDataDefinitionFieldLinkLocalService.deleteDEDataDefinitionFieldLinks(
 			_getClassNameId(), dataLayoutId);
 
 		_addDataDefinitionFieldLinks(
-			dataLayout.getDataDefinitionId(), dataLayoutId, dataLayoutJSON,
+			dataLayout.getDataDefinitionId(), dataLayoutId,
+			ddmFormLayoutSerializerSerializeResponse.getContent(),
 			dataLayout.getSiteId());
 
 		return dataLayout;
@@ -448,7 +474,7 @@ public class DataLayoutResourceImpl
 		throws Exception {
 
 		DataLayout dataLayout = DataLayoutUtil.toDataLayout(
-			ddmStructureLayout.getDefinition());
+			ddmStructureLayout.getDDMFormLayout());
 
 		dataLayout.setDateCreated(ddmStructureLayout.getCreateDate());
 		dataLayout.setDataDefinitionId(_getDDMStructureId(ddmStructureLayout));
@@ -485,6 +511,9 @@ public class DataLayoutResourceImpl
 	}
 
 	private static final EntityModel _entityModel = new DataLayoutEntityModel();
+
+	@Reference(target = "(ddm.form.layout.serializer.type=json)")
+	private DDMFormLayoutSerializer _ddmFormLayoutSerializer;
 
 	@Reference
 	private DDMStructureLayoutLocalService _ddmStructureLayoutLocalService;

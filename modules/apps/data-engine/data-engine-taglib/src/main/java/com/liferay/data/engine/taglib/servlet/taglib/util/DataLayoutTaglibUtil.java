@@ -14,8 +14,6 @@
 
 package com.liferay.data.engine.taglib.servlet.taglib.util;
 
-import com.liferay.data.engine.field.type.FieldType;
-import com.liferay.data.engine.field.type.FieldTypeTracker;
 import com.liferay.data.engine.renderer.DataLayoutRenderer;
 import com.liferay.data.engine.renderer.DataLayoutRendererContext;
 import com.liferay.data.engine.rest.client.dto.v1_0.DataDefinition;
@@ -75,7 +73,6 @@ import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -345,62 +342,62 @@ public class DataLayoutTaglibUtil {
 	}
 
 	private JSONObject _getFieldTypeMetadataJSONObject(
-		FieldType fieldType, HttpServletRequest httpServletRequest) {
+		String ddmFormFieldName, HttpServletRequest httpServletRequest) {
 
-		Map<String, Object> fieldTypeProperties =
-			_fieldTypeTracker.getFieldTypeProperties(fieldType.getName());
+		Map<String, Object> ddmFormFieldTypeProperties =
+			_ddmFormFieldTypeServicesTracker.getDDMFormFieldTypeProperties(
+				ddmFormFieldName);
+
+		DDMFormFieldType ddmFormFieldType =
+			_ddmFormFieldTypeServicesTracker.getDDMFormFieldType(
+				ddmFormFieldName);
 
 		return JSONUtil.put(
 			"description",
 			_getLanguageTerm(
 				MapUtil.getString(
-					fieldTypeProperties, "data.engine.field.type.description"),
+					ddmFormFieldTypeProperties,
+					"ddm.form.field.type.description"),
 				LocaleThreadLocal.getThemeDisplayLocale())
-		).put(
-			"displayOrder",
-			MapUtil.getInteger(
-				fieldTypeProperties, "data.engine.field.type.display.order")
 		).put(
 			"group",
 			MapUtil.getString(
-				fieldTypeProperties, "data.engine.field.type.group")
+				ddmFormFieldTypeProperties, "ddm.form.field.type.group")
 		).put(
 			"icon",
 			MapUtil.getString(
-				fieldTypeProperties, "data.engine.field.type.icon")
+				ddmFormFieldTypeProperties, "ddm.form.field.type.icon")
 		).put(
-			"javaScriptModule",
-			_getJavaScriptModule(
-				MapUtil.getString(
-					fieldTypeProperties, "data.engine.field.type.js.module"))
+			"javaScriptModule", ddmFormFieldType.getModuleName()
 		).put(
 			"label",
 			_getLanguageTerm(
 				MapUtil.getString(
-					fieldTypeProperties, "data.engine.field.type.label"),
+					ddmFormFieldTypeProperties, "ddm.form.field.type.label"),
 				LocaleThreadLocal.getThemeDisplayLocale())
 		).put(
-			"name", fieldType.getName()
+			"name", ddmFormFieldName
 		).put(
 			"settingsContext",
 			_createFieldContext(
 				httpServletRequest, LocaleThreadLocal.getThemeDisplayLocale(),
-				fieldType.getName())
+				ddmFormFieldName)
 		).put(
 			"system",
 			MapUtil.getBoolean(
-				fieldTypeProperties, "data.engine.field.type.system")
+				ddmFormFieldTypeProperties, "ddm.form.field.type.system")
 		);
 	}
 
 	private JSONArray _getFieldTypesJSONArray(
 		HttpServletRequest httpServletRequest) {
 
-		Collection<FieldType> fieldTypes = _fieldTypeTracker.getFieldTypes();
-
 		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
-		Stream<FieldType> stream = fieldTypes.stream();
+		Set<String> ddmFormFieldTypeNames =
+			_ddmFormFieldTypeServicesTracker.getDDMFormFieldTypeNames();
+
+		Stream<String> stream = ddmFormFieldTypeNames.stream();
 
 		stream.map(
 			fieldType -> _dataLayoutTaglibUtil._getFieldTypeMetadataJSONObject(
@@ -410,14 +407,6 @@ public class DataLayoutTaglibUtil {
 		);
 
 		return jsonArray;
-	}
-
-	private String _getJavaScriptModule(String moduleName) {
-		if (Validator.isNull(moduleName)) {
-			return StringPool.BLANK;
-		}
-
-		return _npmResolver.resolveModuleName(moduleName);
 	}
 
 	private String _getLanguageTerm(String key, Locale locale) {
@@ -436,25 +425,25 @@ public class DataLayoutTaglibUtil {
 			_portal.getResourceBundle(locale));
 	}
 
-	private boolean _hasJavascriptModule(FieldType fieldType) {
-		Map<String, Object> fieldTypeProperties =
-			_fieldTypeTracker.getFieldTypeProperties(fieldType.getName());
+	private boolean _hasJavascriptModule(String name) {
+		DDMFormFieldType ddmFormFieldType =
+			_ddmFormFieldTypeServicesTracker.getDDMFormFieldType(name);
 
-		return fieldTypeProperties.containsKey(
-			"data.engine.field.type.js.module");
+		return Validator.isNotNull(ddmFormFieldType.getModuleName());
 	}
 
-	private String _resolveFieldTypeModule(FieldType fieldType) {
-		return _getJavaScriptModule(
-			MapUtil.getString(
-				_fieldTypeTracker.getFieldTypeProperties(fieldType.getName()),
-				"data.engine.field.type.js.module"));
+	private String _resolveFieldTypeModule(String name) {
+		DDMFormFieldType ddmFormFieldType =
+			_ddmFormFieldTypeServicesTracker.getDDMFormFieldType(name);
+
+		return ddmFormFieldType.getModuleName();
 	}
 
 	private String _resolveFieldTypesModules() {
-		Collection<FieldType> fieldTypes = _fieldTypeTracker.getFieldTypes();
+		Set<String> ddmFormFieldTypeNames =
+			_ddmFormFieldTypeServicesTracker.getDDMFormFieldTypeNames();
 
-		Stream<FieldType> stream = fieldTypes.stream();
+		Stream<String> stream = ddmFormFieldTypeNames.stream();
 
 		return stream.filter(
 			_dataLayoutTaglibUtil::_hasJavascriptModule
@@ -504,9 +493,6 @@ public class DataLayoutTaglibUtil {
 
 	@Reference
 	private DDMStructureLocalService _ddmStructureLocalService;
-
-	@Reference
-	private FieldTypeTracker _fieldTypeTracker;
 
 	@Reference(target = "(ddm.form.deserializer.type=json)")
 	private DDMFormDeserializer _jsonDDMFormDeserializer;
