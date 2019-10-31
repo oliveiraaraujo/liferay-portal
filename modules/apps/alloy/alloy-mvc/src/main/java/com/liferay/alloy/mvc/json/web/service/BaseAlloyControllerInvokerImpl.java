@@ -145,8 +145,8 @@ public abstract class BaseAlloyControllerInvokerImpl
 			}
 
 			@Override
-			public void setContentType(String type) {
-				contentType = type;
+			public void setContentType(String contentType) {
+				this.contentType = contentType;
 			}
 
 			protected String contentType;

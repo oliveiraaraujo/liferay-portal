@@ -84,10 +84,6 @@ public interface ReleaseLocalService
 	@Transactional(enabled = false)
 	public Release createRelease(long releaseId);
 
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
 	public void createTablesAndPopulate();
 
 	/**
@@ -191,10 +187,6 @@ public interface ReleaseLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
 	@Transactional
 	public int getBuildNumberOrCreate() throws PortalException;
 

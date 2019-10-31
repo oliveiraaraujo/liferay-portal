@@ -14,10 +14,16 @@
 
 package com.liferay.oauth.internal.activator;
 
+import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.upgrade.release.BaseUpgradeServiceModuleRelease;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Filter;
+import org.osgi.framework.ServiceReference;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Carlos Sierra Andrés
@@ -26,15 +32,41 @@ public class OAuthServiceBundleActivator implements BundleActivator {
 
 	@Override
 	public void start(BundleContext context) throws Exception {
-		OAuthUpgradeServiceModuleRelease oAuthUpgradeServiceModuleRelease =
-			new OAuthUpgradeServiceModuleRelease();
+		Filter filter = context.createFilter(
+			StringBundler.concat(
+				"(&(objectClass=", ModuleServiceLifecycle.class.getName(), ")",
+				ModuleServiceLifecycle.DATABASE_INITIALIZED, ")"));
 
-		oAuthUpgradeServiceModuleRelease.upgrade();
+		_serviceTracker = new ServiceTracker<Object, Object>(
+			context, filter, null) {
+
+			@Override
+			public Object addingService(ServiceReference<Object> reference) {
+				try {
+					OAuthUpgradeServiceModuleRelease
+						upgradeServiceModuleRelease =
+							new OAuthUpgradeServiceModuleRelease();
+
+					upgradeServiceModuleRelease.upgrade();
+
+					return null;
+				}
+				catch (UpgradeException ue) {
+					throw new RuntimeException(ue);
+				}
+			}
+
+		};
+
+		_serviceTracker.open();
 	}
 
 	@Override
-	public void stop(BundleContext context) {
+	public void stop(BundleContext context) throws Exception {
+		_serviceTracker.close();
 	}
+
+	private ServiceTracker<Object, Object> _serviceTracker;
 
 	private static class OAuthUpgradeServiceModuleRelease
 		extends BaseUpgradeServiceModuleRelease {

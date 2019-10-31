@@ -175,11 +175,45 @@ public class CTServicePublisher<T extends CTModel<T>> {
 
 		// Order matters to avoid causing constraint violations
 
-		if (_deletionCTEntries != null) {
-			try (SafeClosable safeClosable =
-					CTCollectionThreadLocal.setCTCollectionId(
-						_targetCTCollectionId)) {
+		Map<Serializable, T> addedCTModels = null;
+		Map<Serializable, T> mergedCTModels = null;
 
+		long tempCTCollectionId = -_sourceCTCollectionId;
+
+		try (SafeClosable safeClosable =
+				CTCollectionThreadLocal.setCTCollectionId(
+					_sourceCTCollectionId)) {
+
+			if (_additionCTEntries != null) {
+				addedCTModels = ctPersistence.fetchByPrimaryKeys(
+					_additionCTEntries.keySet());
+
+				for (T ctModel : addedCTModels.values()) {
+					_updateCTCollectionId(
+						ctPersistence, tempCTCollectionId, ctModel);
+				}
+			}
+
+			if (_modificationCTEntries != null) {
+				mergedCTModels = ctPersistence.fetchByPrimaryKeys(
+					_modificationCTEntries.keySet());
+
+				_checkModificationSize(_modificationCTEntries, mergedCTModels);
+
+				for (T ctModel : mergedCTModels.values()) {
+					_updateCTCollectionId(
+						ctPersistence, tempCTCollectionId, ctModel);
+				}
+			}
+
+			_flushAndClear(ctPersistence);
+		}
+
+		try (SafeClosable safeClosable =
+				CTCollectionThreadLocal.setCTCollectionId(
+					_targetCTCollectionId)) {
+
+			if (_deletionCTEntries != null) {
 				Map<Serializable, T> ctModels =
 					ctPersistence.fetchByPrimaryKeys(
 						_deletionCTEntries.keySet());
@@ -206,41 +240,11 @@ public class CTServicePublisher<T extends CTModel<T>> {
 
 					ctEntry.setModelMvccVersion(mvccVersion + 1);
 
-					_deletionCTEntries.put(
-						primaryKey,
-						_ctEntryLocalService.updateCTEntry(ctEntry));
+					_ctEntryLocalService.updateCTEntry(ctEntry);
 				}
-
-				_flushAndClear(ctPersistence);
-			}
-		}
-
-		if (_modificationCTEntries != null) {
-			Map<Serializable, T> sourceCTModels = null;
-
-			long tempCTCollectionId = -_sourceCTCollectionId;
-
-			try (SafeClosable safeClosable =
-					CTCollectionThreadLocal.setCTCollectionId(
-						_sourceCTCollectionId)) {
-
-				sourceCTModels = ctPersistence.fetchByPrimaryKeys(
-					_modificationCTEntries.keySet());
-
-				_checkModificationSize(_modificationCTEntries, sourceCTModels);
-
-				for (T ctModel : sourceCTModels.values()) {
-					_updateCTCollectionId(
-						ctPersistence, tempCTCollectionId, ctModel);
-				}
-
-				_flushAndClear(ctPersistence);
 			}
 
-			try (SafeClosable safeClosable =
-					CTCollectionThreadLocal.setCTCollectionId(
-						_targetCTCollectionId)) {
-
+			if (_modificationCTEntries != null) {
 				Map<Serializable, T> ctModels =
 					ctPersistence.fetchByPrimaryKeys(
 						_modificationCTEntries.keySet());
@@ -257,7 +261,7 @@ public class CTServicePublisher<T extends CTModel<T>> {
 					long mvccVersion = ctModel.getMvccVersion();
 
 					if (!_handleIgnorableChanges(
-							ctPersistence, sourceCTModels, ctModel) &&
+							ctPersistence, mergedCTModels, ctModel) &&
 						(mvccVersion != ctEntry.getModelMvccVersion())) {
 
 						throw new SystemException(
@@ -272,43 +276,43 @@ public class CTServicePublisher<T extends CTModel<T>> {
 
 					ctEntry.setModelMvccVersion(mvccVersion + 1);
 
-					_modificationCTEntries.put(
-						primaryKey,
-						_ctEntryLocalService.updateCTEntry(ctEntry));
+					_ctEntryLocalService.updateCTEntry(ctEntry);
 				}
-
-				_flushAndClear(ctPersistence);
 			}
 
-			try (SafeClosable safeClosable =
-					CTCollectionThreadLocal.setCTCollectionId(
-						tempCTCollectionId)) {
-
-				for (T ctModel : sourceCTModels.values()) {
-					_updateCTCollectionId(
-						ctPersistence, _targetCTCollectionId, ctModel);
-				}
-
-				_flushAndClear(ctPersistence);
-			}
+			_flushAndClear(ctPersistence);
 		}
 
-		if (_additionCTEntries != null) {
-			try (SafeClosable safeClosable =
-					CTCollectionThreadLocal.setCTCollectionId(
-						_sourceCTCollectionId)) {
+		try (SafeClosable safeClosable =
+				CTCollectionThreadLocal.setCTCollectionId(tempCTCollectionId)) {
 
-				Map<Serializable, T> ctModels =
-					ctPersistence.fetchByPrimaryKeys(
-						_additionCTEntries.keySet());
+			if (addedCTModels != null) {
+				for (Map.Entry<Serializable, T> entry :
+						addedCTModels.entrySet()) {
 
-				for (T ctModel : ctModels.values()) {
+					T ctModel = entry.getValue();
+
+					long mvccVersion = ctModel.getMvccVersion();
+
+					_updateCTCollectionId(
+						ctPersistence, _targetCTCollectionId, ctModel);
+
+					CTEntry ctEntry = _additionCTEntries.get(entry.getKey());
+
+					ctEntry.setModelMvccVersion(mvccVersion + 1);
+
+					_ctEntryLocalService.updateCTEntry(ctEntry);
+				}
+			}
+
+			if (mergedCTModels != null) {
+				for (T ctModel : mergedCTModels.values()) {
 					_updateCTCollectionId(
 						ctPersistence, _targetCTCollectionId, ctModel);
 				}
-
-				_flushAndClear(ctPersistence);
 			}
+
+			_flushAndClear(ctPersistence);
 		}
 
 		return null;

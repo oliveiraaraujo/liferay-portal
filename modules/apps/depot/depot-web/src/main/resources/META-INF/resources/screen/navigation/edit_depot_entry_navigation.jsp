@@ -41,7 +41,7 @@ renderResponse.setTitle(HtmlUtil.escape(group.getDescriptiveName(locale)));
 
 <aui:form action="<%= actionCommandURL %>" method="post" name="fm">
 	<aui:input name="depotEntryId" type="hidden" value="<%= depotEntry.getDepotEntryId() %>" />
-	<aui:input name="redirect" type="hidden" value="<%= backURL %>" />
+	<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
 
 	<div class="sheet sheet-lg">
 		<div class="sheet-header">

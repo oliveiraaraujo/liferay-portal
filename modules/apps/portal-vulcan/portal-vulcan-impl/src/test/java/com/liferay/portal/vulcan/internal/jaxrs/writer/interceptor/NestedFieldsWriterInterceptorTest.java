@@ -640,7 +640,8 @@ public class NestedFieldsWriterInterceptorTest {
 		@Path("/products/{productExternalCode}/categories")
 		@Produces("application/*")
 		public List<Category> getCategories(
-			@NotNull @PathParam("productExternalCode") String externalCode) {
+			@NotNull @PathParam("productExternalCode")
+				String productExternalCode) {
 
 			return Collections.emptyList();
 		}
@@ -709,8 +710,15 @@ public class NestedFieldsWriterInterceptorTest {
 
 				return (ContextProvider<T>)new PaginationContextProvider();
 			}
+			else if (Objects.equals(
+						contextType.getTypeName(),
+						ThemeDisplay.class.getName())) {
 
-			return (ContextProvider<T>)new ThemeDisplayContextProvider();
+				return (ContextProvider<T>)new ThemeDisplayContextProvider();
+			}
+			else {
+				return null;
+			}
 		}
 
 		@Override
@@ -918,9 +926,9 @@ public class NestedFieldsWriterInterceptorTest {
 
 		@NestedField("categories")
 		public List<Category> getCategories(
-			@NestedFieldId("externalCode") String externalCode) {
+			@NestedFieldId("externalCode") String productExternalCode) {
 
-			if (!Objects.equals(externalCode, "externalCode")) {
+			if (!Objects.equals(productExternalCode, "externalCode")) {
 				return Collections.emptyList();
 			}
 

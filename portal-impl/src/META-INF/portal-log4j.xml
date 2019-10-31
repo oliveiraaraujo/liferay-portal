@@ -120,10 +120,6 @@
 		<priority value="INFO" />
 	</category>
 
-	<category name="com.liferay.portal.dao.init.DBInitUtil">
-		<priority value="INFO" />
-	</category>
-
 	<category name="com.liferay.portal.dao.jdbc.DataSourceFactoryImpl">
 		<priority value="INFO" />
 	</category>
@@ -248,7 +244,7 @@
 		<priority value="INFO" />
 	</category>
 
-	<category name="com.liferay.portal.events.StartupHelperUtil">
+	<category name="com.liferay.portal.events.StartupHelper">
 		<priority value="INFO" />
 	</category>
 

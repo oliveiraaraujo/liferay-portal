@@ -12,139 +12,80 @@
  * details.
  */
 
-import navigate from '../../util/navigate.es';
+import {render} from 'frontend-js-react-web';
+import React from 'react';
+import {unmountComponentAtNode} from 'react-dom';
+
 import SimpleInputModal from '../components/SimpleInputModal.es';
+
+const DEFAULT_MODAL_CONTAINER_ID = 'modalContainer';
+
+const DEFAULT_RENDER_DATA = {
+	portletId: 'UNKNOWN_PORTLET_ID'
+};
+
+const getDefaultModalContainer = () => {
+	let container = document.getElementById(DEFAULT_MODAL_CONTAINER_ID);
+
+	if (!container) {
+		container = document.createElement('div');
+		container.id = DEFAULT_MODAL_CONTAINER_ID;
+		document.body.appendChild(container);
+	}
+
+	return container;
+};
+
+function openSimpleInputModalImplementation(data) {
+	const container = getDefaultModalContainer();
+
+	unmountComponentAtNode(container);
+
+	const closeModal = () => {
+		unmountComponentAtNode(container);
+	};
+
+	const SimpleInputModalComponent = () => (
+		<SimpleInputModal
+			checkboxFieldLabel={data.checkboxFieldLabel}
+			checkboxFieldName={data.checkboxFieldName}
+			checkboxFieldValue={data.checkboxFieldValue}
+			closeModal={closeModal}
+			dialogTitle={data.dialogTitle}
+			formSubmitURL={data.formSubmitURL}
+			idFieldName={data.idFieldName}
+			idFieldValue={data.idFieldValue}
+			initialVisible="true"
+			mainFieldLabel={data.mainFieldLabel}
+			mainFieldName={data.mainFieldName}
+			namespace={data.namespace}
+			placeholder={data.placeholder}
+		/>
+	);
+
+	const renderData = DEFAULT_RENDER_DATA;
+
+	render(SimpleInputModalComponent, {...data, ...renderData}, container);
+}
+
+let didEmitDeprecationWarning = false;
 
 /**
  * Function that implements the SimpleInputModal pattern, which allows
  * manipulating small amounts of data with a form shown inside a modal.
  *
- * @param {Object} alert An optional alert for the modal
- * @param {Object} options The list of options for the modal (see description)
- * @param {string} checkboxFieldLabel The label for the optional checkbox field, if it's included
- * @param {string} checkboxFieldName The name for the optional checkbox field, if it's included
- * @param {boolean} checkboxFieldValue The value for the optional checkbox field, if it's included
- * @param {!string} dialogTitle The modal window's title
- * @param {!string} formSubmitURL The URL where the form will be submitted
- * @param {string} idFieldName The ID of the optional hidden field, if it's included
- * @param {string} idFieldValue The value of the optional hidden field, if it's included
- * @param {!string} mainFieldLabel The main input field's label
- * @param {!string} mainFieldName The main input field's name
- * @param {string} mainFieldPlaceholder A placeholder value for main input field
- * @param {string} mainFieldValue The main input field's value
- * @param {!string} namespace The namespace to prepend to field names
- * @param {!string} spritemap The URL for the portal icons used in the modal
- *
- * @return {SimpleInputModal} SimpleInputModal component instance
- *
- * @see SimpleInputModal
- *
- * @description
- *
- * Execution flow
- * 	1. When the function is called, a delegated click event
- * 	   is bound to the specified elementSelector, and
- * 	   a SimpleInputModal component is created when fired.
- * 	2. When the form is submitted, a POST request is sent to
- * 	   the server and a formSubmit event is dispatched.
- * 	3. SimpleInputModal processes the response.
- * 	   3.1. If the response is successful, a formSuccess
- * 	        event is dispatched. Then, if there is a
- * 	        redirectURL, it performs a redirection.
- * 	        Finally, the SimpleInputModal is disposed and
- * 	        all event listeners are detached.
- * 	   3.2. If the response is an error, a formError event is
- * 	   		  dispatched. Then the given errorMessage is shown inside
- * 	        the modal and nothing happens until the user fixes the
- * 	        error and submits it again or the modal is closed.
- *
- * Optional fields
- * - Checkbox: SimpleInputModal supports an optional checkbox field that
- *   can be added to the form.
- * - Id field: if you need to edit an element, instead of creating new ones,
- *   a hidden ID field can be used. fieldValues can also be used to specify an
- *   initial value instead of an empty field.
- * - Redirect URL: by default, the form redirects to an existing URL when it's
- *   submitted. This URL is obtained from the request response as "redirectURL."
- *   If no URL is obtained, the SimpleInputModal is disposed.
+ * @deprecated As of Athanasius (7.3.x), replaced by the default export
  */
+export function openSimpleInputModal(data) {
+	if (process.env.NODE_ENV === 'development' && !didEmitDeprecationWarning) {
+		console.warn(
+			'The named "openSimpleInputModal" export is deprecated: use the default export instead'
+		);
 
-function openSimpleInputModal({
-	alert,
-	checkboxFieldLabel = '',
-	checkboxFieldName = '',
-	checkboxFieldValue = false,
-	dialogTitle,
-	formSubmitURL,
-	idFieldName = '',
-	idFieldValue = '',
-	mainFieldLabel,
-	mainFieldName,
-	mainFieldPlaceholder = '',
-	mainFieldValue = '',
-	namespace,
-	spritemap
-}) {
-	const fixFormData = Liferay.Browser.isIe();
-
-	let simpleInputModal = null;
-
-	/**
-	 * Callback executed when the SimpleInputModal component
-	 * is closed or the form cancel button is pressed.
-	 */
-
-	function handleSimpleInputModalDisposal() {
-		if (simpleInputModal) {
-			if (!simpleInputModal.isDisposed()) {
-				simpleInputModal.dispose();
-			}
-
-			simpleInputModal = null;
-		}
+		didEmitDeprecationWarning = true;
 	}
 
-	/**
-	 * Callback executed when the SimpleInputModal form receives a successful
-	 * response from the server.
-	 * @param {{redirectURL: string}} serverResponseContent
-	 */
-
-	function handleSimpleInputModalSubmission(serverResponseContent) {
-		if (serverResponseContent.redirectURL) {
-			navigate(serverResponseContent.redirectURL, {
-				beforeScreenFlip: handleSimpleInputModalDisposal.bind(this)
-			});
-		} else {
-			handleSimpleInputModalDisposal();
-		}
-	}
-
-	simpleInputModal = new SimpleInputModal({
-		alert,
-		checkboxFieldLabel,
-		checkboxFieldName,
-		checkboxFieldValue,
-		dialogTitle,
-		events: {
-			cancelButtonClicked: handleSimpleInputModalDisposal,
-			dialogHidden: handleSimpleInputModalDisposal,
-			formSuccess: handleSimpleInputModalSubmission
-		},
-		fixFormData,
-		formSubmitURL,
-		idFieldName,
-		idFieldValue,
-		mainFieldLabel,
-		mainFieldName,
-		mainFieldPlaceholder,
-		mainFieldValue,
-		namespace,
-		spritemap
-	});
-
-	return simpleInputModal;
+	return openSimpleInputModalImplementation.call(null, data);
 }
 
-export {openSimpleInputModal};
-export default openSimpleInputModal;
+export default openSimpleInputModalImplementation;

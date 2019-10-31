@@ -15,7 +15,6 @@
 package com.liferay.portal.tools;
 
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.dao.init.DBInitUtil;
 import com.liferay.portal.dao.orm.common.SQLTransformer;
 import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
@@ -34,6 +33,7 @@ import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.ReleaseLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourceActionLocalServiceUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.version.Version;
@@ -52,7 +52,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.time.StopWatch;
@@ -66,10 +65,7 @@ public class DBUpgrader {
 	public static void checkRequiredBuildNumber(int requiredBuildNumber)
 		throws PortalException {
 
-		Release release = ReleaseLocalServiceUtil.getRelease(
-			ReleaseConstants.DEFAULT_ID);
-
-		int buildNumber = release.getBuildNumber();
+		int buildNumber = ReleaseLocalServiceUtil.getBuildNumberOrCreate();
 
 		if (buildNumber > ReleaseInfo.getParentBuildNumber()) {
 			StringBundler sb = new StringBundler(6);
@@ -147,8 +143,6 @@ public class DBUpgrader {
 
 		CacheRegistryUtil.setActive(false);
 
-		DBInitUtil.init();
-
 		// Check required build number
 
 		checkRequiredBuildNumber(ReleaseInfo.RELEASE_6_2_0_BUILD_NUMBER);
@@ -161,10 +155,7 @@ public class DBUpgrader {
 
 		// Upgrade
 
-		Release release = ReleaseLocalServiceUtil.getRelease(
-			ReleaseConstants.DEFAULT_ID);
-
-		int buildNumber = release.getBuildNumber();
+		int buildNumber = ReleaseLocalServiceUtil.getBuildNumberOrCreate();
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Update build " + buildNumber);
@@ -301,11 +292,13 @@ public class DBUpgrader {
 		ServiceRegistrar<Release> serviceRegistrar =
 			registry.getServiceRegistrar(Release.class);
 
-		Map<String, Object> properties = new HashMap<>();
-
-		properties.put("build.date", release.getBuildDate());
-		properties.put("build.number", release.getBuildNumber());
-		properties.put("servlet.context.name", release.getServletContextName());
+		Map<String, Object> properties = HashMapBuilder.<String, Object>put(
+			"build.date", release.getBuildDate()
+		).put(
+			"build.number", release.getBuildNumber()
+		).put(
+			"servlet.context.name", release.getServletContextName()
+		).build();
 
 		serviceRegistrar.registerService(Release.class, release, properties);
 	}
@@ -436,11 +429,13 @@ public class DBUpgrader {
 
 		Registry registry = RegistryUtil.getRegistry();
 
-		Map<String, Object> properties = new HashMap<>();
-
-		properties.put("module.service.lifecycle", moduleServiceLifecycle);
-		properties.put("service.vendor", ReleaseInfo.getVendor());
-		properties.put("service.version", ReleaseInfo.getVersion());
+		Map<String, Object> properties = HashMapBuilder.<String, Object>put(
+			"module.service.lifecycle", moduleServiceLifecycle
+		).put(
+			"service.vendor", ReleaseInfo.getVendor()
+		).put(
+			"service.version", ReleaseInfo.getVersion()
+		).build();
 
 		registry.registerService(
 			ModuleServiceLifecycle.class,

@@ -128,7 +128,7 @@ public class CopyLayoutPageTemplateEntryMVCActionCommandTest {
 		Assert.assertNotNull(targetLayoutPageTemplateEntry);
 	}
 
-	@Test(expected = Error.class)
+	@Test
 	public void testCopyLayoutPageTemplateEntryRollbackMVCActionCommand()
 		throws Exception {
 
@@ -137,22 +137,24 @@ public class CopyLayoutPageTemplateEntryMVCActionCommandTest {
 
 		_layoutLocalService.deleteLayout(_layoutPageTemplateEntry.getPlid());
 
-		try {
-			ReflectionTestUtil.invoke(
-				_mvcActionCommand, "doProcessAction",
-				new Class<?>[] {ActionRequest.class, ActionResponse.class},
-				actionRequest, actionResponse);
-		}
-		catch (Exception e) {
-			LayoutPageTemplateEntry targetLayoutPageTemplateEntry =
-				_layoutPageTemplateEntryLocalService.
-					fetchLayoutPageTemplateEntry(
-						_group.getGroupId(), _getName());
+		long originalLayoutsCount = _layoutLocalService.getLayoutsCount(
+			_group.getGroupId());
 
-			Assert.assertNull(targetLayoutPageTemplateEntry);
+		ReflectionTestUtil.invoke(
+			_mvcActionCommand, "doProcessAction",
+			new Class<?>[] {ActionRequest.class, ActionResponse.class},
+			actionRequest, actionResponse);
 
-			throw e;
-		}
+		LayoutPageTemplateEntry targetLayoutPageTemplateEntry =
+			_layoutPageTemplateEntryLocalService.fetchLayoutPageTemplateEntry(
+				_group.getGroupId(), _getName());
+
+		Assert.assertNull(targetLayoutPageTemplateEntry);
+
+		long actualLayoutsCount = _layoutLocalService.getLayoutsCount(
+			_group.getGroupId());
+
+		Assert.assertEquals(originalLayoutsCount, actualLayoutsCount);
 	}
 
 	@Test

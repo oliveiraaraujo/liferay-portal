@@ -44,10 +44,12 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.permission.ModelPermissions;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -59,10 +61,14 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileVersion;
 import com.liferay.portlet.documentlibrary.service.base.DLFileEntryTypeLocalServiceBaseImpl;
+import com.liferay.registry.Filter;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.dependency.ServiceDependencyListener;
+import com.liferay.registry.dependency.ServiceDependencyManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -160,13 +166,13 @@ public class DLFileEntryTypeLocalServiceImpl
 			long[] ddmStructureIds, ServiceContext serviceContext)
 		throws PortalException {
 
-		Map<Locale, String> nameMap = new HashMap<>();
+		Map<Locale, String> nameMap = HashMapBuilder.<Locale, String>put(
+			LocaleUtil.getSiteDefault(), name
+		).build();
 
-		nameMap.put(LocaleUtil.getSiteDefault(), name);
-
-		Map<Locale, String> descriptionMap = new HashMap<>();
-
-		descriptionMap.put(LocaleUtil.getSiteDefault(), description);
+		Map<Locale, String> descriptionMap = HashMapBuilder.<Locale, String>put(
+			LocaleUtil.getSiteDefault(), description
+		).build();
 
 		return addFileEntryType(
 			userId, groupId, null, nameMap, descriptionMap, ddmStructureIds,
@@ -177,12 +183,36 @@ public class DLFileEntryTypeLocalServiceImpl
 	public void afterPropertiesSet() {
 		super.afterPropertiesSet();
 
-		try {
-			dlFileEntryTypeLocalService.getBasicDocumentDLFileEntryType();
-		}
-		catch (NoSuchFileEntryTypeException nsfete) {
-			ReflectionUtil.throwException(nsfete);
-		}
+		ServiceDependencyManager serviceDependencyManager =
+			new ServiceDependencyManager();
+
+		serviceDependencyManager.addServiceDependencyListener(
+			new ServiceDependencyListener() {
+
+				@Override
+				public void dependenciesFulfilled() {
+					try {
+						dlFileEntryTypeLocalService.
+							getBasicDocumentDLFileEntryType();
+					}
+					catch (NoSuchFileEntryTypeException nsfete) {
+						ReflectionUtil.throwException(nsfete);
+					}
+				}
+
+				@Override
+				public void destroy() {
+				}
+
+			});
+
+		Registry registry = RegistryUtil.getRegistry();
+
+		serviceDependencyManager.registerDependencies(
+			new Class<?>[] {ModuleServiceLifecycle.class},
+			new Filter[] {
+				registry.getFilter(ModuleServiceLifecycle.DATABASE_INITIALIZED)
+			});
 	}
 
 	@Override
@@ -546,13 +576,13 @@ public class DLFileEntryTypeLocalServiceImpl
 			long[] ddmStructureIds, ServiceContext serviceContext)
 		throws PortalException {
 
-		Map<Locale, String> nameMap = new HashMap<>();
+		Map<Locale, String> nameMap = HashMapBuilder.<Locale, String>put(
+			LocaleUtil.getSiteDefault(), name
+		).build();
 
-		nameMap.put(LocaleUtil.getSiteDefault(), name);
-
-		Map<Locale, String> descriptionMap = new HashMap<>();
-
-		descriptionMap.put(LocaleUtil.getSiteDefault(), description);
+		Map<Locale, String> descriptionMap = HashMapBuilder.<Locale, String>put(
+			LocaleUtil.getSiteDefault(), description
+		).build();
 
 		updateFileEntryType(
 			userId, fileEntryTypeId, nameMap, descriptionMap, ddmStructureIds,

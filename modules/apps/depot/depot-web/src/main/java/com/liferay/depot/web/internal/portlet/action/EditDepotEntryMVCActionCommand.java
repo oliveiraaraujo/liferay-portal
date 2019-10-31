@@ -17,17 +17,19 @@ package com.liferay.depot.web.internal.portlet.action;
 import com.liferay.depot.model.DepotEntry;
 import com.liferay.depot.service.DepotEntryLocalService;
 import com.liferay.depot.web.internal.constants.DepotPortletKeys;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.GroupService;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-
-import java.util.Locale;
-import java.util.Map;
+import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.PropertiesParamUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -39,7 +41,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Alejandro Tardín
  */
 @Component(
-	immediate = true,
 	property = {
 		"javax.portlet.name=" + DepotPortletKeys.DEPOT_ADMIN,
 		"mvc.command.name=/depot_entry/edit"
@@ -60,23 +61,38 @@ public class EditDepotEntryMVCActionCommand extends BaseMVCActionCommand {
 
 		Group group = _groupService.getGroup(depotEntry.getGroupId());
 
-		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
-			actionRequest, "name", group.getNameMap());
-		Map<Locale, String> descriptionMap =
-			LocalizationUtil.getLocalizationMap(
-				actionRequest, "description", group.getDescriptionMap());
+		try {
+			_depotEntryLocalService.updateDepotEntry(
+				depotEntryId,
+				LocalizationUtil.getLocalizationMap(
+					actionRequest, "name", group.getNameMap()),
+				LocalizationUtil.getLocalizationMap(
+					actionRequest, "description", group.getDescriptionMap()),
+				PropertiesParamUtil.getProperties(
+					actionRequest, "TypeSettingsProperties--"),
+				ServiceContextFactory.getInstance(
+					DepotEntry.class.getName(), actionRequest));
+		}
+		catch (PortalException pe) {
+			_log.error(pe, pe);
 
-		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			DepotEntry.class.getName(), actionRequest);
+			SessionErrors.add(actionRequest, pe.getClass(), pe);
 
-		_depotEntryLocalService.updateDepotEntry(
-			depotEntryId, nameMap, descriptionMap, serviceContext);
+			actionResponse.sendRedirect(
+				ParamUtil.getString(actionRequest, "redirect"));
+		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		EditDepotEntryMVCActionCommand.class);
 
 	@Reference
 	private DepotEntryLocalService _depotEntryLocalService;
 
 	@Reference
 	private GroupService _groupService;
+
+	@Reference
+	private Portal _portal;
 
 }

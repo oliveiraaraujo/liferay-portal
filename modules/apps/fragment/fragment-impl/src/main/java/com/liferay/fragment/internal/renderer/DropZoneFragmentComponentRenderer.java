@@ -109,7 +109,22 @@ public class DropZoneFragmentComponentRenderer implements FragmentRenderer {
 
 		PrintWriter printWriter = httpServletResponse.getWriter();
 
-		printWriter.write("<div style=\"min-height: 400px;\"></div>");
+		printWriter.write("<div class=\"fragments-editor__drop-zone\">");
+		printWriter.write("<p>");
+
+		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
+			"content.Language", fragmentRendererContext.getLocale(),
+			getClass());
+
+		printWriter.write(LanguageUtil.get(resourceBundle, "drop-zone"));
+
+		printWriter.write("</p><p>");
+		printWriter.write(
+			LanguageUtil.get(
+				resourceBundle,
+				"area-enabled-to-place-components-only-when-page-building"));
+		printWriter.write("</p>");
+		printWriter.write("</div>");
 	}
 
 	@Reference

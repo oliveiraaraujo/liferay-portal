@@ -78,8 +78,10 @@ import com.liferay.portal.kernel.upload.UploadException;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.upload.UploadRequestSizeException;
 import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.KeyValuePair;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -97,7 +99,6 @@ import java.io.InputStream;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -609,13 +610,10 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 
 		fileEntry = _dlTrashService.moveFileEntryToTrash(fileEntryId);
 
-		List<TrashedModel> trashedModels = new ArrayList<>();
-
-		trashedModels.add((TrashedModel)fileEntry.getModel());
-
-		Map<String, Object> data = new HashMap<>();
-
-		data.put("trashedModels", trashedModels);
+		Map<String, Object> data = HashMapBuilder.<String, Object>put(
+			"trashedModels",
+			ListUtil.fromArray((TrashedModel)fileEntry.getModel())
+		).build();
 
 		addDeleteSuccessData(actionRequest, data);
 	}
