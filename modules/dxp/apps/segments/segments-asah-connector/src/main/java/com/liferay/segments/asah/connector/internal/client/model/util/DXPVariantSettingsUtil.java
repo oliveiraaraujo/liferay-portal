@@ -32,10 +32,8 @@ public class DXPVariantSettingsUtil {
 		dxpVariantSettings.setControl(
 			Objects.equals(
 				controlSegmentsExperienceKey, segmentsExperienceKey));
-
-		dxpVariantSettings.setTrafficSplit(split * 100);
-
 		dxpVariantSettings.setDXPVariantId(segmentsExperienceKey);
+		dxpVariantSettings.setTrafficSplit(split * 100);
 
 		return dxpVariantSettings;
 	}
