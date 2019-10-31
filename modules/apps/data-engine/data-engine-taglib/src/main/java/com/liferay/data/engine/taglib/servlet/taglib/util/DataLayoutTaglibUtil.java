@@ -75,14 +75,12 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -723,10 +721,6 @@ public class DataLayoutTaglibUtil {
 				"defaultLanguageId", ddmStructure.getDefaultLanguageId()
 			);
 
-			_transformOptions(jsonObject, "columns");
-			_transformOptions(jsonObject, "options");
-			_transformOptions(jsonObject, "rows");
-
 			return _deserializeDDMForm(jsonObject.toJSONString());
 		}
 
@@ -782,69 +776,6 @@ public class DataLayoutTaglibUtil {
 						}
 					}
 				}
-			}
-		}
-
-		private void _transformOptions(JSONObject jsonObject, String key)
-			throws Exception {
-
-			JSONArray jsonArray = jsonObject.getJSONArray("fields");
-
-			if (jsonArray == null) {
-				return;
-			}
-
-			for (int i = 0; i < jsonArray.length(); i++) {
-				JSONObject fieldJSONObject = jsonArray.getJSONObject(i);
-
-				if (!fieldJSONObject.has(key)) {
-					continue;
-				}
-
-				Map<String, JSONObject> optionLabelsJSONObjects =
-					new TreeMap<>();
-
-				JSONObject optionsJSONObject = fieldJSONObject.getJSONObject(
-					key);
-
-				Iterator<String> keys = optionsJSONObject.keys();
-
-				while (keys.hasNext()) {
-					String languageId = keys.next();
-
-					JSONArray localizedOptionsJSONArray =
-						optionsJSONObject.getJSONArray(languageId);
-
-					for (int j = 0; j < localizedOptionsJSONArray.length();
-						 j++) {
-
-						JSONObject localizedOptionJSONObject =
-							localizedOptionsJSONArray.getJSONObject(j);
-
-						JSONObject optionLabelsJSONObject =
-							optionLabelsJSONObjects.getOrDefault(
-								localizedOptionJSONObject.getString("value"),
-								_jsonFactory.createJSONObject());
-
-						optionLabelsJSONObject.put(
-							languageId,
-							localizedOptionJSONObject.getString("label"));
-
-						optionLabelsJSONObjects.putIfAbsent(
-							localizedOptionJSONObject.getString("value"),
-							optionLabelsJSONObject);
-					}
-				}
-
-				fieldJSONObject.put(
-					key,
-					JSONUtil.toJSONArray(
-						optionLabelsJSONObjects.entrySet(),
-						entry -> JSONUtil.put(
-							"label", entry.getValue()
-						).put(
-							"value", entry.getKey()
-						)));
 			}
 		}
 
