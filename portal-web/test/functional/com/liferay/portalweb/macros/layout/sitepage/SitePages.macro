@@ -243,6 +243,7 @@ definition {
 
 		SitePages._addPage(
 			assertCheckboxMissing = "${assertCheckboxMissing}",
+			categoryName = "${categoryName}",
 			collectionName = "${collectionName}",
 			customDescription = "${customDescription}",
 			customTitle = "${customTitle}",
@@ -252,7 +253,8 @@ definition {
 			pageName = "${pageName}",
 			pageTemplateName = "${pageTemplateName}",
 			pageTypeURL = "${pageTypeURL}",
-			sitePageType = "${sitePageType}");
+			sitePageType = "${sitePageType}",
+			vocabularyName = "${vocabularyName}");
 	}
 
 	macro configureChildPage {
