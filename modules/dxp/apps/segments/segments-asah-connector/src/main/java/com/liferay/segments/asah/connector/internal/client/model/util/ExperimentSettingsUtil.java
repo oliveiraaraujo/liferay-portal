@@ -43,6 +43,7 @@ public class ExperimentSettingsUtil {
 				DXPVariantSettingsUtil.toDXPVariantSettings(
 					segmentsExperiment.getSegmentsExperienceKey(),
 					segmentsExperienceKey, split)));
+
 		experimentSettings.setDXPVariantsSettings(dxpVariantsSettings);
 
 		return experimentSettings;
