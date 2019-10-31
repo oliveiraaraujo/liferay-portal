@@ -29,6 +29,13 @@ import templates from './Geolocation.soy.js';
  */
 
 class Geolocation extends Component {
+	attached() {
+		this.setState({
+			geolocateTitle: Liferay.Language.get('geolocate'),
+			pathThemeImages: Liferay.themeDisplay.getPathThemeImages()
+		});
+	}
+
 	prepareStateForRender(state) {
 		const {predefinedValue} = state;
 		const predefinedValueArray = this._getArrayValue(predefinedValue);
@@ -102,6 +109,15 @@ Geolocation.STATE = {
 	fieldName: Config.string(),
 
 	/**
+	 * @default ''
+	 * @instance
+	 * @memberof Geolocation
+	 * @type {?(string)}
+	 */
+
+	geolocateTitle: Config.string().value(''),
+
+	/**
 	 * @default undefined
 	 * @instance
 	 * @memberof Geolocation
@@ -140,6 +156,15 @@ Geolocation.STATE = {
 			label: 'Option 2'
 		}
 	]),
+
+	/**
+	 * @default ''
+	 * @instance
+	 * @memberof Geolocation
+	 * @type {?(string)}
+	 */
+
+	pathThemeImages: Config.string().value(''),
 
 	/**
 	 * @default Choose an Option

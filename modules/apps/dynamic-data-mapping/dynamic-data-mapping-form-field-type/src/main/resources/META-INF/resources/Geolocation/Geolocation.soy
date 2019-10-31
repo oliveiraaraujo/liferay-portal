@@ -7,6 +7,7 @@
 	{@param? _handleFieldFocused: any}
 	{@param? displayErrors: bool}
 	{@param? errorMessage: string}
+	{@param? geolocateTitle: string}
 	{@param? id: string}
 	{@param? inline: bool}
 	{@param? label: string}
@@ -14,6 +15,7 @@
 		label: string,
 		value: string
 	]>}
+	{@param? pathThemeImages: string}
 	{@param? predefinedValue: string}
 	{@param? readOnly: bool}
 	{@param? repeatable: bool}
@@ -32,9 +34,11 @@
 				{param _handleFieldFocused: $_handleFieldFocused /}
 				{param _handleValueChanged: $_handleValueChanged /}
 				{param disabled: $readOnly /}
+				{param geolocateTitle: $geolocateTitle /}
 				{param inline: $inline /}
 				{param name: $name /}
 				{param options: $options /}
+				{param pathThemeImages: $pathThemeImages /}
 				{param predefinedValue: $predefinedValue /}
 				{param value: $value /}
 			{/call}
@@ -59,6 +63,8 @@
 	{@param? _handleFieldBlurred: any}
 	{@param? _handleFieldFocused: any}
 	{@param? _handleValueChanged: any}
+	{@param? geolocateTitle: string}
+	{@param? pathThemeImages: string}
 	{@param? predefinedValue: string}
 	{@param? value: string}
 
@@ -73,8 +79,8 @@
 		<div>{$geolocationValue}</div>
 
 		<img
-			title="{Liferay.Language.get('geolocate')}"
-			src="{Liferay.themeDisplay.getPathThemeImages()}/common/geolocation.png"
+			title="{$geolocateTitle}"
+			src="{$pathThemeImages}/common/geolocation.png"
 		/>
 	</div>
 {/template}
