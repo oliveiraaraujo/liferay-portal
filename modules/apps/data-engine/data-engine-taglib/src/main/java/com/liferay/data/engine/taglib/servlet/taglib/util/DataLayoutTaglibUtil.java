@@ -366,7 +366,8 @@ public class DataLayoutTaglibUtil {
 			MapUtil.getString(
 				ddmFormFieldTypeProperties, "ddm.form.field.type.icon")
 		).put(
-			"javaScriptModule", ddmFormFieldType.getModuleName()
+			"javaScriptModule",
+			_resolveModuleName(ddmFormFieldType.getModuleName())
 		).put(
 			"label",
 			_getLanguageTerm(
@@ -434,7 +435,7 @@ public class DataLayoutTaglibUtil {
 		DDMFormFieldType ddmFormFieldType =
 			_ddmFormFieldTypeServicesTracker.getDDMFormFieldType(name);
 
-		return ddmFormFieldType.getModuleName();
+		return _resolveModuleName(ddmFormFieldType.getModuleName());
 	}
 
 	private String _resolveFieldTypesModules() {
@@ -450,6 +451,14 @@ public class DataLayoutTaglibUtil {
 		).collect(
 			Collectors.joining(StringPool.COMMA)
 		);
+	}
+
+	private String _resolveModuleName(String moduleName) {
+		if (Validator.isNull(moduleName)) {
+			return StringPool.BLANK;
+		}
+
+		return _npmResolver.resolveModuleName(moduleName);
 	}
 
 	private void _setTypeDDMFormFieldValue(
