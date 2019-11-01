@@ -338,7 +338,7 @@ public class ${schemaName} <#if dtoParentClassName?has_content>extends ${dtoPare
 		return sb.toString();
 	}
 
-	@Schema(defaultValue = "${configYAML.apiPackagePath}.dto.${escapedVersion}.${schemaName}", name = "x-classname")
+	@Schema(defaultValue = "${configYAML.apiPackagePath}.dto.${escapedVersion}.${schemaName}", name = "x-class-name")
 	public String xClassName;
 
 	private static String _escape(Object object) {
