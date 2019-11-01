@@ -72,12 +72,6 @@ public class GenericError {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String message;
 
-	@Schema(
-		defaultValue = "com.liferay.bulk.rest.dto.v1_0.GenericError",
-		name = "x-classname"
-	)
-	public String xClassName;
-
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -123,6 +117,12 @@ public class GenericError {
 
 		return sb.toString();
 	}
+
+	@Schema(
+		defaultValue = "com.liferay.bulk.rest.dto.v1_0.GenericError",
+		name = "x-classname"
+	)
+	public String xClassName;
 
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);

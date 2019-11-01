@@ -70,12 +70,6 @@ public class Selection {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Long size;
 
-	@Schema(
-		defaultValue = "com.liferay.bulk.rest.dto.v1_0.Selection",
-		name = "x-classname"
-	)
-	public String xClassName;
-
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -117,6 +111,12 @@ public class Selection {
 
 		return sb.toString();
 	}
+
+	@Schema(
+		defaultValue = "com.liferay.bulk.rest.dto.v1_0.Selection",
+		name = "x-classname"
+	)
+	public String xClassName;
 
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);

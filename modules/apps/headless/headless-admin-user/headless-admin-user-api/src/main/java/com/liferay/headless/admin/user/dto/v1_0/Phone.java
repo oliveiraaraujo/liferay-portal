@@ -184,12 +184,6 @@ public class Phone {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected Boolean primary;
 
-	@Schema(
-		defaultValue = "com.liferay.headless.admin.user.dto.v1_0.Phone",
-		name = "x-classname"
-	)
-	public String xClassName;
-
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -283,6 +277,12 @@ public class Phone {
 
 		return sb.toString();
 	}
+
+	@Schema(
+		defaultValue = "com.liferay.headless.admin.user.dto.v1_0.Phone",
+		name = "x-classname"
+	)
+	public String xClassName;
 
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);

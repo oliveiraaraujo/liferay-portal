@@ -136,12 +136,6 @@ public class WorkflowTaskAssignToRole {
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	protected Long roleId;
 
-	@Schema(
-		defaultValue = "com.liferay.headless.admin.workflow.dto.v1_0.WorkflowTaskAssignToRole",
-		name = "x-classname"
-	)
-	public String xClassName;
-
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -215,6 +209,12 @@ public class WorkflowTaskAssignToRole {
 
 		return sb.toString();
 	}
+
+	@Schema(
+		defaultValue = "com.liferay.headless.admin.workflow.dto.v1_0.WorkflowTaskAssignToRole",
+		name = "x-classname"
+	)
+	public String xClassName;
 
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);

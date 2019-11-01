@@ -352,12 +352,6 @@ public class DataRecordCollectionPermission {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Boolean viewDataRecord;
 
-	@Schema(
-		defaultValue = "com.liferay.data.engine.rest.dto.v1_0.DataRecordCollectionPermission",
-		name = "x-classname"
-	)
-	public String xClassName;
-
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -515,6 +509,12 @@ public class DataRecordCollectionPermission {
 
 		return sb.toString();
 	}
+
+	@Schema(
+		defaultValue = "com.liferay.data.engine.rest.dto.v1_0.DataRecordCollectionPermission",
+		name = "x-classname"
+	)
+	public String xClassName;
 
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);

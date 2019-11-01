@@ -98,12 +98,6 @@ public class ObjectReviewed {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected String resourceType;
 
-	@Schema(
-		defaultValue = "com.liferay.headless.admin.workflow.dto.v1_0.ObjectReviewed",
-		name = "x-classname"
-	)
-	public String xClassName;
-
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -159,6 +153,12 @@ public class ObjectReviewed {
 
 		return sb.toString();
 	}
+
+	@Schema(
+		defaultValue = "com.liferay.headless.admin.workflow.dto.v1_0.ObjectReviewed",
+		name = "x-classname"
+	)
+	public String xClassName;
 
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);

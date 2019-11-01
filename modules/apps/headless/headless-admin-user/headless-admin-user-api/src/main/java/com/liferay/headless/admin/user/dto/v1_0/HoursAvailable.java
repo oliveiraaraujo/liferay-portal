@@ -132,12 +132,6 @@ public class HoursAvailable {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected String opens;
 
-	@Schema(
-		defaultValue = "com.liferay.headless.admin.user.dto.v1_0.HoursAvailable",
-		name = "x-classname"
-	)
-	public String xClassName;
-
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -211,6 +205,12 @@ public class HoursAvailable {
 
 		return sb.toString();
 	}
+
+	@Schema(
+		defaultValue = "com.liferay.headless.admin.user.dto.v1_0.HoursAvailable",
+		name = "x-classname"
+	)
+	public String xClassName;
 
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);

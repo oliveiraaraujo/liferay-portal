@@ -430,12 +430,6 @@ public class Organization {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected Service[] services;
 
-	@Schema(
-		defaultValue = "com.liferay.headless.admin.user.dto.v1_0.Organization",
-		name = "x-classname"
-	)
-	public String xClassName;
-
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -654,6 +648,12 @@ public class Organization {
 
 		return sb.toString();
 	}
+
+	@Schema(
+		defaultValue = "com.liferay.headless.admin.user.dto.v1_0.Organization",
+		name = "x-classname"
+	)
+	public String xClassName;
 
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);

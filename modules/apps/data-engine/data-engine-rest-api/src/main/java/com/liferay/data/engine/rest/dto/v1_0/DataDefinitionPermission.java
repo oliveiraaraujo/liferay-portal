@@ -210,12 +210,6 @@ public class DataDefinitionPermission {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Boolean view;
 
-	@Schema(
-		defaultValue = "com.liferay.data.engine.rest.dto.v1_0.DataDefinitionPermission",
-		name = "x-classname"
-	)
-	public String xClassName;
-
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -322,6 +316,12 @@ public class DataDefinitionPermission {
 
 		return sb.toString();
 	}
+
+	@Schema(
+		defaultValue = "com.liferay.data.engine.rest.dto.v1_0.DataDefinitionPermission",
+		name = "x-classname"
+	)
+	public String xClassName;
 
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);

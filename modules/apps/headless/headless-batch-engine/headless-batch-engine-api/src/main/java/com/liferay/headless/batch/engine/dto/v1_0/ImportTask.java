@@ -397,12 +397,6 @@ public class ImportTask {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String version;
 
-	@Schema(
-		defaultValue = "com.liferay.headless.batch.engine.dto.v1_0.ImportTask",
-		name = "x-classname"
-	)
-	public String xClassName;
-
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -559,6 +553,12 @@ public class ImportTask {
 
 		return sb.toString();
 	}
+
+	@Schema(
+		defaultValue = "com.liferay.headless.batch.engine.dto.v1_0.ImportTask",
+		name = "x-classname"
+	)
+	public String xClassName;
 
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);

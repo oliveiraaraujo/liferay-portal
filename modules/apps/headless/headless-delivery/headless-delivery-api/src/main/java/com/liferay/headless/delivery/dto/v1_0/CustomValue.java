@@ -100,12 +100,6 @@ public class CustomValue {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Geo geo;
 
-	@Schema(
-		defaultValue = "com.liferay.headless.delivery.dto.v1_0.CustomValue",
-		name = "x-classname"
-	)
-	public String xClassName;
-
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -161,6 +155,12 @@ public class CustomValue {
 
 		return sb.toString();
 	}
+
+	@Schema(
+		defaultValue = "com.liferay.headless.delivery.dto.v1_0.CustomValue",
+		name = "x-classname"
+	)
+	public String xClassName;
 
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);

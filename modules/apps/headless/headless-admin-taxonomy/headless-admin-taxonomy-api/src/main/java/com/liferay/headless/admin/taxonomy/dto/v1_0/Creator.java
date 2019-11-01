@@ -238,12 +238,6 @@ public class Creator {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected String profileURL;
 
-	@Schema(
-		defaultValue = "com.liferay.headless.admin.taxonomy.dto.v1_0.Creator",
-		name = "x-classname"
-	)
-	public String xClassName;
-
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -369,6 +363,12 @@ public class Creator {
 
 		return sb.toString();
 	}
+
+	@Schema(
+		defaultValue = "com.liferay.headless.admin.taxonomy.dto.v1_0.Creator",
+		name = "x-classname"
+	)
+	public String xClassName;
 
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);

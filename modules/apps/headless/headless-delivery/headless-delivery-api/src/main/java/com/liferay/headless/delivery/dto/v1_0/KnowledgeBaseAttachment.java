@@ -212,12 +212,6 @@ public class KnowledgeBaseAttachment {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String title;
 
-	@Schema(
-		defaultValue = "com.liferay.headless.delivery.dto.v1_0.KnowledgeBaseAttachment",
-		name = "x-classname"
-	)
-	public String xClassName;
-
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -326,6 +320,12 @@ public class KnowledgeBaseAttachment {
 
 		return sb.toString();
 	}
+
+	@Schema(
+		defaultValue = "com.liferay.headless.delivery.dto.v1_0.KnowledgeBaseAttachment",
+		name = "x-classname"
+	)
+	public String xClassName;
 
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);

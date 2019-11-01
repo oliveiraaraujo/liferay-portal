@@ -136,12 +136,6 @@ public class FormPageContext {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Boolean showRequiredFieldsWarning;
 
-	@Schema(
-		defaultValue = "com.liferay.headless.form.dto.v1_0.FormPageContext",
-		name = "x-classname"
-	)
-	public String xClassName;
-
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -213,6 +207,12 @@ public class FormPageContext {
 
 		return sb.toString();
 	}
+
+	@Schema(
+		defaultValue = "com.liferay.headless.form.dto.v1_0.FormPageContext",
+		name = "x-classname"
+	)
+	public String xClassName;
 
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);

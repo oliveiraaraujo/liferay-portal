@@ -217,12 +217,6 @@ public class DataRecordCollection {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Long siteId;
 
-	@Schema(
-		defaultValue = "com.liferay.data.engine.rest.dto.v1_0.DataRecordCollection",
-		name = "x-classname"
-	)
-	public String xClassName;
-
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -319,6 +313,12 @@ public class DataRecordCollection {
 
 		return sb.toString();
 	}
+
+	@Schema(
+		defaultValue = "com.liferay.data.engine.rest.dto.v1_0.DataRecordCollection",
+		name = "x-classname"
+	)
+	public String xClassName;
 
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);
