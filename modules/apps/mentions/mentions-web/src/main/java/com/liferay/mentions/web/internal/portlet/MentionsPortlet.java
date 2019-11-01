@@ -175,7 +175,7 @@ public class MentionsPortlet extends MVCPortlet {
 
 		if (jsonObject.isNull("strategy")) {
 			throw new PortalException(
-				"strategy field is mandatory in " + strategyString);
+				"Field \"strategy\" is missing in " + strategyString);
 		}
 
 		return jsonObject;
@@ -194,7 +194,7 @@ public class MentionsPortlet extends MVCPortlet {
 
 		if (mentionsStrategy == null) {
 			throw new PortalException(
-				"No mentions strategy registered with " + strategy);
+				"No mentions strategy is registered with " + strategy);
 		}
 
 		return () -> {
