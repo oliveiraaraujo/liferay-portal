@@ -162,7 +162,6 @@ public class PropagateGroupFragmentEntryChangesMVCActionCommandTest {
 			JavaConstants.JAVAX_PORTLET_CONFIG, liferayPortletConfig);
 
 		mockActionRequest.setAttribute(WebKeys.THEME_DISPLAY, themeDisplay);
-
 		mockActionRequest.setParameter(
 			"fragmentEntryId",
 			String.valueOf(_fragmentEntry.getFragmentEntryId()));
@@ -247,7 +246,6 @@ public class PropagateGroupFragmentEntryChangesMVCActionCommandTest {
 				JavaConstants.JAVAX_PORTLET_RESPONSE, new MockActionResponse());
 			httpServletRequest.setAttribute(
 				WebKeys.THEME_DISPLAY, _themeDisplay);
-
 			httpServletRequest.setParameter(
 				"rowIds", new String[] {String.valueOf(_group.getGroupId())});
 
