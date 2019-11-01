@@ -86,7 +86,7 @@ const ListEntries = () => {
 				addButton={() => (
 					<Button
 						className="nav-btn nav-btn-monospaced navbar-breakpoint-down-d-none"
-						onClick={handleEditItem}
+						onClick={() => handleEditItem(0)}
 						symbol="plus"
 						tooltip={Liferay.Language.get('new-entry')}
 					/>
@@ -99,7 +99,7 @@ const ListEntries = () => {
 					button: () => (
 						<Button
 							displayType="secondary"
-							onClick={handleEditItem}
+							onClick={() => handleEditItem(0)}
 						>
 							{Liferay.Language.get('new-entry')}
 						</Button>
