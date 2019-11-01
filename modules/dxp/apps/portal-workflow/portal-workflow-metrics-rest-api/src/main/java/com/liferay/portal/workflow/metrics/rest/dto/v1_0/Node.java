@@ -268,6 +268,12 @@ public class Node {
 		return sb.toString();
 	}
 
+	@Schema(
+		defaultValue = "com.liferay.portal.workflow.metrics.rest.dto.v1_0.Node",
+		name = "x-class-name"
+	)
+	public String xClassName;
+
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);
 

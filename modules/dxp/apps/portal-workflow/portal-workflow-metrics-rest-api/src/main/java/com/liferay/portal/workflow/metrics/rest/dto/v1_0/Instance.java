@@ -690,6 +690,12 @@ public class Instance {
 		return sb.toString();
 	}
 
+	@Schema(
+		defaultValue = "com.liferay.portal.workflow.metrics.rest.dto.v1_0.Instance",
+		name = "x-class-name"
+	)
+	public String xClassName;
+
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);
 
