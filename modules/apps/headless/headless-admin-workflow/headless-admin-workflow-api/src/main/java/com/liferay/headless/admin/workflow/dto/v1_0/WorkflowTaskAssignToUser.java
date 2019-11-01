@@ -212,7 +212,7 @@ public class WorkflowTaskAssignToUser {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.admin.workflow.dto.v1_0.WorkflowTaskAssignToUser",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

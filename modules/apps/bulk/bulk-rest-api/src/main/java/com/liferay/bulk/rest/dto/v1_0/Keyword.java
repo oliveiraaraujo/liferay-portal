@@ -118,7 +118,7 @@ public class Keyword {
 
 	@Schema(
 		defaultValue = "com.liferay.bulk.rest.dto.v1_0.Keyword",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

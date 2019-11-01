@@ -116,7 +116,7 @@ public class Status {
 
 	@Schema(
 		defaultValue = "com.liferay.bulk.rest.dto.v1_0.Status",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

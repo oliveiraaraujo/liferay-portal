@@ -208,7 +208,7 @@ public class HoursAvailable {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.admin.user.dto.v1_0.HoursAvailable",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

@@ -470,7 +470,7 @@ public class ExportTask {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.batch.engine.dto.v1_0.ExportTask",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

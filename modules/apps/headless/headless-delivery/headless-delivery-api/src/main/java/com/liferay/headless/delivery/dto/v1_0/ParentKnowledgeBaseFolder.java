@@ -159,7 +159,7 @@ public class ParentKnowledgeBaseFolder {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.delivery.dto.v1_0.ParentKnowledgeBaseFolder",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

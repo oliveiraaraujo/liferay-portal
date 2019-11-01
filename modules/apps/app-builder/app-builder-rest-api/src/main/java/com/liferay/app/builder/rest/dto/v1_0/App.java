@@ -528,7 +528,7 @@ public class App {
 
 	@Schema(
 		defaultValue = "com.liferay.app.builder.rest.dto.v1_0.App",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

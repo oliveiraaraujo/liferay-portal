@@ -164,7 +164,7 @@ public class RenderedContent {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.delivery.dto.v1_0.RenderedContent",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

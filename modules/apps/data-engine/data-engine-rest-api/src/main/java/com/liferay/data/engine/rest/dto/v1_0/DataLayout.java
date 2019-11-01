@@ -534,7 +534,7 @@ public class DataLayout {
 
 	@Schema(
 		defaultValue = "com.liferay.data.engine.rest.dto.v1_0.DataLayout",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

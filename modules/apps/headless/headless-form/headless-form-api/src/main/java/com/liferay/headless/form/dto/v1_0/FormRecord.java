@@ -414,7 +414,7 @@ public class FormRecord {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.form.dto.v1_0.FormRecord",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

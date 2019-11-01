@@ -198,7 +198,7 @@ public class Validation {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.form.dto.v1_0.Validation",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

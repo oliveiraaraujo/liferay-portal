@@ -156,7 +156,7 @@ public class ObjectReviewed {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.admin.workflow.dto.v1_0.ObjectReviewed",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

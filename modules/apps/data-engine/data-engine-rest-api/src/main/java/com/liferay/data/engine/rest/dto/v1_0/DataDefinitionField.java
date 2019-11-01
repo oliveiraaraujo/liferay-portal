@@ -763,7 +763,7 @@ public class DataDefinitionField {
 
 	@Schema(
 		defaultValue = "com.liferay.data.engine.rest.dto.v1_0.DataDefinitionField",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

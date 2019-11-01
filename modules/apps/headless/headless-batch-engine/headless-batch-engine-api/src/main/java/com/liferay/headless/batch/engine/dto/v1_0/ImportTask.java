@@ -556,7 +556,7 @@ public class ImportTask {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.batch.engine.dto.v1_0.ImportTask",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

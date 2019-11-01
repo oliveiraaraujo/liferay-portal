@@ -120,7 +120,7 @@ public class GenericError {
 
 	@Schema(
 		defaultValue = "com.liferay.bulk.rest.dto.v1_0.GenericError",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

@@ -154,7 +154,7 @@ public class OrganizationBrief {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.admin.user.dto.v1_0.OrganizationBrief",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

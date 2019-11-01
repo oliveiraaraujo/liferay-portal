@@ -316,7 +316,7 @@ public class DataRecordCollection {
 
 	@Schema(
 		defaultValue = "com.liferay.data.engine.rest.dto.v1_0.DataRecordCollection",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

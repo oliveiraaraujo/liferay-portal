@@ -426,7 +426,7 @@ public class Role {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.admin.workflow.dto.v1_0.Role",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

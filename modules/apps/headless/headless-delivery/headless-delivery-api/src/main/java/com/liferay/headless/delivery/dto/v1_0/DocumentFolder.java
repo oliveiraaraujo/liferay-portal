@@ -624,7 +624,7 @@ public class DocumentFolder {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.delivery.dto.v1_0.DocumentFolder",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

@@ -940,7 +940,7 @@ public class MessageBoardThread {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.delivery.dto.v1_0.MessageBoardThread",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

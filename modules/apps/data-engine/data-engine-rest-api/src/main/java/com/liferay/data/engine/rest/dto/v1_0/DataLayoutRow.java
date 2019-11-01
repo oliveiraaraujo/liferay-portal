@@ -130,7 +130,7 @@ public class DataLayoutRow {
 
 	@Schema(
 		defaultValue = "com.liferay.data.engine.rest.dto.v1_0.DataLayoutRow",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

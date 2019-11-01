@@ -210,7 +210,7 @@ public class FormPageContext {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.form.dto.v1_0.FormPageContext",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

@@ -226,7 +226,7 @@ public class TaxonomyCategoryBulkSelection {
 
 	@Schema(
 		defaultValue = "com.liferay.bulk.rest.dto.v1_0.TaxonomyCategoryBulkSelection",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

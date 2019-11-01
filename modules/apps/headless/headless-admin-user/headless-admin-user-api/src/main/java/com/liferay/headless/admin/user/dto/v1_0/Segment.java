@@ -412,7 +412,7 @@ public class Segment {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.admin.user.dto.v1_0.Segment",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

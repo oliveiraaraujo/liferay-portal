@@ -298,7 +298,7 @@ public class FormContext {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.form.dto.v1_0.FormContext",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

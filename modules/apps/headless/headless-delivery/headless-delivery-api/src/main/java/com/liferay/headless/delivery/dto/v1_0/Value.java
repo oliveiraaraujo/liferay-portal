@@ -319,7 +319,7 @@ public class Value {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.delivery.dto.v1_0.Value",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

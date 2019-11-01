@@ -173,7 +173,7 @@ public class DocumentBulkSelection {
 
 	@Schema(
 		defaultValue = "com.liferay.bulk.rest.dto.v1_0.DocumentBulkSelection",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

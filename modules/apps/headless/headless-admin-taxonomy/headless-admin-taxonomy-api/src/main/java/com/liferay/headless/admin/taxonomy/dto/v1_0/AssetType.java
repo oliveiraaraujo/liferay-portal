@@ -200,7 +200,7 @@ public class AssetType {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.admin.taxonomy.dto.v1_0.AssetType",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

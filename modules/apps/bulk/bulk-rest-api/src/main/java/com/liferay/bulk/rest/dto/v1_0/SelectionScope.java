@@ -192,7 +192,7 @@ public class SelectionScope {
 
 	@Schema(
 		defaultValue = "com.liferay.bulk.rest.dto.v1_0.SelectionScope",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

@@ -159,7 +159,7 @@ public class AppDeployment {
 
 	@Schema(
 		defaultValue = "com.liferay.app.builder.rest.dto.v1_0.AppDeployment",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

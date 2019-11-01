@@ -323,7 +323,7 @@ public class MessageBoardAttachment {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.delivery.dto.v1_0.MessageBoardAttachment",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

@@ -275,7 +275,7 @@ public class FormFieldValue {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.form.dto.v1_0.FormFieldValue",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

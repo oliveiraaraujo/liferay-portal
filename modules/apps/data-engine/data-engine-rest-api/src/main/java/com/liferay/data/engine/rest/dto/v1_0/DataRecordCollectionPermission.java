@@ -512,7 +512,7 @@ public class DataRecordCollectionPermission {
 
 	@Schema(
 		defaultValue = "com.liferay.data.engine.rest.dto.v1_0.DataRecordCollectionPermission",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

@@ -1205,7 +1205,7 @@ public class StructuredContent {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.delivery.dto.v1_0.StructuredContent",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

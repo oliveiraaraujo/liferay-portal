@@ -158,7 +158,7 @@ public class CustomValue {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.admin.user.dto.v1_0.CustomValue",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

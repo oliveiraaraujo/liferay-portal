@@ -155,7 +155,7 @@ public class ParentTaxonomyVocabulary {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.admin.taxonomy.dto.v1_0.ParentTaxonomyVocabulary",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

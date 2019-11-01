@@ -1042,7 +1042,7 @@ public class BlogPosting {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.delivery.dto.v1_0.BlogPosting",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 

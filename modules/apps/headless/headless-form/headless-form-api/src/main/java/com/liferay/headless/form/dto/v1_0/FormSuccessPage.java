@@ -198,7 +198,7 @@ public class FormSuccessPage {
 
 	@Schema(
 		defaultValue = "com.liferay.headless.form.dto.v1_0.FormSuccessPage",
-		name = "x-classname"
+		name = "x-class-name"
 	)
 	public String xClassName;
 
