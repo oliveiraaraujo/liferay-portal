@@ -19,7 +19,7 @@ package com.liferay.portal.output.stream.container.constants;
  */
 public class OutputStreamContainerConstants {
 
-	public static final String DUMMY_OUTPUT_STREAM_CONTAINER_FACTORY_NAME =
+	public static final String FACTORY_NAME_DUMMY =
 		"dummy";
 
 }

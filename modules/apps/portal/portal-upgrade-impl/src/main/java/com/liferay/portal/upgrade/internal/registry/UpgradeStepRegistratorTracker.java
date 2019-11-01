@@ -181,7 +181,7 @@ public class UpgradeStepRegistratorTracker {
 					_upgradeExecutor.execute(
 						bundleSymbolicName, upgradeInfos,
 						OutputStreamContainerConstants.
-							DUMMY_OUTPUT_STREAM_CONTAINER_FACTORY_NAME);
+							FACTORY_NAME_DUMMY);
 				}
 				catch (Throwable t) {
 					_swappedLogExecutor.execute(

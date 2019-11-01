@@ -468,7 +468,7 @@ public class VerifyProcessTrackerOSGiCommands {
 			_execute(
 				verifyProcessTrackerMap, key,
 				OutputStreamContainerConstants.
-					DUMMY_OUTPUT_STREAM_CONTAINER_FACTORY_NAME,
+					FACTORY_NAME_DUMMY,
 				false);
 		}
 
