@@ -19,6 +19,8 @@ import com.liferay.poshi.runner.elements.PoshiNode;
 import com.liferay.poshi.runner.util.StringUtil;
 import com.liferay.poshi.runner.util.Validator;
 
+import java.net.URL;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,7 +44,10 @@ public class PoshiScriptParserException extends Exception {
 		super(msg);
 
 		setErrorLineNumber(poshiNode.getPoshiScriptLineNumber());
-		setFilePath(poshiNode.getFilePath());
+
+		URL url = poshiNode.getURL();
+
+		setFilePath(url.getPath());
 		setPoshiNode(poshiNode);
 	}
 
@@ -51,7 +56,9 @@ public class PoshiScriptParserException extends Exception {
 
 		super(msg);
 
-		setFilePath(parentPoshiNode.getFilePath());
+		URL url = parentPoshiNode.getURL();
+
+		setFilePath(url.getPath());
 
 		setPoshiNode(parentPoshiNode);
 
