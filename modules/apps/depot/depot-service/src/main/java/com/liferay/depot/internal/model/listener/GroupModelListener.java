@@ -37,7 +37,7 @@ public class GroupModelListener extends BaseModelListener<Group> {
 			return;
 		}
 
-		_depotEntryGroupRelLocalService.deleteGroupDepotEntryGroupRels(
+		_depotEntryGroupRelLocalService.deleteToGroupDepotEntryGroupRels(
 			group.getGroupId());
 	}
 

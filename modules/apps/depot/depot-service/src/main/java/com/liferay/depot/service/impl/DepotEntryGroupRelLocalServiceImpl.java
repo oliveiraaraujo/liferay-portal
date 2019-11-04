@@ -54,7 +54,7 @@ public class DepotEntryGroupRelLocalServiceImpl
 	}
 
 	@Override
-	public void deleteGroupDepotEntryGroupRels(long toGroupId) {
+	public void deleteToGroupDepotEntryGroupRels(long toGroupId) {
 		depotEntryGroupRelPersistence.removeByToGroupId(toGroupId);
 	}
 
