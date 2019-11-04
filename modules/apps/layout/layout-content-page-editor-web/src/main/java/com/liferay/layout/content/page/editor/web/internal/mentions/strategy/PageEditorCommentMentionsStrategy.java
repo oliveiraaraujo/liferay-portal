@@ -68,7 +68,7 @@ public class PageEditorCommentMentionsStrategy implements MentionsStrategy {
 						ActionKeys.UPDATE);
 				}
 				catch (PortalException pe) {
-					_log.error("Error checking permission for " + user, pe);
+					_log.error("Unable to check permission for " + user, pe);
 
 					return false;
 				}
