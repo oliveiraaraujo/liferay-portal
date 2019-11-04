@@ -142,6 +142,15 @@ function ClickGoalPicker({allowEdit = true, onSelectClickGoalTarget, target}) {
 							{Liferay.Language.get(
 								'a-clickable-element-on-the-page-must-be-selected-to-be-measured'
 							)}
+							<div className="font-weight-bold mt-2 text-danger">
+								<ClayIcon
+									className="mr-2"
+									symbol="exclamation-full"
+								/>
+								{Liferay.Language.get(
+									'an-element-needs-to-be-set'
+								)}
+							</div>
 						</dd>
 					</dl>
 				)}
