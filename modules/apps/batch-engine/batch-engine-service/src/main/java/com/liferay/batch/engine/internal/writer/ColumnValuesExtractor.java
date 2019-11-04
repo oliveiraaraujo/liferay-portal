@@ -33,13 +33,13 @@ public class ColumnValuesExtractor {
 		Map<String, Field> fieldMap, List<String> fieldNames) {
 
 		List<UnsafeFunction<Object, Object, ReflectiveOperationException>>
-			extractors = new ArrayList<>(fieldNames.size());
+			unsafeFunctions = new ArrayList<>(fieldNames.size());
 
 		for (String fieldName : fieldNames) {
 			Field field = fieldMap.get(fieldName);
 
 			if (field != null) {
-				extractors.add(
+				unsafeFunctions.add(
 					item -> {
 						Object value = field.get(item);
 
@@ -77,7 +77,7 @@ public class ColumnValuesExtractor {
 
 			String key = fieldName.substring(index + 1);
 
-			extractors.add(
+			unsafeFunctions.add(
 				item -> {
 					Map<?, ?> map = (Map<?, ?>)mapField.get(item);
 
@@ -91,18 +91,18 @@ public class ColumnValuesExtractor {
 				});
 		}
 
-		_extractors = extractors;
+		_unsafeFunctions = unsafeFunctions;
 	}
 
 	public List<Object> extractValues(Object item)
 		throws ReflectiveOperationException {
 
-		List<Object> values = new ArrayList<>(_extractors.size());
+		List<Object> values = new ArrayList<>(_unsafeFunctions.size());
 
 		for (UnsafeFunction<Object, Object, ReflectiveOperationException>
-				extractor : _extractors) {
+				unsafeFunction : _unsafeFunctions) {
 
-			values.add(extractor.apply(item));
+			values.add(unsafeFunction.apply(item));
 		}
 
 		return values;
@@ -110,6 +110,6 @@ public class ColumnValuesExtractor {
 
 	private final List
 		<UnsafeFunction<Object, Object, ReflectiveOperationException>>
-			_extractors;
+			_unsafeFunctions;
 
 }
