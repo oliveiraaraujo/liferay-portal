@@ -50,7 +50,7 @@ public class DepotEntryGroupRelLocalServiceTest {
 		new LiferayIntegrationTestRule();
 
 	@Test
-	public void testDeletingASiteDeletesItsGroupRels() throws Exception {
+	public void testDeleteGroup() throws Exception {
 		DepotEntry depotEntry = _depotEntryLocalService.addDepotEntry(
 			new HashMap<Locale, String>() {
 				{
