@@ -396,6 +396,7 @@ const ConnectedFragmentEntryLinkList = getConnectedComponent(
 		'dropTargetBorder',
 		'dropTargetItemId',
 		'dropTargetItemType',
+		'fragmentEntryLinks',
 		'hoveredItemId',
 		'hoveredItemType',
 		'layoutData',
