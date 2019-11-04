@@ -15,6 +15,7 @@
 package com.liferay.product.navigation.product.menu.web.internal.product.navigation.control.menu;
 
 import com.liferay.application.list.PanelCategoryRegistry;
+import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -23,6 +24,9 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.service.permission.GroupPermission;
+import com.liferay.portal.kernel.service.permission.PortletPermission;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -191,6 +195,17 @@ public class PagesTreeProductNavigationControlMenuEntry
 			return false;
 		}
 
+		if (!_portletPermission.hasControlPanelAccessPermission(
+				themeDisplay.getPermissionChecker(),
+				themeDisplay.getScopeGroupId(),
+				LayoutAdminPortletKeys.GROUP_PAGES) &&
+			!_groupPermission.contains(
+				themeDisplay.getPermissionChecker(),
+				themeDisplay.getScopeGroupId(), ActionKeys.MANAGE_LAYOUTS)) {
+
+			return false;
+		}
+
 		return true;
 	}
 
@@ -258,9 +273,15 @@ public class PagesTreeProductNavigationControlMenuEntry
 		"pages_tree_icon.tmpl");
 
 	@Reference
+	private GroupPermission _groupPermission;
+
+	@Reference
 	private PanelCategoryRegistry _panelCategoryRegistry;
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private PortletPermission _portletPermission;
 
 }
