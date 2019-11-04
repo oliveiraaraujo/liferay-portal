@@ -171,14 +171,14 @@ public class LayoutSEOLinkManagerCanonicalLayoutSEOLinkTest {
 		themeDisplay.setCompany(company);
 
 		themeDisplay.setLayoutSet(_layout.getLayoutSet());
+		themeDisplay.setPermissionChecker(
+			PermissionThreadLocal.getPermissionChecker());
+		themeDisplay.setPlid(_layout.getPlid());
 		themeDisplay.setSecure(false);
 		themeDisplay.setServerName(_VIRTUAL_HOSTNAME);
 		themeDisplay.setServerPort(_SERVER_PORT);
 		themeDisplay.setSiteGroupId(_group.getGroupId());
 		themeDisplay.setScopeGroupId(_group.getGroupId());
-		themeDisplay.setPermissionChecker(
-			PermissionThreadLocal.getPermissionChecker());
-		themeDisplay.setPlid(_layout.getPlid());
 
 		return themeDisplay;
 	}
