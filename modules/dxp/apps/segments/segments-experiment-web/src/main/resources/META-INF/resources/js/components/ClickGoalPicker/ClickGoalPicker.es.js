@@ -114,28 +114,37 @@ function ClickGoalPicker({allowEdit = true, onSelectClickGoalTarget, target}) {
 					{Liferay.Language.get('click-goal')}
 				</h4>
 
-				<dl className="mb-0">
-					<div className="d-flex">
-						<dt>{Liferay.Language.get('element')}:</dt>
-						{state.selectedTarget ? (
-							<dd className="ml-2 text-truncate">
-								<ClayLink
-									href={state.selectedTarget}
-									onClick={scrollIntoView}
-									title={state.selectedTarget}
-								>
-									{state.selectedTarget}
-								</ClayLink>
-							</dd>
-						) : (
-							<dd className="ml-2 text-secondary">
-								{Liferay.Language.get(
-									'select-element-to-be-measured'
-								)}
-							</dd>
-						)}
-					</div>
-				</dl>
+				{state.selectedTarget && (
+					<dl className="autofit-row">
+						<dt className="autofit-col">
+							{Liferay.Language.get('element')}:
+						</dt>
+
+						<dd className="autofit-col autofit-col-expand mb-0 ml-2 text-truncate-inline">
+							<ClayLink
+								className="text-truncate"
+								href={state.selectedTarget}
+								onClick={scrollIntoView}
+								title={state.selectedTarget}
+							>
+								{state.selectedTarget}
+							</ClayLink>
+						</dd>
+					</dl>
+				)}
+
+				{!state.selectedTarget && (
+					<dl>
+						<dt className="d-inline">
+							{Liferay.Language.get('element')}:
+						</dt>
+						<dd className="d-inline ml-2 text-secondary">
+							{Liferay.Language.get(
+								'a-clickable-element-on-the-page-must-be-selected-to-be-measured'
+							)}
+						</dd>
+					</dl>
+				)}
 
 				{allowEdit && (
 					<ClayButton
