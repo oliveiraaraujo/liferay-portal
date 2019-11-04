@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.liferay</groupId>
 	<artifactId>com.liferay.source.formatter</artifactId>
-	<version>1.0.932</version>
+	<version>1.0.933</version>
 	<dependencies>
 		<dependency>
 			<groupId>com.googlecode.java-diff-utils</groupId>
@@ -123,7 +123,7 @@
 		<dependency>
 			<groupId>com.liferay</groupId>
 			<artifactId>com.liferay.portal.tools.java.parser</artifactId>
-			<version>1.0.25</version>
+			<version>1.0.26</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
