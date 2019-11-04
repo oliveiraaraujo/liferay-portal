@@ -96,10 +96,6 @@ public class DepotEntryGroupRelLocalServiceUtil {
 		return getService().deleteDepotEntryGroupRel(depotEntryGroupRelId);
 	}
 
-	public static void deleteGroupDepotEntryGroupRels(long toGroupId) {
-		getService().deleteGroupDepotEntryGroupRels(toGroupId);
-	}
-
 	/**
 	 * @throws PortalException
 	 */
@@ -109,6 +105,10 @@ public class DepotEntryGroupRelLocalServiceUtil {
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
+	}
+
+	public static void deleteToGroupDepotEntryGroupRels(long toGroupId) {
+		getService().deleteToGroupDepotEntryGroupRels(toGroupId);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery

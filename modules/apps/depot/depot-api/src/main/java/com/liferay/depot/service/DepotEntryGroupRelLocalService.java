@@ -107,14 +107,14 @@ public interface DepotEntryGroupRelLocalService
 			long depotEntryGroupRelId)
 		throws PortalException;
 
-	public void deleteGroupDepotEntryGroupRels(long toGroupId);
-
 	/**
 	 * @throws PortalException
 	 */
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
+
+	public void deleteToGroupDepotEntryGroupRels(long toGroupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DynamicQuery dynamicQuery();

@@ -99,12 +99,6 @@ public class DepotEntryGroupRelLocalServiceWrapper
 			depotEntryGroupRelId);
 	}
 
-	@Override
-	public void deleteGroupDepotEntryGroupRels(long toGroupId) {
-		_depotEntryGroupRelLocalService.deleteGroupDepotEntryGroupRels(
-			toGroupId);
-	}
-
 	/**
 	 * @throws PortalException
 	 */
@@ -115,6 +109,12 @@ public class DepotEntryGroupRelLocalServiceWrapper
 
 		return _depotEntryGroupRelLocalService.deletePersistedModel(
 			persistedModel);
+	}
+
+	@Override
+	public void deleteToGroupDepotEntryGroupRels(long toGroupId) {
+		_depotEntryGroupRelLocalService.deleteToGroupDepotEntryGroupRels(
+			toGroupId);
 	}
 
 	@Override
