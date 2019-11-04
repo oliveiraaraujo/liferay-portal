@@ -48,6 +48,7 @@ public class PoshiScriptParserException extends Exception {
 		URL url = poshiNode.getURL();
 
 		setFilePath(url.getPath());
+
 		setPoshiNode(poshiNode);
 	}
 
