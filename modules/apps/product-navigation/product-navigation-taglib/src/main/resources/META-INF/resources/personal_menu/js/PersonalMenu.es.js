@@ -35,7 +35,6 @@ function PersonalMenu({color, isImpersonated, itemsURL, label, size}) {
 	return (
 		<ClayDropDownWithItems
 			items={items}
-			menuElementAttrs={{className: 'dropdown-menu-personal-menu'}}
 			trigger={
 				label ? (
 					<div

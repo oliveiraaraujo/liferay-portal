@@ -38,11 +38,11 @@ if (size != null) {
 %>
 
 <style type="text/css">
-	.dropdown-menu-personal-menu {
+	#clay_dropdown_portal .dropdown-menu-personal-menu {
 		max-height: none;
 	}
 
-	.dropdown-menu-personal-menu .dropdown-item-indicator {
+	#clay_dropdown_portal .dropdown-menu-personal-menu .dropdown-item-indicator {
 		padding-right: 0.5rem;
 	}
 
