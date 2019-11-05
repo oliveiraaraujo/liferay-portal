@@ -31,8 +31,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
-import java.lang.reflect.Method;
-
 import java.util.Locale;
 import java.util.Map;
 
@@ -172,39 +170,6 @@ public class DDMFormTemplateContextFactoryTest {
 				ddmForm, ddmFormRenderingContext);
 
 		Assert.assertEquals(true, templateContext.get("readOnly"));
-	}
-
-	@Test
-	public void testRequiredFieldsWarningHTML() throws Exception {
-		DDMForm ddmForm = DDMFormTestUtil.createDDMForm();
-
-		DDMFormRenderingContext ddmFormRenderingContext =
-			new DDMFormRenderingContext();
-
-		ddmFormRenderingContext.setLocale(LocaleUtil.US);
-		ddmFormRenderingContext.setHttpServletRequest(_httpServletRequest);
-		ddmFormRenderingContext.setReadOnly(true);
-
-		Map<String, Object> templateContext =
-			_ddmFormTemplateContextFactory.create(
-				ddmForm, ddmFormRenderingContext);
-
-		Object sanitizedContent = templateContext.get(
-			"requiredFieldsWarningMessageHTML");
-
-		Class<?> clazz = sanitizedContent.getClass();
-
-		Method method = clazz.getMethod("getContent");
-
-		method.setAccessible(true);
-
-		String value = (String)method.invoke(sanitizedContent);
-
-		Assert.assertTrue(
-			value,
-			value.startsWith(
-				"<label class=\"required-warning\">All fields marked with "));
-		Assert.assertTrue(value, value.endsWith(" are required.</label>"));
 	}
 
 	@Test

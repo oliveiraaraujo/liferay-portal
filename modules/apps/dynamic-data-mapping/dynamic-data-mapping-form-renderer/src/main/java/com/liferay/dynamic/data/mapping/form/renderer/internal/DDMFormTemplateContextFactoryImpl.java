@@ -18,14 +18,12 @@ import com.liferay.dynamic.data.mapping.form.evaluator.DDMFormEvaluator;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServicesTracker;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderingContext;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormTemplateContextFactory;
-import com.liferay.dynamic.data.mapping.form.renderer.internal.util.DDMFormTemplateContextFactoryUtil;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
 import com.liferay.dynamic.data.mapping.model.DDMFormRule;
 import com.liferay.dynamic.data.mapping.service.DDMDataProviderInstanceService;
 import com.liferay.dynamic.data.mapping.util.DDM;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -53,7 +51,6 @@ import java.util.stream.Stream;
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -145,21 +142,12 @@ public class DDMFormTemplateContextFactoryImpl
 				ddmFormRenderingContext.getPortletNamespace()
 			).put(
 				"readOnly", ddmFormRenderingContext.isReadOnly()
+			).put(
+				"rules", toObjectList(ddmForm.getDDMFormRules())
+			).put(
+				"showRequiredFieldsWarning",
+				ddmFormRenderingContext.isShowRequiredFieldsWarning()
 			).build();
-
-		ResourceBundle resourceBundle = getResourceBundle(locale);
-
-		templateContext.put(
-			"requiredFieldsWarningMessageHTML",
-			_soyHTMLSanitizer.sanitize(
-				getRequiredFieldsWarningMessageHTML(
-					resourceBundle,
-					ddmFormRenderingContext.getHttpServletRequest())));
-
-		templateContext.put("rules", toObjectList(ddmForm.getDDMFormRules()));
-		templateContext.put(
-			"showRequiredFieldsWarning",
-			ddmFormRenderingContext.isShowRequiredFieldsWarning());
 
 		boolean showSubmitButton = ddmFormRenderingContext.isShowSubmitButton();
 
@@ -168,6 +156,9 @@ public class DDMFormTemplateContextFactoryImpl
 		}
 
 		templateContext.put("showSubmitButton", showSubmitButton);
+
+		ResourceBundle resourceBundle = getResourceBundle(locale);
+
 		templateContext.put("strings", getLanguageStringsMap(resourceBundle));
 
 		String submitLabel = GetterUtil.getString(
@@ -214,36 +205,6 @@ public class DDMFormTemplateContextFactoryImpl
 			_ddmFormFieldTypeServicesTracker);
 
 		return ddmFormPagesTemplateContextFactory.create();
-	}
-
-	protected String getRequiredFieldsWarningMessageHTML(
-		ResourceBundle resourceBundle, HttpServletRequest httpServletRequest) {
-
-		StringBundler sb = new StringBundler(3);
-
-		sb.append("<label class=\"required-warning\">");
-		sb.append(
-			LanguageUtil.format(
-				resourceBundle, "all-fields-marked-with-x-are-required",
-				getRequiredMarkTagHTML(httpServletRequest), false));
-		sb.append("</label>");
-
-		return sb.toString();
-	}
-
-	protected String getRequiredMarkTagHTML(
-		HttpServletRequest httpServletRequest) {
-
-		StringBundler sb = new StringBundler(4);
-
-		sb.append("<svg aria-hidden=\"true\" class=\"lexicon-icon ");
-		sb.append("lexicon-icon-asterisk reference-mark\"><use xlink:href=\"");
-		sb.append(
-			DDMFormTemplateContextFactoryUtil.getPathThemeImages(
-				httpServletRequest));
-		sb.append("/lexicon/icons.svg#asterisk\" /></svg>");
-
-		return sb.toString();
 	}
 
 	protected ResourceBundle getResourceBundle(Locale locale) {

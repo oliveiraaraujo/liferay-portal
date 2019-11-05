@@ -20,7 +20,6 @@ import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServices
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldValueAccessor;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRendererConstants;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderingContext;
-import com.liferay.dynamic.data.mapping.form.renderer.internal.util.DDMFormTemplateContextFactoryUtil;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldValidation;
@@ -485,15 +484,6 @@ public class DDMFormFieldTemplateContextFactory {
 		}
 	}
 
-	protected void setDDMFormFieldTemplateContextPathThemeImages(
-		Map<String, Object> ddmFormFieldTemplateContext) {
-
-		ddmFormFieldTemplateContext.put(
-			"pathThemeImages",
-			DDMFormTemplateContextFactoryUtil.getPathThemeImages(
-				_ddmFormRenderingContext.getHttpServletRequest()));
-	}
-
 	protected void setDDMFormFieldTemplateContextReadOnly(
 		Map<String, Object> ddmFormFieldTemplateContext,
 		Map<String, Object> changedProperties, boolean defaultValue) {
@@ -720,8 +710,6 @@ public class DDMFormFieldTemplateContextFactory {
 			ddmFormFieldTemplateContext, ddmFormField.isLocalizable());
 		setDDMFormFieldTemplateContextLocalizedValue(
 			ddmFormFieldTemplateContext, "tip", ddmFormField.getTip());
-		setDDMFormFieldTemplateContextPathThemeImages(
-			ddmFormFieldTemplateContext);
 		setDDMFormFieldTemplateContextRepeatable(
 			ddmFormFieldTemplateContext, ddmFormField.isRepeatable());
 		setDDMFormFieldTemplateContextShowLabel(
