@@ -51,10 +51,10 @@ public class UpgradeRatingsStats extends UpgradeProcess {
 		}
 	}
 
-	private String _getUpdateSQL(String field, String function) {
+	private String _getUpdateSQL(String columnName, String function) {
 		return StringBundler.concat(
-			"update RatingsStats set ", field, " = (select ", function, "(",
-			field, ") FROM RatingsEntry WHERE RatingsStats.classNameId = ",
+			"update RatingsStats set ", columnName, " = (select ", function, "(",
+			columnName, ") FROM RatingsEntry WHERE RatingsStats.classNameId = ",
 			"RatingsEntry.classNameId and RatingsStats.classPK = ",
 			"RatingsEntry.classPK)");
 	}
