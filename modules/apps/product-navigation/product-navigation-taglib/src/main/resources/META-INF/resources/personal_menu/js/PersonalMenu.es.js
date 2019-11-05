@@ -20,7 +20,7 @@ import {fetch} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React, {useState, useRef} from 'react';
 
-function PersonalMenu({color, isImpersonated, itemsURL, label, size}) {
+function PersonalMenu({color, isImpersonated, itemsURL, size}) {
 	const [items, setItems] = useState([]);
 	const preloadPromise = useRef();
 
@@ -36,40 +36,36 @@ function PersonalMenu({color, isImpersonated, itemsURL, label, size}) {
 		<ClayDropDownWithItems
 			items={items}
 			trigger={
-				label ? (
-					<div dangerouslySetInnerHTML={{__html: label}} />
-				) : (
-					<ClayButton
-						displayType="unstyled"
-						onFocus={preloadItems}
-						onMouseOver={preloadItems}
-					>
-						<span className={`sticker sticker-${size}`}>
-							<ClaySticker
-								className={`user-icon-color-${color}`}
-								shape="circle"
-								size={size}
-							>
-								<ClayIcon symbol="user" />
-							</ClaySticker>
+				<ClayButton
+					displayType="unstyled"
+					onFocus={preloadItems}
+					onMouseOver={preloadItems}
+				>
+					<span className={`sticker sticker-${size}`}>
+						<ClaySticker
+							className={`user-icon-color-${color}`}
+							shape="circle"
+							size={size}
+						>
+							<ClayIcon symbol="user" />
+						</ClaySticker>
 
-							{isImpersonated && (
-								<ClaySticker
-									className="sticker-user-icon"
-									id="impersonate-user-sticker"
-									outside
-									position="bottom-right"
-									shape="circle"
-									size={size ? 'sm' : ''}
-								>
-									<span id="impersonate-user-icon">
-										<ClayIcon symbol="user" />
-									</span>
-								</ClaySticker>
-							)}
-						</span>
-					</ClayButton>
-				)
+						{isImpersonated && (
+							<ClaySticker
+								className="sticker-user-icon"
+								id="impersonate-user-sticker"
+								outside
+								position="bottom-right"
+								shape="circle"
+								size={size ? 'sm' : ''}
+							>
+								<span id="impersonate-user-icon">
+									<ClayIcon symbol="user" />
+								</span>
+							</ClaySticker>
+						)}
+					</span>
+				</ClayButton>
 			}
 		/>
 	);
