@@ -32,7 +32,8 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLayoutLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureVersionLocalService;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
-import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
 
@@ -89,19 +90,25 @@ public class DataLayoutRendererImpl implements DataLayoutRenderer {
 
 		ddmFormFieldValue.setName(name);
 
-		if (dataRecordValues.containsKey(name)) {
+		Object value = dataRecordValues.get(name);
+
+		if (value != null) {
+			if (value instanceof Object[]) {
+				JSONArray jsonArray = JSONUtil.putAll((Object[])value);
+
+				value = jsonArray.toString();
+			}
+
 			if (ddmFormField.isLocalizable()) {
 				LocalizedValue localizedValue = new LocalizedValue();
 
-				localizedValue.addString(
-					locale, GetterUtil.getString(dataRecordValues.get(name)));
+				localizedValue.addString(locale, String.valueOf(value));
 
 				ddmFormFieldValue.setValue(localizedValue);
 			}
 			else {
 				ddmFormFieldValue.setValue(
-					new UnlocalizedValue(
-						GetterUtil.getString(dataRecordValues.get(name))));
+					new UnlocalizedValue(String.valueOf(value)));
 			}
 		}
 
