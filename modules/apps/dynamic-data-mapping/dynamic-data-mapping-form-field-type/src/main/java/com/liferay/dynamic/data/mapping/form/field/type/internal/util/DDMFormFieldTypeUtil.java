@@ -17,6 +17,7 @@ package com.liferay.dynamic.data.mapping.form.field.type.internal.util;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.render.DDMFormFieldRenderingContext;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.util.Locale;
@@ -32,6 +33,10 @@ public class DDMFormFieldTypeUtil {
 		LocalizedValue value = (LocalizedValue)ddmFormField.getProperty(
 			propertyName);
 
+		if (value == null) {
+			return StringPool.BLANK;
+		}
+
 		return GetterUtil.getString(value.getString(locale));
 	}
 
@@ -40,8 +45,7 @@ public class DDMFormFieldTypeUtil {
 		String propertyName) {
 
 		return GetterUtil.getString(
-			String.valueOf(
-				ddmFormFieldRenderingContext.getProperty(propertyName)));
+			ddmFormFieldRenderingContext.getProperty(propertyName));
 	}
 
 }
