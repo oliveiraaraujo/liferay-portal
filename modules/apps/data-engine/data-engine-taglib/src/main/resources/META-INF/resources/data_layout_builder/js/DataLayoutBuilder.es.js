@@ -282,11 +282,14 @@ class DataLayoutBuilder extends Component {
 			'defaultValue',
 			'fieldType',
 			'indexable',
+			'indexType',
 			'label',
 			'localizable',
 			'name',
+			'readOnly',
 			'repeatable',
 			'required',
+			'showLabel',
 			'tip'
 		];
 
