@@ -439,7 +439,11 @@ class Sidebar extends Component {
 
 		return fieldTypes.reduce((prev, next) => {
 			if (next.group && !next.system) {
-				prev[next.group].fields.push(next);
+				if (next.group === 'interface') {
+					prev.basic.fields.push(next);
+				} else {
+					prev[next.group].fields.push(next);
+				}
 			}
 
 			return prev;
