@@ -10,6 +10,7 @@
  */
 
 import ClayButton from '@clayui/button';
+import ClayIcon from '@clayui/icon';
 import ClayModal, {useModal} from '@clayui/modal';
 import PropTypes from 'prop-types';
 import React, {useContext, useState} from 'react';
@@ -75,6 +76,11 @@ function Variants({selectedSegmentsExperienceId}) {
 					<p className="mb-2 text-secondary">
 						{Liferay.Language.get('variants-help')}
 					</p>
+
+					<div className="font-weight-bold mb-3 text-danger">
+						<ClayIcon className="mr-2" symbol="exclamation-full" />
+						{Liferay.Language.get('a-variant-needs-to-be-created')}
+					</div>
 				</>
 			)}
 
