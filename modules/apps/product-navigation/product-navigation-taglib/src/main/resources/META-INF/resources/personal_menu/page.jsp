@@ -24,16 +24,16 @@ boolean expanded = (boolean)request.getAttribute("liferay-product-navigation:per
 String label = (String)request.getAttribute("liferay-product-navigation:personal-menu:label");
 String size = (String)request.getAttribute("liferay-product-navigation:personal-menu:size");
 
-String userStickerCssClasses = "sticker";
+String userStickerClasses = "sticker";
 
 if (size != null) {
-	userStickerCssClasses += " sticker-" + size;
+	userStickerClasses += " sticker-" + size;
 }
 
-String impersonateStickerCssClasses = "sticker";
+String impersonateStickerClasses = "sticker";
 
 if (size != null) {
-	impersonateStickerCssClasses += " sticker-sm";
+	impersonateStickerClasses += " sticker-sm";
 }
 %>
 
@@ -62,13 +62,13 @@ if (size != null) {
 		</c:when>
 		<c:otherwise>
 			<button aria-expanded="true" aria-haspopup="true" class="btn btn-unstyled dropdown-toggle" id="<%= namespace + "personal_menu_dropdown_toggle" %>" ref="triggerButton" type="button">
-				<span class="<%= userStickerCssClasses %>">
-					<span class="<%= userStickerCssClasses + " sticker-circle user-icon-color-" + color %>">
+				<span class="<%= userStickerClasses %>">
+					<span class="<%= userStickerClasses + " sticker-circle user-icon-color-" + color %>">
 						<aui:icon image="user" markupView="lexicon" />
 					</span>
 
 					<c:if test="<%= themeDisplay.isImpersonated() %>">
-						<span class="<%= impersonateStickerCssClasses + " sticker-bottom-right sticker-circle sticker-outside sticker-user-icon" %>" id="impersonate-user-sticker">
+						<span class="<%= impersonateStickerClasses + " sticker-bottom-right sticker-circle sticker-outside sticker-user-icon" %>" id="impersonate-user-sticker">
 							<span class="sticker-overlay">
 								<aui:icon id="impersonate-user-icon" image="user" markupView="lexicon" />
 							</span>
