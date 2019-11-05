@@ -536,6 +536,11 @@ public class DataDefinitionResourceImpl
 					"ddm.form.field.type.description"),
 				resourceBundle)
 		).put(
+			"displayOrder",
+			MapUtil.getInteger(
+				ddmFormFieldTypeProperties, "ddm.form.field.type.display.order",
+				Integer.MAX_VALUE)
+		).put(
 			"group",
 			MapUtil.getString(
 				ddmFormFieldTypeProperties, "ddm.form.field.type.group")
