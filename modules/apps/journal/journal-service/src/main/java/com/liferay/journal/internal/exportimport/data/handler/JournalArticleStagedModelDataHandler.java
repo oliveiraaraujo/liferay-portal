@@ -195,14 +195,15 @@ public class JournalArticleStagedModelDataHandler
 		try {
 			JournalFolder folder = article.getFolder();
 
-			List<JournalFolder> ancestors = folder.getAncestors();
+			List<JournalFolder> ancestorFolders = folder.getAncestors();
 
-			StringBundler sb = new StringBundler(4 * ancestors.size() + 5);
+			StringBundler sb = new StringBundler(
+				4 * ancestorFolders.size() + 5);
 
-			Collections.reverse(ancestors);
+			Collections.reverse(ancestorFolders);
 
-			for (JournalFolder ancestor : ancestors) {
-				sb.append(ancestor.getName());
+			for (JournalFolder ancestorFolder : ancestorFolders) {
+				sb.append(ancestorFolder.getName());
 				sb.append(StringPool.SPACE);
 				sb.append(StringPool.GREATER_THAN);
 				sb.append(StringPool.SPACE);

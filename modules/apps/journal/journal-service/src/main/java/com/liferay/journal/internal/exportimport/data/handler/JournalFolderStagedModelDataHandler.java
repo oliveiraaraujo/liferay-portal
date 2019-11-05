@@ -97,14 +97,15 @@ public class JournalFolderStagedModelDataHandler
 	@Override
 	public String getDisplayName(JournalFolder folder) {
 		try {
-			List<JournalFolder> ancestors = folder.getAncestors();
+			List<JournalFolder> ancestorFolders = folder.getAncestors();
 
-			StringBundler sb = new StringBundler(4 * ancestors.size() + 1);
+			StringBundler sb = new StringBundler(
+				4 * ancestorFolders.size() + 1);
 
-			Collections.reverse(ancestors);
+			Collections.reverse(ancestorFolders);
 
-			for (JournalFolder ancestor : ancestors) {
-				sb.append(ancestor.getName());
+			for (JournalFolder ancestorFolder : ancestorFolders) {
+				sb.append(ancestorFolder.getName());
 				sb.append(StringPool.SPACE);
 				sb.append(StringPool.GREATER_THAN);
 				sb.append(StringPool.SPACE);
