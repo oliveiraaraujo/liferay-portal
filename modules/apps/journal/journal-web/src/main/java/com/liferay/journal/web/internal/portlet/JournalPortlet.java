@@ -157,19 +157,15 @@ public class JournalPortlet extends MVCPortlet {
 		}
 
 		renderRequest.setAttribute(
-			JournalFileUploadsConfiguration.class.getName(),
-			_journalFileUploadsConfiguration);
-
-		renderRequest.setAttribute(
 			JournalDDMEditorConfiguration.class.getName(),
 			_journalDDMEditorConfiguration);
-
+		renderRequest.setAttribute(
+			JournalFileUploadsConfiguration.class.getName(),
+			_journalFileUploadsConfiguration);
 		renderRequest.setAttribute(
 			JournalWebConfiguration.class.getName(), _journalWebConfiguration);
-
 		renderRequest.setAttribute(
 			JournalWebKeys.JOURNAL_CONTENT, _journalContent);
-
 		renderRequest.setAttribute(
 			JournalWebKeys.JOURNAL_CONVERTER, _journalConverter);
 
@@ -184,18 +180,14 @@ public class JournalPortlet extends MVCPortlet {
 		resourceRequest.setAttribute(
 			AssetDisplayPageFriendlyURLProvider.class.getName(),
 			_assetDisplayPageFriendlyURLProvider);
-
 		resourceRequest.setAttribute(
 			DDMTemplateHelper.class.getName(), _ddmTemplateHelper);
-
-		resourceRequest.setAttribute(TrashWebKeys.TRASH_HELPER, _trashHelper);
-
 		resourceRequest.setAttribute(
 			JournalDDMEditorConfiguration.class.getName(),
 			_journalDDMEditorConfiguration);
-
 		resourceRequest.setAttribute(
 			JournalWebConfiguration.class.getName(), _journalWebConfiguration);
+		resourceRequest.setAttribute(TrashWebKeys.TRASH_HELPER, _trashHelper);
 
 		super.serveResource(resourceRequest, resourceResponse);
 	}
@@ -205,10 +197,8 @@ public class JournalPortlet extends MVCPortlet {
 	protected void activate(Map<String, Object> properties) {
 		_journalDDMEditorConfiguration = ConfigurableUtil.createConfigurable(
 			JournalDDMEditorConfiguration.class, properties);
-
 		_journalFileUploadsConfiguration = ConfigurableUtil.createConfigurable(
 			JournalFileUploadsConfiguration.class, properties);
-
 		_journalWebConfiguration = ConfigurableUtil.createConfigurable(
 			JournalWebConfiguration.class, properties);
 	}
