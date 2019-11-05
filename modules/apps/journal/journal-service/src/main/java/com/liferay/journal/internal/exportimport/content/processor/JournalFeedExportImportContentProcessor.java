@@ -66,26 +66,26 @@ public class JournalFeedExportImportContentProcessor
 
 		String oldGroupFriendlyURL = friendlyURLParts[2];
 
-		String oldTargetLayoutFriendlyUrl = feed.getTargetLayoutFriendlyUrl();
+		String oldTargetLayoutFriendlyURL = feed.getTargetLayoutFriendlyUrl();
 
 		if (newGroupFriendlyURL.equals(oldGroupFriendlyURL)) {
-			String targetLayoutFriendlyUrl = null;
+			String targetLayoutFriendlyURL = null;
 
 			if (friendlyURLParts.length > 3) {
-				targetLayoutFriendlyUrl = StringUtil.replaceFirst(
+				targetLayoutFriendlyURL = StringUtil.replaceFirst(
 					feed.getTargetLayoutFriendlyUrl(),
 					StringPool.SLASH + newGroupFriendlyURL + StringPool.SLASH,
 					StringPool.SLASH + _DATA_HANDLER_GROUP_FRIENDLY_URL +
 						StringPool.SLASH);
 			}
 			else {
-				targetLayoutFriendlyUrl = StringUtil.replaceFirst(
+				targetLayoutFriendlyURL = StringUtil.replaceFirst(
 					feed.getTargetLayoutFriendlyUrl(),
 					StringPool.SLASH + newGroupFriendlyURL,
 					StringPool.SLASH + _DATA_HANDLER_GROUP_FRIENDLY_URL);
 			}
 
-			feed.setTargetLayoutFriendlyUrl(targetLayoutFriendlyUrl);
+			feed.setTargetLayoutFriendlyUrl(targetLayoutFriendlyURL);
 		}
 
 		Group targetLayoutGroup = _groupLocalService.fetchFriendlyURLGroup(
@@ -112,7 +112,7 @@ public class JournalFeedExportImportContentProcessor
 		}
 		else {
 			long plid = _portal.getPlidFromFriendlyURL(
-				portletDataContext.getCompanyId(), oldTargetLayoutFriendlyUrl);
+				portletDataContext.getCompanyId(), oldTargetLayoutFriendlyURL);
 
 			targetLayout = _layoutLocalService.fetchLayout(plid);
 		}
