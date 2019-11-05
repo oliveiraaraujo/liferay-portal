@@ -17,6 +17,7 @@ package com.liferay.dynamic.data.mapping.model;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -389,7 +390,15 @@ public class DDMFormField implements Serializable {
 			return jsonArray.getString(0);
 		}
 		else if (dataSourceType instanceof String) {
-			return (String)dataSourceType;
+			try {
+				JSONArray jsonArray = JSONFactoryUtil.createJSONArray(
+					(String)dataSourceType);
+
+				return jsonArray.getString(0);
+			}
+			catch (Exception e) {
+				return (String)dataSourceType;
+			}
 		}
 
 		return StringPool.BLANK;
