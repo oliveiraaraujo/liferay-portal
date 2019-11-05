@@ -58,7 +58,7 @@ public class CSSBuilderPlugin implements Plugin<Project> {
 		Configuration portalCommonCSSConfiguration =
 			_addConfigurationPortalCommonCSS(project);
 
-		final BuildCSSTask buildCSSTask = _addTaskBuildCSS(project);
+		BuildCSSTask buildCSSTask = _addTaskBuildCSS(project);
 
 		_configureTasksBuildCSS(
 			project, cssBuilderConfiguration, portalCommonCSSConfiguration);
