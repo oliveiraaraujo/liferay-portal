@@ -19,10 +19,28 @@
 <c:choose>
 	<c:when test="<%= themeDisplay.isSignedIn() %>">
 		<span class="user-avatar-link">
+			<liferay-util:buffer
+				var="userAvatar"
+			>
+				<span class="sticker sticker-lg">
+					<span class="inline-item">
+						<liferay-ui:user-portrait
+							cssClass="sticker-lg"
+							user="<%= user %>"
+						/>
+					</span>
+
+					<c:if test="<%= themeDisplay.isImpersonated() %>">
+						<span class="sticker sticker-bottom-right sticker-circle sticker-outside sticker-sm sticker-user-icon">
+							<aui:icon image="user" markupView="lexicon" />
+						</span>
+					</c:if>
+				</span>
+			</liferay-util:buffer>
+
 			<liferay-product-navigation:personal-menu
 				expanded="<%= true %>"
-				size="lg"
-				user="<%= user %>"
+				label="<%= userAvatar %>"
 			/>
 
 			<%

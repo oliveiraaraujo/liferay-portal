@@ -95,7 +95,7 @@ public class GetPersonalMenuItemsMVCResourceCommand
 			_http.removeParameter(
 				ParamUtil.getString(portletRequest, "currentURL"), "doAsUserId")
 		).put(
-			"symbolRight", "change"
+			"icon", "change"
 		).put(
 			"label",
 			LanguageUtil.get(themeDisplay.getLocale(), "be-yourself-again")
@@ -147,7 +147,7 @@ public class GetPersonalMenuItemsMVCResourceCommand
 					ParamUtil.getString(portletRequest, "currentURL"),
 					"doAsUserLanguageId", doAsUserLanguageId)
 			).put(
-				"symbolRight", "globe"
+				"icon", "globe"
 			).put(
 				"label", changeLanguageLabel
 			);
@@ -192,9 +192,9 @@ public class GetPersonalMenuItemsMVCResourceCommand
 			}
 
 			jsonObject.put(
-				"label", personalMenuEntry.getLabel(themeDisplay.getLocale())
+				"icon", personalMenuEntry.getIcon(portletRequest)
 			).put(
-				"symbolRight", personalMenuEntry.getIcon(portletRequest)
+				"label", personalMenuEntry.getLabel(themeDisplay.getLocale())
 			);
 
 			jsonArray.put(jsonObject);
@@ -215,11 +215,7 @@ public class GetPersonalMenuItemsMVCResourceCommand
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		JSONObject dividerJSONObject = JSONUtil.put(
-			"type", "divider"
-		).put(
-			"symbolRight", "divider"
-		);
+		JSONObject dividerJSONObject = JSONUtil.put("type", "divider");
 
 		if (themeDisplay.isImpersonated()) {
 			JSONObject impersonationJSONObject = JSONUtil.put(
