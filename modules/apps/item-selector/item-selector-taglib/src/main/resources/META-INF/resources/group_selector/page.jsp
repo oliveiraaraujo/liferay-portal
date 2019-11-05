@@ -25,15 +25,14 @@ PortletURL iteratorURL = (PortletURL)request.getAttribute("liferay-item-selector
 PortletURL repositoriesURL = (PortletURL)request.getAttribute("liferay-item-selector:group-selector:repositoriesURL");
 PortletURL sitesURL = (PortletURL)request.getAttribute("liferay-item-selector:group-selector:sitesURL");
 
-RequestBackedPortletURLFactory requestBackedPortletURLFactory = RequestBackedPortletURLFactoryUtil.create(request);
-
 String itemSelectedEventName = ParamUtil.getString(request, "itemSelectedEventName");
+boolean repositories = ParamUtil.getBoolean(request, "repositories");
+
+RequestBackedPortletURLFactory requestBackedPortletURLFactory = RequestBackedPortletURLFactoryUtil.create(request);
 
 List<ItemSelectorCriterion> itemSelectorCriteria = itemSelector.getItemSelectorCriteria(liferayPortletRequest.getParameterMap());
 
 SearchContainer searchContainer = new GroupSearch(liferayPortletRequest, iteratorURL);
-
-boolean repositories = ParamUtil.getBoolean(request, "repositories");
 %>
 
 <div class="container-fluid-1280">

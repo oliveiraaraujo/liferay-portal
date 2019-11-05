@@ -141,11 +141,11 @@ public class GroupSelectorTag extends IncludeTag {
 			itemSelectedEventName,
 			itemSelectorCriteria.toArray(new ItemSelectorCriterion[0]));
 
+		portletURL.setParameter("repositories", Boolean.TRUE.toString());
 		portletURL.setParameter(
 			"selectedTab",
 			ParamUtil.getString(httpServletRequest, "selectedTab"));
 		portletURL.setParameter("showGroupSelector", Boolean.TRUE.toString());
-		portletURL.setParameter("repositories", Boolean.TRUE.toString());
 
 		return portletURL;
 	}
@@ -165,11 +165,11 @@ public class GroupSelectorTag extends IncludeTag {
 			itemSelectedEventName,
 			itemSelectorCriteria.toArray(new ItemSelectorCriterion[0]));
 
+		portletURL.setParameter("repositories", Boolean.FALSE.toString());
 		portletURL.setParameter(
 			"selectedTab",
 			ParamUtil.getString(httpServletRequest, "selectedTab"));
 		portletURL.setParameter("showGroupSelector", Boolean.TRUE.toString());
-		portletURL.setParameter("repositories", Boolean.FALSE.toString());
 
 		return portletURL;
 	}
