@@ -7,7 +7,6 @@ Import-Package:\
 	!android.util,\
 	\
 	!com.google.common.util.concurrent.*,\
-	\
 	!com.google.errorprone.annotations.*,\
 	\
 	!com.graphbuilder.*,\
