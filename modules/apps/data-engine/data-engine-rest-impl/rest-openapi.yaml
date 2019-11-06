@@ -8,6 +8,9 @@ components:
                     items:
                         type: string
                     type: array
+                classNameId:
+                    format: int64
+                    type: integer
                 dataDefinitionFields:
                     items:
                         $ref: '#/components/schemas/DataDefinitionField'
