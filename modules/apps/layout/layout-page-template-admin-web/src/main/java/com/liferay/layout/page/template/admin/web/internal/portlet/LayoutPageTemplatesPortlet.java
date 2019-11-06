@@ -26,17 +26,23 @@ import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.LayoutPrototype;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.service.LayoutPrototypeLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.staging.StagingGroupHelper;
 
 import java.io.IOException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
@@ -88,6 +94,21 @@ public class LayoutPageTemplatesPortlet extends MVCPortlet {
 	protected void doDispatch(
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
+
+		String tabs = ParamUtil.getString(
+			renderRequest, "tabs1", "master-pages");
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		Group scopeGroup = themeDisplay.getScopeGroup();
+
+		if (!Objects.equals(tabs, "master-pages") &&
+			(_stagingGroupHelper.isLocalLiveGroup(scopeGroup) ||
+			 _stagingGroupHelper.isRemoteLiveGroup(scopeGroup))) {
+
+			throw new PortletException();
+		}
 
 		try {
 			List<LayoutPrototype> layoutPrototypes =
@@ -147,5 +168,8 @@ public class LayoutPageTemplatesPortlet extends MVCPortlet {
 
 	@Reference
 	private LayoutPrototypeLocalService _layoutPrototypeLocalService;
+
+	@Reference
+	private StagingGroupHelper _stagingGroupHelper;
 
 }
