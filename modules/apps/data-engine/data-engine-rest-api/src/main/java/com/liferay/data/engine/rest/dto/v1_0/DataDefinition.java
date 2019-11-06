@@ -80,6 +80,34 @@ public class DataDefinition {
 	protected String[] availableLanguageIds;
 
 	@Schema
+	public Long getClassNameId() {
+		return classNameId;
+	}
+
+	public void setClassNameId(Long classNameId) {
+		this.classNameId = classNameId;
+	}
+
+	@JsonIgnore
+	public void setClassNameId(
+		UnsafeSupplier<Long, Exception> classNameIdUnsafeSupplier) {
+
+		try {
+			classNameId = classNameIdUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected Long classNameId;
+
+	@Schema
 	@Valid
 	public DataDefinitionField[] getDataDefinitionFields() {
 		return dataDefinitionFields;
@@ -476,6 +504,16 @@ public class DataDefinition {
 			}
 
 			sb.append("]");
+		}
+
+		if (classNameId != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"classNameId\": ");
+
+			sb.append(classNameId);
 		}
 
 		if (dataDefinitionFields != null) {

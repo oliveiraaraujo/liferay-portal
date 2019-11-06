@@ -103,13 +103,13 @@ public interface DataDefinitionResource {
 		throws Exception;
 
 	public Page<DataDefinition> getSiteDataDefinitionsPage(
-			Long siteId, String keywords, Pagination pagination,
-			String sortString)
+			Long siteId, Long classNameId, String keywords,
+			Pagination pagination, String sortString)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse getSiteDataDefinitionsPageHttpResponse(
-			Long siteId, String keywords, Pagination pagination,
-			String sortString)
+			Long siteId, Long classNameId, String keywords,
+			Pagination pagination, String sortString)
 		throws Exception;
 
 	public DataDefinition postSiteDataDefinition(
@@ -121,11 +121,11 @@ public interface DataDefinitionResource {
 		throws Exception;
 
 	public DataDefinition getSiteDataDefinition(
-			Long siteId, String dataDefinitionKey)
+			Long siteId, String dataDefinitionKey, Long classNameId)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse getSiteDataDefinitionHttpResponse(
-			Long siteId, String dataDefinitionKey)
+			Long siteId, String dataDefinitionKey, Long classNameId)
 		throws Exception;
 
 	public static class Builder {
@@ -612,13 +612,13 @@ public interface DataDefinitionResource {
 		}
 
 		public Page<DataDefinition> getSiteDataDefinitionsPage(
-				Long siteId, String keywords, Pagination pagination,
-				String sortString)
+				Long siteId, Long classNameId, String keywords,
+				Pagination pagination, String sortString)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
 				getSiteDataDefinitionsPageHttpResponse(
-					siteId, keywords, pagination, sortString);
+					siteId, classNameId, keywords, pagination, sortString);
 
 			String content = httpResponse.getContent();
 
@@ -632,8 +632,8 @@ public interface DataDefinitionResource {
 		}
 
 		public HttpInvoker.HttpResponse getSiteDataDefinitionsPageHttpResponse(
-				Long siteId, String keywords, Pagination pagination,
-				String sortString)
+				Long siteId, Long classNameId, String keywords,
+				Pagination pagination, String sortString)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -656,6 +656,11 @@ public interface DataDefinitionResource {
 			}
 
 			httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
+
+			if (classNameId != null) {
+				httpInvoker.parameter(
+					"classNameId", String.valueOf(classNameId));
+			}
 
 			if (keywords != null) {
 				httpInvoker.parameter("keywords", String.valueOf(keywords));
@@ -751,11 +756,12 @@ public interface DataDefinitionResource {
 		}
 
 		public DataDefinition getSiteDataDefinition(
-				Long siteId, String dataDefinitionKey)
+				Long siteId, String dataDefinitionKey, Long classNameId)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				getSiteDataDefinitionHttpResponse(siteId, dataDefinitionKey);
+				getSiteDataDefinitionHttpResponse(
+					siteId, dataDefinitionKey, classNameId);
 
 			String content = httpResponse.getContent();
 
@@ -778,7 +784,7 @@ public interface DataDefinitionResource {
 		}
 
 		public HttpInvoker.HttpResponse getSiteDataDefinitionHttpResponse(
-				Long siteId, String dataDefinitionKey)
+				Long siteId, String dataDefinitionKey, Long classNameId)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -801,6 +807,11 @@ public interface DataDefinitionResource {
 			}
 
 			httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
+
+			if (classNameId != null) {
+				httpInvoker.parameter(
+					"classNameId", String.valueOf(classNameId));
+			}
 
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +

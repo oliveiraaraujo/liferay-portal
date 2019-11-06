@@ -71,7 +71,8 @@ public interface DataDefinitionResource {
 		throws Exception;
 
 	public Page<DataDefinition> getSiteDataDefinitionsPage(
-			Long siteId, String keywords, Pagination pagination, Sort[] sorts)
+			Long siteId, Long classNameId, String keywords,
+			Pagination pagination, Sort[] sorts)
 		throws Exception;
 
 	public DataDefinition postSiteDataDefinition(
@@ -79,7 +80,7 @@ public interface DataDefinitionResource {
 		throws Exception;
 
 	public DataDefinition getSiteDataDefinition(
-			Long siteId, String dataDefinitionKey)
+			Long siteId, String dataDefinitionKey, Long classNameId)
 		throws Exception;
 
 	public default void setContextAcceptLanguage(

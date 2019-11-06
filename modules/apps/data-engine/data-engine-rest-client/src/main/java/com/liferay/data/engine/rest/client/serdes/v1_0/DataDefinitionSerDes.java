@@ -90,6 +90,16 @@ public class DataDefinitionSerDes {
 			sb.append("]");
 		}
 
+		if (dataDefinition.getClassNameId() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"classNameId\": ");
+
+			sb.append(dataDefinition.getClassNameId());
+		}
+
 		if (dataDefinition.getDataDefinitionFields() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -292,6 +302,14 @@ public class DataDefinitionSerDes {
 				String.valueOf(dataDefinition.getAvailableLanguageIds()));
 		}
 
+		if (dataDefinition.getClassNameId() == null) {
+			map.put("classNameId", null);
+		}
+		else {
+			map.put(
+				"classNameId", String.valueOf(dataDefinition.getClassNameId()));
+		}
+
 		if (dataDefinition.getDataDefinitionFields() == null) {
 			map.put("dataDefinitionFields", null);
 		}
@@ -405,6 +423,12 @@ public class DataDefinitionSerDes {
 				if (jsonParserFieldValue != null) {
 					dataDefinition.setAvailableLanguageIds(
 						toStrings((Object[])jsonParserFieldValue));
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "classNameId")) {
+				if (jsonParserFieldValue != null) {
+					dataDefinition.setClassNameId(
+						Long.valueOf((String)jsonParserFieldValue));
 				}
 			}
 			else if (Objects.equals(

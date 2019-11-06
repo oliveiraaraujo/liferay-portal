@@ -116,7 +116,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {dataDefinition(dataDefinitionId: ___){availableLanguageIds, dataDefinitionFields, dataDefinitionKey, dataDefinitionRules, dateCreated, dateModified, defaultLanguageId, description, id, name, siteId, storageType, userId}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {dataDefinition(dataDefinitionId: ___){availableLanguageIds, classNameId, dataDefinitionFields, dataDefinitionKey, dataDefinitionRules, dateCreated, dateModified, defaultLanguageId, description, id, name, siteId, storageType, userId}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField
 	public DataDefinition dataDefinition(
@@ -153,12 +153,13 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {dataDefinitions(keywords: ___, page: ___, pageSize: ___, siteId: ___, sorts: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {dataDefinitions(classNameId: ___, keywords: ___, page: ___, pageSize: ___, siteId: ___, sorts: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField
 	public DataDefinitionPage dataDefinitions(
 			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("siteKey") String siteKey,
+			@GraphQLName("classNameId") Long classNameId,
 			@GraphQLName("keywords") String keywords,
 			@GraphQLName("pageSize") int pageSize,
 			@GraphQLName("page") int page,
@@ -170,7 +171,8 @@ public class Query {
 			this::_populateResourceContext,
 			dataDefinitionResource -> new DataDefinitionPage(
 				dataDefinitionResource.getSiteDataDefinitionsPage(
-					siteId, keywords, Pagination.of(page, pageSize),
+					siteId, classNameId, keywords,
+					Pagination.of(page, pageSize),
 					_sortsBiFunction.apply(
 						dataDefinitionResource, sortsString))));
 	}
@@ -178,13 +180,14 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {siteDataDefinition(dataDefinitionKey: ___, siteId: ___){availableLanguageIds, dataDefinitionFields, dataDefinitionKey, dataDefinitionRules, dateCreated, dateModified, defaultLanguageId, description, id, name, siteId, storageType, userId}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {siteDataDefinition(classNameId: ___, dataDefinitionKey: ___, siteId: ___){availableLanguageIds, classNameId, dataDefinitionFields, dataDefinitionKey, dataDefinitionRules, dateCreated, dateModified, defaultLanguageId, description, id, name, siteId, storageType, userId}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField
 	public DataDefinition siteDataDefinition(
 			@GraphQLName("siteId") Long siteId,
 			@GraphQLName("siteKey") String siteKey,
-			@GraphQLName("dataDefinitionKey") String dataDefinitionKey)
+			@GraphQLName("dataDefinitionKey") String dataDefinitionKey,
+			@GraphQLName("classNameId") Long classNameId)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
@@ -192,7 +195,7 @@ public class Query {
 			this::_populateResourceContext,
 			dataDefinitionResource ->
 				dataDefinitionResource.getSiteDataDefinition(
-					siteId, dataDefinitionKey));
+					siteId, dataDefinitionKey, classNameId));
 	}
 
 	/**
