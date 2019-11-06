@@ -1207,6 +1207,11 @@ paths:
                       format: int64
                       type: integer
                 - in: query
+                  name: classNameId
+                  schema:
+                      format: int64
+                      type: integer
+                - in: query
                   name: keywords
                   schema:
                       type: string
@@ -1283,6 +1288,11 @@ paths:
                   required: true
                   schema:
                       type: string
+                - in: query
+                  name: classNameId
+                  schema:
+                      format: int64
+                      type: integer
             responses:
                 200:
                     content:
