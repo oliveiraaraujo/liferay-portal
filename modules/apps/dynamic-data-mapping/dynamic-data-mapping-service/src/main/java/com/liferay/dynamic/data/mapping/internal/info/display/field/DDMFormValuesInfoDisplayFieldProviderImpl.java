@@ -41,6 +41,8 @@ import com.liferay.portal.kernel.util.Validator;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -141,6 +143,28 @@ public class DDMFormValuesInfoDisplayFieldProviderImpl<T extends GroupedModel>
 			).collect(
 				Collectors.toList()
 			);
+		}
+
+		if (classTypeValues.containsKey(key)) {
+			Collection fieldValueCollection = new ArrayList<>();
+
+			Object classTypeValue = classTypeValues.get(key);
+
+			if (classTypeValue instanceof Collection) {
+				fieldValueCollection.addAll((Collection)classTypeValue);
+			}
+			else {
+				fieldValueCollection.add(classTypeValue);
+			}
+
+			if (fieldValue instanceof Collection) {
+				fieldValueCollection.addAll((Collection)fieldValue);
+			}
+			else {
+				fieldValueCollection.add(fieldValue);
+			}
+
+			fieldValue = fieldValueCollection;
 		}
 
 		classTypeValues.put(key, fieldValue);
