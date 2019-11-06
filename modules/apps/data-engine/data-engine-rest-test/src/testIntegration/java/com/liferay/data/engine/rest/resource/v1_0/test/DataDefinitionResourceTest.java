@@ -20,12 +20,15 @@ import com.liferay.data.engine.rest.client.dto.v1_0.DataDefinitionField;
 import com.liferay.data.engine.rest.client.dto.v1_0.DataDefinitionPermission;
 import com.liferay.data.engine.rest.client.pagination.Page;
 import com.liferay.data.engine.rest.client.pagination.Pagination;
+import com.liferay.dynamic.data.mapping.model.DDMFormInstance;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.test.rule.Inject;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -75,24 +78,49 @@ public class DataDefinitionResourceTest
 
 		Page<DataDefinition> page =
 			dataDefinitionResource.getSiteDataDefinitionsPage(
-				testGetSiteDataDefinitionsPage_getSiteId(), "definition",
+				testGetSiteDataDefinitionsPage_getSiteId(), null, "definition",
 				Pagination.of(1, 2), null);
 
 		Assert.assertEquals(0, page.getTotalCount());
 
-		_testGetSiteDataDefinitionsPage(
+		_testGetSiteDataDefinitionsClassNamePage(
 			"DeFiNiTiON dEsCrIpTiOn", "DEFINITION", "name");
-		_testGetSiteDataDefinitionsPage(
+		_testGetSiteDataDefinitionsClassNamePage(
 			"abcdefghijklmnopqrstuvwxyz0123456789",
 			"abcdefghijklmnopqrstuvwxyz0123456789", "definition");
-		_testGetSiteDataDefinitionsPage(
+		_testGetSiteDataDefinitionsClassNamePage(
 			"description name", "description name", "definition");
-		_testGetSiteDataDefinitionsPage(
+		_testGetSiteDataDefinitionsClassNamePage(
 			"description", "DEFINITION", "DeFiNiTiON NaMe");
-		_testGetSiteDataDefinitionsPage(
+		_testGetSiteDataDefinitionsClassNamePage(
 			"description", "definition name", "definition name");
-		_testGetSiteDataDefinitionsPage(
+		_testGetSiteDataDefinitionsClassNamePage(
 			"description", "nam", "definition name");
+	}
+
+	@Test
+	public void testGetSiteDataDefinitionsPageWithCustomClassName()
+		throws Exception {
+
+		dataDefinitionResource.postSiteDataDefinition(
+			testGroup.getGroupId(), randomDataDefinition());
+
+		DataDefinition expectedDataDefinition = randomDataDefinition();
+
+		long classNameId = _portal.getClassNameId(
+			DDMFormInstance.class.getName());
+
+		expectedDataDefinition.setClassNameId(classNameId);
+
+		dataDefinitionResource.postSiteDataDefinition(
+			testGroup.getGroupId(), expectedDataDefinition);
+
+		Page<DataDefinition> page =
+			dataDefinitionResource.getSiteDataDefinitionsPage(
+				testGetSiteDataDefinitionsPage_getSiteId(), classNameId, null,
+				Pagination.of(1, 2), null);
+
+		Assert.assertEquals(1, page.getTotalCount());
 	}
 
 	@Ignore
@@ -130,9 +158,7 @@ public class DataDefinitionResourceTest
 		throws Exception {
 
 		DataDefinition dataDefinition =
-			testGetSiteDataDefinitionsPage_addDataDefinition(
-				testGetSiteDataDefinitionsPage_getSiteId(),
-				randomDataDefinition());
+			testGetSiteDataDefinition_addDataDefinition();
 
 		Role role = RoleTestUtil.addRole(RoleConstants.TYPE_REGULAR);
 
@@ -252,7 +278,7 @@ public class DataDefinitionResourceTest
 		return dataDefinition;
 	}
 
-	private void _testGetSiteDataDefinitionsPage(
+	private void _testGetSiteDataDefinitionsClassNamePage(
 			String description, String keywords, String name)
 		throws Exception {
 
@@ -264,7 +290,7 @@ public class DataDefinitionResourceTest
 
 		Page<DataDefinition> page =
 			dataDefinitionResource.getSiteDataDefinitionsPage(
-				siteId, keywords, Pagination.of(1, 2), null);
+				siteId, null, keywords, Pagination.of(1, 2), null);
 
 		Assert.assertEquals(1, page.getTotalCount());
 
@@ -277,5 +303,8 @@ public class DataDefinitionResourceTest
 	}
 
 	private static final String _OPERATION_SAVE_PERMISSION = "save";
+
+	@Inject
+	private Portal _portal;
 
 }
