@@ -84,7 +84,6 @@ public class LayoutClassedModelUsagesDisplayContext {
 		_classPK = classPK;
 
 		_classNameId = PortalUtil.getClassNameId(className);
-
 		_fragmentCollectionContributorTracker =
 			(FragmentCollectionContributorTracker)renderRequest.getAttribute(
 				ContentPageEditorWebKeys.
@@ -92,7 +91,6 @@ public class LayoutClassedModelUsagesDisplayContext {
 		_fragmentRendererTracker =
 			(FragmentRendererTracker)renderRequest.getAttribute(
 				FragmentActionKeys.FRAGMENT_RENDERER_TRACKER);
-
 		_themeDisplay = (ThemeDisplay)_renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
