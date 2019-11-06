@@ -130,6 +130,7 @@ public class DepotEntryGroupRelModelImpl
 
 		model.setMvccVersion(soapModel.getMvccVersion());
 		model.setDepotEntryGroupRelId(soapModel.getDepotEntryGroupRelId());
+		model.setCompanyId(soapModel.getCompanyId());
 		model.setDepotEntryId(soapModel.getDepotEntryId());
 		model.setToGroupId(soapModel.getToGroupId());
 
@@ -358,6 +359,7 @@ public class DepotEntryGroupRelModelImpl
 		_companyId = companyId;
 	}
 
+	@JSON
 	@Override
 	public long getDepotEntryId() {
 		return _depotEntryId;
