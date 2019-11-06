@@ -26,16 +26,7 @@
 	<property file="${project.dir}/test.properties" />
 
 	<propertycopy from="app.server.${app.server.type}.start.executable" name="app.server.start.executable" />
-
-	<if>
-		<os family="windows" />
-		<then>
-			<propertycopy from="app.server.${app.server.type}.start.executable.arg.line.windows" name="app.server.start.executable.arg.line" />
-		</then>
-		<else>
-			<propertycopy from="app.server.${app.server.type}.start.executable.arg.line" name="app.server.start.executable.arg.line" />
-		</else>
-	</if>
+	<propertycopy from="app.server.${app.server.type}.start.executable.arg.line" name="app.server.start.executable.arg.line" />
 
 	<propertycopy from="app.server.${app.server.type}.stop.executable" name="app.server.stop.executable" />
 	<propertycopy from="app.server.${app.server.type}.stop.executable.arg.line" name="app.server.stop.executable.arg.line" />

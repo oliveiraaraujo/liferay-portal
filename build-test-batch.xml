@@ -613,27 +613,34 @@ mariadb.executable=${mariadb.executable}]]></echo>
 
 	<macrodef name="get-test-batch-app-server-start-executable-arg-line">
 		<sequential>
+			<propertycopy from="app.server.${app.server.type}.start.executable.arg.line" name="start.executable.arg.line" />
+
+			<var name="test.batch.app.server.start.executable.arg.line" value="${start.executable.arg.line}" />
+
 			<if>
-				<os family="windows" />
+				<and>
+					<equals arg1="${app.server.type}" arg2="tomcat" />
+					<equals arg1="${test.batch.aspectj.enabled}" arg2="true" />
+					<not>
+						<os family="windows" />
+					</not>
+				</and>
 				<then>
-					<propertycopy from="app.server.${app.server.type}.start.executable.arg.line.windows" name="start.executable.arg.line" />
+					<var name="test.batch.app.server.start.executable.arg.line" value="aspectj ${test.batch.app.server.start.executable.arg.line}" />
 				</then>
-				<else>
-					<propertycopy from="app.server.${app.server.type}.start.executable.arg.line" name="start.executable.arg.line" />
-				</else>
 			</if>
 
 			<if>
 				<and>
 					<equals arg1="${app.server.type}" arg2="tomcat" />
 					<equals arg1="${test.batch.code.coverage}" arg2="true" />
+					<not>
+						<os family="windows" />
+					</not>
 				</and>
 				<then>
-					<property name="test.batch.app.server.start.executable.arg.line" value="jacoco ${start.executable.arg.line}" />
+					<var name="test.batch.app.server.start.executable.arg.line" value="jacoco ${test.batch.app.server.start.executable.arg.line}" />
 				</then>
-				<else>
-					<property name="test.batch.app.server.start.executable.arg.line" value="${start.executable.arg.line}" />
-				</else>
 			</if>
 		</sequential>
 	</macrodef>
