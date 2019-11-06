@@ -100,6 +100,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -240,17 +241,25 @@ public class DataDefinitionResourceImpl
 
 	@Override
 	public DataDefinition getSiteDataDefinition(
-			Long siteId, String dataDefinitionKey)
+			Long siteId, String dataDefinitionKey, Long classNameId)
 		throws Exception {
 
 		return DataDefinitionUtil.toDataDefinition(
 			_ddmStructureLocalService.getStructure(
-				siteId, _getClassNameId(), dataDefinitionKey));
+				siteId,
+				Optional.ofNullable(
+					classNameId
+				).orElse(
+					_portal.getClassNameId(
+						InternalDataDefinition.class.getName())
+				),
+				dataDefinitionKey));
 	}
 
 	@Override
 	public Page<DataDefinition> getSiteDataDefinitionsPage(
-			Long siteId, String keywords, Pagination pagination, Sort[] sorts)
+			Long siteId, Long classNameId, String keywords,
+			Pagination pagination, Sort[] sorts)
 		throws Exception {
 
 		if (pagination.getPageSize() > 250) {
@@ -268,12 +277,17 @@ public class DataDefinitionResourceImpl
 			};
 		}
 
+		Long dataDefinitionClassNameId = Optional.ofNullable(
+			classNameId
+		).orElse(
+			_portal.getClassNameId(InternalDataDefinition.class.getName())
+		);
+
 		if (Validator.isNull(keywords)) {
 			return Page.of(
 				transform(
 					_ddmStructureLocalService.getStructures(
-						siteId,
-						_portal.getClassNameId(InternalDataDefinition.class),
+						siteId, dataDefinitionClassNameId,
 						pagination.getStartPosition(),
 						pagination.getEndPosition(),
 						_toOrderByComparator(
@@ -281,8 +295,7 @@ public class DataDefinitionResourceImpl
 					this::_toDataDefinition),
 				pagination,
 				_ddmStructureLocalService.getStructuresCount(
-					siteId,
-					_portal.getClassNameId(InternalDataDefinition.class)));
+					siteId, dataDefinitionClassNameId));
 		}
 
 		return SearchUtil.search(
@@ -293,8 +306,7 @@ public class DataDefinitionResourceImpl
 				Field.ENTRY_CLASS_PK),
 			searchContext -> {
 				searchContext.setAttribute(
-					Field.CLASS_NAME_ID,
-					_portal.getClassNameId(InternalDataDefinition.class));
+					Field.CLASS_NAME_ID, dataDefinitionClassNameId);
 				searchContext.setAttribute(Field.DESCRIPTION, keywords);
 				searchContext.setAttribute(Field.NAME, keywords);
 				searchContext.setCompanyId(contextCompany.getCompanyId());
@@ -361,11 +373,17 @@ public class DataDefinitionResourceImpl
 		DDMFormSerializerSerializeResponse ddmFormSerializerSerializeResponse =
 			_ddmFormSerializer.serialize(builder.build());
 
+		Long classNameId = Optional.ofNullable(
+			dataDefinition.getClassNameId()
+		).orElse(
+			_portal.getClassNameId(InternalDataDefinition.class.getName())
+		);
+
 		dataDefinition = DataDefinitionUtil.toDataDefinition(
 			_ddmStructureLocalService.addStructure(
 				PrincipalThreadLocal.getUserId(), siteId,
-				DDMStructureConstants.DEFAULT_PARENT_STRUCTURE_ID,
-				_getClassNameId(), dataDefinition.getDataDefinitionKey(),
+				DDMStructureConstants.DEFAULT_PARENT_STRUCTURE_ID, classNameId,
+				dataDefinition.getDataDefinitionKey(),
 				LocalizedValueUtil.toLocaleStringMap(dataDefinition.getName()),
 				LocalizedValueUtil.toLocaleStringMap(
 					dataDefinition.getDescription()),
@@ -375,9 +393,8 @@ public class DataDefinitionResourceImpl
 
 		_resourceLocalService.addModelResources(
 			contextCompany.getCompanyId(), siteId,
-			PrincipalThreadLocal.getUserId(),
-			InternalDataDefinition.class.getName(), dataDefinition.getId(),
-			serviceContext.getModelPermissions());
+			PrincipalThreadLocal.getUserId(), _portal.getClassName(classNameId),
+			dataDefinition.getId(), serviceContext.getModelPermissions());
 
 		CommonDataRecordCollectionResource<DataRecordCollection>
 			commonDataRecordCollectionResource =
@@ -519,10 +536,6 @@ public class DataDefinitionResourceImpl
 		}
 
 		return null;
-	}
-
-	private long _getClassNameId() {
-		return _portal.getClassNameId(InternalDataDefinition.class);
 	}
 
 	private JSONObject _getFieldTypeMetadataJSONObject(
