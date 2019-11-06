@@ -142,7 +142,7 @@ public class DBInitUtil {
 
 	private static boolean _checkDefaultRelease(Connection connection) {
 		try (PreparedStatement ps = connection.prepareStatement(
-				"select buildNumber, mvccVersion, schemaVersion, state_ from " +
+				"select mvccVersion, schemaVersion, buildNumber, state_ from " +
 					"Release_ where releaseId = " +
 						ReleaseConstants.DEFAULT_ID);
 			ResultSet rs = ps.executeQuery()) {
