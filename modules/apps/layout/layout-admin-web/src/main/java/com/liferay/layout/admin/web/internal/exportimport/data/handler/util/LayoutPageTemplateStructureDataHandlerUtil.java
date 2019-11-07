@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.segments.constants.SegmentsExperienceConstants;
@@ -51,7 +52,7 @@ public class LayoutPageTemplateStructureDataHandlerUtil {
 		throws Exception {
 
 		layoutPageTemplateStructureElement.addAttribute(
-			"classNameId", String.valueOf(classNameId));
+			"className", String.valueOf(_portal.getClassName(classNameId)));
 		layoutPageTemplateStructureElement.addAttribute(
 			"classPK", String.valueOf(classPK));
 
@@ -198,6 +199,9 @@ public class LayoutPageTemplateStructureDataHandlerUtil {
 	@Reference
 	private LayoutPageTemplateStructureRelLocalService
 		_layoutPageTemplateStructureRelLocalService;
+
+	@Reference
+	private Portal _portal;
 
 	@Reference
 	private SegmentsExperienceLocalService _segmentsExperienceLocalService;
