@@ -83,24 +83,19 @@ public class DataDefinitionResourceTest
 
 		Assert.assertEquals(0, page.getTotalCount());
 
-		_testGetSiteDataDefinitionsClassNamePage(
+		_testGetSiteDataDefinitionsPage(
 			"DeFiNiTiON dEsCrIpTiOn", "DEFINITION", "name");
-		_testGetSiteDataDefinitionsClassNamePage(
+		_testGetSiteDataDefinitionsPage(
 			"abcdefghijklmnopqrstuvwxyz0123456789",
 			"abcdefghijklmnopqrstuvwxyz0123456789", "definition");
-		_testGetSiteDataDefinitionsClassNamePage(
+		_testGetSiteDataDefinitionsPage(
 			"description name", "description name", "definition");
-		_testGetSiteDataDefinitionsClassNamePage(
+		_testGetSiteDataDefinitionsPage(
 			"description", "DEFINITION", "DeFiNiTiON NaMe");
-		_testGetSiteDataDefinitionsClassNamePage(
+		_testGetSiteDataDefinitionsPage(
 			"description", "definition name", "definition name");
-		_testGetSiteDataDefinitionsClassNamePage(
+		_testGetSiteDataDefinitionsPage(
 			"description", "nam", "definition name");
-	}
-
-	@Test
-	public void testGetSiteDataDefinitionsPageWithCustomClassName()
-		throws Exception {
 
 		dataDefinitionResource.postSiteDataDefinition(
 			testGroup.getGroupId(), randomDataDefinition());
@@ -115,10 +110,9 @@ public class DataDefinitionResourceTest
 		dataDefinitionResource.postSiteDataDefinition(
 			testGroup.getGroupId(), expectedDataDefinition);
 
-		Page<DataDefinition> page =
-			dataDefinitionResource.getSiteDataDefinitionsPage(
-				testGetSiteDataDefinitionsPage_getSiteId(), classNameId, null,
-				Pagination.of(1, 2), null);
+		page = dataDefinitionResource.getSiteDataDefinitionsPage(
+			testGetSiteDataDefinitionsPage_getSiteId(), classNameId, null,
+			Pagination.of(1, 2), null);
 
 		Assert.assertEquals(1, page.getTotalCount());
 	}
@@ -278,7 +272,7 @@ public class DataDefinitionResourceTest
 		return dataDefinition;
 	}
 
-	private void _testGetSiteDataDefinitionsClassNamePage(
+	private void _testGetSiteDataDefinitionsPage(
 			String description, String keywords, String name)
 		throws Exception {
 
