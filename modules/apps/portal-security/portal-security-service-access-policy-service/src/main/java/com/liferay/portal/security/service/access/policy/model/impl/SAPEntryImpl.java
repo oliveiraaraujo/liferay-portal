@@ -134,6 +134,7 @@ public class SAPEntryImpl extends SAPEntryBaseImpl {
 				}
 
 				sapSystemEntries.clear();
+
 				sapSystemEntries.addAll(newSAPSystemEntries);
 			}
 
