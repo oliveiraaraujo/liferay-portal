@@ -60,13 +60,15 @@ class FragmentsEditorToolbar extends Component {
 	 * @review
 	 */
 	syncLayoutData() {
-		requestAnimationFrame(() => {
-			this._publishButtonEnabled =
-				this._online &&
-				(Boolean(this.lastSaveDate) || this.draft) &&
-				(this.pageType !== PAGE_TYPES.master ||
-					this.layoutData.hasDropZone);
-		});
+		this._checkPublishButtonState();
+	}
+
+	/**
+	 * @inheritdoc
+	 * @review
+	 */
+	syncLastSaveDate() {
+		this._checkPublishButtonState();
 	}
 
 	/**
@@ -88,6 +90,16 @@ class FragmentsEditorToolbar extends Component {
 	disposed() {
 		window.removeEventListener('offline', this._handleWindowOffline);
 		window.removeEventListener('online', this._updateOnlineStatus);
+	}
+
+	_checkPublishButtonState() {
+		requestAnimationFrame(() => {
+			this._publishButtonEnabled =
+				this._online &&
+				(Boolean(this.lastSaveDate) || this.draft) &&
+				(this.pageType !== PAGE_TYPES.master ||
+					this.layoutData.hasDropZone);
+		});
 	}
 
 	/**
