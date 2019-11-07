@@ -71,9 +71,6 @@ public class AccountRoleManagerImpl implements AccountRoleManager {
 		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
 			accountEntryId);
 
-		_userGroupRoleLocalService.getUserGroupRoles(
-			userId, accountEntry.getAccountEntryGroupId());
-
 		return TransformUtil.transform(
 			_userGroupRoleLocalService.getUserGroupRoles(
 				userId, accountEntry.getAccountEntryGroupId()),
