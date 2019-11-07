@@ -474,7 +474,7 @@ public class DataDefinitionResourceImpl
 		DDMFormFieldType ddmFormFieldType,
 		HttpServletRequest httpServletRequest, Locale locale, String type) {
 
-		Locale currentThemeDisplayLocale =
+		Locale originalThemeDisplayLocale =
 			LocaleThreadLocal.getThemeDisplayLocale();
 
 		LocaleThreadLocal.setThemeDisplayLocale(locale);
@@ -515,7 +515,7 @@ public class DataDefinitionResourceImpl
 			}
 		}
 		finally {
-			LocaleThreadLocal.setThemeDisplayLocale(currentThemeDisplayLocale);
+			LocaleThreadLocal.setThemeDisplayLocale(originalThemeDisplayLocale);
 		}
 
 		return null;
