@@ -3,6 +3,12 @@
 		"imports": {
 			"dynamic-data-mapping-form-renderer": {
 				"/": ">=5.0.0"
+			},
+			"map-openstreetmap": {
+				"/": ">=5.0.0"
+			},
+			"map-common": {
+				"/": ">=5.0.0"
 			}
 		}
 	},

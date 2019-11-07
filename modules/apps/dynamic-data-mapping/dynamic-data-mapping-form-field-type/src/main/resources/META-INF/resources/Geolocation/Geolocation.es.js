@@ -17,11 +17,19 @@ import '../FieldBase/FieldBase.es';
 import './GeolocationRegister.soy.js';
 
 import Component from 'metal-component';
+
 import Soy from 'metal-soy';
 import {Config} from 'metal-state';
 
 import {setJSONArrayValue} from '../util/setters.es';
 import templates from './Geolocation.soy.js';
+
+import MapOpenStreetMap from 'map-openstreetmap/js/MapOpenStreetMap.es';
+
+import MapBase from 'map-common/js/MapBase.es';
+
+console.log('log2:', MapOpenStreetMap, MapBase);
+
 
 /**
  * Geolocation.
@@ -30,19 +38,34 @@ import templates from './Geolocation.soy.js';
 
 class Geolocation extends Component {
 	attached() {
+		console.log('attached--> 654321');
+
 		this.setState({
 			geolocateTitle: Liferay.Language.get('geolocate'),
-			pathThemeImages: Liferay.themeDisplay.getPathThemeImages()
+			pathThemeImages: Liferay.ThemeDisplay.getPathThemeImages()
 		});
+
+		// setTimeout(() => {
+		// 	const element = document.getElementById('targetGeo1');
+
+
+		// }, 6000);
+
 	}
 
 	prepareStateForRender(state) {
+		console.log('prepareStateForRender--> 654321', {readOnly: state.readOnly});
+
 		const {predefinedValue} = state;
 		const predefinedValueArray = this._getArrayValue(predefinedValue);
 
 		return {
 			...state,
-			predefinedValue: predefinedValueArray[0] || ''
+			predefinedValue: predefinedValueArray[0] || '',
+			...{
+				geolocateTitle: Liferay.Language.get('geolocate'),
+				pathThemeImages: Liferay.ThemeDisplay.getPathThemeImages()
+			}
 		};
 	}
 
