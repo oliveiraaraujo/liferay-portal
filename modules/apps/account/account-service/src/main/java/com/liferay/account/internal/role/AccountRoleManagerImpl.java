@@ -54,7 +54,7 @@ public class AccountRoleManagerImpl implements AccountRoleManager {
 	}
 
 	@Override
-	public void addUser(long accountEntryId, long roleId, long userId)
+	public void associateUser(long accountEntryId, long roleId, long userId)
 		throws PortalException {
 
 		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
@@ -92,7 +92,7 @@ public class AccountRoleManagerImpl implements AccountRoleManager {
 	}
 
 	@Override
-	public void removeUser(long accountEntryId, long roleId, long userId)
+	public void unassociateUser(long accountEntryId, long roleId, long userId)
 		throws PortalException {
 
 		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
