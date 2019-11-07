@@ -3922,6 +3922,8 @@ AUI.add(
 				_onSubmitForm() {
 					var instance = this;
 
+					instance.fillEmptyLocales();
+
 					instance.finalizeRepeatableFieldLocalizations();
 
 					instance.updateDDMFormInputValue();
@@ -4026,6 +4028,31 @@ AUI.add(
 					});
 
 					instance.repeatableInstances = null;
+				},
+
+				fillEmptyLocales() {
+					var instance = this;
+
+					instance.get('fields').forEach(field => {
+						if (!field.get('localizable')) {
+							return;
+						}
+
+						var localizationMap = field.get('localizationMap');
+
+						var defaultLocale = instance.getDefaultLocale();
+
+						instance.get('availableLanguageIds').forEach(locale => {
+							if (Object.keys(localizationMap).includes(locale)) {
+								return;
+							}
+
+							localizationMap[locale] =
+								localizationMap[defaultLocale];
+						});
+
+						field.set('localizationMap', localizationMap);
+					});
 				},
 
 				finalizeRepeatableFieldLocalizations() {
