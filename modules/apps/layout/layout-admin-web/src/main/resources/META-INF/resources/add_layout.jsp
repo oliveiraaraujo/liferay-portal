@@ -70,15 +70,24 @@ List<SiteNavigationMenu> autoSiteNavigationMenus = layoutsAdminDisplayContext.ge
 				</c:when>
 			</c:choose>
 
-			<c:if test="<%= layoutsAdminDisplayContext.isShowCategorization() %>">
+			<c:if test="<%= layoutsAdminDisplayContext.hasRequiredVocabularies() %>">
 				<aui:fieldset cssClass="mb-4">
 					<div class="h3 sheet-subtitle"><liferay-ui:message key="categorization" /></div>
 
-					<liferay-asset:asset-categories-selector
-						className="<%= Layout.class.getName() %>"
-						classPK="<%= 0 %>"
-						showOnlyRequiredVocabularies="<%= true %>"
-					/>
+					<c:choose>
+						<c:when test="<%= layoutsAdminDisplayContext.isShowCategorization() %>">
+							<liferay-asset:asset-categories-selector
+								className="<%= Layout.class.getName() %>"
+								classPK="<%= 0 %>"
+								showOnlyRequiredVocabularies="<%= true %>"
+							/>
+						</c:when>
+						<c:otherwise>
+							<div class="alert alert-warning text-justify">
+								<liferay-ui:message key="pages-have-required-vocabularies.-you-need-to-create-at-least-one-category-in-all-required-vocabularies-in-order-to-create-a-page" />
+							</div>
+						</c:otherwise>
+					</c:choose>
 				</aui:fieldset>
 			</c:if>
 		</liferay-frontend:edit-form-body>

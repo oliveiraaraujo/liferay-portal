@@ -1257,6 +1257,23 @@ public class LayoutsAdminDisplayContext {
 		return false;
 	}
 
+	public boolean hasRequiredVocabularies() {
+		long classNameId = PortalUtil.getClassNameId(Layout.class);
+
+		List<AssetVocabulary> assetVocabularies =
+			AssetVocabularyServiceUtil.getGroupVocabularies(_getGroupIds());
+
+		for (AssetVocabulary assetVocabulary : assetVocabularies) {
+			if (assetVocabulary.isAssociatedToClassNameId(classNameId) &&
+				assetVocabulary.isRequired(classNameId, 0)) {
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public boolean isDraft() {
 		Layout layout = getSelLayout();
 
