@@ -146,28 +146,29 @@ public class DDMFormValuesInfoDisplayFieldProviderImpl<T extends GroupedModel>
 		}
 
 		if (classTypeValues.containsKey(key)) {
-			Collection fieldValueCollection = new ArrayList<>();
+			Collection fieldValues = new ArrayList<>();
 
 			Object classTypeValue = classTypeValues.get(key);
 
 			if (classTypeValue instanceof Collection) {
-				fieldValueCollection.addAll((Collection)classTypeValue);
+				fieldValues.addAll((Collection)classTypeValue);
 			}
 			else {
-				fieldValueCollection.add(classTypeValue);
+				fieldValues.add(classTypeValue);
 			}
 
 			if (fieldValue instanceof Collection) {
-				fieldValueCollection.addAll((Collection)fieldValue);
+				fieldValues.addAll((Collection)fieldValue);
 			}
 			else {
-				fieldValueCollection.add(fieldValue);
+				fieldValues.add(fieldValue);
 			}
 
-			fieldValue = fieldValueCollection;
+			classTypeValues.put(key, fieldValues);
 		}
-
-		classTypeValues.put(key, fieldValue);
+		else {
+			classTypeValues.put(key, fieldValue);
+		}
 	}
 
 	private void _addNestedFields(
