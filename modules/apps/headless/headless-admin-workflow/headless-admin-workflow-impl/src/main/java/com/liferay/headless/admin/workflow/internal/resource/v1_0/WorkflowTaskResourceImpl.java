@@ -21,7 +21,7 @@ import com.liferay.headless.admin.workflow.dto.v1_0.WorkflowTaskAssignToMe;
 import com.liferay.headless.admin.workflow.dto.v1_0.WorkflowTaskAssignToRole;
 import com.liferay.headless.admin.workflow.dto.v1_0.WorkflowTaskAssignToUser;
 import com.liferay.headless.admin.workflow.internal.dto.v1_0.util.CreatorUtil;
-import com.liferay.headless.admin.workflow.internal.resource.v1_0.helper.ResourceHelper;
+import com.liferay.headless.admin.workflow.internal.dto.v1_0.util.ObjectReviewedUtil;
 import com.liferay.headless.admin.workflow.resource.v1_0.WorkflowTaskResource;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Sort;
@@ -349,7 +349,7 @@ public class WorkflowTaskResourceImpl extends BaseWorkflowTaskResourceImpl {
 				id = workflowTask.getWorkflowTaskId();
 				instanceId = workflowTask.getWorkflowInstanceId();
 				name = workflowTask.getName();
-				objectReviewed = _resourceHelper.toObjectReviewed(
+				objectReviewed = ObjectReviewedUtil.toObjectReviewed(
 					workflowTask.getOptionalAttributes());
 			}
 		};
@@ -357,9 +357,6 @@ public class WorkflowTaskResourceImpl extends BaseWorkflowTaskResourceImpl {
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private ResourceHelper _resourceHelper;
 
 	@Reference
 	private RoleLocalService _roleLocalService;

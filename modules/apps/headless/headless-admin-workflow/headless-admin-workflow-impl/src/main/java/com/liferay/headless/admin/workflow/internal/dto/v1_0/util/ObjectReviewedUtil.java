@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.headless.admin.workflow.internal.resource.v1_0.helper;
+package com.liferay.headless.admin.workflow.internal.dto.v1_0.util;
 
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.headless.admin.workflow.dto.v1_0.ObjectReviewed;
@@ -24,15 +24,12 @@ import java.io.Serializable;
 
 import java.util.Map;
 
-import org.osgi.service.component.annotations.Component;
-
 /**
  * @author Rafael Praxedes
  */
-@Component(immediate = true, service = ResourceHelper.class)
-public class ResourceHelper {
+public class ObjectReviewedUtil {
 
-	public ObjectReviewed toObjectReviewed(
+	public static ObjectReviewed toObjectReviewed(
 		Map<String, Serializable> optionalAttributes) {
 
 		return new ObjectReviewed() {
@@ -40,12 +37,12 @@ public class ResourceHelper {
 				id = GetterUtil.getLong(
 					optionalAttributes.get(
 						WorkflowConstants.CONTEXT_ENTRY_CLASS_PK));
-				resourceType = _getResourceType(optionalAttributes);
+				resourceType = _toResourceType(optionalAttributes);
 			}
 		};
 	}
 
-	private String _getResourceType(
+	private static String _toResourceType(
 		Map<String, Serializable> optionalAttributes) {
 
 		String className = GetterUtil.getString(

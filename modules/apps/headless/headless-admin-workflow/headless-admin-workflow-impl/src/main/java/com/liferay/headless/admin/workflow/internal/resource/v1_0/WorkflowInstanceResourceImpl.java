@@ -17,7 +17,7 @@ package com.liferay.headless.admin.workflow.internal.resource.v1_0;
 import com.liferay.headless.admin.workflow.dto.v1_0.ChangeTransition;
 import com.liferay.headless.admin.workflow.dto.v1_0.WorkflowInstance;
 import com.liferay.headless.admin.workflow.dto.v1_0.WorkflowInstanceSubmit;
-import com.liferay.headless.admin.workflow.internal.resource.v1_0.helper.ResourceHelper;
+import com.liferay.headless.admin.workflow.internal.dto.v1_0.util.ObjectReviewedUtil;
 import com.liferay.headless.admin.workflow.resource.v1_0.WorkflowInstanceResource;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.workflow.WorkflowInstanceManager;
@@ -138,14 +138,11 @@ public class WorkflowInstanceResourceImpl
 				definitionVersion = GetterUtil.getString(
 					workflowInstance.getWorkflowDefinitionVersion());
 				id = workflowInstance.getWorkflowInstanceId();
-				objectReviewed = _resourceHelper.toObjectReviewed(
+				objectReviewed = ObjectReviewedUtil.toObjectReviewed(
 					workflowInstance.getWorkflowContext());
 			}
 		};
 	}
-
-	@Reference
-	private ResourceHelper _resourceHelper;
 
 	@Reference
 	private WorkflowInstanceManager _workflowInstanceManager;
