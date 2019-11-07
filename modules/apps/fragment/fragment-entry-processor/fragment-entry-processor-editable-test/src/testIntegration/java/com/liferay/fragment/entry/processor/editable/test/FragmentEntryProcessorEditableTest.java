@@ -132,11 +132,10 @@ public class FragmentEntryProcessorEditableTest {
 
 		FragmentEntry fragmentEntry = _addFragmentEntry("fragment_entry.html");
 
-		fragmentEntryLink.setHtml(fragmentEntry.getHtml());
-
 		fragmentEntryLink.setEditableValues(
 			_getJsonFileAsString(
 				"fragment_entry_link_editable_values_compatibility.json"));
+		fragmentEntryLink.setHtml(fragmentEntry.getHtml());
 
 		Assert.assertEquals(
 			_processedHTML,
