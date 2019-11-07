@@ -101,7 +101,7 @@ public class AccountRoleManagerTest {
 				_accountEntry1.getAccountEntryId(), accountRole.getRoleId(),
 				user.getUserId()));
 
-		_accountRoleManager.addUser(
+		_accountRoleManager.associateUser(
 			_accountEntry1.getAccountEntryId(), accountRole.getRoleId(),
 			user.getUserId());
 
@@ -110,7 +110,7 @@ public class AccountRoleManagerTest {
 				_accountEntry1.getAccountEntryId(), accountRole.getRoleId(),
 				user.getUserId()));
 
-		_accountRoleManager.removeUser(
+		_accountRoleManager.unassociateUser(
 			_accountEntry1.getAccountEntryId(), accountRole.getRoleId(),
 			user.getUserId());
 
@@ -139,10 +139,10 @@ public class AccountRoleManagerTest {
 		Assert.assertFalse(
 			ArrayUtil.contains(roleIds, sharedAccountRole.getRoleId()));
 
-		_accountRoleManager.addUser(
+		_accountRoleManager.associateUser(
 			_accountEntry1.getAccountEntryId(), accountRole.getRoleId(),
 			user.getUserId());
-		_accountRoleManager.addUser(
+		_accountRoleManager.associateUser(
 			_accountEntry1.getAccountEntryId(), sharedAccountRole.getRoleId(),
 			user.getUserId());
 
