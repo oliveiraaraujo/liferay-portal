@@ -118,17 +118,10 @@ public class AccountRoleManagerTest {
 			_hasRoleId(
 				_accountEntry1.getAccountEntryId(), accountRole.getRoleId(),
 				user.getUserId()));
-	}
 
-	@Test
-	public void testAccountRoleUserHasPermission() throws Exception {
-		User user = UserTestUtil.addUser();
+		// Permissions
 
-		_users.add(user);
-
-		AccountRole accountRole = _addAccountRole(
-			_accountEntry1.getAccountEntryId(), RandomTestUtil.randomString());
-		AccountRole sharedAccountRole = _addAccountRole(
+		AccountRole defaultAccountRole = _addAccountRole(
 			AccountConstants.ACCOUNT_ENTRY_ID_DEFAULT,
 			RandomTestUtil.randomString());
 
@@ -137,20 +130,20 @@ public class AccountRoleManagerTest {
 		Assert.assertFalse(
 			ArrayUtil.contains(roleIds, accountRole.getRoleId()));
 		Assert.assertFalse(
-			ArrayUtil.contains(roleIds, sharedAccountRole.getRoleId()));
+			ArrayUtil.contains(roleIds, defaultAccountRole.getRoleId()));
 
 		_accountRoleManager.associateUser(
 			_accountEntry1.getAccountEntryId(), accountRole.getRoleId(),
 			user.getUserId());
 		_accountRoleManager.associateUser(
-			_accountEntry1.getAccountEntryId(), sharedAccountRole.getRoleId(),
+			_accountEntry1.getAccountEntryId(), defaultAccountRole.getRoleId(),
 			user.getUserId());
 
 		roleIds = _getRoleIds(user);
 
 		Assert.assertTrue(ArrayUtil.contains(roleIds, accountRole.getRoleId()));
 		Assert.assertTrue(
-			ArrayUtil.contains(roleIds, sharedAccountRole.getRoleId()));
+			ArrayUtil.contains(roleIds, defaultAccountRole.getRoleId()));
 	}
 
 	@Test
