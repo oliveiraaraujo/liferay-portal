@@ -695,7 +695,7 @@ public class Query {
 				Query.this::_populateResourceContext,
 				dataRecordCollectionResource ->
 					dataRecordCollectionResource.getDataRecordCollection(
-						_dataRecord.getId()));
+						_dataRecord.getDataRecordCollectionId()));
 		}
 
 		private DataRecord _dataRecord;
