@@ -82,7 +82,7 @@ public class AccountRoleManagerTest {
 	}
 
 	@Test
-	public void testAccountRoleUser() throws Exception {
+	public void testAssociateUser() throws Exception {
 		AccountRole accountRole = _addAccountRole(
 			_accountEntry1.getAccountEntryId(), RandomTestUtil.randomString());
 
@@ -97,7 +97,7 @@ public class AccountRoleManagerTest {
 		_accountEntryUserRels.add(accountEntryUserRel);
 
 		Assert.assertFalse(
-			_hasUserAccountRole(
+			_hasRoleId(
 				_accountEntry1.getAccountEntryId(), accountRole.getRoleId(),
 				user.getUserId()));
 
@@ -106,7 +106,7 @@ public class AccountRoleManagerTest {
 			user.getUserId());
 
 		Assert.assertTrue(
-			_hasUserAccountRole(
+			_hasRoleId(
 				_accountEntry1.getAccountEntryId(), accountRole.getRoleId(),
 				user.getUserId()));
 
@@ -115,7 +115,7 @@ public class AccountRoleManagerTest {
 			user.getUserId());
 
 		Assert.assertFalse(
-			_hasUserAccountRole(
+			_hasRoleId(
 				_accountEntry1.getAccountEntryId(), accountRole.getRoleId(),
 				user.getUserId()));
 	}
@@ -262,7 +262,7 @@ public class AccountRoleManagerTest {
 			user.getUserId(), _accountEntry1.getAccountEntryGroupId());
 	}
 
-	private boolean _hasUserAccountRole(
+	private boolean _hasRoleId(
 			long accountEntryId, long roleId, long accountUserId)
 		throws Exception {
 
