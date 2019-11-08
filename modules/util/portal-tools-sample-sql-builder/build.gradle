@@ -97,8 +97,6 @@ writeReleases {
 			Writer writer ->
 
 			(configurations.compile + configurations.compileInclude).each {
-				println "Adding release information from ${it} into ${releasesTxtFile}"
-
 				JarFile jarFile = new JarFile(it)
 
 				Attributes mainAttributes = jarFile.manifest.mainAttributes
@@ -108,6 +106,8 @@ writeReleases {
 				if (!schemaVersion) {
 					return
 				}
+
+				println "Adding release information from ${it} into ${releasesTxtFile}"
 
 				String symbolicName = mainAttributes.getValue("Bundle-SymbolicName")
 
