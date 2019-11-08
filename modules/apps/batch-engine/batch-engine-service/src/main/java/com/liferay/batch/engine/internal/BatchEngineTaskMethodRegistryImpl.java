@@ -111,13 +111,13 @@ public class BatchEngineTaskMethodRegistryImpl
 
 		@Override
 		public boolean equals(Object obj) {
-			CreatorKey factoryKey = (CreatorKey)obj;
+			CreatorKey creatorKey = (CreatorKey)obj;
 
-			if (Objects.equals(factoryKey._apiVersion, _apiVersion) &&
+			if (Objects.equals(creatorKey._apiVersion, _apiVersion) &&
 				Objects.equals(
-					factoryKey._batchEngineTaskOperation,
+					creatorKey._batchEngineTaskOperation,
 					_batchEngineTaskOperation) &&
-				Objects.equals(factoryKey._itemClassName, _itemClassName)) {
+				Objects.equals(creatorKey._itemClassName, _itemClassName)) {
 
 				return true;
 			}
@@ -162,7 +162,7 @@ public class BatchEngineTaskMethodRegistryImpl
 
 			Class<?> resourceClass = resource.getClass();
 
-			List<CreatorKey> factoryKeys = null;
+			List<CreatorKey> creatorKeys = null;
 
 			for (Method resourceMethod : resourceClass.getMethods()) {
 				BatchEngineTaskMethod batchEngineTaskMethod =
@@ -174,7 +174,7 @@ public class BatchEngineTaskMethodRegistryImpl
 
 				Class<?> itemClass = batchEngineTaskMethod.itemClass();
 
-				CreatorKey factoryKey = new CreatorKey(
+				CreatorKey creatorKey = new CreatorKey(
 					String.valueOf(serviceReference.getProperty("api.version")),
 					batchEngineTaskMethod.batchEngineTaskOperation(),
 					itemClass.getName());
@@ -189,7 +189,7 @@ public class BatchEngineTaskMethodRegistryImpl
 						_bundleContext.getServiceObjects(serviceReference);
 
 					_batchEngineTaskItemResourceDelegateCreators.put(
-						factoryKey,
+						creatorKey,
 						(company, parameters, user) ->
 							new BatchEngineTaskItemResourceDelegate(
 								company, ItemClassIndexUtil.index(itemClass),
@@ -201,14 +201,14 @@ public class BatchEngineTaskMethodRegistryImpl
 					throw new IllegalStateException(nsme);
 				}
 
-				if (factoryKeys == null) {
-					factoryKeys = new ArrayList<>();
+				if (creatorKeys == null) {
+					creatorKeys = new ArrayList<>();
 				}
 
-				factoryKeys.add(factoryKey);
+				creatorKeys.add(creatorKey);
 
 				_itemClasses.compute(
-					factoryKey._itemClassName,
+					creatorKey._itemClassName,
 					(itemClassName, entry) -> {
 						if (entry == null) {
 							return new AbstractMap.SimpleImmutableEntry<>(
@@ -223,25 +223,25 @@ public class BatchEngineTaskMethodRegistryImpl
 					});
 			}
 
-			return factoryKeys;
+			return creatorKeys;
 		}
 
 		@Override
 		public void modifiedService(
 			ServiceReference<Object> serviceReference,
-			List<CreatorKey> factoryKeys) {
+			List<CreatorKey> creatorKeys) {
 		}
 
 		@Override
 		public void removedService(
 			ServiceReference<Object> serviceReference,
-			List<CreatorKey> factoryKeys) {
+			List<CreatorKey> creatorKeys) {
 
-			for (CreatorKey factoryKey : factoryKeys) {
-				_batchEngineTaskItemResourceDelegateCreators.remove(factoryKey);
+			for (CreatorKey creatorKey : creatorKeys) {
+				_batchEngineTaskItemResourceDelegateCreators.remove(creatorKey);
 
 				_itemClasses.compute(
-					factoryKey._itemClassName,
+					creatorKey._itemClassName,
 					(itemClassName, entry) -> {
 						if (entry == null) {
 							return null;
