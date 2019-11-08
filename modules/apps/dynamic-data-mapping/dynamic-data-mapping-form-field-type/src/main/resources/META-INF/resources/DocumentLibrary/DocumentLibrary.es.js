@@ -16,7 +16,11 @@ import '../FieldBase/FieldBase.es';
 
 import './DocumentLibraryRegister.soy.js';
 
-import {createActionURL, createPortletURL, ItemSelectorDialog} from 'frontend-js-web';
+import {
+	createActionURL,
+	createPortletURL,
+	ItemSelectorDialog
+} from 'frontend-js-web';
 import Component from 'metal-component';
 import Soy from 'metal-soy';
 import {Config} from 'metal-state';
@@ -138,8 +142,14 @@ class DocumentLibrary extends Component {
 			url: this.getDocumentLibrarySelectorURL()
 		});
 
-		itemSelectorDialog.on('selectedItemChange', this._handleFieldChanged.bind(this));
-		itemSelectorDialog.on('visibleChange', this._handleVisibleChange.bind(this));
+		itemSelectorDialog.on(
+			'selectedItemChange',
+			this._handleFieldChanged.bind(this)
+		);
+		itemSelectorDialog.on(
+			'visibleChange',
+			this._handleVisibleChange.bind(this)
+		);
 
 		itemSelectorDialog.open();
 	}

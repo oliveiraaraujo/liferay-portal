@@ -404,7 +404,7 @@ AUI.add(
 
 					Liferay.Loader.require(
 						'frontend-js-web/liferay/ItemSelectorDialog.es',
-						function(ItemSelectorDialog) {
+						ItemSelectorDialog => {
 							var itemSelectorDialog = new ItemSelectorDialog.default(
 								{
 									eventName:
@@ -416,7 +416,7 @@ AUI.add(
 
 							itemSelectorDialog.on(
 								'selectedItemChange',
-								function(event) {
+								event => {
 									var selectedItem = event.selectedItem;
 
 									if (selectedItem) {
