@@ -20,25 +20,10 @@ function PageTypeSelector(props) {
 		event => {
 			const pageType = event.target.value;
 
-			let promise;
-
-			if (pageType === 'private-pages') {
-				promise = Liferay.Util.Session.set(
-					`${props.namespace}PRIVATE_LAYOUT`,
-					'true'
-				);
-			} else {
-				promise = Liferay.Util.Session.set(
-					`${props.namespace}PRIVATE_LAYOUT`,
-					'false'
-				);
-			}
-
-			if (promise) {
-				promise.then(() => {
-					Liferay.Util.navigate(window.location.href);
-				});
-			}
+			Liferay.Util.Session.set(
+				`${props.namespace}PRIVATE_LAYOUT`,
+				pageType === 'private-pages'
+			).then(() => Liferay.Util.navigate(window.location.href));
 		},
 		[props.namespace]
 	);
