@@ -201,7 +201,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 		virtualHostname = StringUtil.toLowerCase(
 			StringUtil.trim(virtualHostname));
 
-		VirtualHost virtualHost;
+		VirtualHost virtualHost = null;
 
 		try {
 			virtualHost = virtualHostPersistence.findByHostname(
