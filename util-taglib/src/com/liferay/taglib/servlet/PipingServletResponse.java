@@ -53,16 +53,16 @@ public class PipingServletResponse extends HttpServletResponseWrapper {
 			// relies on the WriterOutputStream bridging logic insde
 			// getOutputStream().
 
-			// Welogic's weblogic.servlet.internal.DelegateChunkWriter.
-			// getWriter() always builds its writer on top of the
-			// HttpServletResponse.getOutputStream(), rather than relying on
-			// the HttpServletResponse.getWriter().
+			// WebLogic's weblogic.servlet.internal.DelegateChunkWriter#
+			// getWriter() always builds its writer on top of
+			// HttpServletResponse#getOutputStream() rather than relying on
+			// the HttpServletResponse#getWriter().
 
 			// In order to avoid the potential heavy
-			// BufferCacheServletResponse.getBufferSize() call, here we
-			// pre-adapt JspWriter to ServletOutputStream using
-			// JspWriter.getBufferSize(), rather than the
-			// HttpServletResponse.getBufferSize().
+			// BufferCacheServletResponse#getBufferSize() call, we
+			// preadapt JspWriter to ServletOutputStream using
+			// JspWriter#getBufferSize() rather than the
+			// HttpServletResponse#getBufferSize().
 
 			return new PipingServletResponse(
 				httpServletResponse,
@@ -76,7 +76,7 @@ public class PipingServletResponse extends HttpServletResponseWrapper {
 			(jspWriter instanceof BodyContent)) {
 
 			// This optimization cannot be applied to a page context with a
-			// pushed body.
+			// pushed body
 
 			return new PipingServletResponse(httpServletResponse, jspWriter);
 		}
