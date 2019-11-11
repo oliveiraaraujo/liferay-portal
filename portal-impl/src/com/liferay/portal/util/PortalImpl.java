@@ -193,6 +193,7 @@ import com.liferay.portal.kernel.util.SessionClicks;
 import com.liferay.portal.kernel.util.StringComparator;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.TreeMapBuilder;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
@@ -5878,15 +5879,13 @@ public class PortalImpl implements Portal {
 		TreeMap<String, String> virtualHostnames =
 			layoutSet.getVirtualHostnames();
 
-		if (virtualHostnames.isEmpty()) {
-			virtualHostnames = new TreeMap<>();
-
-			virtualHostnames.put(
-				layoutSet.getCompanyFallbackVirtualHostname(),
-				StringPool.BLANK);
+		if (!virtualHostnames.isEmpty()) {
+			return virtualHostnames;
 		}
 
-		return virtualHostnames;
+		return TreeMapBuilder.put(
+			layoutSet.getCompanyFallbackVirtualHostname(), StringPool.BLANK
+		).build();
 	}
 
 	@Override
@@ -8360,10 +8359,9 @@ public class PortalImpl implements Portal {
 
 						Company company = themeDisplay.getCompany();
 
-						virtualHostnames = new TreeMap<>();
-
-						virtualHostnames.put(
-							company.getVirtualHostname(), StringPool.BLANK);
+						virtualHostnames = TreeMapBuilder.put(
+							company.getVirtualHostname(), StringPool.BLANK
+						).build();
 					}
 
 					if (canonicalURL ||
