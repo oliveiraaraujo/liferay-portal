@@ -49,8 +49,9 @@ public class AssetServiceUpgrade implements UpgradeStepRegistrator {
 				"AssetEntry", AssetEntry.class, "entryId", "viewCount"));
 	}
 
-	// See LPS-101084. The ViewCount table needs to exist.
-
+	/**
+	 * See LPS-101084. The ViewCount table needs to exist.
+	 */
 	@Reference
 	private ViewCountEntryLocalService _viewCountEntryLocalService;
 
