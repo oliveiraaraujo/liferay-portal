@@ -22,6 +22,13 @@ import com.liferay.portal.kernel.util.ServiceProxyFactory;
  */
 public class ViewCountManagerUtil {
 
+	public static void deleteViewCount(
+			long companyId, long classNameId, long classPK)
+		throws PortalException {
+
+		_viewCountManager.deleteViewCount(companyId, classNameId, classPK);
+	}
+
 	public static long getViewCount(
 		long companyId, long classNameId, long classPK) {
 
@@ -33,13 +40,6 @@ public class ViewCountManagerUtil {
 
 		_viewCountManager.incrementViewCount(
 			companyId, classNameId, classPK, increment);
-	}
-
-	public static void deleteViewCount(
-			long companyId, long classNameId, long classPK)
-		throws PortalException {
-
-		_viewCountManager.deleteViewCount(companyId, classNameId, classPK);
 	}
 
 	private static volatile ViewCountManager _viewCountManager =

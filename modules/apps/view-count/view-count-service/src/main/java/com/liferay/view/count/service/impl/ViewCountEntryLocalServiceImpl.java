@@ -43,6 +43,21 @@ public class ViewCountEntryLocalServiceImpl
 	extends ViewCountEntryLocalServiceBaseImpl implements ViewCountManager {
 
 	@Override
+	public void deleteViewCount(
+		long companyId, long classNameId, long classPK) {
+
+		ViewCountEntryPK viewCountEntryPK = new ViewCountEntryPK(
+			companyId, classNameId, classPK);
+
+		ViewCountEntry viewCountEntry =
+			viewCountEntryPersistence.fetchByPrimaryKey(viewCountEntryPK);
+
+		if (viewCountEntry != null) {
+			viewCountEntryPersistence.remove(viewCountEntry);
+		}
+	}
+
+	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
 			ViewCountManager.class, ViewCountEntryLocalService.class,
@@ -80,21 +95,6 @@ public class ViewCountEntryLocalServiceImpl
 
 		viewCountEntryFinder.incrementViewCount(
 			companyId, classNameId, classPK, increment);
-	}
-
-	@Override
-	public void deleteViewCount(
-		long companyId, long classNameId, long classPK) {
-
-		ViewCountEntryPK viewCountEntryPK = new ViewCountEntryPK(
-			companyId, classNameId, classPK);
-
-		ViewCountEntry viewCountEntry =
-			viewCountEntryPersistence.fetchByPrimaryKey(viewCountEntryPK);
-
-		if (viewCountEntry != null) {
-			viewCountEntryPersistence.remove(viewCountEntry);
-		}
 	}
 
 }

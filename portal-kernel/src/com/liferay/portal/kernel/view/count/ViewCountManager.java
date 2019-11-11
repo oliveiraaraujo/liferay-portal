@@ -24,12 +24,12 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface ViewCountManager {
 
+	public void deleteViewCount(long companyId, long classNameId, long classPK)
+		throws PortalException;
+
 	public long getViewCount(long companyId, long classNameId, long classPK);
 
 	public void incrementViewCount(
 		long companyId, long classNameId, long classPK, int increment);
-
-	public void deleteViewCount(long companyId, long classNameId, long classPK)
-		throws PortalException;
 
 }
