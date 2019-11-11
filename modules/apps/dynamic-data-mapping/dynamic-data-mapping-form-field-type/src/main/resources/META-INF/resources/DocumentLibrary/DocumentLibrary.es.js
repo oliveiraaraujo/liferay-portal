@@ -114,7 +114,7 @@ class DocumentLibrary extends Component {
 	}
 
 	_handleFieldChanged(event) {
-		var selectedItem = event.newVal;
+		var selectedItem = event.selectedItem;
 
 		if (selectedItem) {
 			const {value} = selectedItem;
@@ -155,7 +155,7 @@ class DocumentLibrary extends Component {
 	}
 
 	_handleVisibleChange(event) {
-		if (event.newVal) {
+		if (event.selectedItem) {
 			this.emit('fieldFocused', {
 				fieldInstance: this,
 				originalEvent: event
