@@ -35,11 +35,11 @@ public class ViewCountManagerUtil {
 			companyId, classNameId, classPK, increment);
 	}
 
-	public static void removeViewCount(
+	public static void deleteViewCount(
 			long companyId, long classNameId, long classPK)
 		throws PortalException {
 
-		_viewCountManager.removeViewCount(companyId, classNameId, classPK);
+		_viewCountManager.deleteViewCount(companyId, classNameId, classPK);
 	}
 
 	private static volatile ViewCountManager _viewCountManager =

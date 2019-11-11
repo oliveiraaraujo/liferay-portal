@@ -29,7 +29,7 @@ public interface ViewCountManager {
 	public void incrementViewCount(
 		long companyId, long classNameId, long classPK, int increment);
 
-	public void removeViewCount(long companyId, long classNameId, long classPK)
+	public void deleteViewCount(long companyId, long classNameId, long classPK)
 		throws PortalException;
 
 }

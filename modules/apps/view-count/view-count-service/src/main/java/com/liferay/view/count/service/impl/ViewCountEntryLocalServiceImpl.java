@@ -83,7 +83,7 @@ public class ViewCountEntryLocalServiceImpl
 	}
 
 	@Override
-	public void removeViewCount(
+	public void deleteViewCount(
 		long companyId, long classNameId, long classPK) {
 
 		ViewCountEntryPK viewCountEntryPK = new ViewCountEntryPK(

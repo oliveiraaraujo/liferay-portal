@@ -98,7 +98,7 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 
 		// View count
 
-		_viewCountManager.removeViewCount(
+		_viewCountManager.deleteViewCount(
 			entry.getCompanyId(),
 			classNameLocalService.getClassNameId(AssetEntry.class),
 			entry.getEntryId());
