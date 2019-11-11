@@ -107,7 +107,7 @@ public class GetPersonalMenuItemsMVCResourceCommand
 				_http.getPath(realUser.getDisplayURL(themeDisplay, false)));
 
 			PersonalApplicationURLUtil.
-				fetchOrAddEmbeddedPersonalApplicationLayout(
+				getOrAddEmbeddedPersonalApplicationLayout(
 					realUser, realUser.getGroup(), false);
 		}
 
@@ -120,7 +120,7 @@ public class GetPersonalMenuItemsMVCResourceCommand
 				_http.getPath(realUser.getDisplayURL(themeDisplay, true)));
 
 			PersonalApplicationURLUtil.
-				fetchOrAddEmbeddedPersonalApplicationLayout(
+				getOrAddEmbeddedPersonalApplicationLayout(
 					realUser, realUser.getGroup(), true);
 		}
 

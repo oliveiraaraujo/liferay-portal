@@ -54,7 +54,7 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 public class PersonalApplicationURLUtil {
 
-	public static Layout fetchOrAddEmbeddedPersonalApplicationLayout(
+	public static Layout getOrAddEmbeddedPersonalApplicationLayout(
 			User user, Group group, boolean privateLayout)
 		throws PortalException {
 
@@ -121,7 +121,7 @@ public class PersonalApplicationURLUtil {
 				themeDisplay.getCompanyId());
 		}
 
-		Layout layout = fetchOrAddEmbeddedPersonalApplicationLayout(
+		Layout layout = getOrAddEmbeddedPersonalApplicationLayout(
 			user, group, privateLayout);
 
 		if ((controlPanelLayout && !group.isControlPanel()) ||
