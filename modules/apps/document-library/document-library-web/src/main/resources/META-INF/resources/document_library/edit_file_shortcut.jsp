@@ -17,9 +17,9 @@
 <%@ include file="/document_library/init.jsp" %>
 
 <%
-DLEditFileShortcutDisplayContext dlEditFileShortcutDisplayContext = (DLEditFileShortcutDisplayContext)request.getAttribute(DLWebKeys.DOCUMENT_LIBRARY_EDIT_FILE_SHORTCUT_DISPLAY_CONTEXT);
-
 String redirect = ParamUtil.getString(request, "redirect");
+
+DLEditFileShortcutDisplayContext dlEditFileShortcutDisplayContext = (DLEditFileShortcutDisplayContext)request.getAttribute(DLWebKeys.DOCUMENT_LIBRARY_EDIT_FILE_SHORTCUT_DISPLAY_CONTEXT);
 
 renderResponse.setTitle(dlEditFileShortcutDisplayContext.getTitle());
 %>
