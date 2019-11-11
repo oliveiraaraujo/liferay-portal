@@ -62,6 +62,6 @@ public interface BatchEngineExportTask
 
 	public java.util.List<String> getFieldNamesList();
 
-	public void setFieldNamesList(java.util.List<String> exportFieldsList);
+	public void setFieldNamesList(java.util.List<String> fieldNamesList);
 
 }

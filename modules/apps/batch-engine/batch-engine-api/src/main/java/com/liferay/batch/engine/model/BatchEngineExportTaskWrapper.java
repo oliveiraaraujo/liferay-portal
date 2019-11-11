@@ -510,8 +510,8 @@ public class BatchEngineExportTaskWrapper
 	}
 
 	@Override
-	public void setFieldNamesList(java.util.List<String> exportFieldsList) {
-		model.setFieldNamesList(exportFieldsList);
+	public void setFieldNamesList(java.util.List<String> fieldNamesList) {
+		model.setFieldNamesList(fieldNamesList);
 	}
 
 	/**
