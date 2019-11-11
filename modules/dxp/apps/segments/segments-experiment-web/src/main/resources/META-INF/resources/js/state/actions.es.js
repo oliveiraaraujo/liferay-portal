@@ -59,6 +59,14 @@ export const reviewAndRunExperiment = payload => ({
 	type: 'REVIEW_AND_RUN_EXPERIMENT'
 });
 
+export const reviewVariants = () => ({
+	type: 'REVIEW_VARIANTS'
+});
+
+export const reviewClickTargetElement = () => ({
+	type: 'REVIEW_CLICK_TARGET_ELEMENT'
+});
+
 export const updateSegmentsExperiment = payload => ({
 	payload,
 	type: 'UPDATE_EXPERIMENT'

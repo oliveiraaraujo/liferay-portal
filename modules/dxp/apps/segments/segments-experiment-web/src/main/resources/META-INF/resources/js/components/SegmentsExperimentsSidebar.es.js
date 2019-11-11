@@ -23,6 +23,7 @@ import {
 	deleteArchivedExperiment,
 	openCreationModal,
 	openEditionModal,
+	reviewClickTargetElement,
 	updateSegmentsExperiment
 } from '../state/actions.es';
 import {
@@ -374,6 +375,7 @@ function SegmentsExperimentsSidebar({
 						goal: {...experiment.goal, target: selector}
 					})
 				);
+				dispatch(reviewClickTargetElement());
 			})
 			.catch(_error => {
 				openErrorToast();

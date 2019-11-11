@@ -81,6 +81,12 @@ export function reducer(state, action) {
 				}
 			};
 
+		case 'REVIEW_CLICK_TARGET_ELEMENT':
+			return _reviewClickTargetElement(state);
+
+		case 'REVIEW_VARIANTS':
+			return _reviewVariants(state);
+
 		case 'UPDATE_EXPERIMENT':
 			return _updateExperiment(state, action.payload);
 
@@ -205,6 +211,30 @@ function _reviewAndRunExperiment(state) {
 			active: true
 		}
 	};
+}
+
+function _reviewClickTargetElement(state) {
+	const newState = {...state};
+
+	newState.errors = {
+		...newState.errors,
+		clickTargetError:
+			state.experiment.goal.value === 'click' &&
+			!state.experiment.goal.target
+	};
+
+	return newState;
+}
+
+function _reviewVariants(state) {
+	const newState = {...state};
+
+	newState.errors = {
+		...newState.errors,
+		variantsError: state.variants.length <= 1
+	};
+
+	return newState;
 }
 
 function _updateExperiment(state, updatedValues) {

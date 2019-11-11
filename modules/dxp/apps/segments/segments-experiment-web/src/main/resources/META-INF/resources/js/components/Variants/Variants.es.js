@@ -18,9 +18,10 @@ import React, {useContext, useState} from 'react';
 import SegmentsExperimentsContext from '../../context.es';
 import {
 	addVariant,
+	archiveExperiment,
+	reviewVariants,
 	updateVariant,
-	updateVariants,
-	archiveExperiment
+	updateVariants
 } from '../../state/actions.es';
 import {DispatchContext, StateContext} from '../../state/context.es';
 import {navigateToExperience} from '../../util/navigation.es';
@@ -165,6 +166,7 @@ function Variants({selectedSegmentsExperienceId}) {
 					navigateToExperience(experiment.segmentsExperienceId);
 				} else {
 					dispatch(updateVariants(newVariants));
+					dispatch(reviewVariants());
 				}
 			})
 			.catch(_error => {
