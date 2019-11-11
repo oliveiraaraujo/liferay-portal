@@ -201,7 +201,7 @@ public class DepotEntryGroupRelLocalServiceTest {
 	}
 
 	@Test
-	public void testgetDepotEntryGroupRelsCount() throws Exception {
+	public void testGetDepotEntryGroupRelsCount() throws Exception {
 		DepotEntry depotEntry1 = _addDepotEntry();
 
 		_depotEntryGroupRelLocalService.addDepotEntryGroupRel(
@@ -219,7 +219,7 @@ public class DepotEntryGroupRelLocalServiceTest {
 	}
 
 	@Test
-	public void testgetDepotEntryGroupRelsCountWithoutGroup() throws Exception {
+	public void testGetDepotEntryGroupRelsCountWithoutGroup() throws Exception {
 		Assert.assertEquals(
 			0,
 			_depotEntryGroupRelLocalService.getDepotEntryGroupRelsCount(
