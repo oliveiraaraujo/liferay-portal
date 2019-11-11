@@ -27,12 +27,14 @@ JSONArray structureJSONArray = (JSONArray)request.getAttribute("liferay-layout:r
 		try {
 			request.setAttribute(WebKeys.SHOW_PORTLET_TOPPER, Boolean.TRUE);
 
-			RenderFragmentLayoutDisplayContext renderFragmentLayoutDisplayContext = new RenderFragmentLayoutDisplayContext(request);
+			RenderFragmentLayoutDisplayContext renderFragmentLayoutDisplayContext = new RenderFragmentLayoutDisplayContext(request, response);
 
 			request.setAttribute("render_layout_data_structure.jsp-renderFragmentLayoutDisplayContext", renderFragmentLayoutDisplayContext);
 
 			request.setAttribute("render_layout_data_structure.jsp-structureJSONArray", structureJSONArray);
 		%>
+
+			<%= renderFragmentLayoutDisplayContext.getPortletPaths() %>
 
 			<liferay-util:include page="/render_fragment_layout/render_layout_data_structure.jsp" servletContext="<%= application %>" />
 
