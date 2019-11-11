@@ -72,6 +72,14 @@ public class ViewCountEntryLocalServiceWrapper
 		return _viewCountEntryLocalService.deletePersistedModel(persistedModel);
 	}
 
+	@Override
+	public void deleteViewCount(
+		long companyId, long classNameId, long classPK) {
+
+		_viewCountEntryLocalService.deleteViewCount(
+			companyId, classNameId, classPK);
+	}
+
 	/**
 	 * Deletes the view count entry from the database. Also notifies the appropriate model listeners.
 	 *
@@ -290,14 +298,6 @@ public class ViewCountEntryLocalServiceWrapper
 
 		_viewCountEntryLocalService.incrementViewCount(
 			companyId, classNameId, classPK, increment);
-	}
-
-	@Override
-	public void removeViewCount(
-		long companyId, long classNameId, long classPK) {
-
-		_viewCountEntryLocalService.removeViewCount(
-			companyId, classNameId, classPK);
 	}
 
 	/**

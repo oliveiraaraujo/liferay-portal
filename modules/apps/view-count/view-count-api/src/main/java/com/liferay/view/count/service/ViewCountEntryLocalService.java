@@ -93,6 +93,8 @@ public interface ViewCountEntryLocalService
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
+	public void deleteViewCount(long companyId, long classNameId, long classPK);
+
 	/**
 	 * Deletes the view count entry from the database. Also notifies the appropriate model listeners.
 	 *
@@ -251,8 +253,6 @@ public interface ViewCountEntryLocalService
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void incrementViewCount(
 		long companyId, long classNameId, long classPK, int increment);
-
-	public void removeViewCount(long companyId, long classNameId, long classPK);
 
 	/**
 	 * Updates the view count entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

@@ -75,6 +75,12 @@ public class ViewCountEntryLocalServiceUtil {
 		return getService().deletePersistedModel(persistedModel);
 	}
 
+	public static void deleteViewCount(
+		long companyId, long classNameId, long classPK) {
+
+		getService().deleteViewCount(companyId, classNameId, classPK);
+	}
+
 	/**
 	 * Deletes the view count entry from the database. Also notifies the appropriate model listeners.
 	 *
@@ -278,12 +284,6 @@ public class ViewCountEntryLocalServiceUtil {
 
 		getService().incrementViewCount(
 			companyId, classNameId, classPK, increment);
-	}
-
-	public static void removeViewCount(
-		long companyId, long classNameId, long classPK) {
-
-		getService().removeViewCount(companyId, classNameId, classPK);
 	}
 
 	/**
