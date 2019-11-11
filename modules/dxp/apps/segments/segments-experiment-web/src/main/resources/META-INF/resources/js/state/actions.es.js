@@ -32,6 +32,11 @@ export const closeEditionModal = () => ({
 	type: 'EDIT_EXPERIMENT_FINISH'
 });
 
+export const closeReviewAndRunExperiment = payload => ({
+	payload,
+	type: 'REVIEW_AND_RUN_EXPERIMENT_FINISH'
+});
+
 export const deleteArchivedExperiment = experimentId => ({
 	payload: {
 		experimentId
@@ -47,6 +52,11 @@ export const openCreationModal = payload => ({
 export const openEditionModal = payload => ({
 	payload,
 	type: 'EDIT_EXPERIMENT_START'
+});
+
+export const reviewAndRunExperiment = payload => ({
+	payload,
+	type: 'REVIEW_AND_RUN_EXPERIMENT'
 });
 
 export const updateSegmentsExperiment = payload => ({

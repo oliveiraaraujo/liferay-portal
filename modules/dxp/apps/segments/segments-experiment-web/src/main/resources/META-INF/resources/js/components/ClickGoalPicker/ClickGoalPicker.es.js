@@ -19,6 +19,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import {StateContext as GlobalStateContext} from './../../state/context.es';
 import {getInitialState, reducer, StateContext} from './reducer.es';
 import {
 	GeometryType,
@@ -57,6 +58,8 @@ function ClickGoalPicker({allowEdit = true, onSelectClickGoalTarget, target}) {
 	const [state, dispatch] = useReducer(reducer, target, getInitialState);
 
 	const {selectedTarget} = state;
+
+	const {errors} = useContext(GlobalStateContext);
 
 	const ref = useRef(state.selectedTarget);
 
@@ -142,15 +145,17 @@ function ClickGoalPicker({allowEdit = true, onSelectClickGoalTarget, target}) {
 							{Liferay.Language.get(
 								'a-clickable-element-on-the-page-must-be-selected-to-be-measured'
 							)}
-							<div className="font-weight-bold mt-2 text-danger">
-								<ClayIcon
-									className="mr-2"
-									symbol="exclamation-full"
-								/>
-								{Liferay.Language.get(
-									'an-element-needs-to-be-set'
-								)}
-							</div>
+							{errors.clickTargetError && (
+								<div className="font-weight-bold mt-2 text-danger">
+									<ClayIcon
+										className="mr-2"
+										symbol="exclamation-full"
+									/>
+									{Liferay.Language.get(
+										'an-element-needs-to-be-set'
+									)}
+								</div>
+							)}
 						</dd>
 					</dl>
 				)}

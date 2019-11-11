@@ -35,7 +35,7 @@ import VariantList from './internal/VariantList.es';
 
 function Variants({selectedSegmentsExperienceId}) {
 	const dispatch = useContext(DispatchContext);
-	const {experiment, variants} = useContext(StateContext);
+	const {errors, experiment, variants} = useContext(StateContext);
 	const {APIService, page} = useContext(SegmentsExperimentsContext);
 
 	const {
@@ -72,15 +72,20 @@ function Variants({selectedSegmentsExperienceId}) {
 							)}
 						</b>
 					</p>
-
 					<p className="mb-2 text-secondary">
 						{Liferay.Language.get('variants-help')}
 					</p>
-
-					<div className="font-weight-bold mb-3 text-danger">
-						<ClayIcon className="mr-2" symbol="exclamation-full" />
-						{Liferay.Language.get('a-variant-needs-to-be-created')}
-					</div>
+					{errors.variantsError && (
+						<div className="font-weight-bold mb-3 text-danger">
+							<ClayIcon
+								className="mr-2"
+								symbol="exclamation-full"
+							/>
+							{Liferay.Language.get(
+								'a-variant-needs-to-be-created'
+							)}
+						</div>
+					)}
 				</>
 			)}
 

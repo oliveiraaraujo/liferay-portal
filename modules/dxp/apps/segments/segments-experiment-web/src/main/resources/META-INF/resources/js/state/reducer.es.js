@@ -70,6 +70,17 @@ export function reducer(state, action) {
 		case 'EDIT_EXPERIMENT_START':
 			return _editExperienceStart(state, action.payload);
 
+		case 'REVIEW_AND_RUN_EXPERIMENT':
+			return _reviewAndRunExperiment(state);
+
+		case 'REVIEW_AND_RUN_EXPERIMENT_FINISH':
+			return {
+				...state,
+				reviewExperimentModal: {
+					active: false
+				}
+			};
+
 		case 'UPDATE_EXPERIMENT':
 			return _updateExperiment(state, action.payload);
 
@@ -158,6 +169,40 @@ function _editExperienceStart(state, experiementModalState = {}) {
 				? segmentsExperimentId
 				: experiment.segmentsExperimentId,
 			status: status ? status : experiment.status
+		}
+	};
+}
+
+function _reviewAndRunExperiment(state) {
+	const newState = {...state};
+
+	newState.errors = {
+		...newState.errors,
+		clickTargetError:
+			state.experiment.goal.value === 'click' &&
+			!state.experiment.goal.target,
+		variantsError: newState.variants.length <= 1
+	};
+
+	const errors = Object.entries(newState.errors);
+
+	for (let i = 0; i < errors.length; i++) {
+		const [, hasError] = errors[i];
+
+		if (hasError) {
+			return {
+				...newState,
+				reviewExperimentModal: {
+					active: false
+				}
+			};
+		}
+	}
+
+	return {
+		...newState,
+		reviewExperimentModal: {
+			active: true
 		}
 	};
 }

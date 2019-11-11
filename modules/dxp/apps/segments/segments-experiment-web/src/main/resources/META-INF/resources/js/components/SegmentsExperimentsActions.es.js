@@ -14,10 +14,15 @@ import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
 import {useModal} from '@clayui/modal';
 import PropTypes from 'prop-types';
-import React, {useState, useContext} from 'react';
+import React, {useContext} from 'react';
 
 import SegmentsExperimentsContext from '../context.es';
-import {updateSegmentsExperiment, updateVariants} from '../state/actions.es';
+import {
+	closeReviewAndRunExperiment,
+	updateSegmentsExperiment,
+	updateVariants,
+	reviewAndRunExperiment
+} from '../state/actions.es';
 import {
 	STATUS_COMPLETED,
 	STATUS_DRAFT,
@@ -30,32 +35,26 @@ import {
 import {StateContext, DispatchContext} from './../state/context.es';
 import {ReviewExperimentModal} from './ReviewExperimentModal.es';
 
-function _experimentReady(experiment, variants) {
-	if (variants.length <= 1) return false;
-	if (experiment.goal.value === 'click' && !experiment.goal.target)
-		return false;
-	return true;
-}
-
 function SegmentsExperimentsActions({onEditSegmentsExperimentStatus}) {
-	const {experiment, variants, viewExperimentURL} = useContext(StateContext);
+	const {
+		experiment,
+		reviewExperimentModal,
+		variants,
+		viewExperimentURL
+	} = useContext(StateContext);
 	const dispatch = useContext(DispatchContext);
 
-	const [reviewModalVisible, setReviewModalVisible] = useState(false);
 	const {observer, onClose} = useModal({
-		onClose: () => setReviewModalVisible(false)
+		onClose: () => dispatch(closeReviewAndRunExperiment(false))
 	});
 	const {APIService} = useContext(SegmentsExperimentsContext);
-
-	const readyToRun = _experimentReady(experiment, variants);
 
 	return (
 		<>
 			{experiment.status.value === STATUS_DRAFT && (
 				<ClayButton
 					className="w-100"
-					disabled={!readyToRun}
-					onClick={() => setReviewModalVisible(true)}
+					onClick={() => dispatch(reviewAndRunExperiment(true))}
 				>
 					{Liferay.Language.get('review-and-run-test')}
 				</ClayButton>
@@ -121,7 +120,7 @@ function SegmentsExperimentsActions({onEditSegmentsExperimentStatus}) {
 				</ClayButton>
 			)}
 
-			{reviewModalVisible && (
+			{reviewExperimentModal.active && (
 				<ReviewExperimentModal
 					modalObserver={observer}
 					onModalClose={onClose}
