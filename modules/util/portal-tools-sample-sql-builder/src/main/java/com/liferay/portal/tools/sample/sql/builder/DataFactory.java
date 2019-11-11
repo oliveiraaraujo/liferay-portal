@@ -4130,14 +4130,10 @@ public class DataFactory {
 
 		ViewCountEntryModel viewCountEntryModel = new ViewCountEntryModelImpl();
 
-		ViewCountEntryPK viewCountEntryPK = new ViewCountEntryPK();
-
+		viewCountEntryModel.setPrimaryKey(new ViewCountEntryPK());
 		viewCountEntryModel.setCompanyId(companyId);
 		viewCountEntryModel.setClassNameId(classNameId);
 		viewCountEntryModel.setClassPK(classPK);
-
-		viewCountEntryModel.setPrimaryKey(viewCountEntryPK);
-
 		viewCountEntryModel.setViewCount(viewCount);
 
 		return viewCountEntryModel;
