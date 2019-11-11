@@ -14,6 +14,7 @@
 
 package com.liferay.fragment.internal.renderer;
 
+import com.liferay.fragment.constants.FragmentEntryLinkConstants;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.processor.DefaultFragmentEntryProcessorContext;
 import com.liferay.fragment.processor.FragmentEntryProcessorRegistry;
@@ -212,8 +213,14 @@ public class FragmentEntryFragmentRenderer implements FragmentRenderer {
 			_fragmentEntryProcessorRegistry.processFragmentEntryLinkHTML(
 				fragmentEntryLink, defaultFragmentEntryProcessorContext);
 
-		html = _writePortletPaths(
-			fragmentEntryLink, html, httpServletRequest, httpServletResponse);
+		if (Objects.equals(
+				defaultFragmentEntryProcessorContext.getMode(),
+				FragmentEntryLinkConstants.EDIT)) {
+
+			html = _writePortletPaths(
+				fragmentEntryLink, html, httpServletRequest,
+				httpServletResponse);
+		}
 
 		JSONObject configurationJSONObject =
 			FragmentEntryConfigUtil.getConfigurationJSONObject(
