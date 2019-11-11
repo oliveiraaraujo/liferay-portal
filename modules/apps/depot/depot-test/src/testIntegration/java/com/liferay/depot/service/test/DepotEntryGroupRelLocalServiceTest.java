@@ -216,10 +216,6 @@ public class DepotEntryGroupRelLocalServiceTest {
 			2,
 			_depotEntryGroupRelLocalService.getDepotEntryGroupRelsCount(
 				_group.getGroupId()));
-	}
-
-	@Test
-	public void testGetDepotEntryGroupRelsCountWithoutGroup() throws Exception {
 		Assert.assertEquals(
 			0,
 			_depotEntryGroupRelLocalService.getDepotEntryGroupRelsCount(
