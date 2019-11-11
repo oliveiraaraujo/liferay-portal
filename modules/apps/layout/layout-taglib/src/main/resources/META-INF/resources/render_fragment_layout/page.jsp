@@ -27,6 +27,10 @@ JSONArray structureJSONArray = (JSONArray)request.getAttribute("liferay-layout:r
 		try {
 			request.setAttribute(WebKeys.SHOW_PORTLET_TOPPER, Boolean.TRUE);
 
+			RenderFragmentLayoutDisplayContext renderFragmentLayoutDisplayContext = new RenderFragmentLayoutDisplayContext(request);
+
+			request.setAttribute("render_layout_data_structure.jsp-renderFragmentLayoutDisplayContext", renderFragmentLayoutDisplayContext);
+
 			request.setAttribute("render_layout_data_structure.jsp-structureJSONArray", structureJSONArray);
 		%>
 

@@ -24,9 +24,9 @@ long previewClassPK = (long)request.getAttribute("liferay-layout:render-fragment
 int previewType = (int)request.getAttribute("liferay-layout:render-fragment-layout:previewType");
 long[] segmentsExperienceIds = (long[])request.getAttribute("liferay-layout:render-fragment-layout:segmentsExperienceIds");
 
-JSONArray structureJSONArray = (JSONArray)request.getAttribute("render_layout_data_structure.jsp-structureJSONArray");
+RenderFragmentLayoutDisplayContext renderFragmentLayoutDisplayContext = (RenderFragmentLayoutDisplayContext)request.getAttribute("render_layout_data_structure.jsp-renderFragmentLayoutDisplayContext");
 
-RenderFragmentLayoutDisplayContext renderFragmentLayoutDisplayContext = new RenderFragmentLayoutDisplayContext(request);
+JSONArray structureJSONArray = (JSONArray)request.getAttribute("render_layout_data_structure.jsp-structureJSONArray");
 
 for (int i = 0; i < structureJSONArray.length(); i++) {
 	JSONObject rowJSONObject = structureJSONArray.getJSONObject(i);
