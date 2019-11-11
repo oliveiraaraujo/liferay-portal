@@ -4476,10 +4476,6 @@ public class ServiceBuilder {
 	}
 
 	private Map<String, Object> _getContext() throws TemplateModelException {
-		BeansWrapper beansWrapper = BeansWrapper.getDefaultInstance();
-
-		TemplateHashModel staticModels = beansWrapper.getStaticModels();
-
 		Map<String, Object> context = HashMapBuilder.<String, Object>put(
 			"apiPackagePath", _apiPackagePath
 		).put(
@@ -4505,7 +4501,14 @@ public class ServiceBuilder {
 		).put(
 			"stringUtil", StringUtil_IW.getInstance()
 		).put(
-			"textFormatter", staticModels.get(TextFormatter.class.getName())
+			"textFormatter",
+			() -> {
+				BeansWrapper beansWrapper = BeansWrapper.getDefaultInstance();
+
+				TemplateHashModel staticModels = beansWrapper.getStaticModels();
+
+				return staticModels.get(TextFormatter.class.getName());
+			}
 		).put(
 			"validator", Validator_IW.getInstance()
 		).build();
