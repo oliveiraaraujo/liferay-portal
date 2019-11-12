@@ -93,10 +93,10 @@ public class MFAEmailOTPEntryLocalServiceImpl
 
 		if (success) {
 			mfaEmailOTPEntry.setFailedAttempts(0);
-			mfaEmailOTPEntry.setLastSuccessDate(new Date());
-			mfaEmailOTPEntry.setLastSuccessIP(userIP);
 			mfaEmailOTPEntry.setLastFailDate(null);
 			mfaEmailOTPEntry.setLastFailIP(null);
+			mfaEmailOTPEntry.setLastSuccessDate(new Date());
+			mfaEmailOTPEntry.setLastSuccessIP(userIP);
 		}
 		else {
 			mfaEmailOTPEntry.setFailedAttempts(
