@@ -39,6 +39,7 @@ public class PortalSecuritySSOTokenImplUpgrade
 					"configuration.TokenConfiguration"));
 
 		registry.register("1.0.0", "1.0.1", new UpgradeTokenConfiguration());
+
 		registry.register(
 			"1.0.1", "2.0.0",
 			_configurationUpgradeStepFactory.createUpgradeStep(
