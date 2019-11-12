@@ -2319,7 +2319,8 @@ public class DataFactory {
 		List<String> lines = new ArrayList<>();
 
 		StringUtil.readLines(
-			getResourceInputStream("fragments/" + fragmentName + ".html"),
+			getResourceInputStream(
+				"fragment_entries/" + fragmentName + ".html"),
 			lines);
 
 		String html = StringUtil.merge(lines, StringPool.SPACE);
