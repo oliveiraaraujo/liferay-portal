@@ -83,7 +83,7 @@ public class MFAEmailOTPEntryLocalServiceImpl
 		mfaEmailOTPEntryPersistence.update(mfaEmailOTPEntry);
 	}
 
-	public void updateFailedAttempts(long userId, String userIP, boolean success) throws PortalException {
+	public void updateFailedAttempts(long userId, String ip, boolean success) throws PortalException {
 		MFAEmailOTPEntry mfaEmailOTPEntry =
 			mfaEmailOTPEntryPersistence.fetchByUserId(userId);
 
@@ -96,13 +96,13 @@ public class MFAEmailOTPEntryLocalServiceImpl
 			mfaEmailOTPEntry.setLastFailDate(null);
 			mfaEmailOTPEntry.setLastFailIP(null);
 			mfaEmailOTPEntry.setLastSuccessDate(new Date());
-			mfaEmailOTPEntry.setLastSuccessIP(userIP);
+			mfaEmailOTPEntry.setLastSuccessIP(ip);
 		}
 		else {
 			mfaEmailOTPEntry.setFailedAttempts(
 				mfaEmailOTPEntry.getFailedAttempts() + 1);
 			mfaEmailOTPEntry.setLastFailDate(new Date());
-			mfaEmailOTPEntry.setLastFailIP(userIP);
+			mfaEmailOTPEntry.setLastFailIP(ip);
 		}
 
 		mfaEmailOTPEntryPersistence.update(mfaEmailOTPEntry);
