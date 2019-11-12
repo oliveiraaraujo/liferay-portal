@@ -78,8 +78,6 @@ public class AssetListEntrySegmentsEntryRelLocalServiceImpl
 		assetListEntrySegmentsEntryRelPersistence.remove(
 			assetListEntrySegmentsEntryRel);
 
-		// Asset list entry rels
-
 		_assetListEntryAssetEntryRelPersistence.removeByA_S(
 			assetListEntrySegmentsEntryRel.getAssetListEntryId(),
 			assetListEntrySegmentsEntryRel.getSegmentsEntryId());
