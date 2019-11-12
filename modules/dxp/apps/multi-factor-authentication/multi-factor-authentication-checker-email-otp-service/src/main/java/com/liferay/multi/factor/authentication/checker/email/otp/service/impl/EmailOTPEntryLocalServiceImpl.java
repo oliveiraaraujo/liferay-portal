@@ -46,16 +46,17 @@ public class EmailOTPEntryLocalServiceImpl
 				"There is already one Email OTP Entry for user " + userId);
 		}
 
+		emailOTPEntry = emailOTPEntryPersistence.create(
+			counterLocalService.increment());
+
 		User user = userLocalService.getUserById(userId);
 
-		long entryId = counterLocalService.increment();
-
-		emailOTPEntry = emailOTPEntryPersistence.create(entryId);
-
 		emailOTPEntry.setCompanyId(user.getCompanyId());
-		emailOTPEntry.setUserId(userId);
+		emailOTPEntry.setUserId(user.getUserId());
 		emailOTPEntry.setUserName(user.getFullName());
+
 		emailOTPEntry.setCreateDate(new Date());
+		emailOTPEntry.setModifiedDate(new Date());
 
 		emailOTPEntryPersistence.update(emailOTPEntry);
 
