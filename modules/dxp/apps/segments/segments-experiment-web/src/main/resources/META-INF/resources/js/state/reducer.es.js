@@ -26,6 +26,7 @@ export function reducer(state, action) {
 		case 'ARCHIVE_EXPERIMENT':
 			return {
 				...state,
+				errors: {},
 				experiment: null,
 				experimentHistory: [
 					{...state.experiment, status: action.payload.status},
@@ -87,8 +88,8 @@ export function reducer(state, action) {
 		case 'REVIEW_VARIANTS':
 			return _reviewVariants(state);
 
-		case 'UPDATE_EXPERIMENT':
-			return _updateExperiment(state, action.payload);
+		case 'UPDATE_EXPERIMENT_STATUS':
+			return _updateExperimentStatus(state, action.payload);
 
 		case 'UPDATE_VARIANT':
 			return {
@@ -237,9 +238,10 @@ function _reviewVariants(state) {
 	return newState;
 }
 
-function _updateExperiment(state, updatedValues) {
+function _updateExperimentStatus(state, updatedValues) {
 	return {
 		...state,
+		errors: {},
 		experiment: {...state.experiment, ...updatedValues}
 	};
 }

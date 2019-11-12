@@ -65,9 +65,9 @@ export const reviewClickTargetElement = () => ({
 	type: 'REVIEW_CLICK_TARGET_ELEMENT'
 });
 
-export const updateSegmentsExperiment = payload => ({
+export const updateSegmentsExperimentStatus = payload => ({
 	payload,
-	type: 'UPDATE_EXPERIMENT'
+	type: 'UPDATE_EXPERIMENT_STATUS'
 });
 
 export const updateVariant = payload => ({

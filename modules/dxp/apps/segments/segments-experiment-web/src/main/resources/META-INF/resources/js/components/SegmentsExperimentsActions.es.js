@@ -19,7 +19,7 @@ import React, {useContext} from 'react';
 import SegmentsExperimentsContext from '../context.es';
 import {
 	closeReviewAndRunExperiment,
-	updateSegmentsExperiment,
+	updateSegmentsExperimentStatus,
 	updateVariants,
 	reviewAndRunExperiment
 } from '../state/actions.es';
@@ -157,7 +157,7 @@ function SegmentsExperimentsActions({onEditSegmentsExperimentStatus}) {
 				split: splitVariantsMap[variant.segmentsExperimentRelId]
 			}));
 
-			dispatch(updateSegmentsExperiment(segmentsExperiment));
+			dispatch(updateSegmentsExperimentStatus(segmentsExperiment));
 			dispatch(updateVariants(updatedVariants));
 		});
 	}
@@ -170,7 +170,7 @@ function SegmentsExperimentsActions({onEditSegmentsExperimentStatus}) {
 		};
 
 		APIService.publishExperience(body).then(({segmentsExperiment}) => {
-			dispatch(updateSegmentsExperiment(segmentsExperiment));
+			dispatch(updateSegmentsExperimentStatus(segmentsExperiment));
 		});
 	}
 }
