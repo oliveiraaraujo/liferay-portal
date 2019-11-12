@@ -233,9 +233,10 @@ public interface MFAEmailOTPEntryLocalService
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
-	public void resetFailedAttempts(long userId);
+	public void resetFailedAttempts(long userId) throws PortalException;
 
-	public void updateAttempts(long userId, String userIP, boolean success);
+	public void updateAttempts(long userId, String userIP, boolean success)
+		throws PortalException;
 
 	/**
 	 * Updates the mfa email otp entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

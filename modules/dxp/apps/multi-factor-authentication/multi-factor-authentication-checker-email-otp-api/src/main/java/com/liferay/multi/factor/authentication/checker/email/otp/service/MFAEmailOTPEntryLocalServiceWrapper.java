@@ -306,12 +306,16 @@ public class MFAEmailOTPEntryLocalServiceWrapper
 	}
 
 	@Override
-	public void resetFailedAttempts(long userId) {
+	public void resetFailedAttempts(long userId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
 		_mfaEmailOTPEntryLocalService.resetFailedAttempts(userId);
 	}
 
 	@Override
-	public void updateAttempts(long userId, String userIP, boolean success) {
+	public void updateAttempts(long userId, String userIP, boolean success)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
 		_mfaEmailOTPEntryLocalService.updateAttempts(userId, userIP, success);
 	}
 
