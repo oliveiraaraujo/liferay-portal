@@ -21,10 +21,10 @@
 		<!-- Other fields -->
 
 		<column name="failedAttempts" type="int" />
-		<column name="lastSuccessDate" type="Date" />
-		<column name="lastSuccessIP" type="String" />
 		<column name="lastFailDate" type="Date" />
 		<column name="lastFailIP" type="String" />
+		<column name="lastSuccessDate" type="Date" />
+		<column name="lastSuccessIP" type="String" />
 
 		<!-- Finder methods -->
 
