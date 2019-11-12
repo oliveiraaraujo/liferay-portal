@@ -109,7 +109,7 @@ public abstract class BaseStructuredContentResourceImpl
 	@Override
 	@GET
 	@Operation(
-		description = "Retrieves the Site's structured content. Results can be paginated, filtered, searched, flattened, and sorted."
+		description = "Retrieves the site's structured content. Results can be paginated, filtered, searched, flattened, and sorted."
 	)
 	@Parameters(
 		value = {

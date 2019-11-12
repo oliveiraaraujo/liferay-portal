@@ -546,7 +546,7 @@ public abstract class BaseKnowledgeBaseArticleResourceImpl
 	@Override
 	@GET
 	@Operation(
-		description = "Retrieves the Site's knowledge base articles. Results can be paginated, filtered, searched, flattened, and sorted."
+		description = "Retrieves the site's knowledge base articles. Results can be paginated, filtered, searched, flattened, and sorted."
 	)
 	@Parameters(
 		value = {

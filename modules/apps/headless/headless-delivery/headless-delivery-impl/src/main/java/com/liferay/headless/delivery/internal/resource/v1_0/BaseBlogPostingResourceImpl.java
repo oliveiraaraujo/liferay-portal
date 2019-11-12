@@ -334,7 +334,7 @@ public abstract class BaseBlogPostingResourceImpl
 	@Override
 	@GET
 	@Operation(
-		description = "Retrieves the Site's blog postings. Results can be paginated, filtered, searched, and sorted."
+		description = "Retrieves the site's blog postings. Results can be paginated, filtered, searched, and sorted."
 	)
 	@Parameters(
 		value = {

@@ -343,7 +343,7 @@ public abstract class BaseMessageBoardSectionResourceImpl
 	@Override
 	@GET
 	@Operation(
-		description = "Retrieves the Site's message board sections. Results can be paginated, filtered, searched, flattened, and sorted."
+		description = "Retrieves the site's message board sections. Results can be paginated, filtered, searched, flattened, and sorted."
 	)
 	@Parameters(
 		value = {

@@ -537,7 +537,7 @@ public abstract class BaseMessageBoardMessageResourceImpl
 	 */
 	@Override
 	@GET
-	@Operation(description = "Retrieves the Site's message board messages.")
+	@Operation(description = "Retrieves the site's message board messages.")
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "siteId"),

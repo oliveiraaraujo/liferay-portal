@@ -495,7 +495,7 @@ public abstract class BaseMessageBoardThreadResourceImpl
 	@Override
 	@GET
 	@Operation(
-		description = "Retrieves the Site's message board threads. Results can be paginated, filtered, searched, flattened, and sorted."
+		description = "Retrieves the site's message board threads. Results can be paginated, filtered, searched, flattened, and sorted."
 	)
 	@Parameters(
 		value = {

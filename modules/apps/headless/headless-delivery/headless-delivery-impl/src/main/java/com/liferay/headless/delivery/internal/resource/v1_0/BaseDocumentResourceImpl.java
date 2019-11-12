@@ -328,7 +328,7 @@ public abstract class BaseDocumentResourceImpl implements DocumentResource {
 	@Override
 	@GET
 	@Operation(
-		description = "Retrieves the documents in the Site's root folder. Results can be paginated, filtered, searched, flattened, and sorted."
+		description = "Retrieves the documents in the site's root folder. Results can be paginated, filtered, searched, flattened, and sorted."
 	)
 	@Parameters(
 		value = {

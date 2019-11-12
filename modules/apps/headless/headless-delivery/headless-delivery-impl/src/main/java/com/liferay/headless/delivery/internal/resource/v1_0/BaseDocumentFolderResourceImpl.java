@@ -319,7 +319,7 @@ public abstract class BaseDocumentFolderResourceImpl
 	@Override
 	@GET
 	@Operation(
-		description = "Retrieves the Site's document folders. Results can be paginated, filtered, searched, flattened, and sorted."
+		description = "Retrieves the site's document folders. Results can be paginated, filtered, searched, flattened, and sorted."
 	)
 	@Parameters(
 		value = {
