@@ -2304,21 +2304,17 @@ public class DataFactory {
 
 		fragmentEntryModel.setUuid(SequentialUUID.generate());
 		fragmentEntryModel.setFragmentEntryId(_counter.get());
-		fragmentEntryModel.setFragmentCollectionId(
-			fragmentCollectionModel.getFragmentCollectionId());
 		fragmentEntryModel.setGroupId(groupId);
 		fragmentEntryModel.setCompanyId(_companyId);
 		fragmentEntryModel.setUserId(_sampleUserId);
 		fragmentEntryModel.setUserName(_SAMPLE_USER_NAME);
 		fragmentEntryModel.setCreateDate(new Date());
 		fragmentEntryModel.setModifiedDate(new Date());
-
+		fragmentEntryModel.setFragmentCollectionId(
+			fragmentCollectionModel.getFragmentCollectionId());
+		fragmentEntryModel.setFragmentEntryKey(fragmentName);
 		fragmentEntryModel.setName(fragmentName);
 		fragmentEntryModel.setCss(StringPool.BLANK);
-		fragmentEntryModel.setJs(StringPool.BLANK);
-		fragmentEntryModel.setFragmentEntryKey(fragmentName);
-		fragmentEntryModel.setType(FragmentConstants.TYPE_COMPONENT);
-		fragmentEntryModel.setStatus(WorkflowConstants.STATUS_APPROVED);
 
 		List<String> lines = new ArrayList<>();
 
@@ -2329,6 +2325,10 @@ public class DataFactory {
 		String html = StringUtil.merge(lines, StringPool.SPACE);
 
 		fragmentEntryModel.setHtml(html);
+
+		fragmentEntryModel.setJs(StringPool.BLANK);
+		fragmentEntryModel.setType(FragmentConstants.TYPE_COMPONENT);
+		fragmentEntryModel.setStatus(WorkflowConstants.STATUS_APPROVED);
 
 		return fragmentEntryModel;
 	}
