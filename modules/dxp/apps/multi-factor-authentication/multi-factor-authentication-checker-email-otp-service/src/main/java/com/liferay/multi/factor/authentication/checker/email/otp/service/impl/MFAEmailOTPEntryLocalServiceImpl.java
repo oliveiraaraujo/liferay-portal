@@ -39,39 +39,39 @@ public class MFAEmailOTPEntryLocalServiceImpl
 	extends MFAEmailOTPEntryLocalServiceBaseImpl {
 
 	public MFAEmailOTPEntry addMFAEmailOTPEntry(long userId) throws PortalException {
-		MFAEmailOTPEntry emailOTPEntry =
-			emailOTPEntryLocalService.fetchEntryByUserId(userId);
+		MFAEmailOTPEntry mfaEmailOTPEntry =
+			mfaEmailOTPEntryLocalService.fetchEntryByUserId(userId);
 
-		if (emailOTPEntry != null) {
+		if (mfaEmailOTPEntry != null) {
 			throw new DuplicateMFAEmailOTPEntryException("User ID " + userId);
 		}
 
-		emailOTPEntry = emailOTPEntryPersistence.create(
+		mfaEmailOTPEntry = mfaEmailOTPEntryPersistence.create(
 			counterLocalService.increment());
 
 		User user = userLocalService.getUserById(userId);
 
-		emailOTPEntry.setCompanyId(user.getCompanyId());
-		emailOTPEntry.setUserId(user.getUserId());
-		emailOTPEntry.setUserName(user.getFullName());
+		mfaEmailOTPEntry.setCompanyId(user.getCompanyId());
+		mfaEmailOTPEntry.setUserId(user.getUserId());
+		mfaEmailOTPEntry.setUserName(user.getFullName());
 
-		emailOTPEntry.setCreateDate(new Date());
-		emailOTPEntry.setModifiedDate(new Date());
+		mfaEmailOTPEntry.setCreateDate(new Date());
+		mfaEmailOTPEntry.setModifiedDate(new Date());
 
-		emailOTPEntryPersistence.update(emailOTPEntry);
+		mfaEmailOTPEntryPersistence.update(mfaEmailOTPEntry);
 
-		return emailOTPEntry;
+		return mfaEmailOTPEntry;
 	}
 
 	public MFAEmailOTPEntry fetchEntryByUserId(long userId) {
-		return emailOTPEntryPersistence.fetchByUserId(userId);
+		return mfaEmailOTPEntryPersistence.fetchByUserId(userId);
 	}
 
 	public void resetFailedAttempts(long userId) {
-		MFAEmailOTPEntry emailOTPEntry =
-			emailOTPEntryLocalService.fetchEntryByUserId(userId);
+		MFAEmailOTPEntry mfaEmailOTPEntry =
+			mfaEmailOTPEntryLocalService.fetchEntryByUserId(userId);
 
-		if (emailOTPEntry == null) {
+		if (mfaEmailOTPEntry == null) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					"Reset failed attempts on non existent user: " + userId);
@@ -80,18 +80,18 @@ public class MFAEmailOTPEntryLocalServiceImpl
 			return;
 		}
 
-		emailOTPEntry.setFailedAttempts(0);
-		emailOTPEntry.setLastFailDate(null);
-		emailOTPEntry.setLastFailIP(null);
+		mfaEmailOTPEntry.setFailedAttempts(0);
+		mfaEmailOTPEntry.setLastFailDate(null);
+		mfaEmailOTPEntry.setLastFailIP(null);
 
-		emailOTPEntryPersistence.update(emailOTPEntry);
+		mfaEmailOTPEntryPersistence.update(mfaEmailOTPEntry);
 	}
 
 	public void updateAttempts(long userId, String userIP, boolean success) {
-		MFAEmailOTPEntry emailOTPEntry =
-			emailOTPEntryLocalService.fetchEntryByUserId(userId);
+		MFAEmailOTPEntry mfaEmailOTPEntry =
+			mfaEmailOTPEntryLocalService.fetchEntryByUserId(userId);
 
-		if (emailOTPEntry == null) {
+		if (mfaEmailOTPEntry == null) {
 			if (_log.isInfoEnabled()) {
 				_log.info("Update attempts on non existent user: " + userId);
 			}
@@ -100,20 +100,20 @@ public class MFAEmailOTPEntryLocalServiceImpl
 		}
 
 		if (success) {
-			emailOTPEntry.setFailedAttempts(0);
-			emailOTPEntry.setLastSuccessDate(new Date());
-			emailOTPEntry.setLastSuccessIP(userIP);
-			emailOTPEntry.setLastFailDate(null);
-			emailOTPEntry.setLastFailIP(null);
+			mfaEmailOTPEntry.setFailedAttempts(0);
+			mfaEmailOTPEntry.setLastSuccessDate(new Date());
+			mfaEmailOTPEntry.setLastSuccessIP(userIP);
+			mfaEmailOTPEntry.setLastFailDate(null);
+			mfaEmailOTPEntry.setLastFailIP(null);
 		}
 		else {
-			emailOTPEntry.setFailedAttempts(
-				emailOTPEntry.getFailedAttempts() + 1);
-			emailOTPEntry.setLastFailDate(new Date());
-			emailOTPEntry.setLastFailIP(userIP);
+			mfaEmailOTPEntry.setFailedAttempts(
+				mfaEmailOTPEntry.getFailedAttempts() + 1);
+			mfaEmailOTPEntry.setLastFailDate(new Date());
+			mfaEmailOTPEntry.setLastFailIP(userIP);
 		}
 
-		emailOTPEntryPersistence.update(emailOTPEntry);
+		mfaEmailOTPEntryPersistence.update(mfaEmailOTPEntry);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
