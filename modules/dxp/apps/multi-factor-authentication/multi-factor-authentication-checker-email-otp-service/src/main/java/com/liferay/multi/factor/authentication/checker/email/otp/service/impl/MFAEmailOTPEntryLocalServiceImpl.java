@@ -40,7 +40,7 @@ public class MFAEmailOTPEntryLocalServiceImpl
 
 	public MFAEmailOTPEntry addMFAEmailOTPEntry(long userId) throws PortalException {
 		MFAEmailOTPEntry mfaEmailOTPEntry =
-			mfaEmailOTPEntryLocalService.fetchEntryByUserId(userId);
+			mfaEmailOTPEntryPersistence.fetchByUserId(userId);
 
 		if (mfaEmailOTPEntry != null) {
 			throw new DuplicateMFAEmailOTPEntryException("User ID " + userId);
@@ -69,7 +69,7 @@ public class MFAEmailOTPEntryLocalServiceImpl
 
 	public void resetFailedAttempts(long userId) {
 		MFAEmailOTPEntry mfaEmailOTPEntry =
-			mfaEmailOTPEntryLocalService.fetchEntryByUserId(userId);
+			mfaEmailOTPEntryPersistence.fetchByUserId(userId);
 
 		if (mfaEmailOTPEntry == null) {
 			if (_log.isInfoEnabled()) {
@@ -89,7 +89,7 @@ public class MFAEmailOTPEntryLocalServiceImpl
 
 	public void updateAttempts(long userId, String userIP, boolean success) {
 		MFAEmailOTPEntry mfaEmailOTPEntry =
-			mfaEmailOTPEntryLocalService.fetchEntryByUserId(userId);
+			mfaEmailOTPEntryPersistence.fetchByUserId(userId);
 
 		if (mfaEmailOTPEntry == null) {
 			if (_log.isInfoEnabled()) {
