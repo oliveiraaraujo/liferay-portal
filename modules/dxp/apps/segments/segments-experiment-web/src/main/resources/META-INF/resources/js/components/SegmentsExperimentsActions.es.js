@@ -45,7 +45,7 @@ function SegmentsExperimentsActions({onEditSegmentsExperimentStatus}) {
 	const dispatch = useContext(DispatchContext);
 
 	const {observer, onClose} = useModal({
-		onClose: () => dispatch(closeReviewAndRunExperiment(false))
+		onClose: () => dispatch(closeReviewAndRunExperiment())
 	});
 	const {APIService} = useContext(SegmentsExperimentsContext);
 
@@ -54,7 +54,7 @@ function SegmentsExperimentsActions({onEditSegmentsExperimentStatus}) {
 			{experiment.status.value === STATUS_DRAFT && (
 				<ClayButton
 					className="w-100"
-					onClick={() => dispatch(reviewAndRunExperiment(true))}
+					onClick={() => dispatch(reviewAndRunExperiment())}
 				>
 					{Liferay.Language.get('review-and-run-test')}
 				</ClayButton>

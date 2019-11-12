@@ -32,8 +32,7 @@ export const closeEditionModal = () => ({
 	type: 'EDIT_EXPERIMENT_FINISH'
 });
 
-export const closeReviewAndRunExperiment = payload => ({
-	payload,
+export const closeReviewAndRunExperiment = () => ({
 	type: 'REVIEW_AND_RUN_EXPERIMENT_FINISH'
 });
 
@@ -54,8 +53,7 @@ export const openEditionModal = payload => ({
 	type: 'EDIT_EXPERIMENT_START'
 });
 
-export const reviewAndRunExperiment = payload => ({
-	payload,
+export const reviewAndRunExperiment = () => ({
 	type: 'REVIEW_AND_RUN_EXPERIMENT'
 });
 
