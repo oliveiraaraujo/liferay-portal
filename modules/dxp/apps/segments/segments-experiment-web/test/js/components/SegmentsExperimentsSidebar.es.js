@@ -29,6 +29,7 @@ import {
 	STATUS_FINISHED_NO_WINNER
 } from '../../../src/main/resources/META-INF/resources/js/util/statuses.es';
 import {
+	controlVariant,
 	segmentsExperiment,
 	segmentsExperiences,
 	segmentsVariants
@@ -239,6 +240,49 @@ describe('Review and Run test', () => {
 
 		expect(confidenceSlider.length).toBe(1);
 		expect(splitSliders.length).toBe(2);
+	});
+
+	it('Error messages appears when the user clicks in review and run and there is no click target element selected', async () => {
+		const experiment = {
+			...segmentsExperiment,
+			goal: {
+				label: 'Click',
+				value: 'click'
+			}
+		};
+
+		const {getByDisplayValue, getByText} = renderApp({
+			initialSegmentsExperiences: segmentsExperiences,
+			initialSegmentsExperiment: experiment
+		});
+
+		getByDisplayValue(segmentsExperiences[0].name);
+
+		getByText(experiment.name);
+
+		const reviewAndRunTestButton = getByText('review-and-run-test');
+
+		userEvent.click(reviewAndRunTestButton);
+
+		getByText('an-element-needs-to-be-set');
+	});
+
+	it('Error messages appears when the user clicks in review and run and there is only the control variant created', async () => {
+		const {getByDisplayValue, getByText} = renderApp({
+			initialSegmentsExperiences: segmentsExperiences,
+			initialSegmentsExperiment: segmentsExperiment,
+			initialSegmentsVariants: controlVariant
+		});
+
+		getByDisplayValue(segmentsExperiences[0].name);
+
+		getByText(segmentsExperiment.name);
+
+		const reviewAndRunTestButton = getByText('review-and-run-test');
+
+		userEvent.click(reviewAndRunTestButton);
+
+		getByText('a-variant-needs-to-be-created');
 	});
 
 	it("Can run test that won't be editable", async () => {
