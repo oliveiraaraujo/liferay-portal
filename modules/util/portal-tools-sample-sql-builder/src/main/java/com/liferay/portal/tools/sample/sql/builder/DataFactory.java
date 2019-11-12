@@ -2689,7 +2689,6 @@ public class DataFactory {
 		layoutPageTemplateStructureModel.setUserName(_SAMPLE_USER_NAME);
 		layoutPageTemplateStructureModel.setCreateDate(new Date());
 		layoutPageTemplateStructureModel.setModifiedDate(new Date());
-
 		layoutPageTemplateStructureModel.setClassNameId(
 			getClassNameId(Layout.class));
 		layoutPageTemplateStructureModel.setClassPK(layoutModel.getPlid());
@@ -2708,10 +2707,8 @@ public class DataFactory {
 				new LayoutPageTemplateStructureRelModelImpl();
 
 		layoutPageTemplateStructureRelModel.setUuid(SequentialUUID.generate());
-
 		layoutPageTemplateStructureRelModel.setLayoutPageTemplateStructureRelId(
 			_counter.get());
-
 		layoutPageTemplateStructureRelModel.setGroupId(
 			layoutPageTemplateStructureModel.getGroupId());
 		layoutPageTemplateStructureRelModel.setCompanyId(_companyId);
@@ -2719,11 +2716,9 @@ public class DataFactory {
 		layoutPageTemplateStructureRelModel.setUserName(_SAMPLE_USER_NAME);
 		layoutPageTemplateStructureRelModel.setCreateDate(new Date());
 		layoutPageTemplateStructureRelModel.setModifiedDate(new Date());
-
 		layoutPageTemplateStructureRelModel.setLayoutPageTemplateStructureId(
 			layoutPageTemplateStructureModel.
 				getLayoutPageTemplateStructureId());
-
 		layoutPageTemplateStructureRelModel.setSegmentsExperienceId(0L);
 
 		LayoutData layoutData = LayoutData.of(
