@@ -26,29 +26,32 @@ import java.util.List;
  * @author Arthur Chan
  * @generated
  */
-public class EmailOTPEntrySoap implements Serializable {
+public class MFAEmailOTPEntrySoap implements Serializable {
 
-	public static EmailOTPEntrySoap toSoapModel(EmailOTPEntry model) {
-		EmailOTPEntrySoap soapModel = new EmailOTPEntrySoap();
+	public static MFAEmailOTPEntrySoap toSoapModel(MFAEmailOTPEntry model) {
+		MFAEmailOTPEntrySoap soapModel = new MFAEmailOTPEntrySoap();
 
 		soapModel.setMvccVersion(model.getMvccVersion());
-		soapModel.setEntryId(model.getEntryId());
+		soapModel.setMfaEmailOTPEntryId(model.getMfaEmailOTPEntryId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setFailedAttempts(model.getFailedAttempts());
-		soapModel.setLastSuccessDate(model.getLastSuccessDate());
-		soapModel.setLastSuccessIP(model.getLastSuccessIP());
 		soapModel.setLastFailDate(model.getLastFailDate());
 		soapModel.setLastFailIP(model.getLastFailIP());
+		soapModel.setLastSuccessDate(model.getLastSuccessDate());
+		soapModel.setLastSuccessIP(model.getLastSuccessIP());
 
 		return soapModel;
 	}
 
-	public static EmailOTPEntrySoap[] toSoapModels(EmailOTPEntry[] models) {
-		EmailOTPEntrySoap[] soapModels = new EmailOTPEntrySoap[models.length];
+	public static MFAEmailOTPEntrySoap[] toSoapModels(
+		MFAEmailOTPEntry[] models) {
+
+		MFAEmailOTPEntrySoap[] soapModels =
+			new MFAEmailOTPEntrySoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -57,14 +60,17 @@ public class EmailOTPEntrySoap implements Serializable {
 		return soapModels;
 	}
 
-	public static EmailOTPEntrySoap[][] toSoapModels(EmailOTPEntry[][] models) {
-		EmailOTPEntrySoap[][] soapModels = null;
+	public static MFAEmailOTPEntrySoap[][] toSoapModels(
+		MFAEmailOTPEntry[][] models) {
+
+		MFAEmailOTPEntrySoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new EmailOTPEntrySoap[models.length][models[0].length];
+			soapModels =
+				new MFAEmailOTPEntrySoap[models.length][models[0].length];
 		}
 		else {
-			soapModels = new EmailOTPEntrySoap[0][0];
+			soapModels = new MFAEmailOTPEntrySoap[0][0];
 		}
 
 		for (int i = 0; i < models.length; i++) {
@@ -74,26 +80,28 @@ public class EmailOTPEntrySoap implements Serializable {
 		return soapModels;
 	}
 
-	public static EmailOTPEntrySoap[] toSoapModels(List<EmailOTPEntry> models) {
-		List<EmailOTPEntrySoap> soapModels = new ArrayList<EmailOTPEntrySoap>(
-			models.size());
+	public static MFAEmailOTPEntrySoap[] toSoapModels(
+		List<MFAEmailOTPEntry> models) {
 
-		for (EmailOTPEntry model : models) {
+		List<MFAEmailOTPEntrySoap> soapModels =
+			new ArrayList<MFAEmailOTPEntrySoap>(models.size());
+
+		for (MFAEmailOTPEntry model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new EmailOTPEntrySoap[soapModels.size()]);
+		return soapModels.toArray(new MFAEmailOTPEntrySoap[soapModels.size()]);
 	}
 
-	public EmailOTPEntrySoap() {
+	public MFAEmailOTPEntrySoap() {
 	}
 
 	public long getPrimaryKey() {
-		return _entryId;
+		return _mfaEmailOTPEntryId;
 	}
 
 	public void setPrimaryKey(long pk) {
-		setEntryId(pk);
+		setMfaEmailOTPEntryId(pk);
 	}
 
 	public long getMvccVersion() {
@@ -104,12 +112,12 @@ public class EmailOTPEntrySoap implements Serializable {
 		_mvccVersion = mvccVersion;
 	}
 
-	public long getEntryId() {
-		return _entryId;
+	public long getMfaEmailOTPEntryId() {
+		return _mfaEmailOTPEntryId;
 	}
 
-	public void setEntryId(long entryId) {
-		_entryId = entryId;
+	public void setMfaEmailOTPEntryId(long mfaEmailOTPEntryId) {
+		_mfaEmailOTPEntryId = mfaEmailOTPEntryId;
 	}
 
 	public long getCompanyId() {
@@ -160,22 +168,6 @@ public class EmailOTPEntrySoap implements Serializable {
 		_failedAttempts = failedAttempts;
 	}
 
-	public Date getLastSuccessDate() {
-		return _lastSuccessDate;
-	}
-
-	public void setLastSuccessDate(Date lastSuccessDate) {
-		_lastSuccessDate = lastSuccessDate;
-	}
-
-	public String getLastSuccessIP() {
-		return _lastSuccessIP;
-	}
-
-	public void setLastSuccessIP(String lastSuccessIP) {
-		_lastSuccessIP = lastSuccessIP;
-	}
-
 	public Date getLastFailDate() {
 		return _lastFailDate;
 	}
@@ -192,17 +184,33 @@ public class EmailOTPEntrySoap implements Serializable {
 		_lastFailIP = lastFailIP;
 	}
 
+	public Date getLastSuccessDate() {
+		return _lastSuccessDate;
+	}
+
+	public void setLastSuccessDate(Date lastSuccessDate) {
+		_lastSuccessDate = lastSuccessDate;
+	}
+
+	public String getLastSuccessIP() {
+		return _lastSuccessIP;
+	}
+
+	public void setLastSuccessIP(String lastSuccessIP) {
+		_lastSuccessIP = lastSuccessIP;
+	}
+
 	private long _mvccVersion;
-	private long _entryId;
+	private long _mfaEmailOTPEntryId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private int _failedAttempts;
-	private Date _lastSuccessDate;
-	private String _lastSuccessIP;
 	private Date _lastFailDate;
 	private String _lastFailIP;
+	private Date _lastSuccessDate;
+	private String _lastSuccessIP;
 
 }

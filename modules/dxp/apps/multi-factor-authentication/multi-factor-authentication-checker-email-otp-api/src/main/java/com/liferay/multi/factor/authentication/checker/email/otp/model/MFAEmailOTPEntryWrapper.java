@@ -23,19 +23,19 @@ import java.util.Map;
 
 /**
  * <p>
- * This class is a wrapper for {@link EmailOTPEntry}.
+ * This class is a wrapper for {@link MFAEmailOTPEntry}.
  * </p>
  *
  * @author Arthur Chan
- * @see EmailOTPEntry
+ * @see MFAEmailOTPEntry
  * @generated
  */
-public class EmailOTPEntryWrapper
-	extends BaseModelWrapper<EmailOTPEntry>
-	implements EmailOTPEntry, ModelWrapper<EmailOTPEntry> {
+public class MFAEmailOTPEntryWrapper
+	extends BaseModelWrapper<MFAEmailOTPEntry>
+	implements MFAEmailOTPEntry, ModelWrapper<MFAEmailOTPEntry> {
 
-	public EmailOTPEntryWrapper(EmailOTPEntry emailOTPEntry) {
-		super(emailOTPEntry);
+	public MFAEmailOTPEntryWrapper(MFAEmailOTPEntry mfaEmailOTPEntry) {
+		super(mfaEmailOTPEntry);
 	}
 
 	@Override
@@ -43,17 +43,17 @@ public class EmailOTPEntryWrapper
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put("entryId", getEntryId());
+		attributes.put("mfaEmailOTPEntryId", getMfaEmailOTPEntryId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("failedAttempts", getFailedAttempts());
-		attributes.put("lastSuccessDate", getLastSuccessDate());
-		attributes.put("lastSuccessIP", getLastSuccessIP());
 		attributes.put("lastFailDate", getLastFailDate());
 		attributes.put("lastFailIP", getLastFailIP());
+		attributes.put("lastSuccessDate", getLastSuccessDate());
+		attributes.put("lastSuccessIP", getLastSuccessIP());
 
 		return attributes;
 	}
@@ -66,10 +66,10 @@ public class EmailOTPEntryWrapper
 			setMvccVersion(mvccVersion);
 		}
 
-		Long entryId = (Long)attributes.get("entryId");
+		Long mfaEmailOTPEntryId = (Long)attributes.get("mfaEmailOTPEntryId");
 
-		if (entryId != null) {
-			setEntryId(entryId);
+		if (mfaEmailOTPEntryId != null) {
+			setMfaEmailOTPEntryId(mfaEmailOTPEntryId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -108,18 +108,6 @@ public class EmailOTPEntryWrapper
 			setFailedAttempts(failedAttempts);
 		}
 
-		Date lastSuccessDate = (Date)attributes.get("lastSuccessDate");
-
-		if (lastSuccessDate != null) {
-			setLastSuccessDate(lastSuccessDate);
-		}
-
-		String lastSuccessIP = (String)attributes.get("lastSuccessIP");
-
-		if (lastSuccessIP != null) {
-			setLastSuccessIP(lastSuccessIP);
-		}
-
 		Date lastFailDate = (Date)attributes.get("lastFailDate");
 
 		if (lastFailDate != null) {
@@ -131,12 +119,24 @@ public class EmailOTPEntryWrapper
 		if (lastFailIP != null) {
 			setLastFailIP(lastFailIP);
 		}
+
+		Date lastSuccessDate = (Date)attributes.get("lastSuccessDate");
+
+		if (lastSuccessDate != null) {
+			setLastSuccessDate(lastSuccessDate);
+		}
+
+		String lastSuccessIP = (String)attributes.get("lastSuccessIP");
+
+		if (lastSuccessIP != null) {
+			setLastSuccessIP(lastSuccessIP);
+		}
 	}
 
 	/**
-	 * Returns the company ID of this email otp entry.
+	 * Returns the company ID of this mfa email otp entry.
 	 *
-	 * @return the company ID of this email otp entry
+	 * @return the company ID of this mfa email otp entry
 	 */
 	@Override
 	public long getCompanyId() {
@@ -144,9 +144,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Returns the create date of this email otp entry.
+	 * Returns the create date of this mfa email otp entry.
 	 *
-	 * @return the create date of this email otp entry
+	 * @return the create date of this mfa email otp entry
 	 */
 	@Override
 	public Date getCreateDate() {
@@ -154,19 +154,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Returns the entry ID of this email otp entry.
+	 * Returns the failed attempts of this mfa email otp entry.
 	 *
-	 * @return the entry ID of this email otp entry
-	 */
-	@Override
-	public long getEntryId() {
-		return model.getEntryId();
-	}
-
-	/**
-	 * Returns the failed attempts of this email otp entry.
-	 *
-	 * @return the failed attempts of this email otp entry
+	 * @return the failed attempts of this mfa email otp entry
 	 */
 	@Override
 	public int getFailedAttempts() {
@@ -174,9 +164,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Returns the last fail date of this email otp entry.
+	 * Returns the last fail date of this mfa email otp entry.
 	 *
-	 * @return the last fail date of this email otp entry
+	 * @return the last fail date of this mfa email otp entry
 	 */
 	@Override
 	public Date getLastFailDate() {
@@ -184,9 +174,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Returns the last fail ip of this email otp entry.
+	 * Returns the last fail ip of this mfa email otp entry.
 	 *
-	 * @return the last fail ip of this email otp entry
+	 * @return the last fail ip of this mfa email otp entry
 	 */
 	@Override
 	public String getLastFailIP() {
@@ -194,9 +184,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Returns the last success date of this email otp entry.
+	 * Returns the last success date of this mfa email otp entry.
 	 *
-	 * @return the last success date of this email otp entry
+	 * @return the last success date of this mfa email otp entry
 	 */
 	@Override
 	public Date getLastSuccessDate() {
@@ -204,9 +194,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Returns the last success ip of this email otp entry.
+	 * Returns the last success ip of this mfa email otp entry.
 	 *
-	 * @return the last success ip of this email otp entry
+	 * @return the last success ip of this mfa email otp entry
 	 */
 	@Override
 	public String getLastSuccessIP() {
@@ -214,9 +204,19 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Returns the modified date of this email otp entry.
+	 * Returns the mfa email otp entry ID of this mfa email otp entry.
 	 *
-	 * @return the modified date of this email otp entry
+	 * @return the mfa email otp entry ID of this mfa email otp entry
+	 */
+	@Override
+	public long getMfaEmailOTPEntryId() {
+		return model.getMfaEmailOTPEntryId();
+	}
+
+	/**
+	 * Returns the modified date of this mfa email otp entry.
+	 *
+	 * @return the modified date of this mfa email otp entry
 	 */
 	@Override
 	public Date getModifiedDate() {
@@ -224,9 +224,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Returns the mvcc version of this email otp entry.
+	 * Returns the mvcc version of this mfa email otp entry.
 	 *
-	 * @return the mvcc version of this email otp entry
+	 * @return the mvcc version of this mfa email otp entry
 	 */
 	@Override
 	public long getMvccVersion() {
@@ -234,9 +234,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Returns the primary key of this email otp entry.
+	 * Returns the primary key of this mfa email otp entry.
 	 *
-	 * @return the primary key of this email otp entry
+	 * @return the primary key of this mfa email otp entry
 	 */
 	@Override
 	public long getPrimaryKey() {
@@ -244,9 +244,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Returns the user ID of this email otp entry.
+	 * Returns the user ID of this mfa email otp entry.
 	 *
-	 * @return the user ID of this email otp entry
+	 * @return the user ID of this mfa email otp entry
 	 */
 	@Override
 	public long getUserId() {
@@ -254,9 +254,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Returns the user name of this email otp entry.
+	 * Returns the user name of this mfa email otp entry.
 	 *
-	 * @return the user name of this email otp entry
+	 * @return the user name of this mfa email otp entry
 	 */
 	@Override
 	public String getUserName() {
@@ -264,9 +264,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Returns the user uuid of this email otp entry.
+	 * Returns the user uuid of this mfa email otp entry.
 	 *
-	 * @return the user uuid of this email otp entry
+	 * @return the user uuid of this mfa email otp entry
 	 */
 	@Override
 	public String getUserUuid() {
@@ -276,7 +276,7 @@ public class EmailOTPEntryWrapper
 	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a email otp entry model instance should use the <code>EmailOTPEntry</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a mfa email otp entry model instance should use the <code>MFAEmailOTPEntry</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -284,9 +284,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Sets the company ID of this email otp entry.
+	 * Sets the company ID of this mfa email otp entry.
 	 *
-	 * @param companyId the company ID of this email otp entry
+	 * @param companyId the company ID of this mfa email otp entry
 	 */
 	@Override
 	public void setCompanyId(long companyId) {
@@ -294,9 +294,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Sets the create date of this email otp entry.
+	 * Sets the create date of this mfa email otp entry.
 	 *
-	 * @param createDate the create date of this email otp entry
+	 * @param createDate the create date of this mfa email otp entry
 	 */
 	@Override
 	public void setCreateDate(Date createDate) {
@@ -304,19 +304,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Sets the entry ID of this email otp entry.
+	 * Sets the failed attempts of this mfa email otp entry.
 	 *
-	 * @param entryId the entry ID of this email otp entry
-	 */
-	@Override
-	public void setEntryId(long entryId) {
-		model.setEntryId(entryId);
-	}
-
-	/**
-	 * Sets the failed attempts of this email otp entry.
-	 *
-	 * @param failedAttempts the failed attempts of this email otp entry
+	 * @param failedAttempts the failed attempts of this mfa email otp entry
 	 */
 	@Override
 	public void setFailedAttempts(int failedAttempts) {
@@ -324,9 +314,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Sets the last fail date of this email otp entry.
+	 * Sets the last fail date of this mfa email otp entry.
 	 *
-	 * @param lastFailDate the last fail date of this email otp entry
+	 * @param lastFailDate the last fail date of this mfa email otp entry
 	 */
 	@Override
 	public void setLastFailDate(Date lastFailDate) {
@@ -334,9 +324,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Sets the last fail ip of this email otp entry.
+	 * Sets the last fail ip of this mfa email otp entry.
 	 *
-	 * @param lastFailIP the last fail ip of this email otp entry
+	 * @param lastFailIP the last fail ip of this mfa email otp entry
 	 */
 	@Override
 	public void setLastFailIP(String lastFailIP) {
@@ -344,9 +334,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Sets the last success date of this email otp entry.
+	 * Sets the last success date of this mfa email otp entry.
 	 *
-	 * @param lastSuccessDate the last success date of this email otp entry
+	 * @param lastSuccessDate the last success date of this mfa email otp entry
 	 */
 	@Override
 	public void setLastSuccessDate(Date lastSuccessDate) {
@@ -354,9 +344,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Sets the last success ip of this email otp entry.
+	 * Sets the last success ip of this mfa email otp entry.
 	 *
-	 * @param lastSuccessIP the last success ip of this email otp entry
+	 * @param lastSuccessIP the last success ip of this mfa email otp entry
 	 */
 	@Override
 	public void setLastSuccessIP(String lastSuccessIP) {
@@ -364,9 +354,19 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Sets the modified date of this email otp entry.
+	 * Sets the mfa email otp entry ID of this mfa email otp entry.
 	 *
-	 * @param modifiedDate the modified date of this email otp entry
+	 * @param mfaEmailOTPEntryId the mfa email otp entry ID of this mfa email otp entry
+	 */
+	@Override
+	public void setMfaEmailOTPEntryId(long mfaEmailOTPEntryId) {
+		model.setMfaEmailOTPEntryId(mfaEmailOTPEntryId);
+	}
+
+	/**
+	 * Sets the modified date of this mfa email otp entry.
+	 *
+	 * @param modifiedDate the modified date of this mfa email otp entry
 	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
@@ -374,9 +374,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Sets the mvcc version of this email otp entry.
+	 * Sets the mvcc version of this mfa email otp entry.
 	 *
-	 * @param mvccVersion the mvcc version of this email otp entry
+	 * @param mvccVersion the mvcc version of this mfa email otp entry
 	 */
 	@Override
 	public void setMvccVersion(long mvccVersion) {
@@ -384,9 +384,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Sets the primary key of this email otp entry.
+	 * Sets the primary key of this mfa email otp entry.
 	 *
-	 * @param primaryKey the primary key of this email otp entry
+	 * @param primaryKey the primary key of this mfa email otp entry
 	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
@@ -394,9 +394,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Sets the user ID of this email otp entry.
+	 * Sets the user ID of this mfa email otp entry.
 	 *
-	 * @param userId the user ID of this email otp entry
+	 * @param userId the user ID of this mfa email otp entry
 	 */
 	@Override
 	public void setUserId(long userId) {
@@ -404,9 +404,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Sets the user name of this email otp entry.
+	 * Sets the user name of this mfa email otp entry.
 	 *
-	 * @param userName the user name of this email otp entry
+	 * @param userName the user name of this mfa email otp entry
 	 */
 	@Override
 	public void setUserName(String userName) {
@@ -414,9 +414,9 @@ public class EmailOTPEntryWrapper
 	}
 
 	/**
-	 * Sets the user uuid of this email otp entry.
+	 * Sets the user uuid of this mfa email otp entry.
 	 *
-	 * @param userUuid the user uuid of this email otp entry
+	 * @param userUuid the user uuid of this mfa email otp entry
 	 */
 	@Override
 	public void setUserUuid(String userUuid) {
@@ -424,8 +424,8 @@ public class EmailOTPEntryWrapper
 	}
 
 	@Override
-	protected EmailOTPEntryWrapper wrap(EmailOTPEntry emailOTPEntry) {
-		return new EmailOTPEntryWrapper(emailOTPEntry);
+	protected MFAEmailOTPEntryWrapper wrap(MFAEmailOTPEntry mfaEmailOTPEntry) {
+		return new MFAEmailOTPEntryWrapper(mfaEmailOTPEntry);
 	}
 
 }

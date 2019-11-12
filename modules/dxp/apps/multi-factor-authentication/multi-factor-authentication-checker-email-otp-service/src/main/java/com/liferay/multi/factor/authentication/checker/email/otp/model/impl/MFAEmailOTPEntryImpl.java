@@ -12,28 +12,14 @@
  *
  */
 
-package com.liferay.multi.factor.authentication.checker.email.otp.exception;
-
-import com.liferay.portal.kernel.exception.NoSuchModelException;
+package com.liferay.multi.factor.authentication.checker.email.otp.model.impl;
 
 /**
  * @author Arthur Chan
  */
-public class NoSuchEmailOTPEntryException extends NoSuchModelException {
+public class MFAEmailOTPEntryImpl extends MFAEmailOTPEntryBaseImpl {
 
-	public NoSuchEmailOTPEntryException() {
-	}
-
-	public NoSuchEmailOTPEntryException(String msg) {
-		super(msg);
-	}
-
-	public NoSuchEmailOTPEntryException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
-
-	public NoSuchEmailOTPEntryException(Throwable cause) {
-		super(cause);
+	public MFAEmailOTPEntryImpl() {
 	}
 
 }
