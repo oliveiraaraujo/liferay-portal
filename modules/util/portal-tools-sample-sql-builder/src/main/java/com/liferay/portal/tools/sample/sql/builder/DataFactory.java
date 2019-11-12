@@ -323,7 +323,6 @@ public class DataFactory {
 		List<String> models = ModelHintsUtil.getModels();
 
 		models.add(Layout.class.getName());
-
 		models.add(UserPersonalSite.class.getName());
 
 		models.add(_getMBDiscussionCombinedClassName(BlogsEntry.class));
