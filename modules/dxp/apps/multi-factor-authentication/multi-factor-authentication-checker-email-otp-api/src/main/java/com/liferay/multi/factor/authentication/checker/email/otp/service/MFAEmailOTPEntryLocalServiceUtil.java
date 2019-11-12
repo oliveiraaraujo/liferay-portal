@@ -296,11 +296,11 @@ public class MFAEmailOTPEntryLocalServiceUtil {
 		getService().resetFailedAttempts(userId);
 	}
 
-	public static void updateAttempts(
+	public static void updateFailedAttempts(
 			long userId, String userIP, boolean success)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		getService().updateAttempts(userId, userIP, success);
+		getService().updateFailedAttempts(userId, userIP, success);
 	}
 
 	/**
