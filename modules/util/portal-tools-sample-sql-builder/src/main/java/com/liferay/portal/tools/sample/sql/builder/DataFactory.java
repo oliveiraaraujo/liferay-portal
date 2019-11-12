@@ -2241,15 +2241,14 @@ public class DataFactory {
 
 		fragmentEntryLinkModel.setUuid(SequentialUUID.generate());
 		fragmentEntryLinkModel.setFragmentEntryLinkId(_counter.get());
-		fragmentEntryLinkModel.setFragmentEntryId(
-			fragmentEntryModel.getFragmentEntryId());
 		fragmentEntryLinkModel.setGroupId(fragmentEntryModel.getGroupId());
 		fragmentEntryLinkModel.setCompanyId(_companyId);
 		fragmentEntryLinkModel.setUserId(_sampleUserId);
 		fragmentEntryLinkModel.setUserName(_SAMPLE_USER_NAME);
 		fragmentEntryLinkModel.setCreateDate(new Date());
 		fragmentEntryLinkModel.setModifiedDate(new Date());
-
+		fragmentEntryLinkModel.setFragmentEntryId(
+			fragmentEntryModel.getFragmentEntryId());
 		fragmentEntryLinkModel.setClassNameId(getClassNameId(Layout.class));
 		fragmentEntryLinkModel.setClassPK(layoutModel.getPlid());
 		fragmentEntryLinkModel.setCss(fragmentEntryModel.getCss());
