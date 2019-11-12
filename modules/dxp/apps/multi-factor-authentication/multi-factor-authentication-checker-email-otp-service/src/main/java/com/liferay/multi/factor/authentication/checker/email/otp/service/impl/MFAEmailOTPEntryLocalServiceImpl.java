@@ -59,16 +59,14 @@ public class MFAEmailOTPEntryLocalServiceImpl
 		mfaEmailOTPEntry.setCreateDate(new Date());
 		mfaEmailOTPEntry.setModifiedDate(new Date());
 
-		mfaEmailOTPEntryPersistence.update(mfaEmailOTPEntry);
-
-		return mfaEmailOTPEntry;
+		return mfaEmailOTPEntryPersistence.update(mfaEmailOTPEntry);
 	}
 
 	public MFAEmailOTPEntry fetchMFAEmailOTPEntryByUserId(long userId) {
 		return mfaEmailOTPEntryPersistence.fetchByUserId(userId);
 	}
 
-	public void resetFailedAttempts(long userId) throws PortalException {
+	public MFAEmailOTPEntry resetFailedAttempts(long userId) throws PortalException {
 		MFAEmailOTPEntry mfaEmailOTPEntry =
 			mfaEmailOTPEntryPersistence.fetchByUserId(userId);
 
@@ -80,10 +78,10 @@ public class MFAEmailOTPEntryLocalServiceImpl
 		mfaEmailOTPEntry.setLastFailDate(null);
 		mfaEmailOTPEntry.setLastFailIP(null);
 
-		mfaEmailOTPEntryPersistence.update(mfaEmailOTPEntry);
+		return mfaEmailOTPEntryPersistence.update(mfaEmailOTPEntry);
 	}
 
-	public void updateFailedAttempts(long userId, String ip, boolean success) throws PortalException {
+	public MFAEmailOTPEntry updateFailedAttempts(long userId, String ip, boolean success) throws PortalException {
 		MFAEmailOTPEntry mfaEmailOTPEntry =
 			mfaEmailOTPEntryPersistence.fetchByUserId(userId);
 
@@ -105,7 +103,7 @@ public class MFAEmailOTPEntryLocalServiceImpl
 			mfaEmailOTPEntry.setLastFailIP(ip);
 		}
 
-		mfaEmailOTPEntryPersistence.update(mfaEmailOTPEntry);
+		return mfaEmailOTPEntryPersistence.update(mfaEmailOTPEntry);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
