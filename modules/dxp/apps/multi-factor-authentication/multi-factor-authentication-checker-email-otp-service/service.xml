@@ -36,4 +36,7 @@
 
 		<reference entity="User" package-path="com.liferay.portal" />
 	</entity>
+	<exceptions>
+		<exception>DuplicateMFAEmailOTPEntry</exception>
+	</exceptions>
 </service-builder>

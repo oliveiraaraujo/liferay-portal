@@ -14,6 +14,7 @@
 
 package com.liferay.multi.factor.authentication.checker.email.otp.service.impl;
 
+import com.liferay.multi.factor.authentication.checker.email.otp.exception.DuplicateMFAEmailOTPEntryException;
 import com.liferay.multi.factor.authentication.checker.email.otp.model.MFAEmailOTPEntry;
 import com.liferay.multi.factor.authentication.checker.email.otp.service.base.MFAEmailOTPEntryLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
@@ -42,8 +43,7 @@ public class MFAEmailOTPEntryLocalServiceImpl
 			emailOTPEntryLocalService.fetchEntryByUserId(userId);
 
 		if (emailOTPEntry != null) {
-			throw new IllegalArgumentException(
-				"There is already one Email OTP Entry for user " + userId);
+			throw new DuplicateMFAEmailOTPEntryException("User ID " + userId);
 		}
 
 		emailOTPEntry = emailOTPEntryPersistence.create(
