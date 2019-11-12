@@ -83,7 +83,7 @@ public class MFAEmailOTPEntryLocalServiceImpl
 		mfaEmailOTPEntryPersistence.update(mfaEmailOTPEntry);
 	}
 
-	public void updateAttempts(long userId, String userIP, boolean success) throws PortalException {
+	public void updateFailedAttempts(long userId, String userIP, boolean success) throws PortalException {
 		MFAEmailOTPEntry mfaEmailOTPEntry =
 			mfaEmailOTPEntryPersistence.fetchByUserId(userId);
 
