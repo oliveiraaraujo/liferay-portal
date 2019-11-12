@@ -213,17 +213,18 @@ public class MFAEmailOTPEntryLocalServiceWrapper
 
 	@Override
 	public com.liferay.multi.factor.authentication.checker.email.otp.model.
-		MFAEmailOTPEntry fetchEntryByUserId(long userId) {
-
-		return _mfaEmailOTPEntryLocalService.fetchEntryByUserId(userId);
-	}
-
-	@Override
-	public com.liferay.multi.factor.authentication.checker.email.otp.model.
 		MFAEmailOTPEntry fetchMFAEmailOTPEntry(long mfaEmailOTPEntryId) {
 
 		return _mfaEmailOTPEntryLocalService.fetchMFAEmailOTPEntry(
 			mfaEmailOTPEntryId);
+	}
+
+	@Override
+	public com.liferay.multi.factor.authentication.checker.email.otp.model.
+		MFAEmailOTPEntry fetchMFAEmailOTPEntryByUserId(long userId) {
+
+		return _mfaEmailOTPEntryLocalService.fetchMFAEmailOTPEntryByUserId(
+			userId);
 	}
 
 	@Override

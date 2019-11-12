@@ -207,16 +207,16 @@ public class MFAEmailOTPEntryLocalServiceUtil {
 
 	public static
 		com.liferay.multi.factor.authentication.checker.email.otp.model.
-			MFAEmailOTPEntry fetchEntryByUserId(long userId) {
+			MFAEmailOTPEntry fetchMFAEmailOTPEntry(long mfaEmailOTPEntryId) {
 
-		return getService().fetchEntryByUserId(userId);
+		return getService().fetchMFAEmailOTPEntry(mfaEmailOTPEntryId);
 	}
 
 	public static
 		com.liferay.multi.factor.authentication.checker.email.otp.model.
-			MFAEmailOTPEntry fetchMFAEmailOTPEntry(long mfaEmailOTPEntryId) {
+			MFAEmailOTPEntry fetchMFAEmailOTPEntryByUserId(long userId) {
 
-		return getService().fetchMFAEmailOTPEntry(mfaEmailOTPEntryId);
+		return getService().fetchMFAEmailOTPEntryByUserId(userId);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery

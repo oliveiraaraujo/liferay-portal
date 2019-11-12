@@ -177,10 +177,10 @@ public interface MFAEmailOTPEntryLocalService
 		DynamicQuery dynamicQuery, Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public MFAEmailOTPEntry fetchEntryByUserId(long userId);
+	public MFAEmailOTPEntry fetchMFAEmailOTPEntry(long mfaEmailOTPEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public MFAEmailOTPEntry fetchMFAEmailOTPEntry(long mfaEmailOTPEntryId);
+	public MFAEmailOTPEntry fetchMFAEmailOTPEntryByUserId(long userId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
