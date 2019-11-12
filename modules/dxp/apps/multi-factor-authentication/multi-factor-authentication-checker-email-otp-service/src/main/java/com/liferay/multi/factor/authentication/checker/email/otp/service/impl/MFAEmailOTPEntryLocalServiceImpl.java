@@ -14,8 +14,8 @@
 
 package com.liferay.multi.factor.authentication.checker.email.otp.service.impl;
 
-import com.liferay.multi.factor.authentication.checker.email.otp.model.EmailOTPEntry;
-import com.liferay.multi.factor.authentication.checker.email.otp.service.base.EmailOTPEntryLocalServiceBaseImpl;
+import com.liferay.multi.factor.authentication.checker.email.otp.model.MFAEmailOTPEntry;
+import com.liferay.multi.factor.authentication.checker.email.otp.service.base.MFAEmailOTPEntryLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -28,17 +28,17 @@ import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Arthur Chan
- * @see EmailOTPEntryLocalServiceBaseImpl
+ * @see MFAEmailOTPEntryLocalServiceBaseImpl
  */
 @Component(
-	property = "model.class.name=com.liferay.multi.factor.authentication.checker.email.otp.model.EmailOTPEntry",
+	property = "model.class.name=com.liferay.multi.factor.authentication.checker.email.otp.model.MFAEmailOTPEntry",
 	service = AopService.class
 )
-public class EmailOTPEntryLocalServiceImpl
-	extends EmailOTPEntryLocalServiceBaseImpl {
+public class MFAEmailOTPEntryLocalServiceImpl
+	extends MFAEmailOTPEntryLocalServiceBaseImpl {
 
-	public EmailOTPEntry addEmailOTPEntry(long userId) throws PortalException {
-		EmailOTPEntry emailOTPEntry =
+	public MFAEmailOTPEntry addMFAEmailOTPEntry(long userId) throws PortalException {
+		MFAEmailOTPEntry emailOTPEntry =
 			emailOTPEntryLocalService.fetchEntryByUserId(userId);
 
 		if (emailOTPEntry != null) {
@@ -63,12 +63,12 @@ public class EmailOTPEntryLocalServiceImpl
 		return emailOTPEntry;
 	}
 
-	public EmailOTPEntry fetchEntryByUserId(long userId) {
+	public MFAEmailOTPEntry fetchEntryByUserId(long userId) {
 		return emailOTPEntryPersistence.fetchByUserId(userId);
 	}
 
 	public void resetFailedAttempts(long userId) {
-		EmailOTPEntry emailOTPEntry =
+		MFAEmailOTPEntry emailOTPEntry =
 			emailOTPEntryLocalService.fetchEntryByUserId(userId);
 
 		if (emailOTPEntry == null) {
@@ -88,7 +88,7 @@ public class EmailOTPEntryLocalServiceImpl
 	}
 
 	public void updateAttempts(long userId, String userIP, boolean success) {
-		EmailOTPEntry emailOTPEntry =
+		MFAEmailOTPEntry emailOTPEntry =
 			emailOTPEntryLocalService.fetchEntryByUserId(userId);
 
 		if (emailOTPEntry == null) {
@@ -117,6 +117,6 @@ public class EmailOTPEntryLocalServiceImpl
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		EmailOTPEntryLocalServiceImpl.class);
+		MFAEmailOTPEntryLocalServiceImpl.class);
 
 }
