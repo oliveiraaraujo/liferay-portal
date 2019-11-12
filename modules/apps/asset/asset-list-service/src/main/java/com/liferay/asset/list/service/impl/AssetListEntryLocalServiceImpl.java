@@ -320,7 +320,7 @@ public class AssetListEntryLocalServiceImpl
 
 		assetListEntryPersistence.update(assetListEntry);
 
-		// Asset list segments entry rel
+		// Asset list entry asset entry rel
 
 		_assetListEntryAssetEntryRelLocalService.
 			moveAssetListEntryAssetEntryRel(
@@ -342,7 +342,7 @@ public class AssetListEntryLocalServiceImpl
 
 		assetListEntryPersistence.update(assetListEntry);
 
-		// Asset list segments entry rel
+		// Asset list entry segments entry rel
 
 		AssetListEntrySegmentsEntryRel assetListEntrySegmentsEntryRel =
 			_assetListEntrySegmentsEntryRelLocalService.
