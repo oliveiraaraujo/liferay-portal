@@ -15,6 +15,7 @@
 package com.liferay.multi.factor.authentication.checker.email.otp.service.impl;
 
 import com.liferay.multi.factor.authentication.checker.email.otp.exception.DuplicateMFAEmailOTPEntryException;
+import com.liferay.multi.factor.authentication.checker.email.otp.exception.NoSuchEntryException;
 import com.liferay.multi.factor.authentication.checker.email.otp.model.MFAEmailOTPEntry;
 import com.liferay.multi.factor.authentication.checker.email.otp.service.base.MFAEmailOTPEntryLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
@@ -67,17 +68,12 @@ public class MFAEmailOTPEntryLocalServiceImpl
 		return mfaEmailOTPEntryPersistence.fetchByUserId(userId);
 	}
 
-	public void resetFailedAttempts(long userId) {
+	public void resetFailedAttempts(long userId) throws PortalException {
 		MFAEmailOTPEntry mfaEmailOTPEntry =
 			mfaEmailOTPEntryPersistence.fetchByUserId(userId);
 
 		if (mfaEmailOTPEntry == null) {
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					"Reset failed attempts on non existent user: " + userId);
-			}
-
-			return;
+			throw new NoSuchEntryException("User ID " + userId);
 		}
 
 		mfaEmailOTPEntry.setFailedAttempts(0);
@@ -87,16 +83,12 @@ public class MFAEmailOTPEntryLocalServiceImpl
 		mfaEmailOTPEntryPersistence.update(mfaEmailOTPEntry);
 	}
 
-	public void updateAttempts(long userId, String userIP, boolean success) {
+	public void updateAttempts(long userId, String userIP, boolean success) throws PortalException {
 		MFAEmailOTPEntry mfaEmailOTPEntry =
 			mfaEmailOTPEntryPersistence.fetchByUserId(userId);
 
 		if (mfaEmailOTPEntry == null) {
-			if (_log.isInfoEnabled()) {
-				_log.info("Update attempts on non existent user: " + userId);
-			}
-
-			return;
+			throw new NoSuchEntryException("User ID " + userId);
 		}
 
 		if (success) {
