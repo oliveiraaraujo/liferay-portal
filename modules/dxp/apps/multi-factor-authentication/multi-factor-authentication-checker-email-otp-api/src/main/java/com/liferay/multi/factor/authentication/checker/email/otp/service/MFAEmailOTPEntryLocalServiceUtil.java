@@ -290,17 +290,21 @@ public class MFAEmailOTPEntryLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static void resetFailedAttempts(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static
+		com.liferay.multi.factor.authentication.checker.email.otp.model.
+			MFAEmailOTPEntry resetFailedAttempts(long userId)
+				throws com.liferay.portal.kernel.exception.PortalException {
 
-		getService().resetFailedAttempts(userId);
+		return getService().resetFailedAttempts(userId);
 	}
 
-	public static void updateFailedAttempts(
-			long userId, String userIP, boolean success)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static
+		com.liferay.multi.factor.authentication.checker.email.otp.model.
+			MFAEmailOTPEntry updateFailedAttempts(
+					long userId, String ip, boolean success)
+				throws com.liferay.portal.kernel.exception.PortalException {
 
-		getService().updateFailedAttempts(userId, userIP, success);
+		return getService().updateFailedAttempts(userId, ip, success);
 	}
 
 	/**

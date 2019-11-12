@@ -233,10 +233,11 @@ public interface MFAEmailOTPEntryLocalService
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
-	public void resetFailedAttempts(long userId) throws PortalException;
+	public MFAEmailOTPEntry resetFailedAttempts(long userId)
+		throws PortalException;
 
-	public void updateFailedAttempts(
-			long userId, String userIP, boolean success)
+	public MFAEmailOTPEntry updateFailedAttempts(
+			long userId, String ip, boolean success)
 		throws PortalException;
 
 	/**
