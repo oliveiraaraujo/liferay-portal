@@ -63,7 +63,7 @@ public class MFAEmailOTPEntryLocalServiceImpl
 		return mfaEmailOTPEntry;
 	}
 
-	public MFAEmailOTPEntry fetchEntryByUserId(long userId) {
+	public MFAEmailOTPEntry fetchMFAEmailOTPEntryByUserId(long userId) {
 		return mfaEmailOTPEntryPersistence.fetchByUserId(userId);
 	}
 
