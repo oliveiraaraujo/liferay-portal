@@ -21,6 +21,8 @@
 
 	<#include "ddl.ftl">
 
+	<#include "fragment.ftl">
+
 	<#include "journal_article.ftl">
 
 	<#include "mb.ftl">
@@ -28,8 +30,6 @@
 	<#include "users.ftl">
 
 	<#include "wiki.ftl">
-
-	<#include "fragment.ftl">
 
 	<@insertDLFolder
 		_ddmStructureId=dataFactory.defaultDLDDMStructureId
