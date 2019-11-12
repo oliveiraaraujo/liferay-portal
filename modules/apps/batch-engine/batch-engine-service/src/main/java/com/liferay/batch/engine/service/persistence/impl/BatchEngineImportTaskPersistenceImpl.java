@@ -1897,7 +1897,8 @@ public class BatchEngineImportTaskPersistenceImpl
 
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
-				entityCacheEnabled, BatchEngineTaskImpl.class, primaryKey);
+				entityCacheEnabled, BatchEngineImportTaskImpl.class,
+				primaryKey);
 		}
 	}
 
