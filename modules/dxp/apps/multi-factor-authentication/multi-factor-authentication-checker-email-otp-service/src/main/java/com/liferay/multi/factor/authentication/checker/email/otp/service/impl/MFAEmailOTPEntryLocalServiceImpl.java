@@ -20,8 +20,6 @@ import com.liferay.multi.factor.authentication.checker.email.otp.model.MFAEmailO
 import com.liferay.multi.factor.authentication.checker.email.otp.service.base.MFAEmailOTPEntryLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 
 import java.util.Date;
@@ -30,7 +28,6 @@ import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Arthur Chan
- * @see MFAEmailOTPEntryLocalServiceBaseImpl
  */
 @Component(
 	property = "model.class.name=com.liferay.multi.factor.authentication.checker.email.otp.model.MFAEmailOTPEntry",
@@ -39,7 +36,9 @@ import org.osgi.service.component.annotations.Component;
 public class MFAEmailOTPEntryLocalServiceImpl
 	extends MFAEmailOTPEntryLocalServiceBaseImpl {
 
-	public MFAEmailOTPEntry addMFAEmailOTPEntry(long userId) throws PortalException {
+	public MFAEmailOTPEntry addMFAEmailOTPEntry(long userId)
+		throws PortalException {
+
 		MFAEmailOTPEntry mfaEmailOTPEntry =
 			mfaEmailOTPEntryPersistence.fetchByUserId(userId);
 
@@ -66,7 +65,9 @@ public class MFAEmailOTPEntryLocalServiceImpl
 		return mfaEmailOTPEntryPersistence.fetchByUserId(userId);
 	}
 
-	public MFAEmailOTPEntry resetFailedAttempts(long userId) throws PortalException {
+	public MFAEmailOTPEntry resetFailedAttempts(long userId)
+		throws PortalException {
+
 		MFAEmailOTPEntry mfaEmailOTPEntry =
 			mfaEmailOTPEntryPersistence.fetchByUserId(userId);
 
@@ -81,7 +82,10 @@ public class MFAEmailOTPEntryLocalServiceImpl
 		return mfaEmailOTPEntryPersistence.update(mfaEmailOTPEntry);
 	}
 
-	public MFAEmailOTPEntry updateFailedAttempts(long userId, String ip, boolean success) throws PortalException {
+	public MFAEmailOTPEntry updateFailedAttempts(
+			long userId, String ip, boolean success)
+		throws PortalException {
+
 		MFAEmailOTPEntry mfaEmailOTPEntry =
 			mfaEmailOTPEntryPersistence.fetchByUserId(userId);
 
@@ -105,8 +109,5 @@ public class MFAEmailOTPEntryLocalServiceImpl
 
 		return mfaEmailOTPEntryPersistence.update(mfaEmailOTPEntry);
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		MFAEmailOTPEntryLocalServiceImpl.class);
 
 }
