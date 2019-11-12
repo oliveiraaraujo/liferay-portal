@@ -86,14 +86,6 @@ public class FragmentEntryLinkStagedModelDataHandler
 		Element fragmentEntryLinkElement =
 			portletDataContext.getExportDataElement(fragmentEntryLink);
 
-		String editableValues =
-			_fragmentEntryLinkExportImportContentProcessor.
-				replaceExportContentReferences(
-					portletDataContext, fragmentEntryLink,
-					fragmentEntryLink.getEditableValues(), true, false);
-
-		fragmentEntryLink.setEditableValues(editableValues);
-
 		String html =
 			_dlReferencesExportImportContentProcessor.
 				replaceExportContentReferences(
@@ -101,6 +93,14 @@ public class FragmentEntryLinkStagedModelDataHandler
 					fragmentEntryLink.getHtml(), true, false);
 
 		fragmentEntryLink.setHtml(html);
+
+		String editableValues =
+			_fragmentEntryLinkExportImportContentProcessor.
+				replaceExportContentReferences(
+					portletDataContext, fragmentEntryLink,
+					fragmentEntryLink.getEditableValues(), true, false);
+
+		fragmentEntryLink.setEditableValues(editableValues);
 
 		portletDataContext.addClassedModel(
 			fragmentEntryLinkElement,
@@ -190,14 +190,6 @@ public class FragmentEntryLinkStagedModelDataHandler
 		importedFragmentEntryLink.setFragmentEntryId(fragmentEntryId);
 		importedFragmentEntryLink.setClassPK(referenceClassPK);
 
-		String editableValues =
-			_fragmentEntryLinkExportImportContentProcessor.
-				replaceImportContentReferences(
-					portletDataContext, fragmentEntryLink,
-					fragmentEntryLink.getEditableValues());
-
-		importedFragmentEntryLink.setEditableValues(editableValues);
-
 		String html =
 			_dlReferencesExportImportContentProcessor.
 				replaceImportContentReferences(
@@ -205,6 +197,14 @@ public class FragmentEntryLinkStagedModelDataHandler
 					fragmentEntryLink.getHtml());
 
 		importedFragmentEntryLink.setHtml(html);
+
+		String editableValues =
+			_fragmentEntryLinkExportImportContentProcessor.
+				replaceImportContentReferences(
+					portletDataContext, fragmentEntryLink,
+					fragmentEntryLink.getEditableValues());
+
+		importedFragmentEntryLink.setEditableValues(editableValues);
 
 		FragmentEntryLink existingFragmentEntryLink =
 			_stagedModelRepository.fetchStagedModelByUuidAndGroupId(
