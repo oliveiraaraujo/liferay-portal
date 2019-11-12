@@ -83,10 +83,7 @@ describe('SegmentsExperimentsSidebar', () => {
 		expect(defaultExperience).not.toBe(null);
 
 		getByText(segmentsExperiment.name);
-
-		const createTestHelpMessage = getByText('review-and-run-test');
-		expect(createTestHelpMessage).toHaveAttribute('disabled');
-
+		getByText('review-and-run-test');
 		getByText('edit');
 	});
 
@@ -229,10 +226,9 @@ describe('Review and Run test', () => {
 
 		getByText(segmentsExperiment.name);
 
-		const createTestHelpMessage = getByText('review-and-run-test');
-		expect(createTestHelpMessage).not.toHaveAttribute('disabled');
+		const reviewAndRunTestButton = getByText('review-and-run-test');
 
-		userEvent.click(createTestHelpMessage);
+		userEvent.click(reviewAndRunTestButton);
 
 		await waitForElement(() => getByText('traffic-split'));
 
@@ -260,9 +256,9 @@ describe('Review and Run test', () => {
 		 */
 		expect(actionButtons.length).toBe(2);
 
-		const runTestButton = getByText('review-and-run-test');
+		const reviewAndRunTestButton = getByText('review-and-run-test');
 
-		userEvent.click(runTestButton);
+		userEvent.click(reviewAndRunTestButton);
 
 		await waitForElement(() => getByText('traffic-split'));
 
