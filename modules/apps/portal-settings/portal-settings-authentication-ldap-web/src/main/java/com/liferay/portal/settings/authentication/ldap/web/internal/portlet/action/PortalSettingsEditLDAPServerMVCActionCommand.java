@@ -221,13 +221,7 @@ public class PortalSettingsEditLDAPServerMVCActionCommand
 		}
 
 		for (Map.Entry<String, String> entry : properties.entrySet()) {
-			String value = entry.getValue();
-
-			if (value.equals(Portal.TEMP_OBFUSCATION_VALUE)) {
-				continue;
-			}
-
-			dictionary.put(entry.getKey(), value);
+			dictionary.put(entry.getKey(), entry.getValue());
 		}
 
 		_splitStringArrays(dictionary, LDAPConstants.CONTACT_CUSTOM_MAPPINGS);
