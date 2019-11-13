@@ -60,6 +60,9 @@ export function reducer(state, action) {
 				)
 			};
 
+		case 'EDIT_EXPERIMENT':
+			return _editExperiment(state, action.payload);
+
 		case 'EDIT_EXPERIMENT_FINISH':
 			return {
 				...state,
@@ -87,6 +90,9 @@ export function reducer(state, action) {
 
 		case 'REVIEW_VARIANTS':
 			return _reviewVariants(state);
+
+		case 'UPDATE_SEGMENTS_EXPERIMENT_TARGET':
+			return _editExperiment(state, action.payload);
 
 		case 'UPDATE_EXPERIMENT_STATUS':
 			return _updateExperimentStatus(state, action.payload);
@@ -139,6 +145,13 @@ function _createExperimentStart(state, experimentModalState = {}) {
 				? segmentsExperienceId
 				: selectedExperienceId
 		}
+	};
+}
+
+function _editExperiment(state, updatedValues) {
+	return {
+		...state,
+		experiment: {...state.experiment, ...updatedValues}
 	};
 }
 

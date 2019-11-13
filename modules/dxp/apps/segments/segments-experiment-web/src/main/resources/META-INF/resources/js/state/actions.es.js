@@ -43,6 +43,11 @@ export const deleteArchivedExperiment = experimentId => ({
 	type: 'DELETE_ARCHIVED_EXPERIMENT'
 });
 
+export const editSegmentsExperiment = payload => ({
+	payload,
+	type: 'EDIT_EXPERIMENT'
+});
+
 export const openCreationModal = payload => ({
 	payload,
 	type: 'CREATE_EXPERIMENT_START'
@@ -63,6 +68,11 @@ export const reviewVariants = () => ({
 
 export const reviewClickTargetElement = () => ({
 	type: 'REVIEW_CLICK_TARGET_ELEMENT'
+});
+
+export const updateSegmentsExperimentTarget = payload => ({
+	payload,
+	type: 'UPDATE_SEGMENTS_EXPERIMENT_TARGET'
 });
 
 export const updateSegmentsExperimentStatus = payload => ({
