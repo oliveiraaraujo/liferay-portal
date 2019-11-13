@@ -236,7 +236,7 @@ public interface MFAEmailOTPEntryLocalService
 	public MFAEmailOTPEntry resetFailedAttempts(long userId)
 		throws PortalException;
 
-	public MFAEmailOTPEntry updateFailedAttempts(
+	public MFAEmailOTPEntry updateAttempts(
 			long userId, String ip, boolean success)
 		throws PortalException;
 

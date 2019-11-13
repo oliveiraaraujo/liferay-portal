@@ -315,11 +315,10 @@ public class MFAEmailOTPEntryLocalServiceWrapper
 
 	@Override
 	public com.liferay.multi.factor.authentication.checker.email.otp.model.
-		MFAEmailOTPEntry updateFailedAttempts(
-				long userId, String ip, boolean success)
+		MFAEmailOTPEntry updateAttempts(long userId, String ip, boolean success)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _mfaEmailOTPEntryLocalService.updateFailedAttempts(
+		return _mfaEmailOTPEntryLocalService.updateAttempts(
 			userId, ip, success);
 	}
 

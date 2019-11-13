@@ -300,11 +300,11 @@ public class MFAEmailOTPEntryLocalServiceUtil {
 
 	public static
 		com.liferay.multi.factor.authentication.checker.email.otp.model.
-			MFAEmailOTPEntry updateFailedAttempts(
+			MFAEmailOTPEntry updateAttempts(
 					long userId, String ip, boolean success)
 				throws com.liferay.portal.kernel.exception.PortalException {
 
-		return getService().updateFailedAttempts(userId, ip, success);
+		return getService().updateAttempts(userId, ip, success);
 	}
 
 	/**
