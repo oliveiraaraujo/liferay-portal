@@ -564,7 +564,7 @@ public class LDAPAuth implements Authenticator {
 
 		if (Validator.isNull(ldapServerConfiguration.baseProviderURL())) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("BaseProviderURL is not set");
+				_log.debug("Base provider URL is not set");
 			}
 
 			return DNE;
@@ -574,9 +574,9 @@ public class LDAPAuth implements Authenticator {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					StringBundler.concat(
-						"LDAP server id ", ldapServerId,
-						" is no longer valid, company ", companyId,
-						" now uses ", ldapServerConfiguration.ldapServerId()));
+						"LDAP server ", ldapServerId,
+						" is invalid because company ", companyId,
+						" uses ", ldapServerConfiguration.ldapServerId()));
 			}
 
 			return DNE;
