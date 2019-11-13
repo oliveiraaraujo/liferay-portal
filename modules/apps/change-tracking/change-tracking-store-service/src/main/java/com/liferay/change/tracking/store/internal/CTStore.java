@@ -387,7 +387,8 @@ public class CTStore implements Store {
 		}
 		catch (Exception e) {
 			throw new SystemException(
-				"Unable to reload CTSContent for deletion", e);
+				"Unable to reload change tracking store content for deletion",
+				e);
 		}
 	}
 
