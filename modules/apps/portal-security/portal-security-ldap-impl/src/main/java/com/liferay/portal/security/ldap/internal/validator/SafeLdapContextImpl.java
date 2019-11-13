@@ -598,7 +598,7 @@ public class SafeLdapContextImpl implements SafeLdapContext {
 
 	@Override
 	public String toString() {
-		return "SafeLdapContextImpl{_ldapContext=" + _ldapContext + '}';
+		return "{_ldapContext=" + _ldapContext + '}';
 	}
 
 	@Override
