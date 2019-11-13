@@ -521,8 +521,8 @@ public class SafePortalLDAPImpl implements SafePortalLDAP {
 			Properties userMappings = _ldapSettings.getUserMappings(
 				ldapServerId, companyId);
 
-			String login;
-			String loginMapping;
+			String login = null;
+			String loginMapping = null;
 
 			if (authType.equals(CompanyConstants.AUTH_TYPE_SN) &&
 				!PrefsPropsUtil.getBoolean(
