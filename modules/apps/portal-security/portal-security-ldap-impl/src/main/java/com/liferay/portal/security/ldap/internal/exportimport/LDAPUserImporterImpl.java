@@ -165,9 +165,9 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					StringBundler.concat(
-						"LDAP server id ", ldapServerId,
-						" is no longer valid, company ", companyId,
-						" now uses ", ldapServerConfiguration.ldapServerId()));
+						"LDAP server ", ldapServerId,
+						" is invalid because company ", companyId,
+						" uses ", ldapServerConfiguration.ldapServerId()));
 			}
 
 			return null;
