@@ -216,15 +216,13 @@ public class LDAPUtil {
 			LDAPFilterValidator ldapFilterValidator)
 		throws LDAPFilterException {
 
-		String filter = ldapServerConfiguration.authSearchFilter();
-
-		if (filter == null) {
+		if (ldapServerConfiguration.authSearchFilter() == null) {
 			return null;
 		}
 
 		try {
 			return new SafeLdapFilterTemplate(
-				filter,
+				ldapServerConfiguration.authSearchFilter(),
 				new String[] {
 					"@company_id@", "@email_address@", "@screen_name@",
 					"@user_id@"
@@ -264,15 +262,14 @@ public class LDAPUtil {
 			LDAPFilterValidator ldapFilterValidator)
 		throws LDAPFilterException {
 
-		String filter = ldapServerConfiguration.groupSearchFilter();
-
-		if (filter == null) {
+		if (ldapServerConfiguration.groupSearchFilter() == null) {
 			return null;
 		}
 
 		try {
 			return SafeLdapFilterFactory.fromUnsafeFilter(
-				filter, ldapFilterValidator);
+				ldapServerConfiguration.groupSearchFilter(),
+				ldapFilterValidator);
 		}
 		catch (LDAPFilterException ldapfe) {
 			throw new LDAPFilterException(
@@ -296,15 +293,14 @@ public class LDAPUtil {
 			LDAPFilterValidator ldapFilterValidator)
 		throws LDAPFilterException {
 
-		String filter = ldapServerConfiguration.userSearchFilter();
-
-		if (filter == null) {
+		if (ldapServerConfiguration.userSearchFilter() == null) {
 			return null;
 		}
 
 		try {
 			return SafeLdapFilterFactory.fromUnsafeFilter(
-				filter, ldapFilterValidator);
+				ldapServerConfiguration.userSearchFilter(),
+				ldapFilterValidator);
 		}
 		catch (LDAPFilterException ldapfe) {
 			throw new LDAPFilterException(
