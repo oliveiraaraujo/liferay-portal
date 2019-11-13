@@ -179,9 +179,9 @@ public class DefaultPortalToLDAPConverter implements PortalToLDAPConverter {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					StringBundler.concat(
-						"LDAP server id ", ldapServerId,
-						" is no longer valid, company ",
-						userGroup.getCompanyId(), " now uses ",
+						"LDAP server ", ldapServerId,
+						" is invalid because company ",
+						userGroup.getCompanyId(), " uses ",
 						ldapServerConfiguration.ldapServerId()));
 			}
 
@@ -265,9 +265,9 @@ public class DefaultPortalToLDAPConverter implements PortalToLDAPConverter {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					StringBundler.concat(
-						"LDAP server id ", ldapServerId,
-						" is no longer valid, company ", user.getCompanyId(),
-						" now uses ", ldapServerConfiguration.ldapServerId()));
+						"LDAP server ", ldapServerId,
+						" is invalid because company ", user.getCompanyId(),
+						" uses ", ldapServerConfiguration.ldapServerId()));
 			}
 
 			return null;
