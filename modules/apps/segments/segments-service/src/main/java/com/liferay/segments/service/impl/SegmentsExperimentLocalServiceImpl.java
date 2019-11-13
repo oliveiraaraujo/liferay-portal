@@ -596,7 +596,7 @@ public class SegmentsExperimentLocalServiceImpl
 		if (segmentsExperienceIdSplitMap.size() <= 1) {
 			throw new RunSegmentsExperimentException(
 				"Segments experiment rels must be more than 1 to test " +
-					"against Control");
+					"against control");
 		}
 	}
 
