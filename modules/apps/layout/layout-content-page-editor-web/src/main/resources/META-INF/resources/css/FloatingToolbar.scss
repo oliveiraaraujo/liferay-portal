@@ -69,7 +69,11 @@
 		}
 
 		.floating-toolbar-mapping-panel__asset-select {
-			margin-bottom: $fragmentsEditorSpacing;
+			.d-flex {
+				height: 32px;
+			}
+
+			margin-bottom: 16px;
 		}
 
 		.palette-container {
