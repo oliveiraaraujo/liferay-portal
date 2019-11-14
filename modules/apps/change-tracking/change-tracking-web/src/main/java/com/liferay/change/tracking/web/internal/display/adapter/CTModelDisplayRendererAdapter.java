@@ -61,7 +61,7 @@ public class CTModelDisplayRendererAdapter<T extends CTModel<T>>
 
 		Writer writer = httpServletResponse.getWriter();
 
-		writer.write("<div class='table-responsive'><table class='table'>");
+		writer.write("<div class=\"table-responsive\"><table class=\"table\">");
 
 		Map<String, Function<T, Object>> attributeGetterFunctions =
 			ctModel.getAttributeGetterFunctions();
