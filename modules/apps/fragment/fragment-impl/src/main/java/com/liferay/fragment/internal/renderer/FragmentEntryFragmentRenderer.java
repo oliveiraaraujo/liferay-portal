@@ -228,15 +228,22 @@ public class FragmentEntryFragmentRenderer implements FragmentRenderer {
 				httpServletResponse);
 		}
 
-		JSONObject configurationJSONObject =
-			FragmentEntryConfigUtil.getConfigurationJSONObject(
-				fragmentEntryLink.getConfiguration(),
-				fragmentEntryLink.getEditableValues(),
-				fragmentRendererContext.getSegmentsExperienceIds());
+		String configuration =
+			StringPool.OPEN_CURLY_BRACE + StringPool.CLOSE_CURLY_BRACE;
+
+		if (Validator.isNotNull(fragmentEntryLink.getConfiguration())) {
+			JSONObject configurationJSONObject =
+				FragmentEntryConfigUtil.getConfigurationJSONObject(
+					fragmentEntryLink.getConfiguration(),
+					fragmentEntryLink.getEditableValues(),
+					fragmentRendererContext.getSegmentsExperienceIds());
+
+			configuration = configurationJSONObject.toString();
+		}
 
 		return _renderFragmentEntry(
 			fragmentEntryLink.getFragmentEntryId(), css, html,
-			fragmentEntryLink.getJs(), configurationJSONObject.toString(),
+			fragmentEntryLink.getJs(), configuration,
 			fragmentEntryLink.getNamespace(), httpServletRequest);
 	}
 
