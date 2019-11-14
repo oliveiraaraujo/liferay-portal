@@ -189,6 +189,10 @@ public class ContentPageEditorDisplayContext {
 	}
 
 	public SoyContext getEditorSoyContext() throws Exception {
+		if (_editorSoyContext != null) {
+			return _editorSoyContext;
+		}
+
 		SoyContext soyContext = SoyContextFactoryUtil.createSoyContext();
 
 		soyContext.put(
@@ -315,7 +319,9 @@ public class ContentPageEditorDisplayContext {
 			"widgets", _getWidgetsSoyContexts()
 		);
 
-		return soyContext;
+		_editorSoyContext = soyContext;
+
+		return _editorSoyContext;
 	}
 
 	public String getEditorType() {
@@ -1433,6 +1439,7 @@ public class ContentPageEditorDisplayContext {
 	private final ContentPageEditorTypeConfiguration
 		_contentPageEditorTypeConfiguration;
 	private Map<String, Object> _defaultConfigurations;
+	private SoyContext _editorSoyContext;
 	private final FragmentCollectionContributorTracker
 		_fragmentCollectionContributorTracker;
 	private final FragmentRendererController _fragmentRendererController;
