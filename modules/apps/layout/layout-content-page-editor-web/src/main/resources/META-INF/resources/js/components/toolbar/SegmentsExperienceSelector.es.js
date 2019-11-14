@@ -28,9 +28,9 @@ import {STATUS_DRAFT} from '../../utils/ExperimentsStatus.es';
 import {setIn} from '../../utils/FragmentsEditorUpdateUtils.es';
 import templates from './SegmentsExperienceSelector.soy';
 
-import './ExperimentsLabel.es';
-
 import './segmentsExperiences/modal.es';
+
+import './segmentsExperiences/ExperienceItem.es';
 
 import 'clay-alert';
 
@@ -163,58 +163,88 @@ function comparePriority(obj1, obj2) {
  */
 class SegmentsExperienceSelector extends Component {
 	/**
-	 * Transforms `availableSegmentsEntries` and `availableSegmentsExperiences` objects into arrays
-	 * Adds `activeSegmentsExperienceName` to the component state
-	 * @inheritDoc
+	 * Propagates any changes in `segmentsExperienceId` prop to dependent state properties
+	 * @inheritdoc
+	 *
 	 * @review
 	 */
-	prepareStateForRender(state) {
-		const availableSegmentsExperiencesList = Object.values(
-			state.availableSegmentsExperiences || []
-		)
-			.sort(comparePriority)
-			.map(experience => {
-				const segmentEntry =
-					state.availableSegmentsEntries[experience.segmentsEntryId];
-				const name = segmentEntry && segmentEntry.name;
+	syncSegmentsExperienceId(experienceId) {
+		if (experienceId) {
+			const activeExperience = this.availableSegmentsExperiences[
+				experienceId
+			];
 
-				const updatedExperience = setIn(
-					experience,
-					['segmentsEntryName'],
-					name
-				);
-
-				return updatedExperience;
+			this.setState({
+				activeSegmentsExperienceName: activeExperience.name,
+				lockedActiveSegmentsExperience:
+					activeExperience.hasLockedSegmentsExperiment
 			});
+		}
+	}
 
-		const selectedSegmentsExperienceId =
-			state.segmentsExperienceId || state.defaultSegmentsExperienceId;
-
-		const activeExperience = availableSegmentsExperiencesList.find(
-			experience =>
-				experience.segmentsExperienceId === selectedSegmentsExperienceId
-		);
-
+	/**
+	 * Propagates any changes in `segmentsExperienceId` prop to dependent state properties
+	 *
+	 * @inheritdoc
+	 * @review
+	 */
+	syncAvailableSegmentsEntries(segments) {
 		const availableSegmentsEntriesList = Object.values(
-			state.availableSegmentsEntries || []
+			segments || []
 		).filter(
-			segment => segment.segmentsEntryId !== state.defaultSegmentsEntryId
+			segment => segment.segmentsEntryId !== this.defaultSegmentsEntryId
 		);
 
-		const innerState = {
-			...state,
-			activeSegmentsExperienceName:
-				activeExperience && activeExperience.name,
-			availableSegmentsEntriesList,
-			availableSegmentsExperiencesList,
-			classPK: state.classPK,
-			lockedActiveSegmentsExperience:
-				activeExperience &&
-				activeExperience.hasLockedSegmentsExperiment,
-			segmentsExperienceId: selectedSegmentsExperienceId
-		};
+		this.setState({
+			availableSegmentsEntriesList
+		});
+	}
 
-		return innerState;
+	/**
+	 * Propagates any change in `availableSegmentsExperiences` to its array version
+	 * and any dependent state properties
+	 *
+	 * @inheritdoc
+	 * @review
+	 */
+	syncAvailableSegmentsExperiences(experiences) {
+		const experiencesList = Object.values(experiences || []);
+
+		if (experiencesList.length) {
+			const availableSegmentsExperiencesList = experiencesList
+				.sort(comparePriority)
+				.map(experience => {
+					const segmentEntry = this.availableSegmentsEntries[
+						experience.segmentsEntryId
+					];
+					const name = segmentEntry && segmentEntry.name;
+
+					const updatedExperience = setIn(
+						experience,
+						['segmentsEntryName'],
+						name
+					);
+
+					return updatedExperience;
+				});
+
+			const activeExperience = experiences[this.segmentsExperienceId];
+
+			if (activeExperience) {
+				this.setState({
+					activeSegmentsExperienceName:
+						activeExperience && activeExperience.name,
+					availableSegmentsExperiencesList,
+					lockedActiveSegmentsExperience:
+						activeExperience &&
+						activeExperience.hasLockedSegmentsExperiment
+				});
+			} else {
+				this.setState({
+					availableSegmentsExperiencesList
+				});
+			}
+		}
 	}
 
 	/**
@@ -432,17 +462,13 @@ class SegmentsExperienceSelector extends Component {
 	 * @review
 	 * @private
 	 */
-	_handleDeleteButtonClick(event) {
+	_handleDeleteButtonClick(experienceId) {
 		this._experiencesErrorHandler({
 			deletion: false
 		});
 
-		const segmentsExperienceId = event.currentTarget.getAttribute(
-			'data-segmentsExperienceId'
-		);
-
 		const experienceToDelete = this.availableSegmentsExperiences[
-			segmentsExperienceId
+			experienceId
 		];
 
 		const experienceHasRunningExperiment =
@@ -458,7 +484,7 @@ class SegmentsExperienceSelector extends Component {
 		const confirmed = confirm(confirmationMessage);
 
 		if (confirmed) {
-			this._deleteSegmentsExperience(segmentsExperienceId);
+			this._deleteSegmentsExperience(experienceId);
 		}
 	}
 
@@ -503,15 +529,7 @@ class SegmentsExperienceSelector extends Component {
 	 * @private
 	 * @review
 	 */
-	_handleEditButtonClick(event) {
-		const name = event.currentTarget.getAttribute('data-name');
-		const segmentsEntryId = event.currentTarget.getAttribute(
-			'data-segmentsEntryId'
-		);
-		const segmentsExperienceId = event.currentTarget.getAttribute(
-			'data-segmentsExperienceId'
-		);
-
+	_handleEditButtonClick({name, segmentsEntryId, segmentsExperienceId}) {
 		this._openEditModal({
 			name,
 			segmentsEntryId,
@@ -550,10 +568,8 @@ class SegmentsExperienceSelector extends Component {
 	 * @private
 	 * @review
 	 */
-	_handleSegmentsExperienceClick(event) {
-		const segmentsExperienceId =
-			event.delegateTarget.dataset.segmentsExperienceId;
-		this._selectSegmentsExperience(segmentsExperienceId);
+	_handleSegmentsExperienceClick(experienceId) {
+		this._selectSegmentsExperience(experienceId);
 	}
 
 	/**
@@ -562,11 +578,7 @@ class SegmentsExperienceSelector extends Component {
 	 * @param {Event} event
 	 * @review
 	 */
-	_handleSegmentsExperimentNavigation(event) {
-		event.preventDefault();
-
-		const url = event.delegateTarget.href;
-
+	_handleSegmentsExperimentNavigation(url) {
 		Liferay.Util.Session.set(
 			'com.liferay.segments.experiment.web_panelState',
 			'open'
@@ -595,27 +607,20 @@ class SegmentsExperienceSelector extends Component {
 	 * @memberof SegmentsExperienceSelector
 	 * @review
 	 */
-	_handleMoveExperienceUpButtonClick(event) {
-		const priority = event.currentTarget.getAttribute('data-priority');
-		const segmentsExperienceId = event.currentTarget.getAttribute(
-			'data-segmentsExperienceId'
-		);
-
-		const buttonPriorityUp = this.refs[
-			`buttonPriorityUp${segmentsExperienceId}`
-		];
-		const selectExperienceBtnRef = this.refs[
-			`selectExperienceButton${segmentsExperienceId}`
-		];
-
+	_handleMoveExperienceUpButtonClick({
+		priority,
+		priorityButton,
+		segmentsExperienceId,
+		selectExperienceBtn
+	}) {
 		this._updatePriority({
-			focusFallbackElement: selectExperienceBtnRef,
+			focusFallbackElement: selectExperienceBtn,
 			payload: {
 				direction: 'up',
 				priority,
 				segmentsExperienceId
 			},
-			priorityButton: buttonPriorityUp.element
+			priorityButton
 		});
 	}
 
@@ -625,27 +630,20 @@ class SegmentsExperienceSelector extends Component {
 	 * @memberof SegmentsExperienceSelector
 	 * @review
 	 */
-	_handleMoveExperienceDownButtonClick(event) {
-		const priority = event.currentTarget.getAttribute('data-priority');
-		const segmentsExperienceId = event.currentTarget.getAttribute(
-			'data-segmentsExperienceId'
-		);
-
-		const buttonPriorityDown = this.refs[
-			`buttonPriorityDown${segmentsExperienceId}`
-		];
-		const selectExperienceBtnRef = this.refs[
-			`selectExperienceButton${segmentsExperienceId}`
-		];
-
+	_handleMoveExperienceDownButtonClick({
+		priority,
+		priorityButton,
+		segmentsExperienceId,
+		selectExperienceBtn
+	}) {
 		this._updatePriority({
-			focusFallbackElement: selectExperienceBtnRef,
+			focusFallbackElement: selectExperienceBtn,
 			payload: {
 				direction: 'down',
 				priority,
 				segmentsExperienceId
 			},
-			priorityButton: buttonPriorityDown.element
+			priorityButton
 		});
 	}
 
@@ -805,9 +803,29 @@ class SegmentsExperienceSelector extends Component {
 
 SegmentsExperienceSelector.STATE = {
 	/**
+	 * Name of the selected experience
+	 */
+	activeSegmentsExperienceName: Config.internal().string(),
+
+	/**
+	 * List of segments, mapped from `availableSegmentsEntriesList` prop
+	 */
+	availableSegmentsEntriesList: Config.internal().array(),
+
+	/**
+	 * List of experiences, mapped from `availableSegmentsExperiences` prop
+	 */
+	availableSegmentsExperiencesList: Config.internal().array(),
+
+	/**
 	 * Url to redirect the user when clicking new experience
 	 */
 	editSegmentsEntryURL: Config.string(),
+
+	/**
+	 * Whether or not the selected experience is locked
+	 */
+	lockedActiveSegmentsExperience: Config.internal().bool(),
 
 	/**
 	 * Contains the state of Experience edition and creation
@@ -831,6 +849,7 @@ const ConnectedSegmentsExperienceSelector = getConnectedComponent(
 	SegmentsExperienceSelector,
 	[
 		'availableSegmentsExperiences',
+		'availableSegmentsEntries',
 		'classPK',
 		'defaultSegmentsEntryId',
 		'hasUpdatePermissions',
