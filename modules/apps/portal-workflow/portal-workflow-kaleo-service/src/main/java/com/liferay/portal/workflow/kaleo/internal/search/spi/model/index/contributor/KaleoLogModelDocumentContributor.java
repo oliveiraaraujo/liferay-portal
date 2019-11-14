@@ -36,7 +36,6 @@ public class KaleoLogModelDocumentContributor
 	public void contribute(Document document, KaleoLog kaleoLog) {
 		document.addDateSortable(
 			Field.MODIFIED_DATE, kaleoLog.getModifiedDate());
-
 		document.addKeyword("comment", kaleoLog.getComment());
 		document.addKeyword(
 			"currentAssigneeClassName", kaleoLog.getCurrentAssigneeClassName());
