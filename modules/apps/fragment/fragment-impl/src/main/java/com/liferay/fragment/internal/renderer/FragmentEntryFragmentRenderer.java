@@ -205,13 +205,19 @@ public class FragmentEntryFragmentRenderer implements FragmentRenderer {
 		defaultFragmentEntryProcessorContext.setSegmentsExperienceIds(
 			fragmentRendererContext.getSegmentsExperienceIds());
 
-		String css =
-			_fragmentEntryProcessorRegistry.processFragmentEntryLinkCSS(
-				fragmentEntryLink, defaultFragmentEntryProcessorContext);
+		String css = StringPool.BLANK;
 
-		String html =
-			_fragmentEntryProcessorRegistry.processFragmentEntryLinkHTML(
+		if (Validator.isNotNull(fragmentEntryLink.getCss())) {
+			css = _fragmentEntryProcessorRegistry.processFragmentEntryLinkCSS(
 				fragmentEntryLink, defaultFragmentEntryProcessorContext);
+		}
+
+		String html = StringPool.BLANK;
+
+		if (Validator.isNotNull(fragmentEntryLink.getHtml())) {
+			html = _fragmentEntryProcessorRegistry.processFragmentEntryLinkHTML(
+				fragmentEntryLink, defaultFragmentEntryProcessorContext);
+		}
 
 		if (Objects.equals(
 				defaultFragmentEntryProcessorContext.getMode(),
