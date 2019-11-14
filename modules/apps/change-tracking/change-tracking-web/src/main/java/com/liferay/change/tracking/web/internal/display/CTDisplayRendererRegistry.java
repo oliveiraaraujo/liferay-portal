@@ -241,7 +241,6 @@ public class CTDisplayRendererRegistry {
 			_bundleContext = bundleContext;
 		}
 
-		@SuppressWarnings("unchecked")
 		private <T extends CTModel<T>> ServiceRegistration _registerService(
 			AssetRendererFactory<?> assetRendererFactory, Class<?> clazz) {
 
