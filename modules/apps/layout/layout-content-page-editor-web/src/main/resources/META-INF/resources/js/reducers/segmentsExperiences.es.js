@@ -594,53 +594,59 @@ function updateSegmentsExperiencePriorityReducer(state, action) {
 		const {direction, priority: oldPriority, segmentsExperienceId} = action;
 		let nextState = state;
 
-		const priority =
+		const {availableSegmentsExperiences} = nextState;
+
+		const priorityForSubtarget =
 			typeof oldPriority === 'number'
 				? oldPriority
 				: parseInt(oldPriority, 10);
 
-		const newPriority = direction === 'up' ? priority + 1 : priority - 1;
+		const targetExperience =
+			availableSegmentsExperiences[segmentsExperienceId];
+
+		const availableSegmentsExperiencesArray = Object.entries(
+			availableSegmentsExperiences
+		)
+			.sort(([, a], [, b]) => a.priority - b.priority)
+			.map(([, experience]) => experience);
+
+		const targetExperiencePosition = availableSegmentsExperiencesArray.findIndex(
+			experience => experience === targetExperience
+		);
+
+		const subTargetPosition =
+			direction === 'up'
+				? targetExperiencePosition + 1
+				: targetExperiencePosition - 1;
+
+		const subTargetExperience =
+			availableSegmentsExperiencesArray[subTargetPosition];
+
+		const priorityForTarget = subTargetExperience.priority;
 
 		Liferay.Service(UPDATE_SEGMENTS_EXPERIENCE_PRIORITY_URL, {
-			newPriority,
+			newPriority: priorityForTarget,
 			segmentsExperienceId
 		})
 			.then(() => {
-				const availableSegmentsExperiencesArray = Object.values(
-					nextState.availableSegmentsExperiences
-				);
+				const updatedTargetExperience = {
+					...targetExperience,
+					priority: priorityForTarget
+				};
 
-				const subTargetExperience = availableSegmentsExperiencesArray.find(
-					experience => {
-						return experience.priority === newPriority;
+				const updatedSubtargetExperience = {
+					...subTargetExperience,
+					priority: priorityForSubtarget
+				};
+
+				nextState = {
+					...nextState,
+					availableSegmentsExperiences: {
+						...nextState.availableSegmentsExperiences,
+						[updatedSubtargetExperience.segmentsExperienceId]: updatedSubtargetExperience,
+						[updatedTargetExperience.segmentsExperienceId]: updatedTargetExperience
 					}
-				);
-
-				const targetExperience = availableSegmentsExperiencesArray.find(
-					experience => {
-						return experience.priority === priority;
-					}
-				);
-
-				nextState = setIn(
-					nextState,
-					[
-						'availableSegmentsExperiences',
-						targetExperience.segmentsExperienceId,
-						'priority'
-					],
-					newPriority
-				);
-
-				nextState = setIn(
-					nextState,
-					[
-						'availableSegmentsExperiences',
-						subTargetExperience.segmentsExperienceId,
-						'priority'
-					],
-					priority
-				);
+				};
 
 				resolve(nextState);
 			})
