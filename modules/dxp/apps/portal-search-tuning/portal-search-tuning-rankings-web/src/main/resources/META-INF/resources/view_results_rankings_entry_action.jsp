@@ -49,8 +49,8 @@ RankingEntryDisplayContext rankingEntryDisplayContext = (RankingEntryDisplayCont
 		<portlet:param name="resultsRankingUid" value="<%= rankingEntryDisplayContext.getUid() %>" />
 		<portlet:param name="aliases" value="<%= rankingEntryDisplayContext.getAliases() %>" />
 		<portlet:param name="companyId" value="<%= String.valueOf(themeDisplay.getCompanyId()) %>" />
-		<portlet:param name="keywords" value="<%= rankingEntryDisplayContext.getKeywords() %>" />
 		<portlet:param name="inactive" value="<%= String.valueOf(rankingEntryDisplayContext.getInactive()) %>" />
+		<portlet:param name="keywords" value="<%= rankingEntryDisplayContext.getKeywords() %>" />
 	</portlet:renderURL>
 
 	<liferay-ui:icon
