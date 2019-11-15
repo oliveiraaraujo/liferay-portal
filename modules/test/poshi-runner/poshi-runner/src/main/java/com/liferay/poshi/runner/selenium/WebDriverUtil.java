@@ -145,7 +145,7 @@ public class WebDriverUtil extends PropsValues {
 
 		if (Validator.isNotNull(PropsValues.BROWSER_CHROME_BIN_ARGS)) {
 			chromeOptions.addArguments(
-				PropsValues.BROWSER_CHROME_BIN_ARGS.split(" "));
+				PropsValues.BROWSER_CHROME_BIN_ARGS.split("\\s+"));
 		}
 
 		if (Validator.isNotNull(PropsValues.BROWSER_CHROME_BIN_FILE)) {
