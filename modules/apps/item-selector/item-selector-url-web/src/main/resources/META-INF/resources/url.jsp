@@ -20,6 +20,7 @@
 ItemSelectorURLViewDisplayContext itemSelectorURLViewDisplayContext = (ItemSelectorURLViewDisplayContext)request.getAttribute(ItemSelectorURLView.ITEM_SELECTOR_URL_VIEW_DISPLAY_CONTEXT);
 
 Map<String, Object> data = new HashMap<>();
+
 data.put("eventName", itemSelectorURLViewDisplayContext.getItemSelectedEventName());
 %>
 
