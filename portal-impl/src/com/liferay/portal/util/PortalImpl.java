@@ -8058,8 +8058,8 @@ public class PortalImpl implements Portal {
 		return StringPool.SLASH.concat(LocaleUtil.toW3cLanguageId(languageId));
 	}
 
-	private boolean _containsHostName(
-		TreeMap<String, String> virtualHostNames, String portalDomain) {
+	private boolean _containsHostname(
+		TreeMap<String, String> virtualHostnames, String portalDomain) {
 
 		int pos = portalDomain.indexOf(CharPool.COLON);
 
@@ -8067,7 +8067,7 @@ public class PortalImpl implements Portal {
 			portalDomain = portalDomain.substring(0, pos);
 		}
 
-		return virtualHostNames.containsKey(portalDomain);
+		return virtualHostnames.containsKey(portalDomain);
 	}
 
 	private Map<Locale, String> _getAlternateURLs(
@@ -8258,13 +8258,13 @@ public class PortalImpl implements Portal {
 
 		String portalURL = themeDisplay.getPortalURL();
 
-		boolean useGroupVirtualHostName = false;
+		boolean useGroupVirtualHostname = false;
 
 		if (canonicalURL ||
 			!StringUtil.equalsIgnoreCase(
 				themeDisplay.getServerName(), _LOCALHOST)) {
 
-			useGroupVirtualHostName = true;
+			useGroupVirtualHostname = true;
 		}
 
 		long refererPlid = themeDisplay.getRefererPlid();
@@ -8277,11 +8277,11 @@ public class PortalImpl implements Portal {
 				((refererLayout.getGroupId() != group.getGroupId()) ||
 				 (refererLayout.isPrivateLayout() != privateLayoutSet))) {
 
-				useGroupVirtualHostName = false;
+				useGroupVirtualHostname = false;
 			}
 		}
 
-		if (useGroupVirtualHostName) {
+		if (useGroupVirtualHostname) {
 			TreeMap<String, String> virtualHostnames = getVirtualHostnames(
 				layoutSet);
 
@@ -8299,7 +8299,7 @@ public class PortalImpl implements Portal {
 						}
 
 						if (!virtualHostnames.containsKey(_LOCALHOST) &&
-							!_containsHostName(
+							!_containsHostname(
 								virtualHostnames, portalDomain)) {
 
 							portalURL = getPortalURL(
@@ -8315,7 +8315,7 @@ public class PortalImpl implements Portal {
 						);
 					}
 
-					if (_containsHostName(virtualHostnames, portalDomain) ||
+					if (_containsHostname(virtualHostnames, portalDomain) ||
 						PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME.equals(
 							group.getGroupKey())) {
 
