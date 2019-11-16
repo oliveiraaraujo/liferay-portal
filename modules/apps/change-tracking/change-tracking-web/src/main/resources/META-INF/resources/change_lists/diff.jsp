@@ -21,10 +21,10 @@
 </liferay-portlet:renderURL>
 
 <%
+CTEntryDiffDisplay ctEntryDiffDisplay = (CTEntryDiffDisplay)request.getAttribute(CTWebKeys.CT_ENTRY_DIFF_DISPLAY);
+
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(backURL);
-
-CTEntryDiffDisplay ctEntryDiffDisplay = (CTEntryDiffDisplay)request.getAttribute(CTWebKeys.CT_ENTRY_DIFF_DISPLAY);
 %>
 
 <div class="container-fluid-1280">
