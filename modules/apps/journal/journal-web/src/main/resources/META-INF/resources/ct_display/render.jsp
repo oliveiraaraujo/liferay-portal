@@ -26,17 +26,29 @@ DDMStructure ddmStructure = DDMStructureLocalServiceUtil.fetchStructure(siteGrou
 DDMTemplate ddmTemplate = DDMTemplateLocalServiceUtil.fetchTemplate(siteGroupId, PortalUtil.getClassNameId(DDMStructure.class), journalArticleDisplay.getDDMTemplateKey(), true);
 %>
 
-<p><b><liferay-ui:message key="id" /></b>: <%= journalArticleDisplay.getArticleId() %></p>
+<p>
+	<b><liferay-ui:message key="id" /></b>: <%= journalArticleDisplay.getArticleId() %>
+</p>
 
-<p><b><liferay-ui:message key="version" /></b>: <%= journalArticleDisplay.getVersion() %></p>
+<p>
+	<b><liferay-ui:message key="version" /></b>: <%= journalArticleDisplay.getVersion() %>
+</p>
 
-<p><b><liferay-ui:message key="title" /></b>: <%= HtmlUtil.escape(journalArticleDisplay.getTitle()) %></p>
+<p>
+	<b><liferay-ui:message key="title" /></b>: <%= HtmlUtil.escape(journalArticleDisplay.getTitle()) %>
+</p>
 
-<p><b><liferay-ui:message key="description" /></b>: <%= HtmlUtil.escape(journalArticleDisplay.getDescription()) %></p>
+<p>
+	<b><liferay-ui:message key="description" /></b>: <%= HtmlUtil.escape(journalArticleDisplay.getDescription()) %>
+</p>
 
-<p><b><liferay-ui:message key="structure" /></b>: <%= HtmlUtil.escape(ddmStructure.getName(locale)) %></p>
+<p>
+	<b><liferay-ui:message key="structure" /></b>: <%= HtmlUtil.escape(ddmStructure.getName(locale)) %>
+</p>
 
-<p><b><liferay-ui:message key="template" /></b>: <%= (ddmTemplate == null) ? "" : HtmlUtil.escape(ddmTemplate.getName(locale)) %></p>
+<p>
+	<b><liferay-ui:message key="template" /></b>: <%= (ddmTemplate == null) ? "" : HtmlUtil.escape(ddmTemplate.getName(locale)) %>
+</p>
 
 <b><liferay-ui:message key="content" /></b>:
 
