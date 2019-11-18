@@ -50,7 +50,7 @@ definition {
 
 		Navigator.gotoEditPageViaControlMenu(pageName = "Canonical URL Test Page");
 
-		Navigator.gotoSEOPanel();
+		Navigator.gotoNavTab(navTab = "SEO");
 
 		Check.checkToggleSwitch(
 			key_toggleSwitchLabel = "Use Custom Canonical URL",
