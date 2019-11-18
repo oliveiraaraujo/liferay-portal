@@ -125,16 +125,15 @@ public class UpgradeDDMFormFieldValidation extends UpgradeProcess {
 	}
 
 	private Map<String, String> _dissectExpression(String expression) {
-		String regex = "NOT\\(contains\\((.+), \"(.*)\"\\)\\)";
-
-		if (expression.matches(regex)) {
-			return _dissect(expression, "notContains", regex);
+		if (expression.matches("NOT\\(contains\\((.+), \"(.*)\"\\)\\)")) {
+			return _dissect(
+				expression, "notContains",
+				"NOT\\(contains\\((.+), \"(.*)\"\\)\\)");
 		}
 
-		regex = "contains\\((.+), \"(.*)\"\\)";
-
-		if (expression.matches(regex)) {
-			return _dissect(expression, "contains", regex);
+		if (expression.matches("contains\\((.+), \"(.*)\"\\)")) {
+			return _dissect(
+				expression, "contains", "contains\\((.+), \"(.*)\"\\)");
 		}
 
 		if (expression.matches("isURL\\((.+)\\)")) {
@@ -157,40 +156,29 @@ public class UpgradeDDMFormFieldValidation extends UpgradeProcess {
 			).build();
 		}
 
-		regex = "match\\((.+), \"(.*)\"\\)";
-
-		if (expression.matches(regex)) {
-			return _dissect(expression, "regularExpression", regex);
+		if (expression.matches("match\\((.+), \"(.*)\"\\)")) {
+			return _dissect(
+				expression, "regularExpression", "match\\((.+), \"(.*)\"\\)");
 		}
 
-		regex = "(.+)<(\\d+\\.?\\d*)?";
-
-		if (expression.matches(regex)) {
-			return _dissect(expression, "lt", regex);
+		if (expression.matches("(.+)<(\\d+\\.?\\d*)?")) {
+			return _dissect(expression, "lt", "(.+)<(\\d+\\.?\\d*)?");
 		}
 
-		regex = "(.+)<=(\\d+\\.?\\d*)?";
-
-		if (expression.matches(regex)) {
-			return _dissect(expression, "lteq", regex);
+		if (expression.matches("(.+)<=(\\d+\\.?\\d*)?")) {
+			return _dissect(expression, "lteq", "(.+)<=(\\d+\\.?\\d*)?");
 		}
 
-		regex = "(.+)==(\\d+\\.?\\d*)?";
-
-		if (expression.matches(regex)) {
-			return _dissect(expression, "eq", regex);
+		if (expression.matches("(.+)==(\\d+\\.?\\d*)?")) {
+			return _dissect(expression, "eq", "(.+)==(\\d+\\.?\\d*)?");
 		}
 
-		regex = "(.+)>(\\d+\\.?\\d*)?";
-
-		if (expression.matches(regex)) {
-			return _dissect(expression, "gt", regex);
+		if (expression.matches("(.+)>(\\d+\\.?\\d*)?")) {
+			return _dissect(expression, "gt", "(.+)>(\\d+\\.?\\d*)?");
 		}
 
-		regex = "(.+)>=(\\d+\\.?\\d*)?";
-
-		if (expression.matches(regex)) {
-			return _dissect(expression, "gteq", regex);
+		if (expression.matches("(.+)>=(\\d+\\.?\\d*)?")) {
+			return _dissect(expression, "gteq", "(.+)>=(\\d+\\.?\\d*)?");
 		}
 
 		return HashMapBuilder.put(
