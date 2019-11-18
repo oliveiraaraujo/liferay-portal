@@ -195,12 +195,9 @@ public class UpgradeDDMFormFieldValidation extends UpgradeProcess {
 
 		JSONObject jsonObject = _jsonFactory.createJSONObject(definition);
 
-		JSONArray availableLanguageIdsJSONArray = jsonObject.getJSONArray(
-			"availableLanguageIds");
-
-		JSONArray fieldsJSONArray = jsonObject.getJSONArray("fields");
-
-		_upgradeFields(availableLanguageIdsJSONArray, fieldsJSONArray);
+		_upgradeFields(
+			jsonObject.getJSONArray("availableLanguageIds"),
+			jsonObject.getJSONArray("fields"));
 
 		return jsonObject.toJSONString();
 	}
@@ -211,14 +208,14 @@ public class UpgradeDDMFormFieldValidation extends UpgradeProcess {
 		for (int i = 0; i < fieldsJSONArray.length(); i++) {
 			JSONObject jsonObject = fieldsJSONArray.getJSONObject(i);
 
-			if (jsonObject.getJSONObject("validation") != null) {
-				JSONObject validationJSONObject = jsonObject.getJSONObject(
-					"validation");
+			JSONObject validationJSONObject = jsonObject.getJSONObject(
+				"validation");
 
-				String expressionString = validationJSONObject.getString(
+			if (validationJSONObject != null) {
+				String expression = validationJSONObject.getString(
 					"expression");
 
-				if (Validator.isNull(expressionString)) {
+				if (Validator.isNull(expression)) {
 					jsonObject.remove("validation");
 				}
 				else {
@@ -227,35 +224,35 @@ public class UpgradeDDMFormFieldValidation extends UpgradeProcess {
 
 					if (expressionJSONObject == null) {
 						_upgradeValidation(
-							availableLanguageIdsJSONArray, validationJSONObject,
-							expressionString);
+							availableLanguageIdsJSONArray, expression,
+							validationJSONObject);
 					}
 					else if (Validator.isNull(
-								expressionJSONObject.getString("name"))) {
+								expressionJSONObject.isNull("name"))) {
 
 						_upgradeValidation(
-							availableLanguageIdsJSONArray, validationJSONObject,
-							expressionJSONObject.getString("value"));
+							availableLanguageIdsJSONArray,
+							expressionJSONObject.getString("value"),
+							validationJSONObject);
 					}
 				}
+			}
 
-				JSONArray nestedFieldsJSONArray = jsonObject.getJSONArray(
-					"nestedFields");
+			JSONArray nestedFieldsJSONArray = jsonObject.getJSONArray(
+				"nestedFields");
 
-				if (nestedFieldsJSONArray != null) {
-					_upgradeFields(
-						availableLanguageIdsJSONArray, nestedFieldsJSONArray);
-				}
+			if (nestedFieldsJSONArray != null) {
+				_upgradeFields(
+					availableLanguageIdsJSONArray, nestedFieldsJSONArray);
 			}
 		}
 	}
 
 	private void _upgradeValidation(
-		JSONArray availableLanguageIdsJSONArray,
-		JSONObject validationJSONObject, String currentExpression) {
+		JSONArray availableLanguageIdsJSONArray, String expression,
+		JSONObject validationJSONObject) {
 
-		Map<String, String> expressionParts = _dissectExpression(
-			currentExpression);
+		Map<String, String> expressionParts = _dissectExpression(expression);
 
 		String parameter = expressionParts.remove("parameter");
 
