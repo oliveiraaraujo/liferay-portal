@@ -437,12 +437,12 @@ public class WorkflowTaskDisplayContext {
 
 		editPortletURL.setParameter(
 			"hideDefaultSuccessMessage", Boolean.TRUE.toString());
-		editPortletURL.setParameter("portletResource", getPortletResource());
 
 		ThemeDisplay themeDisplay =
 			_workflowTaskRequestHelper.getThemeDisplay();
 
 		editPortletURL.setParameter("redirect", themeDisplay.getURLCurrent());
+		editPortletURL.setParameter("portletResource", getPortletResource());
 		editPortletURL.setParameter(
 			"refererPlid", String.valueOf(themeDisplay.getPlid()));
 
