@@ -101,7 +101,7 @@
 		<finder name="CompanyId" return-type="Collection">
 			<finder-column name="companyId" />
 		</finder>
-		<finder name="AccountEntryIds" return-type="Collection">
+		<finder name="AccountEntryId" return-type="Collection">
 			<finder-column arrayable-operator="OR" name="accountEntryId" />
 		</finder>
 		<finder name="RoleId" return-type="AccountRole">
