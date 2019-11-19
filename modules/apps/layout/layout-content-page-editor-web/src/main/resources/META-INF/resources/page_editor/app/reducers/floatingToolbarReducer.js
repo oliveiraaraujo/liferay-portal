@@ -12,15 +12,38 @@
  * details.
  */
 
-import React, {forwardRef} from 'react';
+import {TYPES} from '../actions/index';
 
-export default forwardRef(
-	({TagName = 'div', className = '', markup, ...otherProps}, ref) => (
-		<TagName
-			{...otherProps}
-			className={className}
-			dangerouslySetInnerHTML={{__html: markup}}
-			ref={ref}
-		/>
-	)
-);
+export default function floatingToolbarReducer(state, {type, ...payload}) {
+	let nextState = state;
+
+	switch (type) {
+		case TYPES.ALIGN_FLOATING_TOOLBAR:
+			nextState = {
+				...state,
+				...payload
+			};
+
+			break;
+		case TYPES.SHOW_FLOATING_TOOLBAR:
+			nextState = {
+				...state,
+				...payload,
+				show: true
+			};
+
+			break;
+		case TYPES.HIDE_FLOATING_TOOLBAR:
+			nextState = {
+				...state,
+				...payload,
+				show: false
+			};
+
+			break;
+		default:
+			break;
+	}
+
+	return nextState;
+}

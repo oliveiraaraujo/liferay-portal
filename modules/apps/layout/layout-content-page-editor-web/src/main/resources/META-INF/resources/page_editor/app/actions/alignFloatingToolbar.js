@@ -12,15 +12,19 @@
  * details.
  */
 
-import React, {forwardRef} from 'react';
+import {ALIGN_FLOATING_TOOLBAR as type} from './types';
 
-export default forwardRef(
-	({TagName = 'div', className = '', markup, ...otherProps}, ref) => (
-		<TagName
-			{...otherProps}
-			className={className}
-			dangerouslySetInnerHTML={{__html: markup}}
-			ref={ref}
-		/>
-	)
-);
+const ACTION = {type};
+
+/**
+ * @param {object} align
+ * @param {object} targetContainerRef
+ * @return {object}
+ */
+export default function alignFloatingToolbar({align, targetContainerRef}) {
+	return {
+		...ACTION,
+		align,
+		targetContainerRef
+	};
+}

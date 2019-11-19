@@ -12,15 +12,27 @@
  * details.
  */
 
-import React, {forwardRef} from 'react';
+import {useRef, useEffect} from 'react';
+import {createPortal} from 'react-dom';
 
-export default forwardRef(
-	({TagName = 'div', className = '', markup, ...otherProps}, ref) => (
-		<TagName
-			{...otherProps}
-			className={className}
-			dangerouslySetInnerHTML={{__html: markup}}
-			ref={ref}
-		/>
-	)
-);
+const Portal = ({children}) => {
+	const portalRef = useRef(document.createElement('div'));
+
+	useEffect(() => {
+		if (document.body && portalRef.current) {
+			document.body.appendChild(portalRef.current);
+		}
+
+		return () => {
+			if (document.body && portalRef.current) {
+				document.body.removeChild(portalRef.current);
+			}
+		};
+	}, []);
+
+	return portalRef.current
+		? createPortal(children, portalRef.current)
+		: children;
+};
+
+export default Portal;
