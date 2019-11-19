@@ -16,6 +16,7 @@ package com.liferay.account.service.base;
 
 import com.liferay.account.model.AccountRole;
 import com.liferay.account.service.AccountRoleLocalService;
+import com.liferay.account.service.persistence.AccountEntryPersistence;
 import com.liferay.account.service.persistence.AccountRolePersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -115,10 +116,13 @@ public abstract class AccountRoleLocalServiceBaseImpl
 	 *
 	 * @param accountRole the account role
 	 * @return the account role that was removed
+	 * @throws PortalException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public AccountRole deleteAccountRole(AccountRole accountRole) {
+	public AccountRole deleteAccountRole(AccountRole accountRole)
+		throws PortalException {
+
 		return accountRolePersistence.remove(accountRole);
 	}
 
@@ -387,7 +391,22 @@ public abstract class AccountRoleLocalServiceBaseImpl
 	protected AccountRolePersistence accountRolePersistence;
 
 	@Reference
+	protected AccountEntryPersistence accountEntryPersistence;
+
+	@Reference
 	protected com.liferay.counter.kernel.service.CounterLocalService
 		counterLocalService;
+
+	@Reference
+	protected com.liferay.portal.kernel.service.RoleLocalService
+		roleLocalService;
+
+	@Reference
+	protected com.liferay.portal.kernel.service.UserLocalService
+		userLocalService;
+
+	@Reference
+	protected com.liferay.portal.kernel.service.UserGroupRoleLocalService
+		userGroupRoleLocalService;
 
 }

@@ -56,4 +56,10 @@ public interface AccountRole extends AccountRoleModel, PersistedModel {
 
 		};
 
+	public com.liferay.portal.kernel.model.Role getRole()
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	public String getRoleName()
+		throws com.liferay.portal.kernel.exception.PortalException;
+
 }
