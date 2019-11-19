@@ -156,7 +156,7 @@ paths:
                     description:
                         Async
             tags: ["ExportTask"]
-    /export-task/{exportTaskId}/:
+    /export-task/{exportTaskId}:
         # @review
         get:
             description:
@@ -181,7 +181,7 @@ paths:
                     description:
                         ""
             tags: ["ExportTask"]
-    /export-task/{exportTaskId}/content/:
+    /export-task/{exportTaskId}/content:
         # @review
         get:
             description:
@@ -325,7 +325,7 @@ paths:
                     description:
                         Async
             tags: ["ImportTask"]
-    /import-task/{importTaskId}/:
+    /import-task/{importTaskId}:
         # @review
         get:
             description:
