@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.headless.batch.engine.internal.util;
+package com.liferay.headless.batch.engine.internal.resource.v1_0.util;
 
 import java.io.Serializable;
 

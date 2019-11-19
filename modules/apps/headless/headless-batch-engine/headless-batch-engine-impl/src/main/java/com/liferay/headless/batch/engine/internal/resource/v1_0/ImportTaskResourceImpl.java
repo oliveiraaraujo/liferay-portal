@@ -22,7 +22,7 @@ import com.liferay.batch.engine.configuration.BatchEngineImportTaskConfiguration
 import com.liferay.batch.engine.model.BatchEngineImportTask;
 import com.liferay.batch.engine.service.BatchEngineImportTaskLocalService;
 import com.liferay.headless.batch.engine.dto.v1_0.ImportTask;
-import com.liferay.headless.batch.engine.internal.util.ParametersUtil;
+import com.liferay.headless.batch.engine.internal.resource.v1_0.util.ParametersUtil;
 import com.liferay.headless.batch.engine.resource.v1_0.ImportTaskResource;
 import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.petra.io.StreamUtil;
