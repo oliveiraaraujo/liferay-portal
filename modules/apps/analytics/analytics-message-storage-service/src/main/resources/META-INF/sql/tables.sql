@@ -5,5 +5,5 @@ create table AnalyticsMessage (
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,
-	message BLOB
+	body BLOB
 );

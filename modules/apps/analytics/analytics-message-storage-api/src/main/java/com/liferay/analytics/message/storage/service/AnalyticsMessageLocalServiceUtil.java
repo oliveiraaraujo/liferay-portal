@@ -242,18 +242,18 @@ public class AnalyticsMessageLocalServiceUtil {
 	}
 
 	public static
+		com.liferay.analytics.message.storage.model.
+			AnalyticsMessageBodyBlobModel getBodyBlobModel(
+				java.io.Serializable primaryKey) {
+
+		return getService().getBodyBlobModel(primaryKey);
+	}
+
+	public static
 		com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 			getIndexableActionableDynamicQuery() {
 
 		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	public static
-		com.liferay.analytics.message.storage.model.
-			AnalyticsMessageMessageBlobModel getMessageBlobModel(
-				java.io.Serializable primaryKey) {
-
-		return getService().getMessageBlobModel(primaryKey);
 	}
 
 	/**

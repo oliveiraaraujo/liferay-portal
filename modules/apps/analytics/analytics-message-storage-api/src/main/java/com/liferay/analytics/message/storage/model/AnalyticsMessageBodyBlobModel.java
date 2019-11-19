@@ -17,26 +17,26 @@ package com.liferay.analytics.message.storage.model;
 import java.sql.Blob;
 
 /**
- * The Blob model class for lazy loading the message column in AnalyticsMessage.
+ * The Blob model class for lazy loading the body column in AnalyticsMessage.
  *
  * @author Brian Wing Shun Chan
  * @see AnalyticsMessage
  * @generated
  */
-public class AnalyticsMessageMessageBlobModel {
+public class AnalyticsMessageBodyBlobModel {
 
-	public AnalyticsMessageMessageBlobModel() {
+	public AnalyticsMessageBodyBlobModel() {
 	}
 
-	public AnalyticsMessageMessageBlobModel(long analyticsMessageId) {
+	public AnalyticsMessageBodyBlobModel(long analyticsMessageId) {
 		_analyticsMessageId = analyticsMessageId;
 	}
 
-	public AnalyticsMessageMessageBlobModel(
-		long analyticsMessageId, Blob messageBlob) {
+	public AnalyticsMessageBodyBlobModel(
+		long analyticsMessageId, Blob bodyBlob) {
 
 		_analyticsMessageId = analyticsMessageId;
-		_messageBlob = messageBlob;
+		_bodyBlob = bodyBlob;
 	}
 
 	public long getAnalyticsMessageId() {
@@ -47,15 +47,15 @@ public class AnalyticsMessageMessageBlobModel {
 		_analyticsMessageId = analyticsMessageId;
 	}
 
-	public Blob getMessageBlob() {
-		return _messageBlob;
+	public Blob getBodyBlob() {
+		return _bodyBlob;
 	}
 
-	public void setMessageBlob(Blob messageBlob) {
-		_messageBlob = messageBlob;
+	public void setBodyBlob(Blob bodyBlob) {
+		_bodyBlob = bodyBlob;
 	}
 
 	private long _analyticsMessageId;
-	private Blob _messageBlob;
+	private Blob _bodyBlob;
 
 }

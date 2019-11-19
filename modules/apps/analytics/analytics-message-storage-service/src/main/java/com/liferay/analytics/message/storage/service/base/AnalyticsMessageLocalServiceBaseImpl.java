@@ -15,7 +15,7 @@
 package com.liferay.analytics.message.storage.service.base;
 
 import com.liferay.analytics.message.storage.model.AnalyticsMessage;
-import com.liferay.analytics.message.storage.model.AnalyticsMessageMessageBlobModel;
+import com.liferay.analytics.message.storage.model.AnalyticsMessageBodyBlobModel;
 import com.liferay.analytics.message.storage.service.AnalyticsMessageLocalService;
 import com.liferay.analytics.message.storage.service.persistence.AnalyticsMessagePersistence;
 import com.liferay.portal.aop.AopService;
@@ -339,7 +339,7 @@ public abstract class AnalyticsMessageLocalServiceBaseImpl
 	}
 
 	@Override
-	public AnalyticsMessageMessageBlobModel getMessageBlobModel(
+	public AnalyticsMessageBodyBlobModel getBodyBlobModel(
 		Serializable primaryKey) {
 
 		Session session = null;
@@ -347,8 +347,8 @@ public abstract class AnalyticsMessageLocalServiceBaseImpl
 		try {
 			session = analyticsMessagePersistence.openSession();
 
-			return (AnalyticsMessageMessageBlobModel)session.get(
-				AnalyticsMessageMessageBlobModel.class, primaryKey);
+			return (AnalyticsMessageBodyBlobModel)session.get(
+				AnalyticsMessageBodyBlobModel.class, primaryKey);
 		}
 		catch (Exception e) {
 			throw analyticsMessagePersistence.processException(e);

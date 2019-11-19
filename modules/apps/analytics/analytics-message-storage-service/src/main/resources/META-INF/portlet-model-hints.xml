@@ -8,6 +8,6 @@
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
-		<field name="message" type="Blob" />
+		<field name="body" type="Blob" />
 	</model>
 </model-hints>

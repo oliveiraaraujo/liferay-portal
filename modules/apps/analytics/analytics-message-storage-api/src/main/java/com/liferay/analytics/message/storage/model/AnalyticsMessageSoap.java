@@ -39,7 +39,7 @@ public class AnalyticsMessageSoap implements Serializable {
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
-		soapModel.setMessage(model.getMessage());
+		soapModel.setBody(model.getBody());
 
 		return soapModel;
 	}
@@ -149,12 +149,12 @@ public class AnalyticsMessageSoap implements Serializable {
 		_createDate = createDate;
 	}
 
-	public Blob getMessage() {
-		return _message;
+	public Blob getBody() {
+		return _body;
 	}
 
-	public void setMessage(Blob message) {
-		_message = message;
+	public void setBody(Blob body) {
+		_body = body;
 	}
 
 	private long _mvccVersion;
@@ -163,6 +163,6 @@ public class AnalyticsMessageSoap implements Serializable {
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
-	private Blob _message;
+	private Blob _body;
 
 }

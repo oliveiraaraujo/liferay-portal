@@ -164,17 +164,17 @@ public interface AnalyticsMessageModel
 	public void setCreateDate(Date createDate);
 
 	/**
-	 * Returns the message of this analytics message.
+	 * Returns the body of this analytics message.
 	 *
-	 * @return the message of this analytics message
+	 * @return the body of this analytics message
 	 */
-	public Blob getMessage();
+	public Blob getBody();
 
 	/**
-	 * Sets the message of this analytics message.
+	 * Sets the body of this analytics message.
 	 *
-	 * @param message the message of this analytics message
+	 * @param body the body of this analytics message
 	 */
-	public void setMessage(Blob message);
+	public void setBody(Blob body);
 
 }

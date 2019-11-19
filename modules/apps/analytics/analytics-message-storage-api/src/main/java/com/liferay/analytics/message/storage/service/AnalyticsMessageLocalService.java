@@ -15,7 +15,7 @@
 package com.liferay.analytics.message.storage.service;
 
 import com.liferay.analytics.message.storage.model.AnalyticsMessage;
-import com.liferay.analytics.message.storage.model.AnalyticsMessageMessageBlobModel;
+import com.liferay.analytics.message.storage.model.AnalyticsMessageBodyBlobModel;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
@@ -215,11 +215,11 @@ public interface AnalyticsMessageLocalService
 	public int getAnalyticsMessagesCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+	public AnalyticsMessageBodyBlobModel getBodyBlobModel(
+		Serializable primaryKey);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AnalyticsMessageMessageBlobModel getMessageBlobModel(
-		Serializable primaryKey);
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
 	 * Returns the OSGi service identifier.

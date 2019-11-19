@@ -259,20 +259,20 @@ public class AnalyticsMessageLocalServiceWrapper
 	}
 
 	@Override
+	public
+		com.liferay.analytics.message.storage.model.
+			AnalyticsMessageBodyBlobModel getBodyBlobModel(
+				java.io.Serializable primaryKey) {
+
+		return _analyticsMessageLocalService.getBodyBlobModel(primaryKey);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 		getIndexableActionableDynamicQuery() {
 
 		return _analyticsMessageLocalService.
 			getIndexableActionableDynamicQuery();
-	}
-
-	@Override
-	public
-		com.liferay.analytics.message.storage.model.
-			AnalyticsMessageMessageBlobModel getMessageBlobModel(
-				java.io.Serializable primaryKey) {
-
-		return _analyticsMessageLocalService.getMessageBlobModel(primaryKey);
 	}
 
 	/**

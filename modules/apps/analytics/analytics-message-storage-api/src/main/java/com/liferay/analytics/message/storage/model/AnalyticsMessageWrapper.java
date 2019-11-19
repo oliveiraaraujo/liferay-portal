@@ -50,7 +50,7 @@ public class AnalyticsMessageWrapper
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
-		attributes.put("message", getMessage());
+		attributes.put("body", getBody());
 
 		return attributes;
 	}
@@ -93,10 +93,10 @@ public class AnalyticsMessageWrapper
 			setCreateDate(createDate);
 		}
 
-		Blob message = (Blob)attributes.get("message");
+		Blob body = (Blob)attributes.get("body");
 
-		if (message != null) {
-			setMessage(message);
+		if (body != null) {
+			setBody(body);
 		}
 	}
 
@@ -108,6 +108,16 @@ public class AnalyticsMessageWrapper
 	@Override
 	public long getAnalyticsMessageId() {
 		return model.getAnalyticsMessageId();
+	}
+
+	/**
+	 * Returns the body of this analytics message.
+	 *
+	 * @return the body of this analytics message
+	 */
+	@Override
+	public Blob getBody() {
+		return model.getBody();
 	}
 
 	/**
@@ -128,16 +138,6 @@ public class AnalyticsMessageWrapper
 	@Override
 	public Date getCreateDate() {
 		return model.getCreateDate();
-	}
-
-	/**
-	 * Returns the message of this analytics message.
-	 *
-	 * @return the message of this analytics message
-	 */
-	@Override
-	public Blob getMessage() {
-		return model.getMessage();
 	}
 
 	/**
@@ -211,6 +211,16 @@ public class AnalyticsMessageWrapper
 	}
 
 	/**
+	 * Sets the body of this analytics message.
+	 *
+	 * @param body the body of this analytics message
+	 */
+	@Override
+	public void setBody(Blob body) {
+		model.setBody(body);
+	}
+
+	/**
 	 * Sets the company ID of this analytics message.
 	 *
 	 * @param companyId the company ID of this analytics message
@@ -228,16 +238,6 @@ public class AnalyticsMessageWrapper
 	@Override
 	public void setCreateDate(Date createDate) {
 		model.setCreateDate(createDate);
-	}
-
-	/**
-	 * Sets the message of this analytics message.
-	 *
-	 * @param message the message of this analytics message
-	 */
-	@Override
-	public void setMessage(Blob message) {
-		model.setMessage(message);
 	}
 
 	/**

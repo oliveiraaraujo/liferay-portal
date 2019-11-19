@@ -15,7 +15,7 @@
 package com.liferay.analytics.message.storage.model.impl;
 
 import com.liferay.analytics.message.storage.model.AnalyticsMessage;
-import com.liferay.analytics.message.storage.model.AnalyticsMessageMessageBlobModel;
+import com.liferay.analytics.message.storage.model.AnalyticsMessageBodyBlobModel;
 import com.liferay.analytics.message.storage.model.AnalyticsMessageModel;
 import com.liferay.analytics.message.storage.service.AnalyticsMessageLocalServiceUtil;
 import com.liferay.expando.kernel.model.ExpandoBridge;
@@ -73,7 +73,7 @@ public class AnalyticsMessageModelImpl
 		{"mvccVersion", Types.BIGINT}, {"analyticsMessageId", Types.BIGINT},
 		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
-		{"message", Types.BLOB}
+		{"body", Types.BLOB}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -86,11 +86,11 @@ public class AnalyticsMessageModelImpl
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("message", Types.BLOB);
+		TABLE_COLUMNS_MAP.put("body", Types.BLOB);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table AnalyticsMessage (mvccVersion LONG default 0 not null,analyticsMessageId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,message BLOB)";
+		"create table AnalyticsMessage (mvccVersion LONG default 0 not null,analyticsMessageId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,body BLOB)";
 
 	public static final String TABLE_SQL_DROP = "drop table AnalyticsMessage";
 
@@ -277,10 +277,10 @@ public class AnalyticsMessageModelImpl
 			"createDate",
 			(BiConsumer<AnalyticsMessage, Date>)
 				AnalyticsMessage::setCreateDate);
-		attributeGetterFunctions.put("message", AnalyticsMessage::getMessage);
+		attributeGetterFunctions.put("body", AnalyticsMessage::getBody);
 		attributeSetterBiConsumers.put(
-			"message",
-			(BiConsumer<AnalyticsMessage, Blob>)AnalyticsMessage::setMessage);
+			"body",
+			(BiConsumer<AnalyticsMessage, Blob>)AnalyticsMessage::setBody);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -384,11 +384,11 @@ public class AnalyticsMessageModelImpl
 	}
 
 	@Override
-	public Blob getMessage() {
-		if (_messageBlobModel == null) {
+	public Blob getBody() {
+		if (_bodyBlobModel == null) {
 			try {
-				_messageBlobModel =
-					AnalyticsMessageLocalServiceUtil.getMessageBlobModel(
+				_bodyBlobModel =
+					AnalyticsMessageLocalServiceUtil.getBodyBlobModel(
 						getPrimaryKey());
 			}
 			catch (Exception e) {
@@ -397,21 +397,21 @@ public class AnalyticsMessageModelImpl
 
 		Blob blob = null;
 
-		if (_messageBlobModel != null) {
-			blob = _messageBlobModel.getMessageBlob();
+		if (_bodyBlobModel != null) {
+			blob = _bodyBlobModel.getBodyBlob();
 		}
 
 		return blob;
 	}
 
 	@Override
-	public void setMessage(Blob message) {
-		if (_messageBlobModel == null) {
-			_messageBlobModel = new AnalyticsMessageMessageBlobModel(
-				getPrimaryKey(), message);
+	public void setBody(Blob body) {
+		if (_bodyBlobModel == null) {
+			_bodyBlobModel = new AnalyticsMessageBodyBlobModel(
+				getPrimaryKey(), body);
 		}
 		else {
-			_messageBlobModel.setMessageBlob(message);
+			_bodyBlobModel.setBodyBlob(body);
 		}
 	}
 
@@ -525,7 +525,7 @@ public class AnalyticsMessageModelImpl
 
 		analyticsMessageModelImpl._setOriginalCompanyId = false;
 
-		analyticsMessageModelImpl._messageBlobModel = null;
+		analyticsMessageModelImpl._bodyBlobModel = null;
 
 		analyticsMessageModelImpl._columnBitmask = 0;
 	}
@@ -640,7 +640,7 @@ public class AnalyticsMessageModelImpl
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
-	private AnalyticsMessageMessageBlobModel _messageBlobModel;
+	private AnalyticsMessageBodyBlobModel _bodyBlobModel;
 	private long _columnBitmask;
 	private AnalyticsMessage _escapedModel;
 
