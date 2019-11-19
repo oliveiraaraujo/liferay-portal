@@ -162,7 +162,7 @@ public abstract class BaseImportTaskResourceImpl implements ImportTaskResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-batch-engine/v1.0/import-task/{importTaskId}/'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-batch-engine/v1.0/import-task/{importTaskId}'  -u 'test@liferay.com:test'
 	 */
 	@Override
 	@GET
@@ -170,7 +170,7 @@ public abstract class BaseImportTaskResourceImpl implements ImportTaskResource {
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "importTaskId")}
 	)
-	@Path("/import-task/{importTaskId}/")
+	@Path("/import-task/{importTaskId}")
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ImportTask")})
 	public ImportTask getImportTask(
