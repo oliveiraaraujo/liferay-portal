@@ -55,7 +55,7 @@ public class CTEntryLocalServiceImpl extends CTEntryLocalServiceBaseImpl {
 
 		if (ctCollection.getStatus() != WorkflowConstants.STATUS_DRAFT) {
 			throw new PortalException(
-				"CTCollection " + ctCollection + " is read only");
+				"Change tracking collection " + ctCollection + " is read only");
 		}
 
 		long ctEntryId = counterLocalService.increment(CTEntry.class.getName());
@@ -80,7 +80,7 @@ public class CTEntryLocalServiceImpl extends CTEntryLocalServiceBaseImpl {
 
 		if (ctCollection.getStatus() != WorkflowConstants.STATUS_DRAFT) {
 			throw new PortalException(
-				"CTCollection " + ctCollection + " is read only");
+				"Change tracking collection " + ctCollection + " is read only");
 		}
 
 		return ctEntryPersistence.remove(ctEntry);
@@ -173,7 +173,8 @@ public class CTEntryLocalServiceImpl extends CTEntryLocalServiceBaseImpl {
 			ctEntry.getCtCollectionId());
 
 		if (ctCollection == null) {
-			throw new SystemException("No CTCollection exists for " + ctEntry);
+			throw new SystemException(
+				"No change tracking collection exists for " + ctEntry);
 		}
 
 		int status = ctCollection.getStatus();
@@ -182,7 +183,7 @@ public class CTEntryLocalServiceImpl extends CTEntryLocalServiceBaseImpl {
 			(status != WorkflowConstants.STATUS_PENDING)) {
 
 			throw new SystemException(
-				"CTCollection " + ctCollection + " is read only");
+				"Change tracking collection " + ctCollection + " is read only");
 		}
 
 		return ctEntryPersistence.update(ctEntry);

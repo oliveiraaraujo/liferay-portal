@@ -60,7 +60,8 @@ public class CTProcessLocalServiceImpl extends CTProcessLocalServiceBaseImpl {
 
 		if (ctCollection.getStatus() == WorkflowConstants.STATUS_APPROVED) {
 			throw new IllegalStateException(
-				"CTCollection is already published " + ctCollection);
+				"Change tracking collection is already published " +
+					ctCollection);
 		}
 
 		ctCollection.setStatus(WorkflowConstants.STATUS_PENDING);
