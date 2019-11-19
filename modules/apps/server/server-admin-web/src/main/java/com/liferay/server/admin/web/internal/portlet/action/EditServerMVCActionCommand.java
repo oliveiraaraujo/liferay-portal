@@ -381,15 +381,15 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 						return;
 					}
 
-					UnicodeProperties props =
+					UnicodeProperties typeSettingsProperties =
 						layout.getTypeSettingsProperties();
 
-					Set<String> keys = props.keySet();
+					Set<String> keys = typeSettingsProperties.keySet();
 
 					boolean orphan = true;
 
 					for (String key : keys) {
-						String value = props.getProperty(key);
+						String value = typeSettingsProperties.getProperty(key);
 
 						if (value.contains(pref.getPortletId())) {
 							orphan = false;
