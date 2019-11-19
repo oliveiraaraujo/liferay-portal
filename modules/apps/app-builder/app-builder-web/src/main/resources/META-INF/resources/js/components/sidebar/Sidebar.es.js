@@ -13,10 +13,11 @@
  */
 
 import {ClayButtonWithIcon} from '@clayui/button';
-import ClayForm, {ClayInput} from '@clayui/form';
+import ClayForm from '@clayui/form';
 import classNames from 'classnames';
 import React, {useState, useEffect} from 'react';
 
+import SearchInput from '../management-toolbar/search/SearchInput.es';
 import Button from '../button/Button.es';
 
 const Sidebar = React.forwardRef(
@@ -100,60 +101,28 @@ const SidebarHeader = ({children, className}) => {
 	);
 };
 
-const SidebarSearchInput = ({closeable, onSearch, onToggle}) => {
-	const [keywords, setKeywords] = useState('');
-
-	const onChange = event => {
-		const {value} = event.target;
-
-		setKeywords(value);
-
-		if (onSearch) {
-			onSearch(value);
-		}
-	};
-
-	return (
-		<SidebarHeader>
-			<div className="autofit-row sidebar-section">
-				<div className="autofit-col autofit-col-expand">
-					<ClayInput.Group>
-						{onSearch && (
-							<ClayInput.GroupItem>
-								<ClayInput
-									aria-label={Liferay.Language.get('search')}
-									className="input-group-inset input-group-inset-after"
-									onChange={onChange}
-									placeholder={`${Liferay.Language.get(
-										'search'
-									)}...`}
-									type="text"
-									value={keywords}
-								/>
-
-								<ClayInput.GroupInsetItem after>
-									<ClayButtonWithIcon
-										displayType="unstyled"
-										symbol="search"
-									/>
-								</ClayInput.GroupInsetItem>
-							</ClayInput.GroupItem>
-						)}
-						{closeable && (
-							<ClayInput.GroupItem shrink>
-								<ClayButtonWithIcon
-									displayType="secondary"
-									onClick={onToggle}
-									symbol="angle-right"
-								/>
-							</ClayInput.GroupItem>
-						)}
-					</ClayInput.Group>
-				</div>
+const SidebarSearchInput = ({closeable, onSearch, onToggle}) => (
+	<SidebarHeader>
+		<div className="autofit-row sidebar-section">
+			<div className="autofit-col autofit-col-expand">
+				{onSearch && (
+					<SearchInput
+						onChange={searchText => onSearch(searchText)}
+					/>
+				)}
 			</div>
-		</SidebarHeader>
-	);
-};
+			<div className="autofit-col ml-2">
+				{closeable && (
+					<ClayButtonWithIcon
+						displayType="secondary"
+						onClick={onToggle}
+						symbol="angle-right"
+					/>
+				)}
+			</div>
+		</div>
+	</SidebarHeader>
+);
 
 const SidebarTab = ({tabs}) => {
 	return (

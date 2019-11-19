@@ -14,19 +14,30 @@
 
 import React, {useContext} from 'react';
 
+import {SearchInputWithForm} from './SearchInput.es';
 import SearchContext from './SearchContext.es';
-import SearchInput from './SearchInput.es';
 import SearchSort from './SearchSort.es';
 
 export default ({columns, totalCount}) => {
-	const [{keywords}] = useContext(SearchContext);
+	const [{keywords}, dispatch] = useContext(SearchContext);
 	const disabled = keywords === '' && totalCount === 0;
 
 	return (
 		<div className="navbar-form navbar-form-autofit navbar-overlay navbar-overlay-sm-down">
 			<div className="container-fluid container-fluid-max-xl">
 				<SearchSort columns={columns} disabled={disabled} />
-				<SearchInput disabled={disabled} />
+
+				<div className="navbar-form navbar-form-autofit navbar-overlay navbar-overlay-sm-down">
+					<div className="container-fluid container-fluid-max-xl">
+						<SearchInputWithForm
+							disabled={disabled}
+							onSubmit={searchText =>
+								dispatch({keywords: searchText, type: 'SEARCH'})
+							}
+							searchText={keywords}
+						/>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

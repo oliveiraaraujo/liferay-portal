@@ -12,12 +12,12 @@
  * details.
  */
 
-import {ClayButtonWithIcon} from '@clayui/button';
 import ClayDropDown, {Align} from '@clayui/drop-down';
-import {ClayCheckbox, ClayInput} from '@clayui/form';
+import {ClayCheckbox} from '@clayui/form';
 import classNames from 'classnames';
 import React, {useContext, useEffect, useState} from 'react';
 
+import SearchInput from '../../components/management-toolbar/search/SearchInput.es';
 import {getItem} from '../../utils/client.es';
 import EditAppContext, {
 	PRODUCT_MENU,
@@ -53,14 +53,14 @@ export default () => {
 
 	const [sites, setSites] = useState([]);
 	const [active, setActive] = useState(false);
-	const [keywords, setKeywords] = useState('');
+	const [searchText, setSearchText] = useState('');
 
 	const filteredSites = sites.filter(item => {
-		if (!keywords) {
+		if (!searchText) {
 			return true;
 		}
 
-		const regex = new RegExp(keywords, 'ig');
+		const regex = new RegExp(searchText, 'ig');
 		return regex.test(item.name);
 	});
 
@@ -69,10 +69,6 @@ export default () => {
 			({items: sites = []}) => setSites(sites)
 		);
 	}, []);
-
-	const onFilterSites = event => {
-		setKeywords(event.target.value);
-	};
 
 	const onScopeChange = event => {
 		const scope = event.target.value;
@@ -168,29 +164,11 @@ export default () => {
 						>
 							<ItemList>
 								<Item key={'search'}>
-									<ClayInput.Group>
-										<ClayInput.GroupItem>
-											<ClayInput
-												aria-label={Liferay.Language.get(
-													'search'
-												)}
-												className="input-group-inset input-group-inset-after"
-												onChange={onFilterSites}
-												placeholder={`${Liferay.Language.get(
-													'search'
-												)}...`}
-												type="text"
-												value={keywords}
-											/>
-
-											<ClayInput.GroupInsetItem after>
-												<ClayButtonWithIcon
-													displayType="unstyled"
-													symbol="search"
-												/>
-											</ClayInput.GroupInsetItem>
-										</ClayInput.GroupItem>
-									</ClayInput.Group>
+									<SearchInput
+										onChange={searchText =>
+											setSearchText(searchText)
+										}
+									/>
 								</Item>
 
 								<Item key={SITE_ID_ALL}>

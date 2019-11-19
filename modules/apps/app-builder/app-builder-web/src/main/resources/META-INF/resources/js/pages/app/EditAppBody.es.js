@@ -12,28 +12,23 @@
  * details.
  */
 
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 
-import Button from '../../components/button/Button.es';
+import SearchInput from '../../components/management-toolbar/search/SearchInput.es';
 import {useRequest} from '../../hooks/index.es';
 import ListItems from './ListItems.es';
 
 export default ({endpoint, title, ...restProps}) => {
-	const [keywords, setKeywords] = useState('');
-	const regex = new RegExp(keywords, 'ig');
-	const searchInput = useRef(null);
+	const [searchText, setSearchText] = useState('');
 
 	const {
 		response: {items = []},
 		isLoading
 	} = useRequest(endpoint);
 
-	const filteredItems = items.filter(item => regex.test(item.name.en_US));
-
-	const onSearchClear = () => {
-		setKeywords('');
-		searchInput.current.focus();
-	};
+	const filteredItems = items.filter(item =>
+		new RegExp(searchText, 'ig').test(item.name.en_US)
+	);
 
 	return (
 		<>
@@ -45,39 +40,9 @@ export default ({endpoint, title, ...restProps}) => {
 
 			<div className="autofit-row mb-4 pl-4 pr-4">
 				<div className="autofit-col-expand">
-					<div className="input-group">
-						<div className="input-group-item">
-							<input
-								aria-label={Liferay.Language.get('search')}
-								className="form-control input-group-inset input-group-inset-after"
-								onChange={event =>
-									setKeywords(event.target.value)
-								}
-								placeholder={`${Liferay.Language.get(
-									'search'
-								)}...`}
-								ref={searchInput}
-								type="text"
-								value={keywords}
-							/>
-							<div className="input-group-inset-item input-group-inset-item-after">
-								{keywords ? (
-									<Button
-										displayType="unstyled"
-										key="timesButton"
-										onClick={onSearchClear}
-										symbol="times"
-									/>
-								) : (
-									<Button
-										displayType="unstyled"
-										key="searchButton"
-										symbol="search"
-									/>
-								)}
-							</div>
-						</div>
-					</div>
+					<SearchInput
+						onChange={searchText => setSearchText(searchText)}
+					/>
 				</div>
 			</div>
 
@@ -87,7 +52,7 @@ export default ({endpoint, title, ...restProps}) => {
 						isEmpty={filteredItems.length === 0}
 						isLoading={isLoading}
 						items={filteredItems}
-						keywords={keywords}
+						keywords={searchText}
 						{...restProps}
 					/>
 				</div>

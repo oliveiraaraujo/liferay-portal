@@ -12,13 +12,13 @@
  * details.
  */
 
-import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
-import {ClayInput} from '@clayui/form';
+import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
 import ClayModal, {useModal} from '@clayui/modal';
 import React, {useState} from 'react';
 
 import ManagementToolbar from '../../components/management-toolbar/ManagementToolbar.es';
+import SearchInput from '../../components/management-toolbar/search/SearchInput.es';
 import Table from '../../components/table/Table.es';
 import {useRequest} from '../../hooks/index.es';
 
@@ -72,7 +72,7 @@ export default ({onClose, visible}) => {
 	} = useRequest('/o/headless-admin-user/v1.0/roles');
 
 	const [permissions, setPermissions] = useState([]);
-	const [keywords, setKeywords] = useState('');
+	const [searchText, setSearchText] = useState('');
 
 	if (!visible) {
 		return <></>;
@@ -87,10 +87,6 @@ export default ({onClose, visible}) => {
 			({actionsIds, roleName: name}) =>
 				name === roleName && actionsIds.includes(actionId)
 		);
-
-	const onSearch = ({target: {value}}) => {
-		setKeywords(value);
-	};
 
 	const togglePermission = (roleName, actionId) => {
 		const exists = permissions.some(
@@ -127,7 +123,7 @@ export default ({onClose, visible}) => {
 				name !== 'Site Owner' &&
 				roleType !== 'organization'
 		)
-		.filter(({name}) => new RegExp(keywords, 'ig').test(name))
+		.filter(({name}) => new RegExp(searchText, 'ig').test(name))
 		.map(({name, roleType}) => {
 			let item = {
 				name: (
@@ -164,24 +160,9 @@ export default ({onClose, visible}) => {
 			</ClayModal.Header>
 			<ClayModal.Body>
 				<ManagementToolbar>
-					<ClayInput.Group>
-						<ClayInput.GroupItem>
-							<ClayInput
-								aria-label={Liferay.Language.get('search-for')}
-								className="input-group-inset input-group-inset-after"
-								onChange={onSearch}
-								placeholder={Liferay.Language.get('search-for')}
-								type="text"
-								value={keywords}
-							/>
-							<ClayInput.GroupInsetItem after>
-								<ClayButtonWithIcon
-									displayType="unstyled"
-									symbol="search"
-								/>
-							</ClayInput.GroupInsetItem>
-						</ClayInput.GroupItem>
-					</ClayInput.Group>
+					<SearchInput
+						onChange={searchText => setSearchText(searchText)}
+					/>
 				</ManagementToolbar>
 
 				<Table align="center" columns={COLUMNS} items={filteredRoles} />

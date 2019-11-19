@@ -14,7 +14,7 @@
 
 import {ClayButtonWithIcon} from '@clayui/button';
 import ClayDropDown, {Align} from '@clayui/drop-down';
-import ClayForm, {ClayInput} from '@clayui/form';
+import ClayForm from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import classNames from 'classnames';
 import React, {
@@ -26,6 +26,7 @@ import React, {
 	useLayoutEffect
 } from 'react';
 
+import SearchInput from '../../components/management-toolbar/search/SearchInput.es';
 import Sidebar from '../../components/sidebar/Sidebar.es';
 import {useKeyDown} from '../../hooks/index.es';
 import isClickOutside from '../../utils/clickOutside.es';
@@ -108,7 +109,7 @@ const DropDown = () => {
 	);
 };
 
-const Header = ({keywords, onCloseSearch, onSearch}) => {
+const Header = ({onCloseSearch, onSearch, searchText}) => {
 	const [searchMode, setSearchMode] = useState(false);
 
 	const closeSearch = useCallback(() => {
@@ -118,8 +119,6 @@ const Header = ({keywords, onCloseSearch, onSearch}) => {
 
 	const onClickClose = () => closeSearch();
 	const onClickSearch = () => setSearchMode(true);
-
-	const onChangeSearchInput = ({target}) => onSearch(target.value);
 
 	useKeyDown(() => {
 		if (searchMode) {
@@ -156,29 +155,14 @@ const Header = ({keywords, onCloseSearch, onSearch}) => {
 					{searchMode ? (
 						<>
 							<div className="autofit-col autofit-col-expand">
-								<ClayInput.Group>
-									<ClayInput.GroupItem>
-										<ClayInput
-											aria-label={Liferay.Language.get(
-												'search'
-											)}
-											className="input-group-inset input-group-inset-after"
-											onChange={onChangeSearchInput}
-											placeholder={Liferay.Language.get(
-												'search'
-											)}
-											ref={searchInputRef}
-											type="text"
-											value={keywords}
-										/>
-										<ClayInput.GroupInsetItem after>
-											<ClayButtonWithIcon
-												displayType="unstyled"
-												symbol="search"
-											/>
-										</ClayInput.GroupInsetItem>
-									</ClayInput.GroupItem>
-								</ClayInput.Group>
+								<SearchInput
+									clearButton={false}
+									onChange={searchText =>
+										onSearch(searchText)
+									}
+									ref={searchInputRef}
+									searchText={searchText}
+								/>
 							</div>
 							<div className="autofit-col ml-2" key="closeButton">
 								<ClayButtonWithIcon
@@ -221,7 +205,7 @@ export default () => {
 		},
 		dispatch
 	] = useContext(FormViewContext);
-	const [keywords, setKeywords] = useState('');
+	const [searchText, setSearchText] = useState('');
 	const sidebarRef = useRef();
 
 	useKeyDown(() => {
@@ -256,9 +240,9 @@ export default () => {
 		<Sidebar closeable={false} ref={sidebarRef}>
 			<>
 				<Header
-					keywords={keywords}
-					onCloseSearch={() => setKeywords('')}
-					onSearch={keywords => setKeywords(keywords)}
+					onCloseSearch={() => setSearchText('')}
+					onSearch={searchText => setSearchText(searchText)}
+					searchText={searchText}
 				/>
 
 				<Sidebar.Body className={classNames({empty})}>
@@ -279,7 +263,7 @@ export default () => {
 							</p>
 						</div>
 					) : (
-						<CustomObjectFieldsList keywords={keywords} />
+						<CustomObjectFieldsList keywords={searchText} />
 					)}
 				</Sidebar.Body>
 			</>
