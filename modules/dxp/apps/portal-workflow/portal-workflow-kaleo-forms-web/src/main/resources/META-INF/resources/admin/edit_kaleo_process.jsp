@@ -27,6 +27,8 @@ if (Validator.isNull(redirect)) {
 	redirect = redirectURL.toString();
 }
 
+String historyKey = ParamUtil.getString(request, "historyKey");
+
 KaleoProcess kaleoProcess = (KaleoProcess)request.getAttribute(KaleoFormsWebKeys.KALEO_PROCESS);
 
 long kaleoProcessId = BeanParamUtil.getLong(kaleoProcess, request, "kaleoProcessId");
@@ -40,8 +42,6 @@ boolean kaleoProcessStarted = false;
 if (kaleoProcess != null) {
 	kaleoProcessStarted = (DDLRecordLocalServiceUtil.getRecordsCount(kaleoProcess.getDDLRecordSetId(), WorkflowConstants.STATUS_ANY) > 0);
 }
-
-String historyKey = ParamUtil.getString(request, "historyKey");
 
 portletDisplay.setShowBackIcon(true);
 
