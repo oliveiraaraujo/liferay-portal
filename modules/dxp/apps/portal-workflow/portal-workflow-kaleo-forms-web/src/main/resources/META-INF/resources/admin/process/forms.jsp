@@ -41,8 +41,8 @@ String workflowDefinition = KaleoFormsUtil.getWorkflowDefinition(kaleoProcess, p
 
 <portlet:renderURL var="backURL">
 	<portlet:param name="mvcPath" value="/admin/edit_kaleo_process.jsp" />
-	<portlet:param name="kaleoProcessId" value="<%= String.valueOf(kaleoProcessId) %>" />
 	<portlet:param name="historyKey" value="forms" />
+	<portlet:param name="kaleoProcessId" value="<%= String.valueOf(kaleoProcessId) %>" />
 </portlet:renderURL>
 
 <div id="<portlet:namespace />resultsContainer">
