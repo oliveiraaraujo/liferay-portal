@@ -297,7 +297,7 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 					dynamicQuery.add(
 						plidProperty.in(layoutRevisionDynamicQuery));
 				});
-
+			actionableDynamicQuery.setParallel(true);
 			actionableDynamicQuery.setPerformActionMethod(
 				(com.liferay.portal.kernel.model.PortletPreferences
 					portletPreferences) -> {
@@ -346,8 +346,6 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 						portletPreferences);
 				});
 
-			actionableDynamicQuery.setParallel(true);
-
 			actionableDynamicQuery.performActions();
 		}
 		finally {
@@ -364,6 +362,7 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 			ActionableDynamicQuery actionableDynamicQuery =
 				_portletPreferencesLocalService.getActionableDynamicQuery();
 
+			actionableDynamicQuery.setParallel(true);
 			actionableDynamicQuery.setPerformActionMethod(
 				(com.liferay.portal.kernel.model.PortletPreferences pref) -> {
 					if ((pref.getOwnerId() !=
@@ -404,8 +403,6 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 							deletePortletPreferences(pref);
 					}
 				});
-
-			actionableDynamicQuery.setParallel(true);
 
 			actionableDynamicQuery.performActions();
 		}
