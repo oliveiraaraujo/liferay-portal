@@ -18,7 +18,7 @@
 
 		<!-- Other fields -->
 
-		<column name="message" type="Blob" />
+		<column name="body" type="Blob" />
 
 		<!-- Order -->
 
