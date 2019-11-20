@@ -17,8 +17,8 @@ import ClayForm from '@clayui/form';
 import classNames from 'classnames';
 import React, {useState, useEffect} from 'react';
 
-import SearchInput from '../management-toolbar/search/SearchInput.es';
 import Button from '../button/Button.es';
+import SearchInput from '../management-toolbar/search/SearchInput.es';
 
 const Sidebar = React.forwardRef(
 	(
