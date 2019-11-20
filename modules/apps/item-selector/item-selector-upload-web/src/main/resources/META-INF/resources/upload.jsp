@@ -31,8 +31,6 @@ if (Validator.isNotNull(namespace)) {
 	uploadURL = HttpUtil.addParameter(uploadURL, namespace + "returnType", itemSelectorReturnTypeClass.getName());
 }
 
-String[] extensions = itemSelectorUploadViewDisplayContext.getExtensions();
-
 Map<String, Object> context = new HashMap<>();
 
 context.put("closeCaption", itemSelectorUploadViewDisplayContext.getTitle(locale));
@@ -41,7 +39,7 @@ context.put("maxFileSize", itemSelectorUploadViewDisplayContext.getMaxFileSize()
 context.put("rootNode", "#itemSelectorUploadContainer");
 context.put("uploadItemReturnType", HtmlUtil.escapeAttribute(itemSelectorReturnTypeClass.getName()));
 context.put("uploadItemURL", uploadURL.toString());
-context.put("validExtensions", ArrayUtil.isEmpty(extensions) ? "*" : StringUtil.merge(extensions));
+context.put("validExtensions", ArrayUtil.isEmpty(itemSelectorUploadViewDisplayContext.getExtensions()) ? "*" : StringUtil.merge(itemSelectorUploadViewDisplayContext.getExtensions()));
 %>
 
 <div class="container-fluid-1280 lfr-item-viewer" id="itemSelectorUploadContainer">
