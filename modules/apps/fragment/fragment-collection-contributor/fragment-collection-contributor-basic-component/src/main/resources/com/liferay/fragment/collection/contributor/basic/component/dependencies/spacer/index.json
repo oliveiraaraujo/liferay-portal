@@ -11,23 +11,15 @@
 					"typeOptions": {
 						"validValues": [
 							{
-								"label": "1",
-								"value": "py-1"
-							},
-							{
-								"label": "2",
-								"value": "py-2"
-							},
-							{
-								"label": "3",
+								"label": "small",
 								"value": "py-3"
 							},
 							{
-								"label": "4",
+								"label": "medium",
 								"value": "py-4"
 							},
 							{
-								"label": "5",
+								"label": "large",
 								"value": "py-5"
 							}
 						]
