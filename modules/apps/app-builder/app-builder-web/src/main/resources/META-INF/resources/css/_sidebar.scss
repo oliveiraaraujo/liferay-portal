@@ -25,6 +25,7 @@
 		transform: translateX(0%);
 		transition: transform 0.3s $animation;
 		width: $sidebarMiniWidth;
+		z-index: 60;
 
 		&.closed {
 			transform: translateX($sidebarMiniWidth);
