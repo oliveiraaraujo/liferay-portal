@@ -46,8 +46,8 @@ public class RoleModelListener extends BaseModelListener<Role> {
 			throw new ModelListenerException(
 				new RequiredRoleException(
 					StringBundler.concat(
-						"Role: ", role.getName(),
-						" is required by an AccountRole with primary key: ",
+						"Role \"", role.getName(),
+						"\" is required by account role ",
 						accountRole.getAccountRoleId())));
 		}
 	}
