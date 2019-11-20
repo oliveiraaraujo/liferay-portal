@@ -3490,9 +3490,17 @@ log.sanitizer.enabled=false</echo>
 
 				<database-test-action database.type="mysql">
 					<action>
-						<exec executable="${database.service.executable}">
-							<arg line="${database.service.cmd.start}" />
-						</exec>
+						<if>
+							<equals arg1="${env.DOCKER_ENABLED}" arg2="true" />
+							<then>
+								<start-docker-database />
+							</then>
+							<else>
+								<exec executable="${database.service.executable}">
+									<arg line="${database.service.cmd.start}" />
+								</exec>
+							</else>
+						</if>
 					</action>
 				</database-test-action>
 
