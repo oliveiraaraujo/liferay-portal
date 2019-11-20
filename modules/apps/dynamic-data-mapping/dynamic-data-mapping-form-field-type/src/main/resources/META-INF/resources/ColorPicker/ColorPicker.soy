@@ -24,7 +24,7 @@
 		{param contentRenderer kind="html"}
 			{call ColorPickerAdapter.render}
 				{param events: ['dispatch': $_handleOnDispatch] /}
-				{param ref: 'colorPicker' /}
+				{param ref: $name /}
 				{param store: [
 					'inputValue': $inputValue,
 					'name': $name,

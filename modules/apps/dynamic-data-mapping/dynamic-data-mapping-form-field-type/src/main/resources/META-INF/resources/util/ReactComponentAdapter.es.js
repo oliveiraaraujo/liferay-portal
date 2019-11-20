@@ -65,10 +65,12 @@ function getConnectedReactComponentAdapter(ReactComponent, templates) {
 		}
 
 		render() {
+			const {events, ref, store} = this.props;
+
 			/* eslint-disable no-undef */
 			IncrementalDOM.elementOpen(
 				'div',
-				null,
+				ref,
 				[],
 				'class',
 				'react-component-adapter'
@@ -79,10 +81,7 @@ function getConnectedReactComponentAdapter(ReactComponent, templates) {
 			/* eslint-enable no-undef */
 
 			// eslint-disable-next-line liferay-portal/no-react-dom-render
-			ReactDOM.render(
-				<ReactComponent {...this.props.events} {...this.props.store} />,
-				element
-			);
+			ReactDOM.render(<ReactComponent {...events} {...store} />, element);
 
 			this.instance_ = element;
 		}

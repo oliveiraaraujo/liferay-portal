@@ -108,13 +108,13 @@ ColorPicker.STATE = {
 	name: Config.string().required(),
 
 	/**
-	 * @default undefined
+	 * @default '000000'
 	 * @instance
 	 * @memberof Text
 	 * @type {?(string|undefined)}
 	 */
 
-	predefinedValue: Config.string(),
+	predefinedValue: Config.string().value('000000'),
 
 	/**
 	 * @default false
