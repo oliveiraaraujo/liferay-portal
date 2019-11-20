@@ -32,7 +32,7 @@ public class UpgradeCTModel extends UpgradeProcess {
 
 	public UpgradeCTModel(String... tableNames) {
 		if (tableNames.length == 0) {
-			throw new IllegalArgumentException("Empty table names");
+			throw new IllegalArgumentException("Table names is empty");
 		}
 
 		_tableNames = tableNames;
