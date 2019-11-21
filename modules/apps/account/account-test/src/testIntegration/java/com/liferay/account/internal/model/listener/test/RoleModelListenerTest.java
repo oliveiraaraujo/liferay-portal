@@ -71,8 +71,7 @@ public class RoleModelListenerTest {
 			_roleLocalService.deleteRole(_accountRole.getRoleId());
 
 			Assert.fail(
-				"Should not be able to directly delete a role associated " +
-					"with an AccountRole");
+				"Allowed to delete a role associated with an account role");
 		}
 		catch (ModelListenerException mle) {
 			Throwable throwable = mle.getCause();
