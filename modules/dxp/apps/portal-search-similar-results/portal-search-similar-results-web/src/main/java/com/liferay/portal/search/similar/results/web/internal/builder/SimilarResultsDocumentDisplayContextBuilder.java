@@ -373,8 +373,8 @@ public class SimilarResultsDocumentDisplayContextBuilder {
 			catch (Exception e) {
 				if (_log.isWarnEnabled()) {
 					_log.warn(
-						"Blogs entry thumbnail url exception and contains " +
-							"blogs entry id " + blogsEntry.getEntryId());
+						"Blogs entry thumbnail URL exception and contains " +
+							"blogs entry ID " + blogsEntry.getEntryId());
 				}
 			}
 
@@ -398,8 +398,8 @@ public class SimilarResultsDocumentDisplayContextBuilder {
 			catch (Exception e) {
 				if (_log.isWarnEnabled()) {
 					_log.warn(
-						"JournalArticle entry thumbnail url exception and " +
-							"contains journal article classPK " + classPK);
+						"Journal article thumbnail URL exception and " +
+							"contains journal article class PK " + classPK);
 				}
 			}
 
