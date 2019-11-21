@@ -45,10 +45,6 @@ public class AccountRoleImpl extends AccountRoleBaseImpl {
 	public String getRoleName() throws PortalException {
 		Role role = getRole();
 
-		if (role == null) {
-			return StringPool.BLANK;
-		}
-
 		return role.getName();
 	}
 
