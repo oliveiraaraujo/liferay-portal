@@ -107,8 +107,8 @@ public class AccountRoleLocalServiceImpl
 	public void deleteAccountRolesByCompanyId(long companyId) {
 		if (!CompanyThreadLocal.isDeleteInProcess()) {
 			throw new UnsupportedOperationException(
-				"Deleting AccountRoles by companyId is only supported during " +
-					"company deletion");
+				"Deleting account roles by company must be called when " +
+					"deleting a company");
 		}
 
 		accountRolePersistence.removeByCompanyId(companyId);
