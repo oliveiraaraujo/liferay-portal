@@ -45,11 +45,11 @@ public class GroupSelectorDisplayContext {
 	}
 
 	public String getGroupItemSelectorIcon(String groupType) {
-		Optional<GroupItemSelectorProvider> groupItemSelectorProviderOptional =
+		Optional<GroupItemSelectorProvider> optional =
 			GroupItemSelectorTrackerUtil.getGroupItemSelectorProviderOptional(
 				groupType);
 
-		return groupItemSelectorProviderOptional.map(
+		return optional.map(
 			GroupItemSelectorProvider::getIcon
 		).orElse(
 			"folder"
@@ -57,11 +57,11 @@ public class GroupSelectorDisplayContext {
 	}
 
 	public String getGroupItemSelectorLabel(String groupType) {
-		Optional<GroupItemSelectorProvider> groupItemSelectorProviderOptional =
+		Optional<GroupItemSelectorProvider> optional =
 			GroupItemSelectorTrackerUtil.getGroupItemSelectorProviderOptional(
 				groupType);
 
-		return groupItemSelectorProviderOptional.map(
+		return optional.map(
 			groupItemSelectorProvider -> groupItemSelectorProvider.getLabel(
 				_liferayPortletRequest.getLocale())
 		).orElse(

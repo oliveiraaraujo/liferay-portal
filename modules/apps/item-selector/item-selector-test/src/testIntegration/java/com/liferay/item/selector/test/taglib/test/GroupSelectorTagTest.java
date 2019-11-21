@@ -148,9 +148,9 @@ public class GroupSelectorTagTest {
 	protected ThemeDisplay getThemeDisplay() throws Exception {
 		ThemeDisplay themeDisplay = new ThemeDisplay();
 
-		themeDisplay.setScopeGroupId(TestPropsValues.getGroupId());
 		themeDisplay.setCompany(
 			_companyLocalService.getCompany(TestPropsValues.getCompanyId()));
+		themeDisplay.setScopeGroupId(TestPropsValues.getGroupId());
 
 		return themeDisplay;
 	}
@@ -160,10 +160,8 @@ public class GroupSelectorTagTest {
 
 		GroupSelectorTag groupSelectorTag = new GroupSelectorTag();
 
-		MockPageContext mockPageContext = new MockPageContext(
-			null, httpServletRequest);
-
-		groupSelectorTag.setPageContext(mockPageContext);
+		groupSelectorTag.setPageContext(
+			new MockPageContext(null, httpServletRequest));
 
 		return groupSelectorTag;
 	}

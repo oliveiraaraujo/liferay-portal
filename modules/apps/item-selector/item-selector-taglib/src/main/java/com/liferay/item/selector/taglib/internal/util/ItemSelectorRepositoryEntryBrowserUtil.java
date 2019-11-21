@@ -200,9 +200,9 @@ public class ItemSelectorRepositoryEntryBrowserUtil {
 		PortletURL viewGroupSelectorURL = PortletURLUtil.clone(
 			portletURL, liferayPortletResponse);
 
+		viewGroupSelectorURL.setParameter("groupType", "site");
 		viewGroupSelectorURL.setParameter(
 			"showGroupSelector", Boolean.TRUE.toString());
-		viewGroupSelectorURL.setParameter("groupType", "site");
 
 		ResourceBundleLoader resourceBundleLoader =
 			ResourceBundleLoaderUtil.

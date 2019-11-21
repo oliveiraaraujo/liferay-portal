@@ -17,14 +17,12 @@
 <%@ include file="/group_selector/init.jsp" %>
 
 <%
-GroupSelectorDisplayContext groupSelectorDisplayContext = new GroupSelectorDisplayContext(liferayPortletRequest);
-%>
-
-<%
 List<Group> groups = (List<Group>)request.getAttribute("liferay-item-selector:group-selector:groups");
 int groupsCount = GetterUtil.getInteger(request.getAttribute("liferay-item-selector:group-selector:groupsCount"));
 
 String groupType = ParamUtil.getString(request, "groupType");
+
+GroupSelectorDisplayContext groupSelectorDisplayContext = new GroupSelectorDisplayContext(liferayPortletRequest);
 
 SearchContainer searchContainer = new GroupSearch(liferayPortletRequest, groupSelectorDisplayContext.getIteratorURL());
 %>
