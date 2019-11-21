@@ -12,6 +12,21 @@
  * details.
  */
 
-module.exports = {
-	extends: ['liferay/react']
+import React, {createContext} from 'react';
+
+const AppContext = createContext();
+
+const AppContextProvider = ({children, ...restProps}) => {
+	return (
+		<AppContext.Provider
+			value={{
+				siteId: Liferay.ThemeDisplay.getCompanyGroupId(),
+				...restProps
+			}}
+		>
+			{children}
+		</AppContext.Provider>
+	);
 };
+
+export {AppContext, AppContextProvider};

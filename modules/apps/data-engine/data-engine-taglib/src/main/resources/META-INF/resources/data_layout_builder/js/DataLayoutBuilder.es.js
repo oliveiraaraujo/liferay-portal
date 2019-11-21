@@ -12,6 +12,8 @@
  * details.
  */
 
+/* eslint-disable */
+
 import FormBuilder from 'dynamic-data-mapping-form-builder/js/components/FormBuilder/FormBuilder.es';
 import LayoutProvider from 'dynamic-data-mapping-form-builder/js/components/LayoutProvider/LayoutProvider.es';
 import {pageStructure} from 'dynamic-data-mapping-form-builder/js/util/config.es';
@@ -53,7 +55,7 @@ class DataLayoutBuilder extends Component {
 	}
 
 	dispatch(event, payload) {
-		this.refs.layoutProvider.dispatch(event, payload);
+		this['refs'].layoutProvider.dispatch(event, payload);
 	}
 
 	disposed() {
@@ -191,17 +193,17 @@ class DataLayoutBuilder extends Component {
 	}
 
 	getProvider() {
-		return this.refs.layoutProvider;
+		return this['refs'].layoutProvider;
 	}
 
 	getStore() {
 		return {
-			...this.refs.layoutProvider.state
+			...this['refs'].layoutProvider.state
 		};
 	}
 
 	onAvailableLocalesRemoved({newValue, previousValue}) {
-		const {layoutProvider} = this.refs;
+		const {layoutProvider} = this['refs'];
 
 		const removedItems = new Map();
 
@@ -243,6 +245,12 @@ class DataLayoutBuilder extends Component {
 
 		const LayoutProviderTag = LayoutProvider;
 
+		metalFormBuilder.props.editg = mewLa
+
+		useEffect(() => {
+			metal.props.editingLocale = editingLanguageId
+		}, [editingLanguageId])
+
 		return (
 			<div class={'ddm-form-builder'}>
 				<LayoutProviderTag {...layoutProviderProps}>
@@ -250,8 +258,8 @@ class DataLayoutBuilder extends Component {
 						defaultLanguageId={defaultLanguageId}
 						editingLanguageId={editingLanguageId}
 						fieldTypes={fieldTypes}
-						portletNamespace={portletNamespace}
 						paginationMode={'wizard'}
+						portletNamespace={portletNamespace}
 						ref="builder"
 						spritemap={spritemap}
 					/>

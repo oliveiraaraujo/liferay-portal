@@ -12,6 +12,25 @@
  * details.
  */
 
-module.exports = {
-	extends: ['liferay/react']
+import {useEffect, useRef} from 'react';
+
+export default (callback, targetKeyCode, element = window) => {
+	const callbackRef = useRef();
+
+	useEffect(() => {
+		callbackRef.current = callback;
+	}, [callback]);
+
+	useEffect(() => {
+		const handler = () => {
+			if (window.event.keyCode === targetKeyCode) {
+				callbackRef.current(window.event);
+			}
+		};
+
+		const current = element.current ? element.current : element;
+		current.addEventListener('keydown', handler);
+
+		return () => current.removeEventListener('keydown', handler);
+	}, [element, callbackRef, targetKeyCode]);
 };

@@ -12,6 +12,4 @@
  * details.
  */
 
-module.exports = {
-	extends: ['liferay/react']
-};
+export const DRAG_FIELD_TYPE = 'fieldType';

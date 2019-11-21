@@ -12,6 +12,18 @@
  * details.
  */
 
-module.exports = {
-	extends: ['liferay/react']
+import {normalizeFieldName} from 'dynamic-data-mapping-form-renderer/js/util/fields.es';
+
+const findFieldByName = (dataDefinitionFields, fieldName) =>
+	dataDefinitionFields.find(({name}) => name === fieldName);
+
+export default ({dataDefinitionFields}, fieldTypeName) => {
+	let counter = 0;
+	let name = normalizeFieldName(fieldTypeName);
+
+	while (findFieldByName(dataDefinitionFields, name)) {
+		name = normalizeFieldName(`${fieldTypeName}${++counter}`);
+	}
+
+	return name;
 };

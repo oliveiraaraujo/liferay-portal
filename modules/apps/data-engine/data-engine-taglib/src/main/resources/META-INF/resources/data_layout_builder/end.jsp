@@ -18,6 +18,21 @@
 
 <div id="<%= componentId + "container" %>"></div>
 
+<portlet:renderURL var="basePortletURL" />
+
+<%
+Map<String, Object> data = new HashMap<>();
+
+data.put("dataLayoutBuilderElementId", renderResponse.getNamespace() + "-data-layout-builder");
+data.put("dataLayoutBuilderId", componentId);
+data.put("dataLayoutId", dataLayoutId);
+%>
+
+<react:component
+	data="<%= data %>"
+	module="data_layout_builder/js/DataLayoutBuilderApp.es"
+/>
+
 <aui:script require='<%= fieldTypesModules + ", " + dataLayoutBuilderModule + " as DataLayoutBuilder" %>'>
 	Liferay.component(
 		'<%= componentId %>',

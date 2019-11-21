@@ -12,6 +12,8 @@
  * details.
  */
 
-module.exports = {
-	extends: ['liferay/react']
-};
+import {createContext} from 'react';
+
+const DataLayoutBuilderContext = createContext();
+
+export default DataLayoutBuilderContext;
