@@ -32,8 +32,8 @@ public class OrganizationModelListener
 	extends BaseEntityModelListener<Organization> {
 
 	@Override
-	protected List<String> getAttributes() {
-		return _attributes;
+	protected List<String> getAttributeNames() {
+		return _attributeNames;
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class OrganizationModelListener
 		return "organizationId";
 	}
 
-	private static final List<String> _attributes = Arrays.asList(
+	private static final List<String> _attributeNames = Arrays.asList(
 		"comments", "companyId", "countryId", "createDate",
 		"externalReferenceCode", "logoId", "name", "parentOrganizationId",
 		"recursable", "regionId", "statusId", "treePath", "type", "userId",

@@ -31,8 +31,8 @@ import org.osgi.service.component.annotations.Reference;
 public class UserGroupModelListener extends BaseEntityModelListener<UserGroup> {
 
 	@Override
-	protected List<String> getAttributes() {
-		return _attributes;
+	protected List<String> getAttributeNames() {
+		return _attributeNames;
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class UserGroupModelListener extends BaseEntityModelListener<UserGroup> {
 		return "userGroupId";
 	}
 
-	private static final List<String> _attributes = Arrays.asList(
+	private static final List<String> _attributeNames = Arrays.asList(
 		"addedByLDAPImport", "companyId", "createDate", "description",
 		"externalReferenceCode", "name", "parentUserGroupId", "userId",
 		"userName", "uuid");

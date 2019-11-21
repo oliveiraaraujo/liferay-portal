@@ -31,8 +31,8 @@ import org.osgi.service.component.annotations.Reference;
 public class GroupModelListener extends BaseEntityModelListener<Group> {
 
 	@Override
-	protected List<String> getAttributes() {
-		return _attributes;
+	protected List<String> getAttributeNames() {
+		return _attributeNames;
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class GroupModelListener extends BaseEntityModelListener<Group> {
 		return false;
 	}
 
-	private static final List<String> _attributes = Arrays.asList(
+	private static final List<String> _attributeNames = Arrays.asList(
 		"active", "classNameId", "classPK", "companyId", "creatorUserId",
 		"description", "descriptionCurrentValue", "descriptiveName",
 		"friendlyURL", "groupKey", "inheritContent", "liveGroupId",

@@ -31,8 +31,8 @@ import org.osgi.service.component.annotations.Reference;
 public class ContactModelListener extends BaseEntityModelListener<Contact> {
 
 	@Override
-	protected List<String> getAttributes() {
-		return _attributes;
+	protected List<String> getAttributeNames() {
+		return _attributeNames;
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class ContactModelListener extends BaseEntityModelListener<Contact> {
 		return "contactId";
 	}
 
-	private static final List<String> _attributes = Arrays.asList(
+	private static final List<String> _attributeNames = Arrays.asList(
 		"accountId", "birthday", "classNameId", "classPK", "companyId",
 		"createDate", "employeeNumber", "employeeStatusId", "facebookSn",
 		"firstName", "hoursOfOperation", "jabberSn", "jobClass", "jobTitle",

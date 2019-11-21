@@ -46,7 +46,7 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 
 	@Override
 	public void onAfterCreate(T model) throws ModelListenerException {
-		_addAnalyticsMessage("add", getAttributes(), model);
+		_addAnalyticsMessage("add", getAttributeNames(), model);
 	}
 
 	@Override
@@ -57,21 +57,21 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 	@Override
 	public void onBeforeUpdate(T model) throws ModelListenerException {
 		try {
-			List<String> modifiedAttributes = _getModifiedAttributes(
-				getAttributes(), model, getOriginalModel(model));
+			List<String> modifiedAttributeNames = _getModifiedAttributeNames(
+				getAttributeNames(), model, getOriginalModel(model));
 
-			if (modifiedAttributes.isEmpty()) {
+			if (modifiedAttributeNames.isEmpty()) {
 				return;
 			}
 
-			_addAnalyticsMessage("update", modifiedAttributes, model);
+			_addAnalyticsMessage("update", modifiedAttributeNames, model);
 		}
 		catch (Exception e) {
 			throw new ModelListenerException(e);
 		}
 	}
 
-	protected abstract List<String> getAttributes();
+	protected abstract List<String> getAttributeNames();
 
 	protected abstract T getOriginalModel(T model) throws Exception;
 
@@ -91,13 +91,13 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 	protected UserLocalService userLocalService;
 
 	private void _addAnalyticsMessage(
-		String eventType, List<String> includeAttributes, T model) {
+		String eventType, List<String> includeAttributeNames, T model) {
 
 		if (isExcluded(model)) {
 			return;
 		}
 
-		JSONObject jsonObject = _serialize(includeAttributes, model);
+		JSONObject jsonObject = _serialize(includeAttributeNames, model);
 
 		ShardedModel shardedModel = (ShardedModel)model;
 
@@ -133,10 +133,10 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 		return analyticsConfiguration.dataSourceId();
 	}
 
-	private List<String> _getModifiedAttributes(
+	private List<String> _getModifiedAttributeNames(
 		List<String> attributeNames, T model, T originalModel) {
 
-		List<String> modifiedAttributes = new ArrayList<>();
+		List<String> modifiedAttributeNames = new ArrayList<>();
 
 		for (String attributeName : attributeNames) {
 			String value = String.valueOf(
@@ -145,21 +145,22 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 				BeanPropertiesUtil.getObject(originalModel, attributeName));
 
 			if (!Objects.equals(value, originalValue)) {
-				modifiedAttributes.add(attributeName);
+				modifiedAttributeNames.add(attributeName);
 			}
 		}
 
-		return modifiedAttributes;
+		return modifiedAttributeNames;
 	}
 
-	private JSONObject _serialize(List<String> includeAttributes, T model) {
+	private JSONObject _serialize(List<String> includeAttributeNames, T model) {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		Map<String, Object> modelAttributes = model.getModelAttributes();
 
-		for (String includeAttribute : includeAttributes) {
+		for (String includeAttributeName : includeAttributeNames) {
 			jsonObject.put(
-				includeAttribute, modelAttributes.get(includeAttribute));
+				includeAttributeName,
+				modelAttributes.get(includeAttributeName));
 		}
 
 		jsonObject.put(

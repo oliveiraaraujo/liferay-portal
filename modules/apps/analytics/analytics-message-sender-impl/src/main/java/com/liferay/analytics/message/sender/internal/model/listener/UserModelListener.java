@@ -29,8 +29,8 @@ import org.osgi.service.component.annotations.Component;
 public class UserModelListener extends BaseEntityModelListener<User> {
 
 	@Override
-	protected List<String> getAttributes() {
-		return _attributes;
+	protected List<String> getAttributeNames() {
+		return _attributeNames;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class UserModelListener extends BaseEntityModelListener<User> {
 		return "userId";
 	}
 
-	private static final List<String> _attributes = Arrays.asList(
+	private static final List<String> _attributeNames = Arrays.asList(
 		"agreedToTermsOfUse", "comments", "companyId", "contactId",
 		"createDate", "defaultUser", "emailAddress", "emailAddressVerified",
 		"externalReferenceCode", "facebookId", "firstName", "googleUserId",
