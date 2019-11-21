@@ -53,15 +53,6 @@ public class CompanyModelListenerTest {
 		_company = CompanyTestUtil.addCompany();
 	}
 
-	@After
-	public void tearDown() throws Exception {
-		if (_companyLocalService.fetchCompany(_company.getCompanyId()) !=
-				null) {
-
-			_companyLocalService.deleteCompany(_company);
-		}
-	}
-
 	@Test
 	public void testCleanUpAccountRoles() throws Exception {
 		User defaultUser = _company.getDefaultUser();
@@ -77,6 +68,8 @@ public class CompanyModelListenerTest {
 
 		_companyLocalService.deleteCompany(_company);
 
+		_company = null;
+
 		Assert.assertNull(
 			_accountRoleLocalService.fetchAccountRole(
 				accountRole.getAccountRoleId()));
@@ -88,6 +81,7 @@ public class CompanyModelListenerTest {
 	@Inject
 	private AccountRoleLocalService _accountRoleLocalService;
 
+	@DeleteAfterTestRun
 	private Company _company;
 
 	@Inject

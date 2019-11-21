@@ -58,11 +58,6 @@ public class RoleModelListenerTest {
 		_company = CompanyTestUtil.addCompany();
 	}
 
-	@After
-	public void tearDown() throws Exception {
-		_companyLocalService.deleteCompany(_company);
-	}
-
 	@Test(expected = ModelListenerException.class)
 	public void testDeleteRole() throws Exception {
 		_accountEntry = AccountEntryTestUtil.addAccountEntry(
@@ -105,6 +100,7 @@ public class RoleModelListenerTest {
 	@Inject
 	private AccountRoleLocalService _accountRoleLocalService;
 
+	@DeleteAfterTestRun
 	private Company _company;
 
 	@Inject
