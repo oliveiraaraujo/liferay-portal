@@ -60,11 +60,7 @@ public class RoleModelListenerTest {
 
 	@After
 	public void tearDown() throws Exception {
-		if (_companyLocalService.fetchCompany(_company.getCompanyId()) !=
-				null) {
-
-			_companyLocalService.deleteCompany(_company);
-		}
+		_companyLocalService.deleteCompany(_company);
 	}
 
 	@Test(expected = ModelListenerException.class)
