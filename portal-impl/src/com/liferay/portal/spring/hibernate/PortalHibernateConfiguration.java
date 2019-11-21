@@ -199,9 +199,9 @@ public class PortalHibernateConfiguration extends LocalSessionFactoryBean {
 
 		if (DBManagerUtil.getDBType(dialect) == DBType.ORACLE) {
 
-			// This must be done before the following Configuration creation, to
-			// make sure org.hibernate.cfg.Environment's static init block can
-			// see it.
+			// This must be done before the instantiating Configuration to
+			// ensure that org.hibernate.cfg.Environment's static init block can
+			// see it
 
 			System.setProperty(
 				PropsKeys.HIBERNATE_JDBC_USE_STREAMS_FOR_BINARY, "true");
