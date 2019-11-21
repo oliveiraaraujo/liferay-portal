@@ -14,10 +14,7 @@
 
 package com.liferay.account.model.impl;
 
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 
@@ -40,7 +37,5 @@ public class AccountRoleImpl extends AccountRoleBaseImpl {
 
 		return role.getName();
 	}
-
-	private static Log _log = LogFactoryUtil.getLog(AccountRoleImpl.class);
 
 }
