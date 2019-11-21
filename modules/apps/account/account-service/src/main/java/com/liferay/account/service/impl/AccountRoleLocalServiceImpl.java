@@ -56,8 +56,6 @@ public class AccountRoleLocalServiceImpl
 
 		accountRole.setCompanyId(user.getCompanyId());
 
-		// Role
-
 		Role role = roleLocalService.addRole(
 			userId, AccountRole.class.getName(), accountRole.getAccountRoleId(),
 			name, titleMap, descriptionMap, RoleConstants.TYPE_PROVIDER, null,
@@ -91,8 +89,6 @@ public class AccountRoleLocalServiceImpl
 
 		accountRole = super.deleteAccountRole(accountRole);
 
-		// Role
-
 		roleLocalService.deleteRole(accountRole.getRoleId());
 
 		return accountRole;
@@ -103,8 +99,6 @@ public class AccountRoleLocalServiceImpl
 		throws PortalException {
 
 		AccountRole accountRole = super.deleteAccountRole(accountRoleId);
-
-		// Role
 
 		roleLocalService.deleteRole(accountRole.getRoleId());
 
