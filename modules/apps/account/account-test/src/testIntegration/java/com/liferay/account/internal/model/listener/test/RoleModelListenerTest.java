@@ -82,7 +82,7 @@ public class RoleModelListenerTest {
 			String message = throwable.getMessage();
 
 			Assert.assertTrue(
-				message.contains("is required by an AccountRole"));
+				message.contains(" is required by account role "));
 
 			throw mle;
 		}
