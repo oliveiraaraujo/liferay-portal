@@ -30,15 +30,8 @@ public class AccountRoleImpl extends AccountRoleBaseImpl {
 	}
 
 	@Override
-	public Role getRole() {
-		try {
-			return RoleLocalServiceUtil.getRole(getRoleId());
-		}
-		catch (PortalException pe) {
-			_log.error(pe, pe);
-
-			throw new RuntimeException(pe);
-		}
+	public Role getRole() throws PortalException {
+		return RoleLocalServiceUtil.getRole(getRoleId());
 	}
 
 	@Override
