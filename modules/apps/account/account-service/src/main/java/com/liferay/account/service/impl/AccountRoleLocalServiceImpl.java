@@ -63,9 +63,7 @@ public class AccountRoleLocalServiceImpl
 
 		accountRole.setRoleId(role.getRoleId());
 
-		addAccountRole(accountRole);
-
-		return accountRole;
+		return addAccountRole(accountRole);
 	}
 
 	@Override
