@@ -93,6 +93,8 @@ public class UpdateUserRolesMVCActionCommand extends BaseMVCActionCommand {
 
 			long[] roleIds = _usersAdmin.getRoleIds(actionRequest);
 
+			_validate(user, roleIds);
+
 			List<UserGroupRole> userGroupRoles = null;
 
 			String addGroupRolesGroupIds = actionRequest.getParameter(
@@ -114,19 +116,6 @@ public class UpdateUserRolesMVCActionCommand extends BaseMVCActionCommand {
 
 			ServiceContext serviceContext = ServiceContextFactory.getInstance(
 				User.class.getName(), actionRequest);
-
-			Role administratorRole = _roleService.getRole(
-				user.getCompanyId(), RoleConstants.ADMINISTRATOR);
-
-			long[] administratorUserIds = _userService.getRoleUserIds(
-				administratorRole.getRoleId());
-
-			if ((administratorUserIds.length == 1) &&
-				ArrayUtil.contains(administratorUserIds, user.getUserId()) &&
-				!ArrayUtil.contains(roleIds, administratorRole.getRoleId())) {
-
-				throw new RequiredRoleException.MustNotRemoveLastAdministator();
-			}
 
 			user = _userService.updateUser(
 				user.getUserId(), user.getPassword(), null, null,
@@ -232,6 +221,31 @@ public class UpdateUserRolesMVCActionCommand extends BaseMVCActionCommand {
 		}
 
 		return StringPool.BLANK;
+	}
+
+	private void _validate(User user, long[] roleIds) throws Exception {
+
+		// This is a unique case where we should throw an exception in the
+		// portlet action. The service implementation already guards against
+		// removing the last administrator, but it does so by quietly readding
+		// the administrator role to the roleIds array. We're already safe in
+		// regards to data integrity. However, the goal is to provide the user
+		// feedback as to why the administrator role was not removed. Putting
+		// this check in UserServiceImpl is useless because UsersAdmin readds
+		// the role.
+
+		Role administratorRole = _roleService.getRole(
+			user.getCompanyId(), RoleConstants.ADMINISTRATOR);
+
+		long[] administratorUserIds = _userService.getRoleUserIds(
+			administratorRole.getRoleId());
+
+		if ((administratorUserIds.length == 1) &&
+			ArrayUtil.contains(administratorUserIds, user.getUserId()) &&
+			!ArrayUtil.contains(roleIds, administratorRole.getRoleId())) {
+
+			throw new RequiredRoleException.MustNotRemoveLastAdministator();
+		}
 	}
 
 	@Reference
