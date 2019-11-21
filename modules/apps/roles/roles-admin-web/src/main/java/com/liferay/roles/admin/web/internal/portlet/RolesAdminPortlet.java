@@ -283,9 +283,9 @@ public class RolesAdminPortlet extends MVCPortlet {
 				_userService.unsetRoleUsers(roleId, removeUserIds);
 			}
 			catch (RequiredRoleException.RequiredAdminRoleException |
-				   RequiredRoleException.RequiredUserRoleException rre) {
+				   RequiredRoleException.RequiredUserRoleException e) {
 
-				SessionErrors.add(actionRequest, rre.getClass());
+				SessionErrors.add(actionRequest, e.getClass());
 			}
 		}
 
