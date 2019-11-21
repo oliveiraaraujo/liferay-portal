@@ -40,14 +40,16 @@ public class AnalyticsMessageLocalServiceImpl
 			long companyId, long userId, byte[] body)
 		throws PortalException {
 
-		User user = userLocalService.getUser(userId);
-
 		AnalyticsMessage analyticsMessage = analyticsMessagePersistence.create(
 			counterLocalService.increment());
 
 		analyticsMessage.setCompanyId(companyId);
 		analyticsMessage.setUserId(userId);
+
+		User user = userLocalService.getUser(userId);
+
 		analyticsMessage.setUserName(user.getFullName());
+
 		analyticsMessage.setCreateDate(new Date());
 		analyticsMessage.setBody(
 			new OutputBlob(new UnsyncByteArrayInputStream(body), body.length));
