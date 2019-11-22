@@ -109,7 +109,7 @@ class Analytics {
 			plugin(instance)
 		);
 
-		this.startsFlushLoop();
+		this._startsFlushLoop();
 
 		this._ensureIntegrity();
 
@@ -188,13 +188,13 @@ class Analytics {
 
 					this.failedAttempts = 0;
 					this.delay = this._defaultDelayValue();
-					this.startsFlushLoop();
+					this._startsFlushLoop();
 				})
 				.catch(() => {
 					this.isFlushInProgress = false;
 
 					this._increaseDelay();
-					this.startsFlushLoop();
+					this._startsFlushLoop();
 
 					return this.isFlushInProgress;
 				})
@@ -309,13 +309,6 @@ class Analytics {
 		return this._getUserId().then(userId =>
 			this._sendIdentity(identity, userId)
 		);
-	}
-
-	startsFlushLoop() {
-		if (this.flushInterval) {
-			clearInterval(instance.flushInterval);
-		}
-		this.flushInterval = setInterval(() => this.flush(), this.delay);
 	}
 
 	_addEvent(applicationId, currentContextHash, eventId, eventProps) {
@@ -555,6 +548,13 @@ class Analytics {
 		expirationDate.setDate(expirationDate.getDate() + 365);
 
 		document.cookie = `${key}=${data}; expires= ${expirationDate.toUTCString()}; path=/`;
+	}
+
+	_startsFlushLoop() {
+		if (this.flushInterval) {
+			clearInterval(instance.flushInterval);
+		}
+		this.flushInterval = setInterval(() => this.flush(), this.delay);
 	}
 
 	/**
