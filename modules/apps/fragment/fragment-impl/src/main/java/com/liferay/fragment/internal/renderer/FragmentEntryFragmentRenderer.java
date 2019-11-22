@@ -214,7 +214,9 @@ public class FragmentEntryFragmentRenderer implements FragmentRenderer {
 
 		String html = StringPool.BLANK;
 
-		if (Validator.isNotNull(fragmentEntryLink.getHtml())) {
+		if (Validator.isNotNull(fragmentEntryLink.getHtml()) ||
+			Validator.isNotNull(fragmentEntryLink.getEditableValues())) {
+
 			html = _fragmentEntryProcessorRegistry.processFragmentEntryLinkHTML(
 				fragmentEntryLink, defaultFragmentEntryProcessorContext);
 		}
