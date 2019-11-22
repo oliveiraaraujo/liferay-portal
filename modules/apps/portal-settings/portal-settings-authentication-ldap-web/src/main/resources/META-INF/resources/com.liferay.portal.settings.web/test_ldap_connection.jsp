@@ -30,7 +30,9 @@ if (credentials.equals(Portal.TEMP_OBFUSCATION_VALUE)) {
 	credentials = ldapServerConfiguration.securityCredential();
 }
 
-SafeLdapContext safeLdapContext = PortalLDAPUtil.getInstance().getSafeLdapContext(themeDisplay.getCompanyId(), baseProviderURL, principal, credentials);
+SafePortalLDAP safePortalLDAP = PortalLDAPUtil.getInstance();
+
+SafeLdapContext safeLdapContext = safePortalLDAP.getSafeLdapContext(themeDisplay.getCompanyId(), baseProviderURL, principal, credentials);
 %>
 
 <c:choose>

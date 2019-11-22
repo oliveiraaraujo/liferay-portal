@@ -32,7 +32,11 @@ if (credentials.equals(Portal.TEMP_OBFUSCATION_VALUE)) {
 
 }
 
-SafeLdapContext safeLdapContext = PortalLDAPUtil.getInstance().getSafeLdapContext(themeDisplay.getCompanyId(), baseProviderURL, principal, credentials);
+LDAPFilterValidator ldapFilterValidator = LDAPFilterValidatorUtil.getInstance();
+
+SafePortalLDAP safePortalLDAP = PortalLDAPUtil.getInstance();
+
+SafeLdapContext safeLdapContext = safePortalLDAP.getSafeLdapContext(themeDisplay.getCompanyId(), baseProviderURL, principal, credentials);
 
 if (safeLdapContext == null) {
 %>
@@ -56,7 +60,7 @@ if (Validator.isNull(ParamUtil.getString(request, "userMappingScreenName")) || V
 
 String userFilter = ParamUtil.getString(request, "importUserSearchFilter");
 
-if (!LDAPFilterValidatorUtil.getInstance().isValid(userFilter)) {
+if (!ldapFilterValidator.isValid(userFilter)) {
 %>
 
 	<liferay-ui:message key="please-enter-a-valid-ldap-search-filter" />
@@ -83,7 +87,7 @@ List<SearchResult> searchResults = new ArrayList<SearchResult>();
 
 if (Validator.isNotNull(userFilter) && !userFilter.equals(StringPool.STAR)) {
 	try {
-		PortalLDAPUtil.getInstance().getUsers(themeDisplay.getCompanyId(), safeLdapContext, new byte[0], 20, SafeLdapNameFactory.fromUnsafe(baseDN), SafeLdapFilterFactory.fromUnsafeFilter(userFilter, LDAPFilterValidatorUtil.getInstance()), attributeIds, searchResults);
+		safePortalLDAP.getUsers(themeDisplay.getCompanyId(), safeLdapContext, new byte[0], 20, SafeLdapNameFactory.fromUnsafe(baseDN), SafeLdapFilterFactory.fromUnsafeFilter(userFilter, ldapFilterValidator), attributeIds, searchResults);
 	}
 	catch (NameNotFoundException | InvalidNameException nnfe) {
 %>
