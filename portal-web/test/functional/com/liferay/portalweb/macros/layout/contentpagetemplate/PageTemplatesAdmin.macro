@@ -1,11 +1,8 @@
 definition {
 
 	macro _addPageTemplate {
-		if (isSet(pageTemplateType)) {
-			var menuItem = "${pageTemplateType}";
-		}
-		else {
-			var menuItem = "Content Page Template";
+		if (!(isSet(pageTemplateType)) {
+			var pageTemplateType = "Content Page Template";
 		}
 
 		if ("${siteTemplate}" == "true") {
@@ -14,7 +11,7 @@ definition {
 			LexiconCard.clickCard(card = "Blank");
 		}
 		else {
-			LexiconEntry.gotoAddMenuItem(menuItem = "${menuItem}");
+			LexiconEntry.gotoAddMenuItem(menuItem = "${pageTemplateType}");
 		}
 
 		PortletEntry.inputName(name = "${pageTemplateName}");
