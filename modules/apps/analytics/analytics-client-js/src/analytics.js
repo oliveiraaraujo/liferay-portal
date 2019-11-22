@@ -98,7 +98,7 @@ class Analytics {
 		instance.identityEndpoint = `${endpointUrl}/identity`;
 
 		instance.failedAttempts = 0;
-		instance.delay = this.defaultValueOfDelay();
+		instance.delay = this._defaultDelayValue();
 		instance.events = getItem(STORAGE_KEY_EVENTS) || [];
 		instance.contexts = getItem(STORAGE_KEY_CONTEXTS) || [];
 		instance.isFlushInProgress = false;
@@ -116,7 +116,7 @@ class Analytics {
 		return instance;
 	}
 
-	addEvent(applicationId, currentContextHash, eventId, eventProps) {
+	_addEvent(applicationId, currentContextHash, eventId, eventProps) {
 		this.events = [
 			...this.events,
 			this._serialize(
@@ -128,7 +128,7 @@ class Analytics {
 		];
 	}
 
-	defaultValueOfDelay() {
+	_defaultDelayValue() {
 		return this.config.flushInterval || FLUSH_INTERVAL;
 	}
 
@@ -147,15 +147,15 @@ class Analytics {
 		}
 	}
 
-	fibonacci(num) {
+	_fibonacci(num) {
 		if (num <= 1) {
 			return 1;
 		}
 
-		return this.fibonacci(num - 1) + this.fibonacci(num - 2);
+		return this._fibonacci(num - 1) + this._fibonacci(num - 2);
 	}
 
-	getCurrentContextHash() {
+	_getCurrentContextHash() {
 		const currentContext = this._getContext();
 		const currentContextHash = hash(currentContext);
 
@@ -172,9 +172,9 @@ class Analytics {
 	/**
 	 * Increases delay based on fibonacci sequence
 	 */
-	increaseDelay() {
+	_increaseDelay() {
 		if (this.failedAttempts <= LIMIT_FAILED_ATTEMPTS) {
-			this.delay += this.fibonacci(this.failedAttempts) * 1000;
+			this.delay += this._fibonacci(this.failedAttempts) * 1000;
 
 			this.failedAttempts += 1;
 		}
@@ -183,7 +183,7 @@ class Analytics {
 	/**
 	 * Verify events storage and drop old events when limit is reached
 	 */
-	verifyEventsStorageLimit() {
+	_verifyEventsStorageLimit() {
 		if (this.failedAttempts != 0) {
 			const totalSize = Number(
 				(JSON.stringify(this.events).length * 16) / (8 * 1024)
@@ -421,13 +421,13 @@ class Analytics {
 					this.reset(events);
 
 					this.failedAttempts = 0;
-					this.delay = this.defaultValueOfDelay();
+					this.delay = this._defaultDelayValue();
 					this.startsFlushLoop();
 				})
 				.catch(() => {
 					this.isFlushInProgress = false;
 
-					this.increaseDelay();
+					this._increaseDelay();
 					this.startsFlushLoop();
 
 					return this.isFlushInProgress;
@@ -515,11 +515,11 @@ class Analytics {
 			return;
 		}
 
-		const currentContextHash = this.getCurrentContextHash();
+		const currentContextHash = this._getCurrentContextHash();
 
-		this.addEvent(applicationId, currentContextHash, eventId, eventProps);
+		this._addEvent(applicationId, currentContextHash, eventId, eventProps);
 
-		this.verifyEventsStorageLimit();
+		this._verifyEventsStorageLimit();
 
 		this._persist(STORAGE_KEY_EVENTS, this.events);
 		this._persist(STORAGE_KEY_CONTEXTS, this.contexts);
