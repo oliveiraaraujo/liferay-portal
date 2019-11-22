@@ -116,7 +116,7 @@ class Analytics {
 		return instance;
 	}
 
-	addNewEvent(applicationId, currentContextHash, eventId, eventProps) {
+	addEvent(applicationId, currentContextHash, eventId, eventProps) {
 		this.events = [
 			...this.events,
 			this._serialize(
@@ -148,7 +148,10 @@ class Analytics {
 	}
 
 	fibonacci(num) {
-		if (num <= 1) return 1;
+		if (num <= 1) {
+			return 1;
+		}
+
 		return this.fibonacci(num - 1) + this.fibonacci(num - 2);
 	}
 
@@ -167,19 +170,20 @@ class Analytics {
 	}
 
 	/**
-	 * Increases delay based in fibonacci sequence
+	 * Increases delay based on fibonacci sequence
 	 */
 	increaseDelay() {
 		if (this.failedAttempts <= LIMIT_FAILED_ATTEMPTS) {
 			this.delay += this.fibonacci(this.failedAttempts) * 1000;
+
 			this.failedAttempts += 1;
 		}
 	}
 
 	/**
-	 * Remove old events when event storage limit is reached
+	 * Verify events storage and drop old events when limit is reached
 	 */
-	removeOldEventWhenReachSize() {
+	verifyEventsStorageLimit() {
 		if (this.failedAttempts != 0) {
 			const totalSize = Number(
 				(JSON.stringify(this.events).length * 16) / (8 * 1024)
@@ -512,13 +516,11 @@ class Analytics {
 		}
 
 		const currentContextHash = this.getCurrentContextHash();
-		this.addNewEvent(
-			applicationId,
-			currentContextHash,
-			eventId,
-			eventProps
-		);
-		this.removeOldEventWhenReachSize();
+
+		this.addEvent(applicationId, currentContextHash, eventId, eventProps);
+
+		this.verifyEventsStorageLimit();
+
 		this._persist(STORAGE_KEY_EVENTS, this.events);
 		this._persist(STORAGE_KEY_CONTEXTS, this.contexts);
 	}
