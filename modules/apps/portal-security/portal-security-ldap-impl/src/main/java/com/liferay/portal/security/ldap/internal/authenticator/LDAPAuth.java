@@ -575,8 +575,8 @@ public class LDAPAuth implements Authenticator {
 				_log.debug(
 					StringBundler.concat(
 						"LDAP server ", ldapServerId,
-						" is invalid because company ", companyId,
-						" uses ", ldapServerConfiguration.ldapServerId()));
+						" is invalid because company ", companyId, " uses ",
+						ldapServerConfiguration.ldapServerId()));
 			}
 
 			return DNE;
