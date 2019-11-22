@@ -55,7 +55,7 @@ page import="com.liferay.portal.security.ldap.validator.LDAPFilterException" %><
 page import="com.liferay.portal.security.ldap.validator.LDAPFilterValidator" %><%@
 page import="com.liferay.portal.settings.authentication.ldap.web.internal.portlet.util.ConfigurationProviderUtil" %><%@
 page import="com.liferay.portal.settings.authentication.ldap.web.internal.util.LDAPFilterValidatorUtil" %><%@
-page import="com.liferay.portal.settings.authentication.ldap.web.internal.util.PortalLDAPUtil" %><%@
+page import="com.liferay.portal.settings.authentication.ldap.web.internal.util.SafePortalLDAPUtil" %><%@
 page import="com.liferay.portal.util.PropsValues" %>
 
 <%@ page import="java.util.ArrayList" %><%@

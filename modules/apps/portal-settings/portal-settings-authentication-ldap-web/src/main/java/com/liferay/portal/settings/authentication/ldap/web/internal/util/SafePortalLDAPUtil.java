@@ -24,9 +24,9 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
  * @author Edward C. Han
  */
 @Component(immediate = true, service = {})
-public class PortalLDAPUtil {
+public class SafePortalLDAPUtil {
 
-	public static SafePortalLDAP getInstance() {
+	public static SafePortalLDAP getSafePortalLDAP() {
 		return _safePortalLDAP;
 	}
 

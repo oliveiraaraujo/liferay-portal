@@ -32,9 +32,9 @@ if (credentials.equals(Portal.TEMP_OBFUSCATION_VALUE)) {
 
 }
 
-LDAPFilterValidator ldapFilterValidator = LDAPFilterValidatorUtil.getInstance();
+LDAPFilterValidator ldapFilterValidator = LDAPFilterValidatorUtil.getLDAPFilterValidator();
 
-SafePortalLDAP safePortalLDAP = PortalLDAPUtil.getInstance();
+SafePortalLDAP safePortalLDAP = SafePortalLDAPUtil.getSafePortalLDAP();
 
 SafeLdapContext safeLdapContext = safePortalLDAP.getSafeLdapContext(themeDisplay.getCompanyId(), baseProviderURL, principal, credentials);
 
