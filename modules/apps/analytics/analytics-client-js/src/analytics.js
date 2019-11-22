@@ -116,274 +116,40 @@ class Analytics {
 		return instance;
 	}
 
-	_addEvent(applicationId, currentContextHash, eventId, eventProps) {
-		this.events = [
-			...this.events,
-			this._serialize(
-				eventId,
-				applicationId,
-				eventProps,
-				currentContextHash
-			)
-		];
-	}
+	/**
+	 * Creates a singleton instance of Analytics
+	 * @param {object} config Configuration object
+	 * @example
+	 * Analytics.create(
+	 *   {
+	 *	   endpointUrl: 'https://osbasahcerebropublisher-projectname.lfr.io'
+	 *	   flushInterval: 2000,
+	 *	   userId: 'id-s7uatimmxgo',
+	 *     dataSourceId: 'MyDataSourceId',
+	 *   }
+	 * );
+	 */
+	static create(config = {}) {
+		const self = new Analytics(config);
 
-	_defaultDelayValue() {
-		return this.config.flushInterval || FLUSH_INTERVAL;
+		ENV.Analytics = self;
+		ENV.Analytics.create = Analytics.create;
+		ENV.Analytics.dispose = Analytics.dispose;
+
+		return self;
 	}
 
 	/**
-	 * Clears interval and calls plugins disposers if available
+	 * Disposes events and stops interval timer
+	 * @example
+	 * Analytics.dispose();
 	 */
-	disposeInternal() {
-		if (this.flushInterval) {
-			clearInterval(this.flushInterval);
+	static dispose() {
+		const self = ENV.Analytics;
+
+		if (self) {
+			self.disposeInternal();
 		}
-
-		if (instance._pluginDisposers) {
-			instance._pluginDisposers
-				.filter(disposer => typeof disposer === 'function')
-				.forEach(disposer => disposer());
-		}
-	}
-
-	_fibonacci(num) {
-		if (num <= 1) {
-			return 1;
-		}
-
-		return this._fibonacci(num - 1) + this._fibonacci(num - 2);
-	}
-
-	_getCurrentContextHash() {
-		const currentContext = this._getContext();
-		const currentContextHash = hash(currentContext);
-
-		const hasStoredContext = this.contexts.find(
-			storedContext => hash(storedContext) === currentContextHash
-		);
-
-		if (!hasStoredContext) {
-			this.contexts = [...this.contexts, currentContext];
-		}
-		return currentContextHash;
-	}
-
-	/**
-	 * Increases delay based on fibonacci sequence
-	 */
-	_increaseDelay() {
-		if (this.failedAttempts <= LIMIT_FAILED_ATTEMPTS) {
-			this.delay += this._fibonacci(this.failedAttempts) * 1000;
-
-			this.failedAttempts += 1;
-		}
-	}
-
-	/**
-	 * Verify events storage and drop old events when limit is reached
-	 */
-	_verifyEventsStorageLimit() {
-		if (this.failedAttempts != 0) {
-			const totalSize = Number(
-				(JSON.stringify(this.events).length * 16) / (8 * 1024)
-			);
-
-			if (totalSize > EVENTS_STORAGE_LIMIT) {
-				this.events.shift();
-			}
-		}
-	}
-
-	startsFlushLoop() {
-		if (this.flushInterval) {
-			clearInterval(instance.flushInterval);
-		}
-		this.flushInterval = setInterval(() => this.flush(), this.delay);
-	}
-
-	_ensureIntegrity() {
-		const userId = getItem(STORAGE_KEY_USER_ID);
-
-		if (userId) {
-			this._setCookie(STORAGE_KEY_USER_ID, userId);
-		}
-	}
-
-	_isNewUserIdRequired() {
-		const identityHash = getItem(STORAGE_KEY_IDENTITY_HASH);
-		const storedUserId = getItem(STORAGE_KEY_USER_ID);
-
-		let newUserIdRequired = false;
-
-		// During logout or session expiration, identiy object becomes undefined
-		// because the client object is being instatiated on every page navigation,
-		// in such cases, we force a new user ID token.
-
-		if (!storedUserId || (identityHash && !this.config.identity)) {
-			newUserIdRequired = true;
-		}
-
-		return newUserIdRequired;
-	}
-
-	_isTrackingDisabled() {
-		if (ENV.ac_client_disable_tracking || navigator.doNotTrack) {
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Persists the event queue to the LocalStorage
-	 * @protected
-	 */
-	_persist(key, data) {
-		setItem(key, data);
-
-		return data;
-	}
-
-	/**
-	 * Serializes data and returns the result appending a timestamp to the returned
-	 * data as well
-	 * @param {string} eventId The event Id
-	 * @param {string} applicationId The application Id
-	 * @param {object} properties Additional properties to serialize
-	 * @protected
-	 * @return {object}
-	 */
-	_serialize(eventId, applicationId, properties, contextHash) {
-		const eventDate = new Date().toISOString();
-
-		return {
-			applicationId,
-			contextHash,
-			eventDate,
-			eventId,
-			properties
-		};
-	}
-
-	/**
-	 * Sets a browser cookie
-	 * @protected
-	 */
-	_setCookie(key, data) {
-		const expirationDate = new Date();
-
-		expirationDate.setDate(expirationDate.getDate() + 365);
-
-		document.cookie = `${key}=${data}; expires= ${expirationDate.toUTCString()}; path=/`;
-	}
-
-	/**
-	 * Returns a promise that times out after the given time limit is exceeded
-	 * @param {number} timeout
-	 * @return {object} Promise
-	 */
-	_timeout(timeout) {
-		return new Promise((resolve, reject) => setTimeout(reject, timeout));
-	}
-
-	/**
-	 * Returns a unique identifier for an event
-	 * @param {object} The event
-	 * @return {string} The generated id
-	 */
-	_getEventKey({applicationId, eventDate, eventId}) {
-		return `${applicationId}${eventDate}${eventId}`;
-	}
-
-	/**
-	 * Returns an unique identifier for an user, additionaly it stores
-	 * the generated token to the local storage cache and clears
-	 * previously stored identiy hash.
-	 * @return {string} The generated id
-	 */
-	_generateUserId() {
-		const userId = uuidv1();
-
-		this._persist(STORAGE_KEY_USER_ID, userId);
-		this._setCookie(STORAGE_KEY_USER_ID, userId);
-
-		localStorage.removeItem(STORAGE_KEY_IDENTITY_HASH);
-
-		return userId;
-	}
-
-	_getContext() {
-		const {context} = middlewares.reduce(
-			(request, middleware) => middleware(request, this),
-			{context: {}}
-		);
-
-		return context;
-	}
-
-	/**
-	 * Gets the userId for the existing analytics user. Previously generated ids
-	 * are stored and retrieved before generating a new one. If a anonymous
-	 * navigation is started after a identified navigation, the user ID token
-	 * is regenerated.
-	 * @return {Promise} A promise resolved with the stored or generated userId
-	 */
-	_getUserId() {
-		const newUserIdRequired = this._isNewUserIdRequired();
-
-		let userId = Promise.resolve(getItem(STORAGE_KEY_USER_ID));
-
-		if (newUserIdRequired) {
-			userId = Promise.resolve(this._generateUserId());
-		}
-
-		return userId;
-	}
-
-	/**
-	 * Sends the identity information and user id to the Identity Service.
-	 * @param {Object} identity The identity information about an user.
-	 * @param {String} userId The unique user id.
-	 * @return {Promise} A promise returned by the fetch request.
-	 */
-	_sendIdentity(identity, userId) {
-		const {dataSourceId} = this.config;
-
-		const bodyData = {
-			dataSourceId,
-			identity,
-			userId
-		};
-
-		const newIdentityHash = hash(bodyData);
-		const storedIdentityHash = getItem(STORAGE_KEY_IDENTITY_HASH);
-
-		let identyHash = Promise.resolve(storedIdentityHash);
-
-		if (newIdentityHash !== storedIdentityHash) {
-			instance._persist(STORAGE_KEY_IDENTITY_HASH, newIdentityHash);
-
-			const body = JSON.stringify(bodyData);
-			const headers = new Headers();
-
-			headers.append('Content-Type', 'application/json');
-
-			const request = {
-				body,
-				cache: 'default',
-				credentials: 'same-origin',
-				headers,
-				method: 'POST',
-				mode: 'cors'
-			};
-
-			identyHash = fetch(this.identityEndpoint, request).then(
-				() => newIdentityHash
-			);
-		}
-
-		return identyHash;
 	}
 
 	/**
@@ -545,39 +311,273 @@ class Analytics {
 		);
 	}
 
-	/**
-	 * Creates a singleton instance of Analytics
-	 * @param {object} config Configuration object
-	 * @example
-	 * Analytics.create(
-	 *   {
-	 *	   endpointUrl: 'https://osbasahcerebropublisher-projectname.lfr.io'
-	 *	   flushInterval: 2000,
-	 *	   userId: 'id-s7uatimmxgo',
-	 *     dataSourceId: 'MyDataSourceId',
-	 *   }
-	 * );
-	 */
-	static create(config = {}) {
-		const self = new Analytics(config);
+	startsFlushLoop() {
+		if (this.flushInterval) {
+			clearInterval(instance.flushInterval);
+		}
+		this.flushInterval = setInterval(() => this.flush(), this.delay);
+	}
 
-		ENV.Analytics = self;
-		ENV.Analytics.create = Analytics.create;
-		ENV.Analytics.dispose = Analytics.dispose;
+	_addEvent(applicationId, currentContextHash, eventId, eventProps) {
+		this.events = [
+			...this.events,
+			this._serialize(
+				eventId,
+				applicationId,
+				eventProps,
+				currentContextHash
+			)
+		];
+	}
 
-		return self;
+	_defaultDelayValue() {
+		return this.config.flushInterval || FLUSH_INTERVAL;
+	}
+
+	_ensureIntegrity() {
+		const userId = getItem(STORAGE_KEY_USER_ID);
+
+		if (userId) {
+			this._setCookie(STORAGE_KEY_USER_ID, userId);
+		}
 	}
 
 	/**
-	 * Disposes events and stops interval timer
-	 * @example
-	 * Analytics.dispose();
+	 * Clears interval and calls plugins disposers if available
 	 */
-	static dispose() {
-		const self = ENV.Analytics;
+	disposeInternal() {
+		if (this.flushInterval) {
+			clearInterval(this.flushInterval);
+		}
 
-		if (self) {
-			self.disposeInternal();
+		if (instance._pluginDisposers) {
+			instance._pluginDisposers
+				.filter(disposer => typeof disposer === 'function')
+				.forEach(disposer => disposer());
+		}
+	}
+
+	_fibonacci(num) {
+		if (num <= 1) {
+			return 1;
+		}
+
+		return this._fibonacci(num - 1) + this._fibonacci(num - 2);
+	}
+
+	/**
+	 * Returns an unique identifier for an user, additionaly it stores
+	 * the generated token to the local storage cache and clears
+	 * previously stored identiy hash.
+	 * @return {string} The generated id
+	 */
+	_generateUserId() {
+		const userId = uuidv1();
+
+		this._persist(STORAGE_KEY_USER_ID, userId);
+		this._setCookie(STORAGE_KEY_USER_ID, userId);
+
+		localStorage.removeItem(STORAGE_KEY_IDENTITY_HASH);
+
+		return userId;
+	}
+
+	_getCurrentContextHash() {
+		const currentContext = this._getContext();
+		const currentContextHash = hash(currentContext);
+
+		const hasStoredContext = this.contexts.find(
+			storedContext => hash(storedContext) === currentContextHash
+		);
+
+		if (!hasStoredContext) {
+			this.contexts = [...this.contexts, currentContext];
+		}
+		return currentContextHash;
+	}
+
+	/**
+	 * Returns a unique identifier for an event
+	 * @param {object} The event
+	 * @return {string} The generated id
+	 */
+	_getEventKey({applicationId, eventDate, eventId}) {
+		return `${applicationId}${eventDate}${eventId}`;
+	}
+
+	_getContext() {
+		const {context} = middlewares.reduce(
+			(request, middleware) => middleware(request, this),
+			{context: {}}
+		);
+
+		return context;
+	}
+
+	/**
+	 * Gets the userId for the existing analytics user. Previously generated ids
+	 * are stored and retrieved before generating a new one. If a anonymous
+	 * navigation is started after a identified navigation, the user ID token
+	 * is regenerated.
+	 * @return {Promise} A promise resolved with the stored or generated userId
+	 */
+	_getUserId() {
+		const newUserIdRequired = this._isNewUserIdRequired();
+
+		let userId = Promise.resolve(getItem(STORAGE_KEY_USER_ID));
+
+		if (newUserIdRequired) {
+			userId = Promise.resolve(this._generateUserId());
+		}
+
+		return userId;
+	}
+
+	/**
+	 * Increases delay based on fibonacci sequence
+	 */
+	_increaseDelay() {
+		if (this.failedAttempts <= LIMIT_FAILED_ATTEMPTS) {
+			this.delay += this._fibonacci(this.failedAttempts) * 1000;
+
+			this.failedAttempts += 1;
+		}
+	}
+
+	_isNewUserIdRequired() {
+		const identityHash = getItem(STORAGE_KEY_IDENTITY_HASH);
+		const storedUserId = getItem(STORAGE_KEY_USER_ID);
+
+		let newUserIdRequired = false;
+
+		// During logout or session expiration, identiy object becomes undefined
+		// because the client object is being instatiated on every page navigation,
+		// in such cases, we force a new user ID token.
+
+		if (!storedUserId || (identityHash && !this.config.identity)) {
+			newUserIdRequired = true;
+		}
+
+		return newUserIdRequired;
+	}
+
+	_isTrackingDisabled() {
+		if (ENV.ac_client_disable_tracking || navigator.doNotTrack) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Persists the event queue to the LocalStorage
+	 * @protected
+	 */
+	_persist(key, data) {
+		setItem(key, data);
+
+		return data;
+	}
+
+	/**
+	 * Sends the identity information and user id to the Identity Service.
+	 * @param {Object} identity The identity information about an user.
+	 * @param {String} userId The unique user id.
+	 * @return {Promise} A promise returned by the fetch request.
+	 */
+	_sendIdentity(identity, userId) {
+		const {dataSourceId} = this.config;
+
+		const bodyData = {
+			dataSourceId,
+			identity,
+			userId
+		};
+
+		const newIdentityHash = hash(bodyData);
+		const storedIdentityHash = getItem(STORAGE_KEY_IDENTITY_HASH);
+
+		let identyHash = Promise.resolve(storedIdentityHash);
+
+		if (newIdentityHash !== storedIdentityHash) {
+			instance._persist(STORAGE_KEY_IDENTITY_HASH, newIdentityHash);
+
+			const body = JSON.stringify(bodyData);
+			const headers = new Headers();
+
+			headers.append('Content-Type', 'application/json');
+
+			const request = {
+				body,
+				cache: 'default',
+				credentials: 'same-origin',
+				headers,
+				method: 'POST',
+				mode: 'cors'
+			};
+
+			identyHash = fetch(this.identityEndpoint, request).then(
+				() => newIdentityHash
+			);
+		}
+
+		return identyHash;
+	}
+
+	/**
+	 * Serializes data and returns the result appending a timestamp to the returned
+	 * data as well
+	 * @param {string} eventId The event Id
+	 * @param {string} applicationId The application Id
+	 * @param {object} properties Additional properties to serialize
+	 * @protected
+	 * @return {object}
+	 */
+	_serialize(eventId, applicationId, properties, contextHash) {
+		const eventDate = new Date().toISOString();
+
+		return {
+			applicationId,
+			contextHash,
+			eventDate,
+			eventId,
+			properties
+		};
+	}
+
+	/**
+	 * Sets a browser cookie
+	 * @protected
+	 */
+	_setCookie(key, data) {
+		const expirationDate = new Date();
+
+		expirationDate.setDate(expirationDate.getDate() + 365);
+
+		document.cookie = `${key}=${data}; expires= ${expirationDate.toUTCString()}; path=/`;
+	}
+
+	/**
+	 * Returns a promise that times out after the given time limit is exceeded
+	 * @param {number} timeout
+	 * @return {object} Promise
+	 */
+	_timeout(timeout) {
+		return new Promise((resolve, reject) => setTimeout(reject, timeout));
+	}
+
+	/**
+	 * Verify events storage and drop old events when limit is reached
+	 */
+	_verifyEventsStorageLimit() {
+		if (this.failedAttempts != 0) {
+			const totalSize = Number(
+				(JSON.stringify(this.events).length * 16) / (8 * 1024)
+			);
+
+			if (totalSize > EVENTS_STORAGE_LIMIT) {
+				this.events.shift();
+			}
 		}
 	}
 }
