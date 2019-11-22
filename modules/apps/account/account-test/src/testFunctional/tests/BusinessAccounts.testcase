@@ -165,6 +165,41 @@ definition {
 	}
 
 	@priority = "4"
+	test DeactivateActivateUser {
+		ProductMenu.gotoPortlet(
+			category = "Accounts",
+			panel = "Control Panel",
+			portlet = "Accounts");
+
+		Accounts.addCP(
+			accountDescription = "This is an Account with User.",
+			accountName = "Account with User");
+
+		Navigator.gotoNavItem(navItem = "Users");
+
+		Accounts.addUsers(
+			userEmailAddress = "userea@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn");
+
+		ProductMenu.gotoPortlet(
+			category = "Accounts",
+			panel = "Control Panel",
+			portlet = "Account Users");
+
+		LexiconEntry.viewEntryName(rowEntry = "userfn userln");
+
+		AccountUsers.deactivateUser(userFirstName = "userfn");
+
+		ManagementBar.setFilterAndOrder(filterBy = "Inactive");
+
+		LexiconEntry.viewEntryStatus(
+			rowEntry = "userfn",
+			rowStatus = "INACTIVE");
+	}
+
+	@priority = "4"
 	test DeleteAccount {
 		for (var accountNumber : list "1,2,3") {
 			ProductMenu.gotoPortlet(
