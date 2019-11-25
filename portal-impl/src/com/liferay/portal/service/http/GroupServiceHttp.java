@@ -1175,37 +1175,6 @@ public class GroupServiceHttp {
 		}
 	}
 
-	public static int searchCount(
-		HttpPrincipal httpPrincipal, long companyId, long[] classNameIds,
-		String keywords, java.util.LinkedHashMap<String, Object> params) {
-
-		try {
-			MethodKey methodKey = new MethodKey(
-				GroupServiceUtil.class, "searchCount",
-				_searchCountParameterTypes29);
-
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, companyId, classNameIds, keywords, params);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					e);
-			}
-
-			return ((Integer)returnObj).intValue();
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
 	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
 			HttpPrincipal httpPrincipal, long companyId, long[] classNameIds,
 			String name, String description,
@@ -1217,7 +1186,7 @@ public class GroupServiceHttp {
 
 		try {
 			MethodKey methodKey = new MethodKey(
-				GroupServiceUtil.class, "search", _searchParameterTypes30);
+				GroupServiceUtil.class, "search", _searchParameterTypes29);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, companyId, classNameIds, name, description, params,
@@ -1257,7 +1226,7 @@ public class GroupServiceHttp {
 
 		try {
 			MethodKey methodKey = new MethodKey(
-				GroupServiceUtil.class, "search", _searchParameterTypes31);
+				GroupServiceUtil.class, "search", _searchParameterTypes30);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, companyId, name, description, params, start, end);
@@ -1281,6 +1250,37 @@ public class GroupServiceHttp {
 
 			return (java.util.List<com.liferay.portal.kernel.model.Group>)
 				returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	public static int searchCount(
+		HttpPrincipal httpPrincipal, long companyId, long[] classNameIds,
+		String keywords, java.util.LinkedHashMap<String, Object> params) {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				GroupServiceUtil.class, "searchCount",
+				_searchCountParameterTypes31);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, companyId, classNameIds, keywords, params);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					e);
+			}
+
+			return ((Integer)returnObj).intValue();
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -1624,17 +1624,17 @@ public class GroupServiceHttp {
 		int.class, int.class,
 		com.liferay.portal.kernel.util.OrderByComparator.class
 	};
-	private static final Class<?>[] _searchCountParameterTypes29 = new Class[] {
-		long.class, long[].class, String.class, java.util.LinkedHashMap.class
-	};
-	private static final Class<?>[] _searchParameterTypes30 = new Class[] {
+	private static final Class<?>[] _searchParameterTypes29 = new Class[] {
 		long.class, long[].class, String.class, String.class,
 		java.util.LinkedHashMap.class, boolean.class, int.class, int.class,
 		com.liferay.portal.kernel.util.OrderByComparator.class
 	};
-	private static final Class<?>[] _searchParameterTypes31 = new Class[] {
+	private static final Class<?>[] _searchParameterTypes30 = new Class[] {
 		long.class, String.class, String.class, String[].class, int.class,
 		int.class
+	};
+	private static final Class<?>[] _searchCountParameterTypes31 = new Class[] {
+		long.class, long[].class, String.class, java.util.LinkedHashMap.class
 	};
 	private static final Class<?>[] _searchCountParameterTypes32 = new Class[] {
 		long.class, String.class, String.class, String[].class
