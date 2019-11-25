@@ -159,11 +159,10 @@ public class UpgradeContentTargeting extends UpgradeProcess {
 					LocalizationUtil.getLocalizationMap(
 						rs.getString("description"));
 
-				long validUserId = PortalUtil.getValidUserId(
-					rs.getLong("companyId"), rs.getLong("userId"));
-
 				serviceContext.setScopeGroupId(rs.getLong("groupId"));
-				serviceContext.setUserId(validUserId);
+				serviceContext.setUserId(
+					PortalUtil.getValidUserId(
+						rs.getLong("companyId"), rs.getLong("userId")));
 
 				_segmentsEntryLocalService.addSegmentsEntry(
 					"ct_" + userSegmentId, nameMap, descriptionMap, true,
