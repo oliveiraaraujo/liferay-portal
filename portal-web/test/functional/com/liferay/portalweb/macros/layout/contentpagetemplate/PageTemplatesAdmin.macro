@@ -10,6 +10,8 @@ definition {
 
 		if ("${siteTemplate}" == "true") {
 			LexiconEntry.gotoAdd();
+
+			LexiconCard.clickCard(card = "Blank");
 		}
 		else {
 			LexiconEntry.gotoAddMenuItem(menuItem = "${menuItem}");
