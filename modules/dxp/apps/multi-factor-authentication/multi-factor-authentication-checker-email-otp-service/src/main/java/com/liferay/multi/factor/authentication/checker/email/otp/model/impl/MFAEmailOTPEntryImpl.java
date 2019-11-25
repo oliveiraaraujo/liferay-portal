@@ -15,10 +15,21 @@
 package com.liferay.multi.factor.authentication.checker.email.otp.model.impl;
 
 /**
+ * The extended model implementation for the MFAEmailOTPEntry service. Represents a row in the &quot;MFAEmailOTPEntry&quot; database table, with each column mapped to a property of this class.
+ *
+ * <p>
+ * Helper methods and all application logic should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the <code>com.liferay.multi.factor.authentication.checker.email.otp.model.MFAEmailOTPEntry</code> interface.
+ * </p>
+ *
  * @author Arthur Chan
  */
 public class MFAEmailOTPEntryImpl extends MFAEmailOTPEntryBaseImpl {
 
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never reference this class directly. All methods that expect a mfa email otp entry model instance should use the {@link com.liferay.multi.factor.authentication.checker.email.otp.model.MFAEmailOTPEntry} interface instead.
+	 */
 	public MFAEmailOTPEntryImpl() {
 	}
 
