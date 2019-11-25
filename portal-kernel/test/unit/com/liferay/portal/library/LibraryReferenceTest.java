@@ -528,13 +528,13 @@ public class LibraryReferenceTest {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node node = nodeList.item(i);
 
-			NodeList childNodes = node.getChildNodes();
+			NodeList childNodeList = node.getChildNodes();
 
 			String jar = null;
 			String version = null;
 
-			for (int j = 0; j < childNodes.getLength(); j++) {
-				Node childNode = childNodes.item(j);
+			for (int j = 0; j < childNodeList.getLength(); j++) {
+				Node childNode = childNodeList.item(j);
 
 				if (Objects.equals("file-name", childNode.getNodeName())) {
 					jar = childNode.getTextContent();
