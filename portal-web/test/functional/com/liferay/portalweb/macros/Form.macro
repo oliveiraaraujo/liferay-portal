@@ -129,9 +129,9 @@ definition {
 	}
 
 	macro editFieldDataProvider {
-		FormFields.selectRadioOption(
+		FormFields.selectSelectOption(
 			fieldName = "dataSourceType",
-			radioOption = "From Data Provider");
+			selectOption = "From Data Provider");
 
 		Pause(locator1 = "2000");
 
