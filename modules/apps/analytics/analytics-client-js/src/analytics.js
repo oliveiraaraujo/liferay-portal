@@ -98,7 +98,7 @@ class Analytics {
 		instance.identityEndpoint = `${endpointUrl}/identity`;
 
 		instance.failedAttempts = 0;
-		instance.delay = this._defaultDelayValue();
+		instance.delay = instance._defaultDelayValue();
 		instance.events = getItem(STORAGE_KEY_EVENTS) || [];
 		instance.contexts = getItem(STORAGE_KEY_CONTEXTS) || [];
 		instance.isFlushInProgress = false;
@@ -109,7 +109,7 @@ class Analytics {
 			plugin(instance)
 		);
 
-		this._startsFlushLoop();
+		instance._startsFlushLoop();
 
 		this._ensureIntegrity();
 
