@@ -51,10 +51,6 @@ public class LayoutDataConverter {
 			return data;
 		}
 
-		JSONObject itemsJSONObject = JSONFactoryUtil.createJSONObject();
-
-		JSONArray mainChildrenJSONArray = JSONFactoryUtil.createJSONArray();
-
 		JSONArray structureJSONArray = inputDataJSONObject.getJSONArray(
 			"structure");
 
@@ -62,6 +58,8 @@ public class LayoutDataConverter {
 			return data;
 		}
 
+		JSONObject itemsJSONObject = JSONFactoryUtil.createJSONObject();
+		JSONArray mainChildrenJSONArray = JSONFactoryUtil.createJSONArray();
 		UUID mainUUID = UUID.randomUUID();
 
 		for (int i = 0; i < structureJSONArray.length(); i++) {
