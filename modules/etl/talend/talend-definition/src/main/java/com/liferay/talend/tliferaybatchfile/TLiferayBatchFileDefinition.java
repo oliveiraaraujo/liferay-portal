@@ -69,7 +69,7 @@ public class TLiferayBatchFileDefinition extends LiferayDefinition {
 
 		assertEngineCompatibility(executionEngine);
 
-		return getCommonRuntimeInfo(BATCH_FILE_SINK_CLASS);
+		return getCommonRuntimeInfo(BATCH_FILE_SINK_CLASS_NAME);
 	}
 
 	@Override

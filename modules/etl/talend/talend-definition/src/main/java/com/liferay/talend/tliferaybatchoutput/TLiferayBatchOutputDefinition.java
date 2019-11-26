@@ -71,7 +71,7 @@ public class TLiferayBatchOutputDefinition extends LiferayDefinition {
 		assertEngineCompatibility(executionEngine);
 
 		if (connectorTopology == ConnectorTopology.OUTGOING) {
-			return getCommonRuntimeInfo(BATCH_OUTPUT_SINK_CLASS);
+			return getCommonRuntimeInfo(BATCH_OUTPUT_SINK_CLASS_NAME);
 		}
 
 		return null;
