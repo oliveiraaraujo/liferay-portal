@@ -621,8 +621,9 @@ create table LayoutBranch (
 
 create table LayoutFriendlyURL (
 	mvccVersion LONG default 0 not null,
+	ctCollectionId LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	layoutFriendlyURLId LONG not null primary key,
+	layoutFriendlyURLId LONG not null,
 	groupId LONG,
 	companyId LONG,
 	userId LONG,
@@ -633,7 +634,8 @@ create table LayoutFriendlyURL (
 	privateLayout BOOLEAN,
 	friendlyURL VARCHAR(255) null,
 	languageId VARCHAR(75) null,
-	lastPublishDate DATE null
+	lastPublishDate DATE null,
+	primary key (layoutFriendlyURLId, ctCollectionId)
 );
 
 create table LayoutPrototype (
