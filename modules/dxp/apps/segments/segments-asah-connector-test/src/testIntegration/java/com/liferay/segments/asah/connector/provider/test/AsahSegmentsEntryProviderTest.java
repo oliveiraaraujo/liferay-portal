@@ -108,6 +108,12 @@ public class AsahSegmentsEntryProviderTest {
 			CriteriaSerializer.serialize(new Criteria()),
 			SegmentsEntryConstants.SOURCE_ASAH_FARO_BACKEND,
 			User.class.getName(), serviceContext);
+
+		_segmentsEntryRelLocalService.addSegmentsEntryRel(
+			segmentsEntry1.getSegmentsEntryId(),
+			_portal.getClassNameId(User.class.getName()), _user1.getUserId(),
+			serviceContext);
+
 		SegmentsEntry segmentsEntry2 = SegmentsTestUtil.addSegmentsEntry(
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 			RandomTestUtil.randomString(),
@@ -115,10 +121,6 @@ public class AsahSegmentsEntryProviderTest {
 			SegmentsEntryConstants.SOURCE_ASAH_FARO_BACKEND,
 			User.class.getName(), serviceContext);
 
-		_segmentsEntryRelLocalService.addSegmentsEntryRel(
-			segmentsEntry1.getSegmentsEntryId(),
-			_portal.getClassNameId(User.class.getName()), _user1.getUserId(),
-			serviceContext);
 		_segmentsEntryRelLocalService.addSegmentsEntryRel(
 			segmentsEntry2.getSegmentsEntryId(),
 			_portal.getClassNameId(User.class.getName()), _user1.getUserId(),
