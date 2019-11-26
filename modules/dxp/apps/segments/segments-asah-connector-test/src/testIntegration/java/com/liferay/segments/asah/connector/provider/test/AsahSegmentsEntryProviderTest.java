@@ -80,11 +80,11 @@ public class AsahSegmentsEntryProviderTest {
 			_portal.getClassNameId(User.class.getName()), _user1.getUserId(),
 			serviceContext);
 
-		int segmentsEntryClassPksCount =
+		int segmentsEntryClassPKsCount =
 			_segmentsEntryProvider.getSegmentsEntryClassPKsCount(
 				segmentsEntry.getSegmentsEntryId());
 
-		Assert.assertEquals(1, segmentsEntryClassPksCount);
+		Assert.assertEquals(1, segmentsEntryClassPKsCount);
 
 		long[] segmentsEntryClassPKs =
 			_segmentsEntryProvider.getSegmentsEntryClassPKs(
