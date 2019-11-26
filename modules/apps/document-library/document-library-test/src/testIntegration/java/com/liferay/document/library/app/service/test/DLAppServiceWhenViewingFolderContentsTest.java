@@ -197,7 +197,7 @@ public class DLAppServiceWhenViewingFolderContentsTest
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
-		List<FileEntry> expectedResults = new ArrayList<>();
+		List<FileEntry> expectedFileEntries = new ArrayList<>();
 
 		FileEntry fileEntry1 = _dlAppService.addFileEntry(
 			group.getGroupId(), parentFolder.getFolderId(),
@@ -232,22 +232,25 @@ public class DLAppServiceWhenViewingFolderContentsTest
 			_classNameLocalService.getClassNameId(DLFileEntry.class),
 			fileEntry3.getFileEntryId(), 3);
 
-		expectedResults.add(fileEntry2);
-		expectedResults.add(fileEntry1);
-		expectedResults.add(fileEntry3);
+		expectedFileEntries.add(fileEntry2);
+		expectedFileEntries.add(fileEntry1);
+		expectedFileEntries.add(fileEntry3);
 
-		List<Object> actualResults =
+		List<Object> actualFoldersAndFileEntriesAndFileShortcuts =
 			_dlAppService.getFoldersAndFileEntriesAndFileShortcuts(
 				group.getGroupId(), parentFolder.getFolderId(),
 				WorkflowConstants.STATUS_APPROVED, false, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS,
 				new RepositoryModelReadCountComparator<>(true));
 
-		Assert.assertEquals(actualResults.toString(), 3, actualResults.size());
+		Assert.assertEquals(
+			actualFoldersAndFileEntriesAndFileShortcuts.toString(), 3,
+			actualFoldersAndFileEntriesAndFileShortcuts.size());
 
 		for (int i = 0; i < 3; i++) {
-			FileEntry actualFileEntry = (FileEntry)actualResults.get(i);
-			FileEntry expectedFileEntry = expectedResults.get(i);
+			FileEntry actualFileEntry =
+				(FileEntry)actualFoldersAndFileEntriesAndFileShortcuts.get(i);
+			FileEntry expectedFileEntry = expectedFileEntries.get(i);
 
 			Assert.assertEquals(
 				expectedFileEntry.getFileEntryId(),
@@ -260,7 +263,7 @@ public class DLAppServiceWhenViewingFolderContentsTest
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(group.getGroupId());
 
-		List<FileEntry> expectedResults = new ArrayList<>();
+		List<FileEntry> expectedFileEntries = new ArrayList<>();
 
 		FileEntry fileEntry1 = _dlAppService.addFileEntry(
 			group.getGroupId(), parentFolder.getFolderId(),
@@ -280,22 +283,25 @@ public class DLAppServiceWhenViewingFolderContentsTest
 			"title3", StringUtil.randomString(), StringPool.BLANK, (byte[])null,
 			serviceContext);
 
-		expectedResults.add(fileEntry2);
-		expectedResults.add(fileEntry1);
-		expectedResults.add(fileEntry3);
+		expectedFileEntries.add(fileEntry2);
+		expectedFileEntries.add(fileEntry1);
+		expectedFileEntries.add(fileEntry3);
 
-		List<Object> actualResults =
+		List<Object> actualFoldersAndFileEntriesAndFileShortcuts =
 			_dlAppService.getFoldersAndFileEntriesAndFileShortcuts(
 				group.getGroupId(), parentFolder.getFolderId(),
 				WorkflowConstants.STATUS_APPROVED, false, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS,
 				new RepositoryModelTitleComparator<FileEntry>(true));
 
-		Assert.assertEquals(actualResults.toString(), 3, actualResults.size());
+		Assert.assertEquals(
+			actualFoldersAndFileEntriesAndFileShortcuts.toString(), 3,
+			actualFoldersAndFileEntriesAndFileShortcuts.size());
 
 		for (int i = 0; i < 3; i++) {
-			FileEntry actualFileEntry = (FileEntry)actualResults.get(i);
-			FileEntry expectedFileEntry = expectedResults.get(i);
+			FileEntry actualFileEntry =
+				(FileEntry)actualFoldersAndFileEntriesAndFileShortcuts.get(i);
+			FileEntry expectedFileEntry = expectedFileEntries.get(i);
 
 			Assert.assertEquals(
 				expectedFileEntry.getFileEntryId(),
