@@ -14,10 +14,12 @@ import ClayButton from '@clayui/button';
 import {ClaySelect} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import ClayModal from '@clayui/modal';
+import {useIsMounted} from 'frontend-js-react-web';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
 import {SegmentsExperimentGoal} from '../types.es';
+import BusyButton from './BusyButton/BusyButton.es';
 import ValidatedInput from './ValidatedInput/ValidatedInput.es';
 
 function SegmentsExperimentsModal({
@@ -32,12 +34,14 @@ function SegmentsExperimentsModal({
 	segmentsExperimentId,
 	title
 }) {
+	const [busy, setBusy] = useState(false);
 	const [inputDescription, setInputDescription] = useState(description);
 	const [inputGoal, setInputGoal] = useState(
 		(goal && goal.value) || (goals[0] && goals[0].value)
 	);
 	const [inputName, setInputName] = useState(name);
 	const [invalidForm, setInvalidForm] = useState(false);
+	const isMounted = useIsMounted();
 
 	return (
 		<>
@@ -112,13 +116,14 @@ function SegmentsExperimentsModal({
 						>
 							{Liferay.Language.get('cancel')}
 						</ClayButton>
-						<ClayButton
-							disabled={invalidForm}
+						<BusyButton
+							busy={busy}
+							disabled={invalidForm || busy}
 							displayType="primary"
 							onClick={_handleSave}
 						>
 							{Liferay.Language.get('save')}
-						</ClayButton>
+						</BusyButton>
 					</ClayButton.Group>
 				}
 			/>
@@ -147,13 +152,15 @@ function SegmentsExperimentsModal({
 	 * Resets `goalTarget` if goal is not 'click'
 	 */
 	function _handleSave() {
-		if (!invalidForm) {
+		if (!invalidForm && !busy) {
 			const goalTarget =
 				inputGoal === 'click'
 					? goal && goal.target
 						? goal.target
 						: ''
 					: '';
+
+			setBusy(true);
 
 			onSave({
 				description: inputDescription,
@@ -162,6 +169,10 @@ function SegmentsExperimentsModal({
 				name: inputName,
 				segmentsExperienceId,
 				segmentsExperimentId
+			}).finally(() => {
+				if (isMounted()) {
+					setBusy(false);
+				}
 			});
 		}
 	}

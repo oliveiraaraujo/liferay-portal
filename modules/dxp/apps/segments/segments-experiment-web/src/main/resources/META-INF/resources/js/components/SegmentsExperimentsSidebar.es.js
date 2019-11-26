@@ -196,7 +196,7 @@ function SegmentsExperimentsSidebar({
 			segmentsExperienceId
 		};
 
-		APIService.createExperiment(body)
+		return APIService.createExperiment(body)
 			.then(function _successCallback(objectResponse) {
 				const {
 					segmentsExperiment,
@@ -253,7 +253,7 @@ function SegmentsExperimentsSidebar({
 			status
 		};
 
-		APIService.editExperimentStatus(body)
+		return APIService.editExperimentStatus(body)
 			.then(function _successCallback(objectResponse) {
 				const {editable, status} = objectResponse.segmentsExperiment;
 
