@@ -248,9 +248,9 @@ public class DLAppServiceWhenViewingFolderContentsTest
 			actualFoldersAndFileEntriesAndFileShortcuts.size());
 
 		for (int i = 0; i < 3; i++) {
+			FileEntry expectedFileEntry = expectedFileEntries.get(i);
 			FileEntry actualFileEntry =
 				(FileEntry)actualFoldersAndFileEntriesAndFileShortcuts.get(i);
-			FileEntry expectedFileEntry = expectedFileEntries.get(i);
 
 			Assert.assertEquals(
 				expectedFileEntry.getFileEntryId(),
@@ -299,9 +299,9 @@ public class DLAppServiceWhenViewingFolderContentsTest
 			actualFoldersAndFileEntriesAndFileShortcuts.size());
 
 		for (int i = 0; i < 3; i++) {
+			FileEntry expectedFileEntry = expectedFileEntries.get(i);
 			FileEntry actualFileEntry =
 				(FileEntry)actualFoldersAndFileEntriesAndFileShortcuts.get(i);
-			FileEntry expectedFileEntry = expectedFileEntries.get(i);
 
 			Assert.assertEquals(
 				expectedFileEntry.getFileEntryId(),
