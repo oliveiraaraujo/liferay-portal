@@ -20,8 +20,8 @@ import SegmentsExperimentsContext from '../context.es';
 import {
 	closeReviewAndRunExperiment,
 	updateSegmentsExperimentStatus,
-	updateVariants,
-	reviewAndRunExperiment
+	reviewAndRunExperiment,
+	runExperiment
 } from '../state/actions.es';
 import {
 	STATUS_COMPLETED,
@@ -152,13 +152,13 @@ function SegmentsExperimentsActions({onEditSegmentsExperimentStatus}) {
 
 		return APIService.runExperiment(body).then(response => {
 			const {segmentsExperiment} = response;
-			const updatedVariants = variants.map(variant => ({
-				...variant,
-				split: splitVariantsMap[variant.segmentsExperimentRelId]
-			}));
 
-			dispatch(updateSegmentsExperimentStatus(segmentsExperiment));
-			dispatch(updateVariants(updatedVariants));
+			dispatch(
+				runExperiment({
+					experiment: segmentsExperiment,
+					splitVariantsMap
+				})
+			);
 		});
 	}
 

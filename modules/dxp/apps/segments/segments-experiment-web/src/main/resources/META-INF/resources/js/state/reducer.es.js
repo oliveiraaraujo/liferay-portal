@@ -91,6 +91,9 @@ export function reducer(state, action) {
 		case 'REVIEW_VARIANTS':
 			return _reviewVariants(state);
 
+		case 'RUN_EXPERIMENT':
+			return _runExperiment(state, action.payload);
+
 		case 'UPDATE_SEGMENTS_EXPERIMENT_TARGET':
 			return _editExperiment(state, action.payload);
 
@@ -251,10 +254,28 @@ function _reviewVariants(state) {
 	return newState;
 }
 
+function _runExperiment(state, {experiment, splitVariantsMap}) {
+	const variants = state.variants.map(variant => ({
+		...variant,
+		split: splitVariantsMap[variant.segmentsExperimentRelId]
+	}));
+
+	return {
+		...state,
+		error: {},
+		experiment: {
+			...state.experiment,
+			...experiment
+		},
+		variants
+	};
+}
+
 function _updateExperimentStatus(state, updatedValues) {
 	return {
 		...state,
 		errors: {},
-		experiment: {...state.experiment, ...updatedValues}
+		experiment: {...state.experiment, ...updatedValues},
+		variants: []
 	};
 }

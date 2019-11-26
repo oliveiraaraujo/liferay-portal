@@ -70,6 +70,14 @@ export const reviewClickTargetElement = () => ({
 	type: 'REVIEW_CLICK_TARGET_ELEMENT'
 });
 
+export const runExperiment = ({experiment, splitVariantsMap}) => ({
+	payload: {
+		experiment,
+		splitVariantsMap
+	},
+	type: 'RUN_EXPERIMENT'
+});
+
 export const updateSegmentsExperimentTarget = payload => ({
 	payload,
 	type: 'UPDATE_SEGMENTS_EXPERIMENT_TARGET'
