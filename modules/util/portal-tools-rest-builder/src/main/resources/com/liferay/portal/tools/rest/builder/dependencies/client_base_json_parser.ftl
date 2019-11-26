@@ -22,8 +22,8 @@ import javax.annotation.Generated;
 public abstract class BaseJSONParser<T> {
 
 	public static final String[][] JSON_ESCAPE_STRINGS = new String[][]{
-		{"\"", "\\\""},
 		{"\\", "\\\\"},
+		{"\"", "\\\""},
 		{"\b", "\\b"},
 		{"\f", "\\f"},
 		{"\n", "\\n"},
