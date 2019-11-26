@@ -17,24 +17,7 @@ package com.liferay.portal.tools.service.builder.test.service.impl;
 import com.liferay.portal.tools.service.builder.test.service.base.LazyBlobEntityServiceBaseImpl;
 
 /**
- * The implementation of the lazy blob entity remote service.
- *
- * <p>
- * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the <code>com.liferay.portal.tools.service.builder.test.service.LazyBlobEntityService</code> interface.
- *
- * <p>
- * This is a remote service. Methods of this service are expected to have security checks based on the propagated JAAS credentials because this service can be accessed remotely.
- * </p>
- *
  * @author Brian Wing Shun Chan
- * @see LazyBlobEntityServiceBaseImpl
  */
 public class LazyBlobEntityServiceImpl extends LazyBlobEntityServiceBaseImpl {
-
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Always use <code>com.liferay.portal.tools.service.builder.test.service.LazyBlobEntityServiceUtil</code> to access the lazy blob entity remote service.
-	 */
-
 }
