@@ -40,24 +40,24 @@ import javax.mail.internet.MimeMultipart;
 public class NotificationUtil {
 
 	public static void sendEmail(
-		String body, String senderName, String subject, String recipientEmail) {
+		String body, String senderName, String subject, String recipientEmailAddress) {
 
 		String hostname = JenkinsResultsParserUtil.getHostName(null);
 
 		sendEmail(
 			JenkinsResultsParserUtil.combine(senderName, "@", hostname),
-			senderName, recipientEmail, subject, body);
+			senderName, recipientEmailAddress, subject, body);
 	}
 
 	public static void sendEmail(
-		String senderEmail, String senderName, String recipientEmail,
+		String senderEmailAddress, String senderName, String recipientEmailAddress,
 		String subject, String body) {
 
-		sendEmail(senderEmail, senderName, recipientEmail, subject, body, null);
+		sendEmail(senderEmailAddress, senderName, recipientEmailAddress, subject, body, null);
 	}
 
 	public static void sendEmail(
-		String senderEmail, String senderName, String recipientEmail,
+		String senderEmailAddress, String senderName, String recipientEmailAddress,
 		String subject, String body, String attachmentFileName) {
 
 		Properties sessionProperties = System.getProperties();
@@ -72,8 +72,8 @@ public class NotificationUtil {
 		MimeMessage mimeMessage = new MimeMessage(session);
 
 		try {
-			mimeMessage.setFrom(new InternetAddress(senderEmail, senderName));
-			mimeMessage.setRecipients(Message.RecipientType.TO, recipientEmail);
+			mimeMessage.setFrom(new InternetAddress(senderEmailAddress, senderName));
+			mimeMessage.setRecipients(Message.RecipientType.TO, recipientEmailAddress);
 			mimeMessage.setSubject(subject);
 
 			Multipart multipart = new MimeMultipart();
@@ -116,7 +116,7 @@ public class NotificationUtil {
 
 			transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
 
-			System.out.println("Email sent to: " + recipientEmail);
+			System.out.println("Email sent to: " + recipientEmailAddress);
 
 			transport.close();
 		}
