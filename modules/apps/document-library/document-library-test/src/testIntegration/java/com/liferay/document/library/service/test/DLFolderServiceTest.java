@@ -190,8 +190,8 @@ public class DLFolderServiceTest {
 
 		for (int i = 0; i < 5; i++) {
 			if (expectedResults.get(i) instanceof FileEntry) {
-				DLFileEntry actualFileEntry = (DLFileEntry)actualResults.get(i);
 				FileEntry expectedFileEntry = (FileEntry)expectedResults.get(i);
+				DLFileEntry actualFileEntry = (DLFileEntry)actualResults.get(i);
 
 				Assert.assertEquals(
 					expectedFileEntry.getFileEntryId(),
@@ -253,8 +253,8 @@ public class DLFolderServiceTest {
 		Assert.assertEquals(actualResults.toString(), 3, actualResults.size());
 
 		for (int i = 0; i < 3; i++) {
-			DLFileEntry actualFileEntry = (DLFileEntry)actualResults.get(i);
 			FileEntry expectedFileEntry = expectedResults.get(i);
+			DLFileEntry actualFileEntry = (DLFileEntry)actualResults.get(i);
 
 			Assert.assertEquals(
 				expectedFileEntry.getFileEntryId(),
