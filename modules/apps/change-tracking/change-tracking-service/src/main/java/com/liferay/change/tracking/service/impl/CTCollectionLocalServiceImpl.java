@@ -148,6 +148,9 @@ public class CTCollectionLocalServiceImpl
 			ctEntryPersistence.remove(ctEntry);
 		}
 
+		ctMessagePersistence.removeByCTCollectionId(
+			ctCollection.getCtCollectionId());
+
 		for (CTPreferences ctPreferences :
 				ctPreferencesPersistence.findByCollectionId(
 					ctCollection.getCtCollectionId())) {
@@ -164,9 +167,6 @@ public class CTCollectionLocalServiceImpl
 		for (CTProcess ctProcess : ctProcesses) {
 			_ctProcessLocalService.deleteCTProcess(ctProcess);
 		}
-
-		ctMessagePersistence.removeByCTCollectionId(
-			ctCollection.getCtCollectionId());
 
 		return ctCollectionPersistence.remove(ctCollection);
 	}
