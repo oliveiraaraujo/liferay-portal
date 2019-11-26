@@ -279,6 +279,8 @@ definition {
 	@description = "This ensures that a web content can be edited in a depot."
 	@priority = "5"
 	test EditWebContent {
+		property portal.acceptance = "true";
+
 		DepotNavigator.openDepotAdmin();
 
 		DepotNavigator.gotoDepot(

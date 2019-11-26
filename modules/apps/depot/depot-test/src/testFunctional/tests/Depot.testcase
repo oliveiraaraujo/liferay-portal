@@ -175,6 +175,8 @@ definition {
 	@description = "This ensures that a depot can be edited."
 	@priority = "5"
 	test EditDepot {
+		property portal.acceptance = "true";
+
 		DepotNavigator.openDepotAdmin();
 
 		Depot.addDepot(
@@ -394,6 +396,8 @@ definition {
 	@description = "This ensures that a depot can be added."
 	@priority = "5"
 	test Smoke {
+		property portal.acceptance = "true";
+
 		ProductMenu.gotoPortlet(
 			category = "Repositories",
 			panel = "Control Panel",
