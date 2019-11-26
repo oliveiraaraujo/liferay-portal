@@ -40,7 +40,8 @@ import javax.mail.internet.MimeMultipart;
 public class NotificationUtil {
 
 	public static void sendEmail(
-		String body, String senderName, String subject, String recipientEmailAddress) {
+		String body, String senderName, String subject,
+		String recipientEmailAddress) {
 
 		String hostname = JenkinsResultsParserUtil.getHostName(null);
 
@@ -50,15 +51,18 @@ public class NotificationUtil {
 	}
 
 	public static void sendEmail(
-		String senderEmailAddress, String senderName, String recipientEmailAddress,
-		String subject, String body) {
+		String senderEmailAddress, String senderName,
+		String recipientEmailAddress, String subject, String body) {
 
-		sendEmail(senderEmailAddress, senderName, recipientEmailAddress, subject, body, null);
+		sendEmail(
+			senderEmailAddress, senderName, recipientEmailAddress, subject,
+			body, null);
 	}
 
 	public static void sendEmail(
-		String senderEmailAddress, String senderName, String recipientEmailAddress,
-		String subject, String body, String attachmentFileName) {
+		String senderEmailAddress, String senderName,
+		String recipientEmailAddress, String subject, String body,
+		String attachmentFileName) {
 
 		Properties sessionProperties = System.getProperties();
 
@@ -72,8 +76,10 @@ public class NotificationUtil {
 		MimeMessage mimeMessage = new MimeMessage(session);
 
 		try {
-			mimeMessage.setFrom(new InternetAddress(senderEmailAddress, senderName));
-			mimeMessage.setRecipients(Message.RecipientType.TO, recipientEmailAddress);
+			mimeMessage.setFrom(
+				new InternetAddress(senderEmailAddress, senderName));
+			mimeMessage.setRecipients(
+				Message.RecipientType.TO, recipientEmailAddress);
 			mimeMessage.setSubject(subject);
 
 			Multipart multipart = new MimeMultipart();
