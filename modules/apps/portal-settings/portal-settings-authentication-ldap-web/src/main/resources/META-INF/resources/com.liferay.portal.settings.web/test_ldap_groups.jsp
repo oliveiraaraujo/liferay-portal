@@ -31,7 +31,6 @@ if (credentials.equals(Portal.TEMP_OBFUSCATION_VALUE)) {
 	credentials = ldapServerConfiguration.securityCredential();
 }
 
-LDAPFilterValidator ldapFilterValidator = LDAPFilterValidatorUtil.getLDAPFilterValidator();
 SafePortalLDAP safePortalLDAP = SafePortalLDAPUtil.getSafePortalLDAP();
 
 SafeLdapContext safeLdapContext = safePortalLDAP.getSafeLdapContext(themeDisplay.getCompanyId(), baseProviderURL, principal, credentials);
@@ -53,6 +52,8 @@ if (Validator.isNull(ParamUtil.getString(request, "groupMappingGroupName")) || V
 <%
 	return;
 }
+
+LDAPFilterValidator ldapFilterValidator = LDAPFilterValidatorUtil.getLDAPFilterValidator();
 
 String groupFilter = ParamUtil.getString(request, "importGroupSearchFilter");
 
