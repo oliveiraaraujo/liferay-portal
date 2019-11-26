@@ -101,7 +101,8 @@ public class DLFolderServiceTest {
 		serviceContext.setAttribute(
 			"fileEntryTypeId", _dlFileEntryType.getFileEntryTypeId());
 
-		List<Object> expectedResults = new ArrayList<>();
+		List<Object> expectedFoldersAndFileEntriesAndFileShortcuts =
+			new ArrayList<>();
 
 		FileEntry fileEntry1 = _dlAppService.addFileEntry(
 			_group.getGroupId(), _parentFolder.getFolderId(),
@@ -172,13 +173,13 @@ public class DLFolderServiceTest {
 			_group.getGroupId(), _parentFolder.getFolderId(),
 			fileEntry5.getFileEntryId(), serviceContext);
 
-		expectedResults.add(fileEntry2);
-		expectedResults.add(fileEntry1);
-		expectedResults.add(fileShortcut2);
-		expectedResults.add(fileEntry3);
-		expectedResults.add(fileShortcut1);
+		expectedFoldersAndFileEntriesAndFileShortcuts.add(fileEntry2);
+		expectedFoldersAndFileEntriesAndFileShortcuts.add(fileEntry1);
+		expectedFoldersAndFileEntriesAndFileShortcuts.add(fileShortcut2);
+		expectedFoldersAndFileEntriesAndFileShortcuts.add(fileEntry3);
+		expectedFoldersAndFileEntriesAndFileShortcuts.add(fileShortcut1);
 
-		List<Object> actualResults =
+		List<Object> actualFoldersAndFileEntriesAndFileShortcuts =
 			_dlFolderService.getFoldersAndFileEntriesAndFileShortcuts(
 				_group.getGroupId(), _parentFolder.getFolderId(), null,
 				_dlFileEntryType.getFileEntryTypeId(), false,
@@ -186,12 +187,20 @@ public class DLFolderServiceTest {
 				QueryUtil.ALL_POS,
 				new RepositoryModelReadCountComparator<>(true));
 
-		Assert.assertEquals(actualResults.toString(), 5, actualResults.size());
+		Assert.assertEquals(
+			actualFoldersAndFileEntriesAndFileShortcuts.toString(), 5,
+			actualFoldersAndFileEntriesAndFileShortcuts.size());
 
 		for (int i = 0; i < 5; i++) {
-			if (expectedResults.get(i) instanceof FileEntry) {
-				FileEntry expectedFileEntry = (FileEntry)expectedResults.get(i);
-				DLFileEntry actualFileEntry = (DLFileEntry)actualResults.get(i);
+			if (expectedFoldersAndFileEntriesAndFileShortcuts.get(i) instanceof
+					FileEntry) {
+
+				FileEntry expectedFileEntry =
+					(FileEntry)
+						expectedFoldersAndFileEntriesAndFileShortcuts.get(i);
+				DLFileEntry actualFileEntry =
+					(DLFileEntry)
+						actualFoldersAndFileEntriesAndFileShortcuts.get(i);
 
 				Assert.assertEquals(
 					expectedFileEntry.getFileEntryId(),
@@ -199,9 +208,11 @@ public class DLFolderServiceTest {
 			}
 			else {
 				DLFileShortcut actualFileShortcut =
-					(DLFileShortcut)actualResults.get(i);
+					(DLFileShortcut)
+						actualFoldersAndFileEntriesAndFileShortcuts.get(i);
 				FileShortcut expectedFileShortcut =
-					(FileShortcut)expectedResults.get(i);
+					(FileShortcut)
+						expectedFoldersAndFileEntriesAndFileShortcuts.get(i);
 
 				Assert.assertEquals(
 					expectedFileShortcut.getFileShortcutId(),
@@ -218,7 +229,7 @@ public class DLFolderServiceTest {
 		serviceContext.setAttribute(
 			"fileEntryTypeId", _dlFileEntryType.getFileEntryTypeId());
 
-		List<FileEntry> expectedResults = new ArrayList<>();
+		List<FileEntry> expectedFileEntries = new ArrayList<>();
 
 		FileEntry fileEntry1 = _dlAppService.addFileEntry(
 			_group.getGroupId(), _parentFolder.getFolderId(),
@@ -238,11 +249,11 @@ public class DLFolderServiceTest {
 			"title3", StringUtil.randomString(), StringPool.BLANK, (byte[])null,
 			serviceContext);
 
-		expectedResults.add(fileEntry2);
-		expectedResults.add(fileEntry1);
-		expectedResults.add(fileEntry3);
+		expectedFileEntries.add(fileEntry2);
+		expectedFileEntries.add(fileEntry1);
+		expectedFileEntries.add(fileEntry3);
 
-		List<Object> actualResults =
+		List<Object> actualFoldersAndFileEntriesAndFileShortcuts =
 			_dlFolderService.getFoldersAndFileEntriesAndFileShortcuts(
 				_group.getGroupId(), _parentFolder.getFolderId(), null,
 				_dlFileEntryType.getFileEntryTypeId(), false,
@@ -250,11 +261,14 @@ public class DLFolderServiceTest {
 				QueryUtil.ALL_POS,
 				new RepositoryModelTitleComparator<FileEntry>(true));
 
-		Assert.assertEquals(actualResults.toString(), 3, actualResults.size());
+		Assert.assertEquals(
+			actualFoldersAndFileEntriesAndFileShortcuts.toString(), 3,
+			actualFoldersAndFileEntriesAndFileShortcuts.size());
 
 		for (int i = 0; i < 3; i++) {
-			FileEntry expectedFileEntry = expectedResults.get(i);
-			DLFileEntry actualFileEntry = (DLFileEntry)actualResults.get(i);
+			FileEntry expectedFileEntry = expectedFileEntries.get(i);
+			DLFileEntry actualFileEntry =
+				(DLFileEntry)actualFoldersAndFileEntriesAndFileShortcuts.get(i);
 
 			Assert.assertEquals(
 				expectedFileEntry.getFileEntryId(),
