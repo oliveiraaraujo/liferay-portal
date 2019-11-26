@@ -67,7 +67,7 @@ public class NotificationUtil {
 		Properties sessionProperties = System.getProperties();
 
 		sessionProperties.put("mail.smtp.auth", "true");
-		sessionProperties.put("mail.smtp.port", _DEFAULT_SMTP_PORT);
+		sessionProperties.put("mail.smtp.port", 587);
 		sessionProperties.put("mail.smtp.starttls.enable", "true");
 		sessionProperties.put("mail.transport.protocol", "smtp");
 
@@ -133,8 +133,6 @@ public class NotificationUtil {
 			e.printStackTrace();
 		}
 	}
-
-	private static final int _DEFAULT_SMTP_PORT = 587;
 
 	static {
 		Thread thread = Thread.currentThread();
