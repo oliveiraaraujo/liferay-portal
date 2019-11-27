@@ -12,6 +12,7 @@
  * details.
  */
 
+import ClayIcon from '@clayui/icon';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import {fetch, objectToFormData} from 'frontend-js-web';
 import PropTypes from 'prop-types';
@@ -99,12 +100,7 @@ function LayoutFinder(props) {
 	return (
 		<div className="layout-finder">
 			<button className={`btn-unstyled mb-3`} onClick={handleOnClick}>
-				<svg
-					aria-hidden="true"
-					className={`icon-monospaced lexicon-icon lexicon-icon-search`}
-				>
-					<use xlinkHref={`${props.spritemap}#angle-left`} />
-				</svg>
+				<ClayIcon className={`icon-monospaced`} symbol="angle-left" />
 
 				{`${Liferay.Language.get('back-to-menu')} `}
 			</button>
