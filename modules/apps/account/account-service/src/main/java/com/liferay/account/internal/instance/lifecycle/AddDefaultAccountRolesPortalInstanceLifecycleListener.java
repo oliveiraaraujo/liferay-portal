@@ -53,7 +53,7 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 	public void portalInstanceRegistered(Company company) throws Exception {
 		User defaultUser = company.getDefaultUser();
 
-		if (!_roleExists(
+		if (!_exists(
 				AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_USER)) {
 
 			AccountRole accountUserRole = _addAccountRole(
@@ -64,7 +64,7 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 				accountUserRole.getRoleId(), _accountUserResourceActionsMap);
 		}
 
-		if (!_roleExists(
+		if (!_exists(
 				AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_POWER_USER)) {
 
 			AccountRole accountPowerUserRole = _addAccountRole(
@@ -79,7 +79,7 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 				_accountPowerUserResourceActionsMap);
 		}
 
-		if (!_roleExists(
+		if (!_exists(
 				AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_OWNER)) {
 
 			_addRegularRole(
@@ -87,7 +87,7 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 				AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_OWNER);
 		}
 
-		if (!_roleExists(
+		if (!_exists(
 				AccountRoleConstants.
 					REQUIRED_ROLE_NAME_ACCOUNT_ADMINISTRATOR)) {
 
@@ -141,7 +141,7 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 		}
 	}
 
-	private boolean _roleExists(String roleName) {
+	private boolean _exists(String roleName) {
 		Role role = _roleLocalService.fetchRole(
 			CompanyThreadLocal.getCompanyId(), roleName);
 
