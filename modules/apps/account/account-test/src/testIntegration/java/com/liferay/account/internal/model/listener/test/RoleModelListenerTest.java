@@ -106,8 +106,7 @@ public class RoleModelListenerTest {
 				String message = throwable.getMessage();
 
 				Assert.assertTrue(
-					message.startsWith("Cannot delete default account role: "));
-				Assert.assertTrue(message.endsWith(requiredRoleName));
+					message.contains(" is a default account role"));
 			}
 		}
 	}

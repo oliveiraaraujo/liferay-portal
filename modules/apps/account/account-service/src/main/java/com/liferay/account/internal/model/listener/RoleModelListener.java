@@ -46,7 +46,8 @@ public class RoleModelListener extends BaseModelListener<Role> {
 
 			throw new ModelListenerException(
 				new RequiredRoleException(
-					"Cannot delete default account role: " + role.getName()));
+					"Role \"" + role.getName() +
+						"\" is a default account role"));
 		}
 
 		AccountRole accountRole =
