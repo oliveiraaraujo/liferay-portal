@@ -87,8 +87,27 @@ function LayoutFinder(props) {
 		[cancelUpdatePageResults, props.namespace, updatePageResults]
 	);
 
+	const handleOnClick = useCallback(() => {
+		Liferay.Util.Session.set(
+			'com.liferay.product.navigation.product.menu.web_pagesTreeState',
+			'closed'
+		);
+
+		Liferay.Util.navigate(window.location.href);
+	}, []);
+
 	return (
 		<div className="layout-finder">
+			<button className={`btn-unstyled mb-3`} onClick={handleOnClick}>
+				<svg
+					aria-hidden="true"
+					className={`icon-monospaced lexicon-icon lexicon-icon-search`}
+				>
+					<use xlinkHref={`${props.spritemap}#angle-left`} />
+				</svg>
+
+				{`${Liferay.Language.get('back-to-menu')} `}
+			</button>
 			<form onSubmit={handleFormSubmit} role="search">
 				<label
 					className="sr-only"

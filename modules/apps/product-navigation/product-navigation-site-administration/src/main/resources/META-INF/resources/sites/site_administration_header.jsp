@@ -24,7 +24,7 @@ PanelCategory panelCategory = siteAdministrationPanelCategoryDisplayContext.getP
 
 PortletURL portletURL = PortletURLFactoryUtil.create(request, ProductNavigationProductMenuPortletKeys.PRODUCT_NAVIGATION_PRODUCT_MENU, RenderRequest.RENDER_PHASE);
 
-portletURL.setParameter("mvcPath", "/portlet/view.jsp");
+portletURL.setParameter("mvcPath", "/portlet/pages_tree.jsp");
 portletURL.setParameter("selPpid", portletDisplay.getId());
 portletURL.setWindowState(LiferayWindowState.EXCLUSIVE);
 %>
@@ -54,7 +54,13 @@ portletURL.setWindowState(LiferayWindowState.EXCLUSIVE);
 
 		Liferay.Util.fetch('<%= portletURL.toString() %>')
 			.then(function(response) {
-				response.text();
+				if (!response.ok) {
+					throw new Error(
+						'<liferay-ui:message key="an-unexpected-error-occurred" />'
+					);
+				}
+
+				return response.text();
 			})
 			.then(function(response) {
 				const sidebar = document.querySelector('.sidebar-body');
@@ -65,7 +71,11 @@ portletURL.setWindowState(LiferayWindowState.EXCLUSIVE);
 
 				const fragment = range.createContextualFragment(response);
 
-				sidebar.appendChild(fragment);
+				const pagesTree = document.createElement('div');
+				pagesTree.setAttribute('class', 'pages-tree');
+				pagesTree.appendChild(fragment);
+
+				sidebar.appendChild(pagesTree);
 			});
 	});
 </aui:script>
