@@ -58,19 +58,13 @@ public class ProductMenuTemplateContextContributor
 
 		String cssClass = GetterUtil.getString(
 			contextObjects.get("bodyCssClass"));
-		String pagesTreeState = SessionClicks.get(
-			httpServletRequest,
-			"com.liferay.product.navigation.product.menu.web_pagesTreeState",
-			"closed");
+
 		String productMenuState = SessionClicks.get(
 			httpServletRequest,
 			"com.liferay.product.navigation.product.menu.web_productMenuState",
 			"closed");
 
-		if (Objects.equals(pagesTreeState, "open")) {
-			cssClass += StringPool.SPACE + "open pages-tree-open";
-		}
-		else if (Objects.equals(productMenuState, "open")) {
+		if (Objects.equals(productMenuState, "open")) {
 			cssClass += StringPool.SPACE + "open product-menu-open";
 		}
 

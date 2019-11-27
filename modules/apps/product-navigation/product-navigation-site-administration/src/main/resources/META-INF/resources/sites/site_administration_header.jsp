@@ -21,7 +21,54 @@ SiteAdministrationPanelCategoryDisplayContext siteAdministrationPanelCategoryDis
 
 Group group = siteAdministrationPanelCategoryDisplayContext.getGroup();
 PanelCategory panelCategory = siteAdministrationPanelCategoryDisplayContext.getPanelCategory();
+
+PortletURL portletURL = PortletURLFactoryUtil.create(request, ProductNavigationProductMenuPortletKeys.PRODUCT_NAVIGATION_PRODUCT_MENU, RenderRequest.RENDER_PHASE);
+
+portletURL.setParameter("mvcPath", "/portlet/view.jsp");
+portletURL.setParameter("selPpid", portletDisplay.getId());
+portletURL.setWindowState(LiferayWindowState.EXCLUSIVE);
 %>
+
+<div class="icon-pages-tree">
+	<liferay-ui:icon
+		icon="pages-tree"
+		id="pagesTreeSidenavToggleId"
+		label="<%= false %>"
+		linkCssClass="icon-monospaced"
+		markupView="lexicon"
+		message="find-a-page"
+		url="javascript:;"
+	/>
+</div>
+
+<aui:script sandbox="<%= true %>">
+	var pagesTreeToggle = document.getElementById(
+		'<portlet:namespace />pagesTreeSidenavToggleId'
+	);
+
+	pagesTreeToggle.addEventListener('click', function(event) {
+		Liferay.Util.Session.set(
+			'com.liferay.product.navigation.product.menu.web_pagesTreeState',
+			'open'
+		);
+
+		Liferay.Util.fetch('<%= portletURL.toString() %>')
+			.then(function(response) {
+				response.text();
+			})
+			.then(function(response) {
+				const sidebar = document.querySelector('.sidebar-body');
+				sidebar.innerHTML = '';
+
+				const range = document.createRange();
+				range.selectNode(sidebar);
+
+				const fragment = range.createContextualFragment(response);
+
+				sidebar.appendChild(fragment);
+			});
+	});
+</aui:script>
 
 <c:if test="<%= siteAdministrationPanelCategoryDisplayContext.isShowSiteSelector() %>">
 	<div class="icon-sites">
