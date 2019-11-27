@@ -58,7 +58,7 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 				defaultUser.getUserId(),
 				AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_USER);
 
-			_assignPermissions(
+			_addResourcePermissions(
 				accountRole.getRoleId(), _accountUserResourceActionsMap);
 		}
 
@@ -69,9 +69,9 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 				defaultUser.getUserId(),
 				AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_POWER_USER);
 
-			_assignPermissions(
+			_addResourcePermissions(
 				accountRole.getRoleId(), _accountUserResourceActionsMap);
-			_assignPermissions(
+			_addResourcePermissions(
 				accountRole.getRoleId(), _accountPowerUserResourceActionsMap);
 		}
 
@@ -115,7 +115,7 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 			null, RoleConstants.TYPE_REGULAR, null, null);
 	}
 
-	private void _assignPermissions(
+	private void _addResourcePermissions(
 			long roleId, Map<String, String[]> resourceActionsMap)
 		throws PortalException {
 
