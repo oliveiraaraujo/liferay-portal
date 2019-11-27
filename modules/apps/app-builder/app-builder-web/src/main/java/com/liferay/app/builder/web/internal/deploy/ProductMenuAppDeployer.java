@@ -172,7 +172,7 @@ public class ProductMenuAppDeployer implements AppDeployer {
 		long appId, String appName, String portletName) {
 
 		return _bundleContext.registerService(
-			Portlet.class, new AppPortlet(appId),
+			Portlet.class, new AppPortlet(appId, true, true),
 			AppPortlet.getProperties(appName, portletName, new HashMap<>()));
 	}
 
