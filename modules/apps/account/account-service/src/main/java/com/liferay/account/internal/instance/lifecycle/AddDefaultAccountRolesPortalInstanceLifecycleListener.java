@@ -56,12 +56,12 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 		if (!_exists(
 				AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_USER)) {
 
-			AccountRole accountUserRole = _addAccountRole(
+			AccountRole accountRole = _addAccountRole(
 				defaultUser.getUserId(),
 				AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_USER);
 
 			_assignPermissions(
-				accountUserRole.getRoleId(), _accountUserResourceActionsMap);
+				accountRole.getRoleId(), _accountUserResourceActionsMap);
 		}
 
 		if (!_exists(
