@@ -59,7 +59,7 @@ public class MockHttpServletRequestBuilder {
 		return this;
 	}
 
-	private HashMap<String, Object> _attributes = new HashMap<>();
-	private HashMap<String, String> _parameters = new HashMap<>();
+	private Map<String, Object> _attributes = new HashMap<>();
+	private Map<String, String> _parameters = new HashMap<>();
 
 }
