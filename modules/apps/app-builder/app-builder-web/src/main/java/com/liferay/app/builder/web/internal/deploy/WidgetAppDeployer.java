@@ -20,6 +20,8 @@ import com.liferay.app.builder.model.AppBuilderApp;
 import com.liferay.app.builder.service.AppBuilderAppLocalService;
 import com.liferay.app.builder.web.internal.constants.AppBuilderPortletKeys;
 import com.liferay.app.builder.web.internal.portlet.AppPortlet;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 
@@ -47,12 +49,52 @@ public class WidgetAppDeployer implements AppDeployer {
 		AppBuilderApp appBuilderApp =
 			_appBuilderAppLocalService.getAppBuilderApp(appId);
 
+		StringBundler formAppNameSB = new StringBundler(5);
+
+		formAppNameSB.append(
+			appBuilderApp.getName(LocaleThreadLocal.getDefaultLocale()));
+		formAppNameSB.append(StringPool.SPACE);
+		formAppNameSB.append(StringPool.OPEN_PARENTHESIS);
+		formAppNameSB.append("Form View");
+		formAppNameSB.append(StringPool.CLOSE_PARENTHESIS);
+
+		StringBundler formPortletNameSB = new StringBundler(4);
+
+		formPortletNameSB.append(AppBuilderPortletKeys.WIDGET_APP);
+		formPortletNameSB.append(StringPool.UNDERLINE);
+		formPortletNameSB.append(appId);
+		formPortletNameSB.append("form");
+
+		StringBundler tableAppNameSB = new StringBundler(5);
+
+		tableAppNameSB.append(
+			appBuilderApp.getName(LocaleThreadLocal.getDefaultLocale()));
+		tableAppNameSB.append(StringPool.SPACE);
+		tableAppNameSB.append(StringPool.OPEN_PARENTHESIS);
+		tableAppNameSB.append("Table View");
+		tableAppNameSB.append(StringPool.CLOSE_PARENTHESIS);
+
+		StringBundler tablePortletNameSB = new StringBundler(4);
+
+		tablePortletNameSB.append(AppBuilderPortletKeys.WIDGET_APP);
+		tablePortletNameSB.append(StringPool.UNDERLINE);
+		tablePortletNameSB.append(appId);
+		tablePortletNameSB.append("table");
+
 		_serviceRegistrationsMap.computeIfAbsent(
 			appId,
-			key -> _deployPortlet(
-				appId,
-				appBuilderApp.getName(LocaleThreadLocal.getDefaultLocale()),
-				AppBuilderPortletKeys.WIDGET_APP + "_" + appId));
+			key -> new ServiceRegistration[] {
+				_deployPortlet(
+					appId,
+					appBuilderApp.getName(LocaleThreadLocal.getDefaultLocale()),
+					AppBuilderPortletKeys.WIDGET_APP + "_" + appId, true, true),
+				_deployPortlet(
+					appId, formAppNameSB.toString(),
+					formPortletNameSB.toString(), true, false),
+				_deployPortlet(
+					appId, tableAppNameSB.toString(),
+					tablePortletNameSB.toString(), false, true)
+			});
 
 		appBuilderApp.setStatus(
 			AppBuilderAppConstants.Status.DEPLOYED.getValue());
@@ -62,14 +104,16 @@ public class WidgetAppDeployer implements AppDeployer {
 
 	@Override
 	public void undeploy(long appId) throws Exception {
-		ServiceRegistration<?> serviceRegistration =
+		ServiceRegistration<?>[] serviceRegistrations =
 			_serviceRegistrationsMap.remove(appId);
 
-		if (serviceRegistration == null) {
+		if (serviceRegistrations == null) {
 			return;
 		}
 
-		serviceRegistration.unregister();
+		for (ServiceRegistration serviceRegistration : serviceRegistrations) {
+			serviceRegistration.unregister();
+		}
 
 		AppBuilderApp appBuilderApp =
 			_appBuilderAppLocalService.getAppBuilderApp(appId);
@@ -86,15 +130,16 @@ public class WidgetAppDeployer implements AppDeployer {
 	}
 
 	private ServiceRegistration<?> _deployPortlet(
-		long appId, String appName, String portletName) {
+		long appId, String appName, String portletName, boolean includeForm,
+		boolean includeTable) {
 
 		return _bundleContext.registerService(
-			Portlet.class, new AppPortlet(appId),
+			Portlet.class, new AppPortlet(appId, includeForm, includeTable),
 			AppPortlet.getProperties(
 				appName, portletName,
 				HashMapBuilder.<String, Object>put(
 					"com.liferay.portlet.display-category",
-					"category.collaboration"
+					"category.appbuilder"
 				).build()));
 	}
 
@@ -102,7 +147,7 @@ public class WidgetAppDeployer implements AppDeployer {
 	private AppBuilderAppLocalService _appBuilderAppLocalService;
 
 	private BundleContext _bundleContext;
-	private final ConcurrentHashMap<Long, ServiceRegistration<?>>
+	private final ConcurrentHashMap<Long, ServiceRegistration<?>[]>
 		_serviceRegistrationsMap = new ConcurrentHashMap<>();
 
 }
