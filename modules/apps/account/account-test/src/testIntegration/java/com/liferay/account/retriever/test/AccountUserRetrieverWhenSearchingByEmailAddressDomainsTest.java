@@ -71,21 +71,23 @@ public class AccountUserRetrieverWhenSearchingByEmailAddressDomainsTest {
 		_accountEntry = AccountEntryTestUtil.addAccountEntry(
 			_accountEntryLocalService, new String[] {"test.com"});
 
-		BaseModelSearchResult<User> users =
+		BaseModelSearchResult<User> expectedBaseModelSearchResult =
+			_accountUserRetriever.searchAccountUsers(
+				AccountConstants.ACCOUNT_ENTRY_ID_ANY, null,
+				WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS, "screen-name", false);
+		BaseModelSearchResult<User> actualBaseModelSearchResult =
 			_accountUserRetriever.searchAccountUsers(
 				AccountConstants.ACCOUNT_ENTRY_ID_ANY, null, null,
 				WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS, "screen-name", false);
 
-		BaseModelSearchResult<User> expectedUsers =
-			_accountUserRetriever.searchAccountUsers(
-				AccountConstants.ACCOUNT_ENTRY_ID_ANY, null,
-				WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, "screen-name", false);
-
-		Assert.assertEquals(expectedUsers.getLength(), users.getLength());
 		Assert.assertEquals(
-			expectedUsers.getBaseModels(), users.getBaseModels());
+			expectedBaseModelSearchResult.getLength(),
+			actualBaseModelSearchResult.getLength());
+		Assert.assertEquals(
+			expectedBaseModelSearchResult.getBaseModels(),
+			actualBaseModelSearchResult.getBaseModels());
 	}
 
 	@Test
