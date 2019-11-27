@@ -77,7 +77,7 @@ public class RankingJSONBuilder {
 		).put(
 			"clicks", _document.getString("clicks")
 		).put(
-			"date", _getDate()
+			"date", _getDateString()
 		).put(
 			"description", _getDescription()
 		).put(
@@ -170,7 +170,7 @@ public class RankingJSONBuilder {
 		}
 	}
 
-	private String _getDate() {
+	private String _getDateString() {
 		return _formatDate(_getCreateDate());
 	}
 
