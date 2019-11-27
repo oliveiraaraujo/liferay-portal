@@ -79,3 +79,12 @@ pageTypeSelectorData.put("namespace", PortalUtil.getPortletNamespace(ProductNavi
 		<aui:a cssClass="ml-2" href="<%= administrationPortletURL.toString() %>"><%= LanguageUtil.get(request, "go-to-pages-administration") %></aui:a>
 	</div>
 </div>
+
+<aui:script>
+	function destroyTreeComponent() {
+		Liferay.destroyComponent(`${props.namespace}pagesTree`);
+		Liferay.detach('destroyPortlet', destroyTreeComponent);
+	}
+
+	Liferay.on('destroyPortlet', destroyTreeComponent);
+</aui:script>
