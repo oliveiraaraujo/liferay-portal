@@ -179,11 +179,10 @@ public class DLEditFileEntryTypeDisplayContext {
 			return false;
 		}
 
-		int structureStorageLinksCount =
-			_ddmStorageLinkLocalService.getStructureStorageLinksCount(
-				ddmStructure.getStructureId());
+		int count = _ddmStorageLinkLocalService.getStructureStorageLinksCount(
+			ddmStructure.getStructureId());
 
-		if (structureStorageLinksCount > 0) {
+		if (count > 0) {
 			return true;
 		}
 
