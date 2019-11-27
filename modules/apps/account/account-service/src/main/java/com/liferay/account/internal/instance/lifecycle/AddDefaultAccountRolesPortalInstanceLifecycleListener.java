@@ -82,7 +82,7 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 		if (!_exists(
 				AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_OWNER)) {
 
-			_addRegularRole(
+			_addRole(
 				defaultUser.getUserId(),
 				AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_OWNER);
 		}
@@ -91,7 +91,7 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 				AccountRoleConstants.
 					REQUIRED_ROLE_NAME_ACCOUNT_ADMINISTRATOR)) {
 
-			_addRegularRole(
+			_addRole(
 				defaultUser.getUserId(),
 				AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_ADMINISTRATOR);
 		}
@@ -110,7 +110,7 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 			null);
 	}
 
-	private void _addRegularRole(long userId, String roleName)
+	private void _addRole(long userId, String roleName)
 		throws PortalException {
 
 		_roleLocalService.addRole(
