@@ -92,9 +92,7 @@ function LayoutFinder(props) {
 		Liferay.Util.Session.set(
 			'com.liferay.product.navigation.product.menu.web_pagesTreeState',
 			'closed'
-		);
-
-		Liferay.Util.navigate(window.location.href);
+		).then(() => Liferay.Util.navigate(window.location.href));
 	}, []);
 
 	return (

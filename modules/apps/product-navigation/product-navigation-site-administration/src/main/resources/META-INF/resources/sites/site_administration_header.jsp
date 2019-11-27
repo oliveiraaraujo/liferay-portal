@@ -50,33 +50,33 @@ portletURL.setWindowState(LiferayWindowState.EXCLUSIVE);
 		Liferay.Util.Session.set(
 			'com.liferay.product.navigation.product.menu.web_pagesTreeState',
 			'open'
-		);
+		).then(function() {
+			Liferay.Util.fetch('<%= portletURL.toString() %>')
+				.then(function(response) {
+					if (!response.ok) {
+						throw new Error(
+							'<liferay-ui:message key="an-unexpected-error-occurred" />'
+						);
+					}
 
-		Liferay.Util.fetch('<%= portletURL.toString() %>')
-			.then(function(response) {
-				if (!response.ok) {
-					throw new Error(
-						'<liferay-ui:message key="an-unexpected-error-occurred" />'
-					);
-				}
+					return response.text();
+				})
+				.then(function(response) {
+					const sidebar = document.querySelector('.sidebar-body');
+					sidebar.innerHTML = '';
 
-				return response.text();
-			})
-			.then(function(response) {
-				const sidebar = document.querySelector('.sidebar-body');
-				sidebar.innerHTML = '';
+					const range = document.createRange();
+					range.selectNode(sidebar);
 
-				const range = document.createRange();
-				range.selectNode(sidebar);
+					const fragment = range.createContextualFragment(response);
 
-				const fragment = range.createContextualFragment(response);
+					const pagesTree = document.createElement('div');
+					pagesTree.setAttribute('class', 'pages-tree');
+					pagesTree.appendChild(fragment);
 
-				const pagesTree = document.createElement('div');
-				pagesTree.setAttribute('class', 'pages-tree');
-				pagesTree.appendChild(fragment);
-
-				sidebar.appendChild(pagesTree);
-			});
+					sidebar.appendChild(pagesTree);
+				});
+		});
 	});
 </aui:script>
 
