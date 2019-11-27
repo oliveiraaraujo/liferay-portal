@@ -315,7 +315,7 @@ public abstract class TopLevelBuildRunner
 
 		if (!matcher.find()) {
 			throw new RuntimeException(
-				"Invalid jenkins master URL " + mostAvailableMasterURL);
+				"Invalid Jenkins master URL " + mostAvailableMasterURL);
 		}
 
 		JenkinsMaster jenkinsMaster = new JenkinsMaster(matcher.group(1));

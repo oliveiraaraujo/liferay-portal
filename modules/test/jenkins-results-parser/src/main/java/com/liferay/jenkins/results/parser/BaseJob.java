@@ -64,13 +64,13 @@ public abstract class BaseJob implements Job {
 
 		Map<String, String> jobParameters = new HashMap<>();
 
+		JSONObject actionsJSONObject = null;
+
 		JSONObject jobJSONObject = getJobJSONObject(
 			jenkinsMaster,
 			"actions[parameterDefinitions[defaultParameterValue[value],name]]");
 
 		JSONArray actionsJSONArray = jobJSONObject.getJSONArray("actions");
-
-		JSONObject actionsJSONObject = null;
 
 		for (int i = 0; i < actionsJSONArray.length(); i++) {
 			JSONObject jsonObject = actionsJSONArray.getJSONObject(i);
