@@ -66,8 +66,10 @@ public class AppPortlet extends MVCPortlet {
 		return properties;
 	}
 
-	public AppPortlet(long appId) {
+	public AppPortlet(long appId, boolean includeForm, boolean includeTable) {
 		_appId = appId;
+		_includeForm = includeForm;
+		_includeTable = includeTable;
 	}
 
 	@Override
@@ -76,10 +78,16 @@ public class AppPortlet extends MVCPortlet {
 		throws IOException, PortletException {
 
 		renderRequest.setAttribute(AppBuilderWebKeys.APP_ID, _appId);
+		renderRequest.setAttribute(
+			AppBuilderWebKeys.INCLUDE_FORM, _includeForm);
+		renderRequest.setAttribute(
+			AppBuilderWebKeys.INCLUDE_TABLE, _includeTable);
 
 		super.render(renderRequest, renderResponse);
 	}
 
 	private final long _appId;
+	private final boolean _includeForm;
+	private final boolean _includeTable;
 
 }
