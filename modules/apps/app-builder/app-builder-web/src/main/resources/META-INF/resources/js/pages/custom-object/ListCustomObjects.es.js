@@ -53,9 +53,10 @@ export default ({history}) => {
 
 	const [alignElement, setAlignElement] = useState(addButtonRef.current);
 	const [isPopoverVisible, setPopoverVisible] = useState(false);
-	const [isPermissionsModalVisible, setPermissionsModalVisible] = useState(
-		false
-	);
+	const [
+		permissionsDataDefinitionId,
+		setPermissionsDataDefinitionId
+	] = useState(null);
 
 	const onClickAddButton = ({currentTarget}) => {
 		setAlignElement(currentTarget);
@@ -131,27 +132,23 @@ export default ({history}) => {
 			<ListView
 				actions={[
 					{
-						action: item =>
+						action: ({id}) =>
 							Promise.resolve(
-								history.push(
-									`/custom-object/${item.id}/form-views`
-								)
+								history.push(`/custom-object/${id}/form-views`)
 							),
 						name: Liferay.Language.get('form-views')
 					},
 					{
-						action: item =>
+						action: ({id}) =>
 							Promise.resolve(
-								history.push(
-									`/custom-object/${item.id}/table-views`
-								)
+								history.push(`/custom-object/${id}/table-views`)
 							),
 						name: Liferay.Language.get('table-views')
 					},
 					{
-						action: item =>
+						action: ({id}) =>
 							Promise.resolve(
-								history.push(`/custom-object/${item.id}/apps`)
+								history.push(`/custom-object/${id}/apps`)
 							),
 						name: Liferay.Language.get('apps')
 					},
@@ -159,8 +156,8 @@ export default ({history}) => {
 						name: 'divider'
 					},
 					{
-						action: _ =>
-							Promise.resolve(setPermissionsModalVisible(true)),
+						action: ({id}) =>
+							Promise.resolve(setPermissionsDataDefinitionId(id)),
 						name: Liferay.Language.get('permissions')
 					},
 					{
@@ -201,9 +198,9 @@ export default ({history}) => {
 				endpoint={`/o/data-engine/v1.0/sites/${siteId}/data-definitions`}
 			>
 				{item => ({
+					...item,
 					dateCreated: moment(item.dateCreated).fromNow(),
 					dateModified: moment(item.dateModified).fromNow(),
-					id: item.id,
 					name: (
 						<Link to={`/custom-object/${item.id}/form-views`}>
 							{item.name.en_US}
@@ -221,8 +218,8 @@ export default ({history}) => {
 			/>
 
 			<CustomObjectPermissionsModal
-				onClose={() => setPermissionsModalVisible(false)}
-				visible={isPermissionsModalVisible}
+				dataDefinitionId={permissionsDataDefinitionId}
+				onClose={() => setPermissionsDataDefinitionId(null)}
 			/>
 		</>
 	);

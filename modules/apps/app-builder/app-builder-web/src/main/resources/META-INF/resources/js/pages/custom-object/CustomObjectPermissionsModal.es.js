@@ -15,12 +15,12 @@
 import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
 import ClayModal, {useModal} from '@clayui/modal';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import ManagementToolbar from '../../components/management-toolbar/ManagementToolbar.es';
 import SearchInput from '../../components/management-toolbar/search/SearchInput.es';
 import Table from '../../components/table/Table.es';
-import {useRequest} from '../../hooks/index.es';
+import {getItem, updateItem} from '../../utils/client.es';
 
 const ADD_DATA_RECORD = 'ADD_DATA_RECORD';
 const DELETE_DATA_RECORD = 'DELETE_DATA_RECORD';
@@ -61,20 +61,59 @@ const COLUMNS = [
 	}
 ];
 
-export default ({onClose, visible}) => {
+export default ({dataDefinitionId, onClose}) => {
 	const {observer} = useModal({
 		onClose
 	});
 
-	const {
-		response: {items: roles = []},
-		isLoading
-	} = useRequest('/o/headless-admin-user/v1.0/roles');
-
+	const [isLoading, setLoading] = useState(true);
+	const [dataRecordCollectionId, setDataRecordCollectionId] = useState(null);
 	const [permissions, setPermissions] = useState([]);
+	const [roles, setRoles] = useState([]);
 	const [searchText, setSearchText] = useState('');
 
-	if (!visible) {
+	useEffect(() => {
+		setLoading(true);
+		setDataRecordCollectionId(null);
+		setPermissions([]);
+		setRoles([]);
+		setSearchText('');
+
+		if (dataDefinitionId) {
+			Promise.all([
+				getItem('/o/headless-admin-user/v1.0/roles'),
+				getItem(
+					`/o/data-engine/v1.0//data-definitions/${dataDefinitionId}/default-data-record-collection`
+				)
+			])
+				.then(([{items: roles = []}, {id: dataRecordCollectionId}]) => {
+					roles = roles.filter(
+						({name, roleType}) =>
+							name !== 'Administrator' &&
+							name !== 'Site Administrator' &&
+							name !== 'Site Owner' &&
+							roleType !== 'organization'
+					);
+
+					setRoles(roles);
+					setDataRecordCollectionId(dataRecordCollectionId);
+
+					const roleNames = roles.map(({name}) => name);
+
+					return getItem(
+						`/o/data-engine/v1.0/data-record-collections/${dataRecordCollectionId}/data-model-permissions`,
+						{roleNames}
+					);
+				})
+				.then(({items: permissions = []}) => {
+					setPermissions(permissions);
+					setLoading(false);
+				})
+				.catch(_ => setLoading(false));
+		}
+	}, [dataDefinitionId]);
+
+	if (!dataDefinitionId) {
 		return <></>;
 	}
 
@@ -84,9 +123,16 @@ export default ({onClose, visible}) => {
 
 	const isChecked = (roleName, actionId) =>
 		permissions.some(
-			({actionsIds, roleName: name}) =>
-				name === roleName && actionsIds.includes(actionId)
+			({actionIds, roleName: name}) =>
+				name === roleName && actionIds.includes(actionId)
 		);
+
+	const onSave = () => {
+		updateItem(
+			`/o/data-engine/v1.0/data-record-collections/${dataRecordCollectionId}/data-model-permissions`,
+			permissions
+		).then(() => onClose());
+	};
 
 	const togglePermission = (roleName, actionId) => {
 		const exists = permissions.some(
@@ -95,20 +141,20 @@ export default ({onClose, visible}) => {
 
 		let newPermissions = exists
 			? permissions
-			: permissions.concat({actionsIds: [], roleName});
+			: permissions.concat({actionIds: [], roleName});
 
 		newPermissions = newPermissions.map(permission => {
 			if (permission.roleName !== roleName) {
 				return permission;
 			}
 
-			const {actionsIds} = permission;
+			const {actionIds} = permission;
 
 			return {
 				...permission,
-				actionsIds: actionsIds.includes(actionId)
-					? actionsIds.filter(id => id !== actionId)
-					: actionsIds.concat(actionId)
+				actionIds: actionIds.includes(actionId)
+					? actionIds.filter(id => id !== actionId)
+					: actionIds.concat(actionId)
 			};
 		});
 
@@ -116,13 +162,6 @@ export default ({onClose, visible}) => {
 	};
 
 	const filteredRoles = roles
-		.filter(
-			({name, roleType}) =>
-				name !== 'Administrator' &&
-				name !== 'Site Administrator' &&
-				name !== 'Site Owner' &&
-				roleType !== 'organization'
-		)
 		.filter(({name}) => new RegExp(searchText, 'ig').test(name))
 		.map(({name, roleType}) => {
 			let item = {
@@ -162,6 +201,7 @@ export default ({onClose, visible}) => {
 				<ManagementToolbar>
 					<SearchInput
 						onChange={searchText => setSearchText(searchText)}
+						searchText={searchText}
 					/>
 				</ManagementToolbar>
 
@@ -170,10 +210,15 @@ export default ({onClose, visible}) => {
 			<ClayModal.Footer
 				last={
 					<ClayButton.Group spaced>
-						<ClayButton displayType="secondary">
+						<ClayButton
+							displayType="secondary"
+							onClick={() => onClose()}
+						>
 							{Liferay.Language.get('cancel')}
 						</ClayButton>
-						<ClayButton>{Liferay.Language.get('save')}</ClayButton>
+						<ClayButton onClick={() => onSave()}>
+							{Liferay.Language.get('save')}
+						</ClayButton>
 					</ClayButton.Group>
 				}
 			/>

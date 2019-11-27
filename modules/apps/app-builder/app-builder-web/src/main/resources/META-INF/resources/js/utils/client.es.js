@@ -20,13 +20,12 @@ const HEADERS = {
 	'Content-Type': 'application/json'
 };
 
-export const addItem = (endpoint, item) => {
-	return fetch(getURL(endpoint), {
+export const addItem = (endpoint, item) =>
+	fetch(getURL(endpoint), {
 		body: JSON.stringify(item),
 		headers: HEADERS,
 		method: 'POST'
 	}).then(response => response.json());
-};
 
 export const confirmDelete = endpoint => item =>
 	new Promise((resolve, reject) => {
@@ -43,11 +42,10 @@ export const confirmDelete = endpoint => item =>
 		}
 	});
 
-export const deleteItem = endpoint => {
-	return fetch(getURL(endpoint), {
+export const deleteItem = endpoint =>
+	fetch(getURL(endpoint), {
 		method: 'DELETE'
 	});
-};
 
 export const request = (endpoint, method = 'GET') =>
 	fetch(getURL(endpoint), {
@@ -55,12 +53,11 @@ export const request = (endpoint, method = 'GET') =>
 		method
 	});
 
-export const getItem = (endpoint, params) => {
-	return fetch(getURL(endpoint, params), {
+export const getItem = (endpoint, params) =>
+	fetch(getURL(endpoint, params), {
 		headers: HEADERS,
 		method: 'GET'
 	}).then(response => response.json());
-};
 
 export const getURL = (path, params) => {
 	params = {
@@ -77,12 +74,11 @@ export const getURL = (path, params) => {
 	return uri.toString();
 };
 
-export const updateItem = (endpoint, item, params) => {
-	return fetch(getURL(endpoint, params), {
+export const updateItem = (endpoint, item, params) =>
+	fetch(getURL(endpoint, params), {
 		body: JSON.stringify(item),
 		headers: HEADERS,
 		method: 'PUT'
 	})
 		.then(response => response.text())
 		.then(text => (text ? JSON.parse(text) : {}));
-};
