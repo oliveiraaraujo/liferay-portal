@@ -53,9 +53,7 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 	public void portalInstanceRegistered(Company company) throws Exception {
 		User defaultUser = company.getDefaultUser();
 
-		if (!_exists(
-				AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_USER)) {
-
+		if (!_exists(AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_USER)) {
 			AccountRole accountRole = _addAccountRole(
 				defaultUser.getUserId(),
 				AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_USER);
@@ -72,16 +70,12 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 				AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_POWER_USER);
 
 			_assignPermissions(
-				accountRole.getRoleId(),
-				_accountUserResourceActionsMap);
+				accountRole.getRoleId(), _accountUserResourceActionsMap);
 			_assignPermissions(
-				accountRole.getRoleId(),
-				_accountPowerUserResourceActionsMap);
+				accountRole.getRoleId(), _accountPowerUserResourceActionsMap);
 		}
 
-		if (!_exists(
-				AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_OWNER)) {
-
+		if (!_exists(AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_OWNER)) {
 			_addRole(
 				defaultUser.getUserId(),
 				AccountRoleConstants.REQUIRED_ROLE_NAME_ACCOUNT_OWNER);
@@ -110,9 +104,7 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 			null);
 	}
 
-	private void _addRole(long userId, String roleName)
-		throws PortalException {
-
+	private void _addRole(long userId, String roleName) throws PortalException {
 		_roleLocalService.addRole(
 			userId, null, 0, roleName,
 			new HashMap<Locale, String>() {
