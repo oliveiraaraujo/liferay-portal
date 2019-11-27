@@ -104,17 +104,6 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 			null);
 	}
 
-	private void _addRole(long userId, String roleName) throws PortalException {
-		_roleLocalService.addRole(
-			userId, null, 0, roleName,
-			new HashMap<Locale, String>() {
-				{
-					put(LocaleThreadLocal.getDefaultLocale(), roleName);
-				}
-			},
-			null, RoleConstants.TYPE_REGULAR, null, null);
-	}
-
 	private void _addResourcePermissions(
 			long roleId, Map<String, String[]> resourceActionsMap)
 		throws PortalException {
@@ -131,6 +120,17 @@ public class AddDefaultAccountRolesPortalInstanceLifecycleListener
 					resourceAction);
 			}
 		}
+	}
+
+	private void _addRole(long userId, String roleName) throws PortalException {
+		_roleLocalService.addRole(
+			userId, null, 0, roleName,
+			new HashMap<Locale, String>() {
+				{
+					put(LocaleThreadLocal.getDefaultLocale(), roleName);
+				}
+			},
+			null, RoleConstants.TYPE_REGULAR, null, null);
 	}
 
 	private boolean _exists(String roleName) {
