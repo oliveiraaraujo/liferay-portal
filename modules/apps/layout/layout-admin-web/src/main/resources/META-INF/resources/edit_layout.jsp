@@ -43,11 +43,7 @@ if (Validator.isNotNull(backURL)) {
 }
 
 renderResponse.setTitle(selLayout.getName(locale));
-
-String portletResource = ParamUtil.getString(request, "portletResource");
 %>
-
-<liferay-ui:success key='<%= portletResource + "layoutUpdated" %>' message='<%= LanguageUtil.get(resourceBundle, "the-page-was-updated-succesfully") %>' />
 
 <liferay-frontend:screen-navigation
 	containerCssClass="col-lg-8"
