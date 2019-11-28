@@ -18,13 +18,12 @@
 
 <%
 String appName = ParamUtil.getString(request, "appName");
+
 String portletName = ParamUtil.getString(request, "portletName");
 
-String namespace = PortalUtil.getPortletNamespace(portletName);
-
-String mvcPath = ParamUtil.getString(request, namespace + "mvcPath");
-
 String editEntryCssClass = "";
+
+String mvcPath = ParamUtil.getString(request, PortalUtil.getPortletNamespace(portletName) + "mvcPath");
 
 if (mvcPath.startsWith("/edit_entry.jsp")) {
 	editEntryCssClass = "edit-entry";
