@@ -133,11 +133,11 @@ public class AddLayoutPageTemplateEntryMVCActionCommand
 			LayoutPageTemplateAdminPortletKeys.LAYOUT_PAGE_TEMPLATES,
 			PortletRequest.RENDER_PHASE);
 
+		portletURL.setParameter("tabs1", "page-templates");
 		portletURL.setParameter(
 			"layoutPageTemplateCollectionId",
 			String.valueOf(
 				layoutPageTemplateEntry.getLayoutPageTemplateCollectionId()));
-		portletURL.setParameter("tabs1", "page-templates");
 
 		layoutFullURL = _http.setParameter(
 			layoutFullURL, "p_l_back_url", portletURL.toString());

@@ -128,10 +128,8 @@ public class AddDisplayPageMVCActionCommand extends BaseMVCActionCommand {
 			actionRequest, "layoutPageTemplateCollectionId");
 
 		String name = ParamUtil.getString(actionRequest, "name");
-
 		long classNameId = ParamUtil.getLong(actionRequest, "classNameId");
 		long classTypeId = ParamUtil.getLong(actionRequest, "classTypeId");
-
 		long masterLayoutPlid = ParamUtil.getLong(
 			actionRequest, "masterLayoutPlid");
 
