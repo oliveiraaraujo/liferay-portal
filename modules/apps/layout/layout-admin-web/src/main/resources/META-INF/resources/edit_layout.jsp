@@ -25,8 +25,6 @@ if (Validator.isNull(backURL)) {
 	backURL = PortalUtil.getLayoutFullURL(layoutsAdminDisplayContext.getSelLayout(), themeDisplay);
 }
 
-String portletResource = ParamUtil.getString(request, "portletResource");
-
 Layout selLayout = layoutsAdminDisplayContext.getSelLayout();
 
 LayoutRevision layoutRevision = LayoutStagingUtil.getLayoutRevision(selLayout);
@@ -45,6 +43,8 @@ if (Validator.isNotNull(backURL)) {
 }
 
 renderResponse.setTitle(selLayout.getName(locale));
+
+String portletResource = ParamUtil.getString(request, "portletResource");
 %>
 
 <liferay-ui:success key='<%= portletResource + "layoutUpdated" %>' message='<%= LanguageUtil.get(resourceBundle, "the-page-was-updated-succesfully") %>' />
