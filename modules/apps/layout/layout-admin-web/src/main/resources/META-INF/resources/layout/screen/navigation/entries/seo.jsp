@@ -59,12 +59,12 @@ UnicodeProperties layoutTypeSettings = selLayout.getTypeSettingsProperties();
 
 				<liferay-asset:asset-categories-selector
 					className="<%= Layout.class.getName() %>"
-					classPK="<%= selLayout.getPrimaryKey() %>"
+					classPK="<%= (selLayout != null) ? selLayout.getPrimaryKey() : 0 %>"
 				/>
 
 				<liferay-asset:asset-tags-selector
 					className="<%= Layout.class.getName() %>"
-					classPK="<%= selLayout.getPrimaryKey() %>"
+					classPK="<%= (selLayout != null) ? selLayout.getPrimaryKey() : 0 %>"
 				/>
 
 				<aui:input id="title" label="html-title" name="title" placeholder="title" />
