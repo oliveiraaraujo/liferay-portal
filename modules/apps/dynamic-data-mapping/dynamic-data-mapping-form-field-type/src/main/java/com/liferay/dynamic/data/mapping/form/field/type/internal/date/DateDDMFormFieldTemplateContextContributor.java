@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
@@ -51,18 +52,45 @@ public class DateDDMFormFieldTemplateContextContributor
 		DDMFormField ddmFormField,
 		DDMFormFieldRenderingContext ddmFormFieldRenderingContext) {
 
-		Map<String, Object> parameters = HashMapBuilder.<String, Object>put(
+		return HashMapBuilder.<String, Object>put(
+			"months",
+			Arrays.asList(
+				CalendarUtil.getMonths(
+					LocaleThreadLocal.getThemeDisplayLocale()))
+		).put(
 			"predefinedValue",
-			GetterUtil.getString(ddmFormField.getPredefinedValue(), "")
+			_getPredefinedValue(ddmFormField, ddmFormFieldRenderingContext)
+		).put(
+			"weekdaysShort",
+			Stream.of(
+				CalendarUtil.DAYS_ABBREVIATION
+			).map(
+				day -> LanguageUtil.get(
+					LocaleThreadLocal.getThemeDisplayLocale(), day)
+			).collect(
+				Collectors.toList()
+			)
+		).put(
+			"years", _getYears()
 		).build();
+	}
 
-		String predefinedValue = getPredefinedValue(
-			ddmFormField, ddmFormFieldRenderingContext);
+	private String _getPredefinedValue(
+		DDMFormField ddmFormField,
+		DDMFormFieldRenderingContext ddmFormFieldRenderingContext) {
 
-		if (predefinedValue != null) {
-			parameters.put("predefinedValue", predefinedValue);
+		LocalizedValue predefinedValue = ddmFormField.getPredefinedValue();
+
+		if (predefinedValue == null) {
+			return null;
 		}
 
+		return GetterUtil.getString(
+			predefinedValue.getString(
+				ddmFormFieldRenderingContext.getLocale()));
+	}
+
+	private List<Integer> _getYears() {
 		List<Integer> years = new ArrayList<>();
 
 		Calendar calendar = Calendar.getInstance();
@@ -75,39 +103,7 @@ public class DateDDMFormFieldTemplateContextContributor
 			calendar.add(Calendar.YEAR, 1);
 		}
 
-		parameters.put("years", years);
-
-		parameters.put(
-			"months",
-			Arrays.asList(
-				CalendarUtil.getMonths(
-					LocaleThreadLocal.getThemeDisplayLocale())));
-
-		Stream<String> stream = Arrays.stream(CalendarUtil.DAYS_ABBREVIATION);
-
-		parameters.put(
-			"weekdaysShort",
-			Arrays.asList(
-				stream.map(
-					key -> LanguageUtil.get(
-						LocaleThreadLocal.getThemeDisplayLocale(), key)
-				).toArray()));
-
-		return parameters;
-	}
-
-	protected String getPredefinedValue(
-		DDMFormField ddmFormField,
-		DDMFormFieldRenderingContext ddmFormFieldRenderingContext) {
-
-		LocalizedValue predefinedValue = ddmFormField.getPredefinedValue();
-
-		if (predefinedValue == null) {
-			return null;
-		}
-
-		return predefinedValue.getString(
-			ddmFormFieldRenderingContext.getLocale());
+		return years;
 	}
 
 }
