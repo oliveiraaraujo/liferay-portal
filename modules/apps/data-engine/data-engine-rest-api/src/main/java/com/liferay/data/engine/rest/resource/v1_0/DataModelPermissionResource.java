@@ -14,8 +14,7 @@
 
 package com.liferay.data.engine.rest.resource.v1_0;
 
-import com.liferay.data.engine.rest.dto.v1_0.DataRecordCollection;
-import com.liferay.data.engine.rest.dto.v1_0.DataRecordCollectionPermission;
+import com.liferay.data.engine.rest.dto.v1_0.DataModelPermission;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
@@ -41,49 +40,17 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @Generated("")
 @ProviderType
-public interface DataRecordCollectionResource {
+public interface DataModelPermissionResource {
 
-	public Page<DataRecordCollection>
-			getDataDefinitionDataRecordCollectionsPage(
-				Long dataDefinitionId, String keywords, Pagination pagination)
+	public Page<DataModelPermission>
+			getDataRecordCollectionDataModelPermissionsPage(
+				Long dataRecordCollectionId, String roleNames,
+				Pagination pagination)
 		throws Exception;
 
-	public DataRecordCollection postDataDefinitionDataRecordCollection(
-			Long dataDefinitionId, DataRecordCollection dataRecordCollection)
-		throws Exception;
-
-	public DataRecordCollection getDataDefinitionDataRecordCollection(
-			Long dataDefinitionId)
-		throws Exception;
-
-	public void deleteDataRecordCollection(Long dataRecordCollectionId)
-		throws Exception;
-
-	public DataRecordCollection getDataRecordCollection(
-			Long dataRecordCollectionId)
-		throws Exception;
-
-	public DataRecordCollection putDataRecordCollection(
+	public void putDataRecordCollectionDataModelPermission(
 			Long dataRecordCollectionId,
-			DataRecordCollection dataRecordCollection)
-		throws Exception;
-
-	public void postDataRecordCollectionDataRecordCollectionPermission(
-			Long dataRecordCollectionId, String operation,
-			DataRecordCollectionPermission dataRecordCollectionPermission)
-		throws Exception;
-
-	public void postSiteDataRecordCollectionPermission(
-			Long siteId, String operation,
-			DataRecordCollectionPermission dataRecordCollectionPermission)
-		throws Exception;
-
-	public Page<DataRecordCollection> getSiteDataRecordCollectionsPage(
-			Long siteId, String keywords, Pagination pagination)
-		throws Exception;
-
-	public DataRecordCollection getSiteDataRecordCollection(
-			Long siteId, String dataRecordCollectionKey)
+			DataModelPermission[] dataModelPermissions)
 		throws Exception;
 
 	public default void setContextAcceptLanguage(

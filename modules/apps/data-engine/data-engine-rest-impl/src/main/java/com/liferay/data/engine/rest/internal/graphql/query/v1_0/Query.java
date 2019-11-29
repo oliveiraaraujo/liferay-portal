@@ -18,11 +18,13 @@ import com.liferay.data.engine.rest.dto.v1_0.DataDefinition;
 import com.liferay.data.engine.rest.dto.v1_0.DataLayout;
 import com.liferay.data.engine.rest.dto.v1_0.DataLayoutPage;
 import com.liferay.data.engine.rest.dto.v1_0.DataListView;
+import com.liferay.data.engine.rest.dto.v1_0.DataModelPermission;
 import com.liferay.data.engine.rest.dto.v1_0.DataRecord;
 import com.liferay.data.engine.rest.dto.v1_0.DataRecordCollection;
 import com.liferay.data.engine.rest.resource.v1_0.DataDefinitionResource;
 import com.liferay.data.engine.rest.resource.v1_0.DataLayoutResource;
 import com.liferay.data.engine.rest.resource.v1_0.DataListViewResource;
+import com.liferay.data.engine.rest.resource.v1_0.DataModelPermissionResource;
 import com.liferay.data.engine.rest.resource.v1_0.DataRecordCollectionResource;
 import com.liferay.data.engine.rest.resource.v1_0.DataRecordResource;
 import com.liferay.petra.function.UnsafeConsumer;
@@ -78,6 +80,14 @@ public class Query {
 
 		_dataListViewResourceComponentServiceObjects =
 			dataListViewResourceComponentServiceObjects;
+	}
+
+	public static void setDataModelPermissionResourceComponentServiceObjects(
+		ComponentServiceObjects<DataModelPermissionResource>
+			dataModelPermissionResourceComponentServiceObjects) {
+
+		_dataModelPermissionResourceComponentServiceObjects =
+			dataModelPermissionResourceComponentServiceObjects;
 	}
 
 	public static void setDataRecordResourceComponentServiceObjects(
@@ -324,6 +334,29 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {dataRecordCollectionDataModelPermissions(dataRecordCollectionId: ___, page: ___, pageSize: ___, roleNames: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField
+	public DataModelPermissionPage dataRecordCollectionDataModelPermissions(
+			@GraphQLName("dataRecordCollectionId") Long dataRecordCollectionId,
+			@GraphQLName("roleNames") String roleNames,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_dataModelPermissionResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			dataModelPermissionResource -> new DataModelPermissionPage(
+				dataModelPermissionResource.
+					getDataRecordCollectionDataModelPermissionsPage(
+						dataRecordCollectionId, roleNames,
+						Pagination.of(page, pageSize))));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
 	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {dataDefinitionDataRecords(dataDefinitionId: ___, page: ___, pageSize: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField
@@ -423,6 +456,24 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {dataDefinitionDataRecordCollection(dataDefinitionId: ___){dataDefinitionId, dataRecordCollectionKey, description, id, name, siteId}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField
+	public DataRecordCollection dataDefinitionDataRecordCollection(
+			@GraphQLName("dataDefinitionId") Long dataDefinitionId)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_dataRecordCollectionResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			dataRecordCollectionResource ->
+				dataRecordCollectionResource.
+					getDataDefinitionDataRecordCollection(dataDefinitionId));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
 	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {dataRecordCollection(dataRecordCollectionId: ___){dataDefinitionId, dataRecordCollectionKey, description, id, name, siteId}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField
@@ -498,6 +549,36 @@ public class Query {
 				dataDefinitionResource ->
 					dataDefinitionResource.getDataDefinition(
 						_dataRecordCollection.getDataDefinitionId()));
+		}
+
+		private DataRecordCollection _dataRecordCollection;
+
+	}
+
+	@GraphQLTypeExtension(DataRecordCollection.class)
+	public class GetDataRecordCollectionDataModelPermissionsPageTypeExtension {
+
+		public GetDataRecordCollectionDataModelPermissionsPageTypeExtension(
+			DataRecordCollection dataRecordCollection) {
+
+			_dataRecordCollection = dataRecordCollection;
+		}
+
+		@GraphQLField
+		public DataModelPermissionPage dataModelPermissions(
+				@GraphQLName("roleNames") String roleNames,
+				@GraphQLName("pageSize") int pageSize,
+				@GraphQLName("page") int page)
+			throws Exception {
+
+			return _applyComponentServiceObjects(
+				_dataModelPermissionResourceComponentServiceObjects,
+				Query.this::_populateResourceContext,
+				dataModelPermissionResource -> new DataModelPermissionPage(
+					dataModelPermissionResource.
+						getDataRecordCollectionDataModelPermissionsPage(
+							_dataRecordCollection.getId(), roleNames,
+							Pagination.of(page, pageSize))));
 		}
 
 		private DataRecordCollection _dataRecordCollection;
@@ -681,6 +762,30 @@ public class Query {
 
 	}
 
+	@GraphQLTypeExtension(DataDefinition.class)
+	public class GetDataDefinitionDataRecordCollectionTypeExtension {
+
+		public GetDataDefinitionDataRecordCollectionTypeExtension(
+			DataDefinition dataDefinition) {
+
+			_dataDefinition = dataDefinition;
+		}
+
+		@GraphQLField
+		public DataRecordCollection dataRecordCollection() throws Exception {
+			return _applyComponentServiceObjects(
+				_dataRecordCollectionResourceComponentServiceObjects,
+				Query.this::_populateResourceContext,
+				dataRecordCollectionResource ->
+					dataRecordCollectionResource.
+						getDataDefinitionDataRecordCollection(
+							_dataDefinition.getId()));
+		}
+
+		private DataDefinition _dataDefinition;
+
+	}
+
 	@GraphQLTypeExtension(DataRecord.class)
 	public class GetDataRecordCollectionTypeExtension {
 
@@ -802,6 +907,30 @@ public class Query {
 
 	}
 
+	@GraphQLName("DataModelPermissionPage")
+	public class DataModelPermissionPage {
+
+		public DataModelPermissionPage(Page dataModelPermissionPage) {
+			items = dataModelPermissionPage.getItems();
+			page = dataModelPermissionPage.getPage();
+			pageSize = dataModelPermissionPage.getPageSize();
+			totalCount = dataModelPermissionPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected java.util.Collection<DataModelPermission> items;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
 	@GraphQLName("DataRecordPage")
 	public class DataRecordPage {
 
@@ -907,6 +1036,20 @@ public class Query {
 		dataListViewResource.setContextUser(_user);
 	}
 
+	private void _populateResourceContext(
+			DataModelPermissionResource dataModelPermissionResource)
+		throws Exception {
+
+		dataModelPermissionResource.setContextAcceptLanguage(_acceptLanguage);
+		dataModelPermissionResource.setContextCompany(_company);
+		dataModelPermissionResource.setContextHttpServletRequest(
+			_httpServletRequest);
+		dataModelPermissionResource.setContextHttpServletResponse(
+			_httpServletResponse);
+		dataModelPermissionResource.setContextUriInfo(_uriInfo);
+		dataModelPermissionResource.setContextUser(_user);
+	}
+
 	private void _populateResourceContext(DataRecordResource dataRecordResource)
 		throws Exception {
 
@@ -938,6 +1081,8 @@ public class Query {
 		_dataLayoutResourceComponentServiceObjects;
 	private static ComponentServiceObjects<DataListViewResource>
 		_dataListViewResourceComponentServiceObjects;
+	private static ComponentServiceObjects<DataModelPermissionResource>
+		_dataModelPermissionResourceComponentServiceObjects;
 	private static ComponentServiceObjects<DataRecordResource>
 		_dataRecordResourceComponentServiceObjects;
 	private static ComponentServiceObjects<DataRecordCollectionResource>

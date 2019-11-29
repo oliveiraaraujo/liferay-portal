@@ -59,6 +59,15 @@ public interface DataRecordCollectionResource {
 				DataRecordCollection dataRecordCollection)
 		throws Exception;
 
+	public DataRecordCollection getDataDefinitionDataRecordCollection(
+			Long dataDefinitionId)
+		throws Exception;
+
+	public HttpInvoker.HttpResponse
+			getDataDefinitionDataRecordCollectionHttpResponse(
+				Long dataDefinitionId)
+		throws Exception;
+
 	public void deleteDataRecordCollection(Long dataRecordCollectionId)
 		throws Exception;
 
@@ -319,6 +328,72 @@ public interface DataRecordCollectionResource {
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
 						"/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-record-collections",
+				dataDefinitionId);
+
+			httpInvoker.userNameAndPassword(
+				_builder._login + ":" + _builder._password);
+
+			return httpInvoker.invoke();
+		}
+
+		public DataRecordCollection getDataDefinitionDataRecordCollection(
+				Long dataDefinitionId)
+			throws Exception {
+
+			HttpInvoker.HttpResponse httpResponse =
+				getDataDefinitionDataRecordCollectionHttpResponse(
+					dataDefinitionId);
+
+			String content = httpResponse.getContent();
+
+			_logger.fine("HTTP response content: " + content);
+
+			_logger.fine("HTTP response message: " + httpResponse.getMessage());
+			_logger.fine(
+				"HTTP response status code: " + httpResponse.getStatusCode());
+
+			try {
+				return DataRecordCollectionSerDes.toDTO(content);
+			}
+			catch (Exception e) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response: " + content, e);
+
+				throw e;
+			}
+		}
+
+		public HttpInvoker.HttpResponse
+				getDataDefinitionDataRecordCollectionHttpResponse(
+					Long dataDefinitionId)
+			throws Exception {
+
+			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			if (_builder._locale != null) {
+				httpInvoker.header(
+					"Accept-Language", _builder._locale.toLanguageTag());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._headers.entrySet()) {
+
+				httpInvoker.header(entry.getKey(), entry.getValue());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._parameters.entrySet()) {
+
+				httpInvoker.parameter(entry.getKey(), entry.getValue());
+			}
+
+			httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
+
+			httpInvoker.path(
+				_builder._scheme + "://" + _builder._host + ":" +
+					_builder._port +
+						"/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-record-collection",
 				dataDefinitionId);
 
 			httpInvoker.userNameAndPassword(
