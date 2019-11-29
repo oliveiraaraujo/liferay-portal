@@ -147,7 +147,7 @@
 <!--ROLES_ORGANIZATION_ROLES-->
 <tr>
 	<td>ROLES_ORGANIZATION_SELECT_CHOOSE_BUTTON</td>
-	<td>//tr[contains(.,'${key_roleTitle}')]/td[2]//button[contains(.,'Choose')]</td>
+	<td>//tr/td[normalize-space(text())='${key_roleTitle}']/..//button[contains(.,'Choose')]</td>
 	<td></td>
 </tr>
 <tr>
