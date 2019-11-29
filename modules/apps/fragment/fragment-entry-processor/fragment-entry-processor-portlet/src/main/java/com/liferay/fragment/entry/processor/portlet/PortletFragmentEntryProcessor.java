@@ -329,10 +329,9 @@ public class PortletFragmentEntryProcessor implements FragmentEntryProcessor {
 			FragmentEntryProcessorContext fragmentEntryProcessorContext)
 		throws PortalException {
 
+		long plid = _getPlid(fragmentEntryLink);
 		String defaultPortletId = _getPortletId(
 			portletName, fragmentEntryLink.getNamespace(), id, new long[0]);
-
-		long plid = _getPlid(fragmentEntryLink);
 
 		PortletPreferences jxPortletPreferences =
 			PortletPreferencesFactoryUtil.getLayoutPortletSetup(
