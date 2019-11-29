@@ -51,32 +51,27 @@ export default function FloatingToolbar({buttons, item, itemRef}) {
 		show &&
 		buttons.length &&
 		ReactDOM.createPortal(
-			<div className="fragments-editor__floating-toolbar">
-				<div className="fragments-editor__floating-toolbar-buttons">
-					<ClayPopover ref={popoverRef} show={show}>
-						{buttons.map(button => (
-							<FloatingToolbarIcon
-								key={button.panelId}
-								{...button}
-							/>
-						))}
-					</ClayPopover>
-				</div>
+			<div className="position-absolute pr-2 pt-2" ref={popoverRef}>
+				<ClayPopover
+					alignPosition={false}
+					className="position-static"
+					show
+				>
+					{buttons.map(button => (
+						<FloatingToolbarIcon key={button.panelId} {...button} />
+					))}
+				</ClayPopover>
 			</div>,
 			document.body
 		)
 	);
 }
 
-function FloatingToolbarIcon({icon, id, panelId, title, type}) {
+function FloatingToolbarIcon({icon}) {
 	return (
 		<ClayButtonWithIcon
 			borderless
-			data-panelid={panelId}
-			data-title={title}
-			data-type={type}
 			displayType="secondary"
-			id={id}
 			small
 			symbol={icon}
 		/>
