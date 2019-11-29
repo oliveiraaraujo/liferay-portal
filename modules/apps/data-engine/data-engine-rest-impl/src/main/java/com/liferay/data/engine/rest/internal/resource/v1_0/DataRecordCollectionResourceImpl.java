@@ -21,6 +21,7 @@ import com.liferay.data.engine.rest.internal.model.InternalDataRecordCollection;
 import com.liferay.data.engine.rest.internal.resource.common.CommonDataRecordCollectionResource;
 import com.liferay.data.engine.rest.resource.v1_0.DataRecordCollectionResource;
 import com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -71,6 +72,19 @@ public class DataRecordCollectionResourceImpl
 			getDataDefinitionDataRecordCollectionsPage(
 				contextAcceptLanguage, contextCompany, dataDefinitionId,
 				keywords, pagination);
+	}
+
+	@Override
+	public DataRecordCollection getDataDefinitionDefaultDataRecordCollection(
+			Long dataDefinitionId)
+		throws Exception {
+
+		DDMStructure ddmStructure = _ddmStructureLocalService.getStructure(
+			dataDefinitionId);
+
+		return DataRecordCollectionUtil.toDataRecordCollection(
+			_ddlRecordSetLocalService.getRecordSet(
+				ddmStructure.getGroupId(), ddmStructure.getStructureKey()));
 	}
 
 	@Override
