@@ -257,6 +257,16 @@ components:
                     format: int64
                     type: integer
             type: object
+        DataModelPermission:
+            properties:
+                actionIds:
+                    items:
+                        type: string
+                    type:
+                        array
+                roleName:
+                    type: string
+            type: object
         DataRecord:
             description:
                 https://www.schema.org/DataRecord
@@ -744,6 +754,28 @@ paths:
                     description:
                         ""
             tags: ["DataRecord"]
+    "/data-definitions/{dataDefinitionId}/default-data-record-collection":
+        get:
+            operationId: getDataDefinitionDefaultDataRecordCollection
+            parameters:
+                - in: path
+                  name: dataDefinitionId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/DataRecordCollection"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/DataRecordCollection"
+                    description:
+                        ""
+            tags: ["DataRecordCollection"]
     "/data-layouts/{dataLayoutId}":
         delete:
             operationId: deleteDataLayout
@@ -977,6 +1009,75 @@ paths:
                     description:
                         ""
             tags: ["DataRecordCollection"]
+    "/data-record-collections/{dataRecordCollectionId}/data-model-permissions":
+        get:
+            operationId: getDataRecordCollectionDataModelPermissionsPage
+            parameters:
+                - in: path
+                  name: dataRecordCollectionId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+                - in: query
+                  name: roleNames
+                  required: true
+                  schema:
+                      type: string
+                - in: query
+                  name: page
+                  schema:
+                      type: integer
+                - in: query
+                  name: pageSize
+                  schema:
+                      type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/DataModelPermission"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/DataModelPermission"
+                                type: array
+                    description:
+                        ""
+            tags: ["DataModelPermission"]
+        put:
+            operationId: putDataRecordCollectionDataModelPermission
+            parameters:
+                - in: path
+                  name: dataRecordCollectionId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            items:
+                                $ref: "#/components/schemas/DataModelPermission"
+                            type: array
+                    application/xml:
+                        schema:
+                            items:
+                                $ref: "#/components/schemas/DataModelPermission"
+                            type: array
+                description:
+                    ""
+            responses:
+                204:
+                    content:
+                        application/json: {}
+                    description:
+                        ""
+            tags: ["DataModelPermission"]
     "/data-record-collections/{dataRecordCollectionId}/data-record-collection-permissions":
         post:
             operationId: postDataRecordCollectionDataRecordCollectionPermission
