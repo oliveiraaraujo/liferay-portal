@@ -73,8 +73,6 @@ public class DataModelPermissionResourceImpl
 
 		List<DataModelPermission> dataModelPermissions = new ArrayList<>();
 
-		Set<String> actionsIdsSet = new HashSet<>();
-
 		List<ResourceAction> resourceActions =
 			_resourceActionLocalService.getResourceActions(
 				DataRecordCollectionConstants.RESOURCE_NAME);
@@ -90,6 +88,8 @@ public class DataModelPermissionResourceImpl
 			if (resourcePermission == null) {
 				continue;
 			}
+
+			Set<String> actionsIdsSet = new HashSet<>();
 
 			long actionIds = resourcePermission.getActionIds();
 
