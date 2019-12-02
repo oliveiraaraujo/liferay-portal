@@ -902,11 +902,10 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 			long userId, long resourcePrimKey, int increment)
 		throws PortalException {
 
-		long classNameId = classNameLocalService.getClassNameId(
-			KBArticle.class);
-
 		KBArticle kbArticle = getLatestKBArticle(
 			resourcePrimKey, WorkflowConstants.STATUS_ANY);
+		long classNameId = classNameLocalService.getClassNameId(
+			KBArticle.class);
 
 		_viewCountManager.incrementViewCount(
 			kbArticle.getCompanyId(), classNameId, kbArticle.getPrimaryKey(),
