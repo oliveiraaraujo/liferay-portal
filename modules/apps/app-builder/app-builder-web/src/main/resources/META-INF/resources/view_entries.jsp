@@ -23,6 +23,8 @@
 
 	data.put("appId", request.getAttribute(AppBuilderWebKeys.APP_ID));
 	data.put("basePortletURL", String.valueOf(renderResponse.createRenderURL()));
+	data.put("showFormView", ParamUtil.getBoolean(request, AppBuilderWebKeys.SHOW_FORM_VIEW));
+	data.put("showTableView", ParamUtil.getBoolean(request, AppBuilderWebKeys.SHOW_TABLE_VIEW));
 	%>
 
 	<react:component

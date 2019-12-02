@@ -246,7 +246,7 @@ public class StandaloneAppDeployer implements AppDeployer {
 		long appId, String appName, String portletName) {
 
 		return _bundleContext.registerService(
-			Portlet.class, new AppPortlet(appId, true, true),
+			Portlet.class, new AppPortlet(appId),
 			AppPortlet.getProperties(
 				appName, portletName,
 				HashMapBuilder.<String, Object>put(

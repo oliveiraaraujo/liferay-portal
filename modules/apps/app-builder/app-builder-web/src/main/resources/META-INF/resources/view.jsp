@@ -28,8 +28,6 @@ String appBuilderRootElementId = renderResponse.getNamespace() + "-app-builder-r
 	Map<String, Object> data = new HashMap<>();
 
 	data.put("basePortletURL", basePortletURL);
-	data.put("includeForm", ParamUtil.getBoolean(request, AppBuilderWebKeys.INCLUDE_FORM));
-	data.put("includeTable", ParamUtil.getBoolean(request, AppBuilderWebKeys.INCLUDE_TABLE));
 	data.put("pathFriendlyURLPublic", PortalUtil.getPathFriendlyURLPublic());
 	%>
 

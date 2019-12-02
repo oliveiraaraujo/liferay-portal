@@ -130,11 +130,11 @@ public class WidgetAppDeployer implements AppDeployer {
 	}
 
 	private ServiceRegistration<?> _deployPortlet(
-		long appId, String appName, String portletName, boolean includeForm,
-		boolean includeTable) {
+		long appId, String appName, String portletName, boolean showFormView,
+		boolean showTableView) {
 
 		return _bundleContext.registerService(
-			Portlet.class, new AppPortlet(appId, includeForm, includeTable),
+			Portlet.class, new AppPortlet(appId, showFormView, showTableView),
 			AppPortlet.getProperties(
 				appName, portletName,
 				HashMapBuilder.<String, Object>put(

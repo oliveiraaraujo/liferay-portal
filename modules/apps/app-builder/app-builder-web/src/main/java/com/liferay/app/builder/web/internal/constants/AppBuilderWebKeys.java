@@ -21,8 +21,8 @@ public class AppBuilderWebKeys {
 
 	public static final String APP_ID = "APP_ID";
 
-	public static final String INCLUDE_FORM = "INCLUDE_FORM";
+	public static final String SHOW_FORM_VIEW = "SHOW_FORM_VIEW";
 
-	public static final String INCLUDE_TABLE = "INCLUDE_LIST";
+	public static final String SHOW_TABLE_VIEW = "SHOW_TABLE_VIEW";
 
 }
