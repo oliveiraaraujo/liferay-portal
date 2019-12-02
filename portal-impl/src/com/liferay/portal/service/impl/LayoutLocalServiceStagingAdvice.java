@@ -547,7 +547,9 @@ public class LayoutLocalServiceStagingAdvice implements BeanFactoryAware {
 
 		Layout wrappedFirstLayout = wrapLayout(firstLayout);
 
-		if (wrappedFirstLayout == firstLayout) {
+		if ((wrappedFirstLayout == firstLayout) &&
+			!LayoutConstants.TYPE_CONTENT.equals(firstLayout.getType())) {
+
 			return layouts;
 		}
 
