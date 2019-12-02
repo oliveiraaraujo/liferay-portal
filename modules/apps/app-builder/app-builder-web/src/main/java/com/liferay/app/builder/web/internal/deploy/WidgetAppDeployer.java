@@ -71,24 +71,7 @@ public class WidgetAppDeployer implements AppDeployer {
 
 	@Override
 	public void undeploy(long appId) throws Exception {
-		ServiceRegistration<?>[] serviceRegistrations =
-			_serviceRegistrationsMap.remove(appId);
-
-		if (serviceRegistrations == null) {
-			return;
-		}
-
-		for (ServiceRegistration serviceRegistration : serviceRegistrations) {
-			serviceRegistration.unregister();
-		}
-
-		AppBuilderApp appBuilderApp =
-			_appBuilderAppLocalService.getAppBuilderApp(appId);
-
-		appBuilderApp.setStatus(
-			AppBuilderAppConstants.Status.UNDEPLOYED.getValue());
-
-		_appBuilderAppLocalService.updateAppBuilderApp(appBuilderApp);
+		undeploy(_appBuilderAppLocalService, appId, _serviceRegistrationsMap);
 	}
 
 	@Activate

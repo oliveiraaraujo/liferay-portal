@@ -99,15 +99,10 @@ public class StandaloneAppDeployer implements AppDeployer {
 
 	@Override
 	public void undeploy(long appId) throws Exception {
-		ServiceRegistration<?>[] serviceRegistrations =
-			_serviceRegistrationsMap.remove(appId);
+		if (!undeploy(
+			_appBuilderAppLocalService, appId, _serviceRegistrationsMap)) {
 
-		if (serviceRegistrations == null) {
 			return;
-		}
-
-		for (ServiceRegistration serviceRegistration : serviceRegistrations) {
-			serviceRegistration.unregister();
 		}
 
 		AppBuilderApp appBuilderApp =
@@ -119,11 +114,6 @@ public class StandaloneAppDeployer implements AppDeployer {
 		group.setActive(false);
 
 		_groupLocalService.updateGroup(group);
-
-		appBuilderApp.setStatus(
-			AppBuilderAppConstants.Status.UNDEPLOYED.getValue());
-
-		_appBuilderAppLocalService.updateAppBuilderApp(appBuilderApp);
 	}
 
 	@Activate
