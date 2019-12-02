@@ -101,7 +101,7 @@ public class BulkLayoutConverterImpl implements BulkLayoutConverter {
 				if (_log.isWarnEnabled()) {
 					_log.warn(
 						String.format(
-							"Layout with plid %s cannot be converted", plid),
+							"Layout with PLID %s cannot be converted", plid),
 						t);
 				}
 			}
@@ -192,7 +192,7 @@ public class BulkLayoutConverterImpl implements BulkLayoutConverter {
 
 		if (!Objects.equals(layout.getType(), LayoutConstants.TYPE_PORTLET)) {
 			throw new LayoutConvertException(
-				"Layout with plid " + layout.getPlid() + " is not convertible");
+				"Layout with PLID " + layout.getPlid() + " is not convertible");
 		}
 
 		_updatePortletDecorator(layout);
@@ -247,7 +247,7 @@ public class BulkLayoutConverterImpl implements BulkLayoutConverter {
 
 		if (Validator.isNull(layoutTemplateId)) {
 			throw new LayoutConvertException(
-				"Layout template id cannot be null");
+				"Layout template ID cannot be null");
 		}
 
 		LayoutConverter layoutConverter =
@@ -255,13 +255,13 @@ public class BulkLayoutConverterImpl implements BulkLayoutConverter {
 
 		if (layoutConverter == null) {
 			throw new LayoutConvertException(
-				"No layout converter exists for layout template id " +
+				"No layout converter exists for layout template ID " +
 					layoutTemplateId);
 		}
 
 		if (!layoutConverter.isConvertible(layout)) {
 			throw new LayoutConvertException(
-				"Layout with plid " + layout.getPlid() + " is not convertible");
+				"Layout with PLID " + layout.getPlid() + " is not convertible");
 		}
 
 		return layoutConverter.convert(layout);
@@ -273,9 +273,9 @@ public class BulkLayoutConverterImpl implements BulkLayoutConverter {
 		if ((layout.getClassNameId() != 0) || (layout.getClassPK() != 0)) {
 			StringBundler sb = new StringBundler(3);
 
-			sb.append("Layout with plid ");
+			sb.append("Layout with PLID ");
 			sb.append(layout.getPlid());
-			sb.append(" is a draft. You cannot get the draft of a draft ");
+			sb.append(" is a draft. You cannot get the draft of a draft.");
 
 			throw new PortalException(sb.toString());
 		}

@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Rubén Pulido
+ * @review
  */
 public interface BulkLayoutConverter {
 
