@@ -49,51 +49,18 @@ public class WidgetAppDeployer implements AppDeployer {
 		AppBuilderApp appBuilderApp =
 			_appBuilderAppLocalService.getAppBuilderApp(appId);
 
-		StringBundler formAppNameSB = new StringBundler(5);
-
-		formAppNameSB.append(
-			appBuilderApp.getName(LocaleThreadLocal.getDefaultLocale()));
-		formAppNameSB.append(StringPool.SPACE);
-		formAppNameSB.append(StringPool.OPEN_PARENTHESIS);
-		formAppNameSB.append("Form View");
-		formAppNameSB.append(StringPool.CLOSE_PARENTHESIS);
-
-		StringBundler formPortletNameSB = new StringBundler(4);
-
-		formPortletNameSB.append(AppBuilderPortletKeys.WIDGET_APP);
-		formPortletNameSB.append(StringPool.UNDERLINE);
-		formPortletNameSB.append(appId);
-		formPortletNameSB.append("form");
-
-		StringBundler tableAppNameSB = new StringBundler(5);
-
-		tableAppNameSB.append(
-			appBuilderApp.getName(LocaleThreadLocal.getDefaultLocale()));
-		tableAppNameSB.append(StringPool.SPACE);
-		tableAppNameSB.append(StringPool.OPEN_PARENTHESIS);
-		tableAppNameSB.append("Table View");
-		tableAppNameSB.append(StringPool.CLOSE_PARENTHESIS);
-
-		StringBundler tablePortletNameSB = new StringBundler(4);
-
-		tablePortletNameSB.append(AppBuilderPortletKeys.WIDGET_APP);
-		tablePortletNameSB.append(StringPool.UNDERLINE);
-		tablePortletNameSB.append(appId);
-		tablePortletNameSB.append("table");
-
 		_serviceRegistrationsMap.computeIfAbsent(
 			appId,
 			key -> new ServiceRegistration[] {
 				_deployPortlet(
-					appId,
-					appBuilderApp.getName(LocaleThreadLocal.getDefaultLocale()),
-					AppBuilderPortletKeys.WIDGET_APP + "_" + appId, true, true),
+					appId, _getAppName(appBuilderApp, null),
+					_getPortletName(appId, null), true, true),
 				_deployPortlet(
-					appId, formAppNameSB.toString(),
-					formPortletNameSB.toString(), true, false),
+					appId, _getAppName(appBuilderApp, "Form View"),
+					_getPortletName(appId, "form_view"), true, false),
 				_deployPortlet(
-					appId, tableAppNameSB.toString(),
-					tablePortletNameSB.toString(), false, true)
+					appId, _getAppName(appBuilderApp, "Table View"),
+					_getPortletName(appId, "table_view"), false, true)
 			});
 
 		appBuilderApp.setStatus(
@@ -141,6 +108,36 @@ public class WidgetAppDeployer implements AppDeployer {
 					"com.liferay.portlet.display-category",
 					"category.appbuilder"
 				).build()));
+	}
+
+	private String _getAppName(AppBuilderApp appBuilderApp, String suffix) {
+		StringBundler sb = new StringBundler(5);
+
+		sb.append(appBuilderApp.getName(LocaleThreadLocal.getDefaultLocale()));
+
+		if (suffix != null) {
+			sb.append(StringPool.SPACE);
+			sb.append(StringPool.OPEN_PARENTHESIS);
+			sb.append(suffix);
+			sb.append(StringPool.CLOSE_PARENTHESIS);
+		}
+
+		return sb.toString();
+	}
+
+	private String _getPortletName(long appId, String suffix) {
+		StringBundler sb = new StringBundler(5);
+
+		sb.append(AppBuilderPortletKeys.WIDGET_APP);
+		sb.append(StringPool.UNDERLINE);
+		sb.append(appId);
+
+		if (suffix != null) {
+			sb.append(StringPool.UNDERLINE);
+			sb.append(suffix);
+		}
+
+		return sb.toString();
 	}
 
 	@Reference
