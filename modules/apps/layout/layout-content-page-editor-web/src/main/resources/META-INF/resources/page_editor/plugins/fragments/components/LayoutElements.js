@@ -17,28 +17,29 @@ import React, {useContext} from 'react';
 import {useDrag} from 'react-dnd';
 
 import addItem from '../../../app/actions/addItem';
-import {LAYOUT_DATA_ITEM_TYPES} from '../../../app/config/constants/layoutDataItemTypes';
+import {LAYOUT_DATA_ITEM_DEFAULT_CONFIGURATIONS} from '../../../app/config/constants/layoutDataItemDefaultConfigurations';
 import {DispatchContext} from '../../../app/reducers/index';
 import Collapse from '../../../common/components/Collapse';
 
 const layoutElements = [
 	{
 		columns: ['12'],
-		label: Liferay.Language.get('container')
+		label: Liferay.Language.get('container'),
+		type: 'container'
 	},
 	{
 		columns: ['4', '4', '4'],
-		label: Liferay.Language.get('columns')
+		label: Liferay.Language.get('columns'),
+		type: 'row'
 	}
 ];
 
-const LayoutElementCard = ({label, layoutColumns}) => {
+const LayoutElementCard = ({label, layoutColumns, type}) => {
 	const dispatch = useContext(DispatchContext);
 
 	const [, drag] = useDrag({
 		end(item, monitor) {
-			// TODO: Figure out what should go in this config object
-			const config = {};
+			const config = LAYOUT_DATA_ITEM_DEFAULT_CONFIGURATIONS[type];
 
 			const {parentId, position} = monitor.getDropResult();
 
@@ -56,7 +57,7 @@ const LayoutElementCard = ({label, layoutColumns}) => {
 			);
 		},
 		item: {
-			type: LAYOUT_DATA_ITEM_TYPES.container
+			type
 		}
 	});
 
@@ -106,6 +107,7 @@ export default function LayoutElements() {
 								key={layoutElement.columns.join()}
 								label={layoutElement.label}
 								layoutColumns={layoutElement.columns}
+								type={layoutElement.type}
 							/>
 						);
 					})}

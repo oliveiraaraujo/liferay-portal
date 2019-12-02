@@ -141,7 +141,16 @@ function Row({children, item}) {
 	const rowRef = useRef(null);
 
 	const [, drop] = useDrop({
-		accept: [LAYOUT_DATA_ITEM_TYPES.column]
+		accept: [LAYOUT_DATA_ITEM_TYPES.fragment],
+		drop(_, monitor) {
+			if (!monitor.didDrop()) {
+				return {
+					itemType: monitor.getItemType(),
+					parentId: item.itemId,
+					position: item.children.length + 1
+				};
+			}
+		}
 	});
 
 	const rowContent = (
