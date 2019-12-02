@@ -192,7 +192,7 @@ public class IndexedRecordJsonObjectConverter extends RejectHandler {
 	}
 
 	private String _asISO8601String(long timeMills) {
-		DateFormat dateFormat = ISO8601DateFormat._format;
+		DateFormat dateFormat = ISO8601DateFormat._dateFormat;
 
 		return dateFormat.format(new Date(timeMills));
 	}
@@ -225,7 +225,7 @@ public class IndexedRecordJsonObjectConverter extends RejectHandler {
 
 	private static class ISO8601DateFormat {
 
-		private static final DateFormat _format = new SimpleDateFormat(
+		private static final DateFormat _dateFormat = new SimpleDateFormat(
 			"yyyy-MM-dd'T'hh:mm:ss'Z'");
 
 	}
