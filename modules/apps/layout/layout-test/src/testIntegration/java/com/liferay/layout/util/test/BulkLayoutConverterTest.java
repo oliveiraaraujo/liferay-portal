@@ -76,7 +76,7 @@ public class BulkLayoutConverterTest {
 
 		_contentLayout = null;
 		_corruptedLayout = null;
-		_nonConvertibleLayout = null;
+		_nonconvertibleLayout = null;
 		_privateLayout = null;
 		_publicLayout = null;
 	}
@@ -174,7 +174,7 @@ public class BulkLayoutConverterTest {
 		typeSettingsProperties.setProperty(
 			LayoutConstants.CUSTOMIZABLE_LAYOUT, Boolean.TRUE.toString());
 
-		_nonConvertibleLayout = LayoutTestUtil.addLayout(
+		_nonconvertibleLayout = LayoutTestUtil.addLayout(
 			_group.getGroupId(), typeSettingsProperties.toString());
 
 		_privateLayout = LayoutTestUtil.addLayout(_group, true);
@@ -185,7 +185,7 @@ public class BulkLayoutConverterTest {
 		Assert.assertEquals(
 			LayoutConstants.TYPE_PORTLET, _corruptedLayout.getType());
 		Assert.assertEquals(
-			LayoutConstants.TYPE_PORTLET, _nonConvertibleLayout.getType());
+			LayoutConstants.TYPE_PORTLET, _nonconvertibleLayout.getType());
 		Assert.assertEquals(
 			LayoutConstants.TYPE_PORTLET, _privateLayout.getType());
 		Assert.assertEquals(
@@ -199,9 +199,9 @@ public class BulkLayoutConverterTest {
 		_corruptedLayout = _layoutLocalService.getLayoutByUuidAndGroupId(
 			_corruptedLayout.getUuid(), _corruptedLayout.getGroupId(),
 			_corruptedLayout.isPrivateLayout());
-		_nonConvertibleLayout = _layoutLocalService.getLayoutByUuidAndGroupId(
-			_nonConvertibleLayout.getUuid(), _nonConvertibleLayout.getGroupId(),
-			_nonConvertibleLayout.isPrivateLayout());
+		_nonconvertibleLayout = _layoutLocalService.getLayoutByUuidAndGroupId(
+			_nonconvertibleLayout.getUuid(), _nonconvertibleLayout.getGroupId(),
+			_nonconvertibleLayout.isPrivateLayout());
 		_privateLayout = _layoutLocalService.getLayoutByUuidAndGroupId(
 			_privateLayout.getUuid(), _privateLayout.getGroupId(),
 			_privateLayout.isPrivateLayout());
@@ -214,7 +214,7 @@ public class BulkLayoutConverterTest {
 		Assert.assertEquals(
 			LayoutConstants.TYPE_PORTLET, _corruptedLayout.getType());
 		Assert.assertEquals(
-			LayoutConstants.TYPE_PORTLET, _nonConvertibleLayout.getType());
+			LayoutConstants.TYPE_PORTLET, _nonconvertibleLayout.getType());
 		Assert.assertEquals(
 			LayoutConstants.TYPE_CONTENT, _privateLayout.getType());
 		Assert.assertEquals(
@@ -238,7 +238,7 @@ public class BulkLayoutConverterTest {
 	private long[] _getLayoutPlids() {
 		return new long[] {
 			_contentLayout.getPlid(), _corruptedLayout.getPlid(),
-			_nonConvertibleLayout.getPlid(), _privateLayout.getPlid(),
+			_nonconvertibleLayout.getPlid(), _privateLayout.getPlid(),
 			_publicLayout.getPlid()
 		};
 	}
@@ -255,7 +255,7 @@ public class BulkLayoutConverterTest {
 	@Inject
 	private LayoutLocalService _layoutLocalService;
 
-	private Layout _nonConvertibleLayout;
+	private Layout _nonconvertibleLayout;
 	private Layout _privateLayout;
 	private Layout _publicLayout;
 
