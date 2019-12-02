@@ -26,6 +26,7 @@ import org.osgi.service.component.annotations.Component;
  * Provides the entity data model for the context that segments users.
  *
  * @author Eduardo García
+ * @review
  */
 @Component(
 	immediate = true,
