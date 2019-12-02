@@ -15,21 +15,10 @@
 package com.liferay.dispatch.model.impl;
 
 /**
- * The extended model implementation for the DispatchLog service. Represents a row in the &quot;DispatchLog&quot; database table, with each column mapped to a property of this class.
- *
- * <p>
- * Helper methods and all application logic should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the <code>com.liferay.dispatch.model.DispatchLog</code> interface.
- * </p>
- *
  * @author Alessio Antonio Rendina
  */
 public class DispatchLogImpl extends DispatchLogBaseImpl {
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. All methods that expect a dispatch log model instance should use the {@link com.liferay.dispatch.model.DispatchLog} interface instead.
-	 */
 	public DispatchLogImpl() {
 	}
 

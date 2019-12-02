@@ -20,17 +20,7 @@ import com.liferay.portal.aop.AopService;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * The implementation of the dispatch log local service.
- *
- * <p>
- * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the <code>com.liferay.dispatch.service.DispatchLogLocalService</code> interface.
- *
- * <p>
- * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
- * </p>
- *
  * @author Alessio Antonio Rendina
- * @see DispatchLogLocalServiceBaseImpl
  */
 @Component(
 	property = "model.class.name=com.liferay.dispatch.model.DispatchLog",
@@ -38,10 +28,4 @@ import org.osgi.service.component.annotations.Component;
 )
 public class DispatchLogLocalServiceImpl
 	extends DispatchLogLocalServiceBaseImpl {
-
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Use <code>com.liferay.dispatch.service.DispatchLogLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.dispatch.service.DispatchLogLocalServiceUtil</code>.
-	 */
 }

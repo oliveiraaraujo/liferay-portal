@@ -15,21 +15,10 @@
 package com.liferay.dispatch.model.impl;
 
 /**
- * The extended model implementation for the DispatchTrigger service. Represents a row in the &quot;DispatchTrigger&quot; database table, with each column mapped to a property of this class.
- *
- * <p>
- * Helper methods and all application logic should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the <code>com.liferay.dispatch.model.DispatchTrigger</code> interface.
- * </p>
- *
  * @author Alessio Antonio Rendina
  */
 public class DispatchTriggerImpl extends DispatchTriggerBaseImpl {
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. All methods that expect a dispatch trigger model instance should use the {@link com.liferay.dispatch.model.DispatchTrigger} interface instead.
-	 */
 	public DispatchTriggerImpl() {
 	}
 
