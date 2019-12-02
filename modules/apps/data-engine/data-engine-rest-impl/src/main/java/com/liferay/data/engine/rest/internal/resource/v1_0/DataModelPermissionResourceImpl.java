@@ -101,13 +101,13 @@ public class DataModelPermissionResourceImpl
 				}
 			}
 
-			DataModelPermission dataModelPermission = new DataModelPermission();
-
-			dataModelPermission.setActionIds(
-				actionsIdsSet.toArray(new String[0]));
-			dataModelPermission.setRoleName(role.getName());
-
-			dataModelPermissions.add(dataModelPermission);
+			dataModelPermissions.add(
+				new DataModelPermission() {
+					{
+						actionIds = actionsIdsSet.toArray(new String[0]);
+						roleName = role.getName();
+					}
+				});
 		}
 
 		return Page.of(
