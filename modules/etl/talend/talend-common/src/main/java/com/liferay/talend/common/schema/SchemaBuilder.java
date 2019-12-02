@@ -294,7 +294,7 @@ public class SchemaBuilder {
 		if (JsonValue.EMPTY_JSON_OBJECT == schemaJsonObject) {
 			throw new OASException(
 				String.format(
-					"Open API specification does not provide schema " +
+					"OpenAPI specification does not provide schema " +
 						"definition for %s",
 					schemaName));
 		}
