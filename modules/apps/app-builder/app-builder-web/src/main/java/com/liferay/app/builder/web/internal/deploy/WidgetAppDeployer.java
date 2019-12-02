@@ -89,7 +89,7 @@ public class WidgetAppDeployer implements AppDeployer {
 				appName, portletName,
 				HashMapBuilder.<String, Object>put(
 					"com.liferay.portlet.display-category",
-					"category.appbuilder"
+					"category.app_builder"
 				).build()));
 	}
 

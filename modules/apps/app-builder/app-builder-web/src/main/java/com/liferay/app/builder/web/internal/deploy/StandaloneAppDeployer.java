@@ -100,7 +100,7 @@ public class StandaloneAppDeployer implements AppDeployer {
 	@Override
 	public void undeploy(long appId) throws Exception {
 		if (!undeploy(
-			_appBuilderAppLocalService, appId, _serviceRegistrationsMap)) {
+				_appBuilderAppLocalService, appId, _serviceRegistrationsMap)) {
 
 			return;
 		}
