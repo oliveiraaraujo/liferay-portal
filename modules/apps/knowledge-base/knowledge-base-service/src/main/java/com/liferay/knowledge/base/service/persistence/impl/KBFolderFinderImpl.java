@@ -195,7 +195,7 @@ public class KBFolderFinderImpl
 
 			sb.append("SELECT * FROM (");
 
-			String sql;
+			String sql = null;
 
 			if (orderByViewCount) {
 				sql = _customSQL.get(
