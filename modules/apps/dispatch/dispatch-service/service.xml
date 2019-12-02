@@ -89,9 +89,9 @@
 		</finder>
 	</entity>
 	<exceptions>
-		<exception>DuplicateDispatchTrigger</exception>
 		<exception>DispatchTriggerEndDate</exception>
 		<exception>DispatchTriggerName</exception>
 		<exception>DispatchTriggerStartDate</exception>
+		<exception>DuplicateDispatchTrigger</exception>
 	</exceptions>
 </service-builder>
