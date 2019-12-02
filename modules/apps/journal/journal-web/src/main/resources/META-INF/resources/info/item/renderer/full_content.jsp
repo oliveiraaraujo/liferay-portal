@@ -18,7 +18,6 @@
 
 <%
 JournalArticle article = (JournalArticle)request.getAttribute(WebKeys.JOURNAL_ARTICLE);
-
 String ddmTemplateKey = GetterUtil.getString(request.getAttribute(WebKeys.JOURNAL_TEMPLATE_ID), article.getDDMTemplateKey());
 %>
 
