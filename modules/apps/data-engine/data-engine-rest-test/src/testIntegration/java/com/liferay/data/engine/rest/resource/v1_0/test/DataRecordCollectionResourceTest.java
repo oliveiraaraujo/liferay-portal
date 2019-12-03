@@ -247,16 +247,17 @@ public class DataRecordCollectionResourceTest
 	}
 
 	private DataRecordCollection _createDataRecordCollection(
-		String description, String key, String name) {
+		String description, String dataRecordCollectionKey, String name) {
 
 		DataRecordCollection dataRecordCollection = new DataRecordCollection() {
 			{
 				dataDefinitionId = _ddmStructure.getStructureId();
-				dataRecordCollectionKey = key;
 				siteId = testGroup.getGroupId();
 			}
 		};
 
+		dataRecordCollection.setDataRecordCollectionKey(
+			dataRecordCollectionKey);
 		dataRecordCollection.setDescription(
 			HashMapBuilder.<String, Object>put(
 				"en_US", description
@@ -269,9 +270,9 @@ public class DataRecordCollectionResourceTest
 		return dataRecordCollection;
 	}
 
-	private DataRecordCollection _randomDataRecordCollection(String key) {
+	private DataRecordCollection _randomDataRecordCollection(String dataRecordCollectionKey) {
 		return _createDataRecordCollection(
-			RandomTestUtil.randomString(), key, RandomTestUtil.randomString());
+			RandomTestUtil.randomString(), dataRecordCollectionKey, RandomTestUtil.randomString());
 	}
 
 	private void _testGetDataDefinitionDataRecordCollectionsPage(
