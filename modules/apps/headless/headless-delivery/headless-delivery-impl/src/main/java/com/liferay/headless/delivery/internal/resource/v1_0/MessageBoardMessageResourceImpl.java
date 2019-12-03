@@ -299,17 +299,18 @@ public class MessageBoardMessageResourceImpl
 					booleanQuery.getPreBooleanFilter();
 
 				if (siteId == null) {
+					booleanFilter.add(
+						new TermFilter(
+							Field.ENTRY_CLASS_PK,
+							String.valueOf(messageBoardMessageId)),
+						BooleanClauseOccur.MUST_NOT);
+
 					String field = "parentMessageId";
 
 					if (GetterUtil.getBoolean(flatten)) {
 						field = "treePath";
 					}
 
-					booleanFilter.add(
-						new TermFilter(
-							Field.ENTRY_CLASS_PK,
-							String.valueOf(messageBoardMessageId)),
-						BooleanClauseOccur.MUST_NOT);
 					booleanFilter.add(
 						new TermFilter(
 							field, String.valueOf(messageBoardMessageId)),
