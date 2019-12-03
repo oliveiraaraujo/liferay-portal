@@ -15,9 +15,9 @@
 import {ClayButtonWithIcon} from '@clayui/button';
 import ClayPopover from '@clayui/popover';
 import {Align} from 'metal-position';
-import React, {useRef, useLayoutEffect} from 'react';
-import ReactDOM from 'react-dom';
+import React, {useLayoutEffect, useRef, useState} from 'react';
 
+import ConfigurationPanel from './ConfigurationPanel';
 import {useIsActive} from './Controls';
 
 const ALIGNMENTS_MAP = {
@@ -35,6 +35,10 @@ export default function FloatingToolbar({buttons, item, itemRef}) {
 	const isActive = useIsActive();
 	const popoverRef = useRef(null);
 	const show = isActive(item.itemId);
+
+	const [activeConfigurationPanel, setActiveConfigurationPanel] = useState(
+		null
+	);
 
 	useLayoutEffect(() => {
 		if (show && itemRef.current && popoverRef.current) {
@@ -54,22 +58,47 @@ export default function FloatingToolbar({buttons, item, itemRef}) {
 				<ClayPopover
 					alignPosition={false}
 					className="position-static"
+					ref={popoverRef}
 					show
 				>
 					{buttons.map(button => (
-						<FloatingToolbarButton key={button.panelId} {...button}/>
+						<FloatingToolbarButton
+							active={button.panelId === activeConfigurationPanel}
+							key={button.panelId}
+							onClick={panelId => {
+								if (activeConfigurationPanel === panelId) {
+									setActiveConfigurationPanel(null);
+								} else {
+									setActiveConfigurationPanel(panelId);
+								}
+							}}
+							{...button}
+						/>
 					))}
 				</ClayPopover>
-			document.body
+
+				{activeConfigurationPanel && (
+					<ConfigurationPanel
+						configurationPanel={activeConfigurationPanel}
+						popoverRef={popoverRef}
+					/>
+				)}
+			</div>
 		)
 	);
 }
 
-function FloatingToolbarButton({icon}) {
+function FloatingToolbarButton({active, icon, onClick, panelId}) {
 	return (
 		<ClayButtonWithIcon
 			borderless
+			className={active && 'active'}
 			displayType="secondary"
+			onClick={() => {
+				if (onClick) {
+					onClick(panelId);
+				}
+			}}
 			small
 			symbol={icon}
 		/>
