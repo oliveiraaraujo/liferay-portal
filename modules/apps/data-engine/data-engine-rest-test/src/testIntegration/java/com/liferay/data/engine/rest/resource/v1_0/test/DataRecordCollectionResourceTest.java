@@ -242,24 +242,8 @@ public class DataRecordCollectionResourceTest
 	private DataRecordCollection _createDataRecordCollection(
 		String description, String name) {
 
-		DataRecordCollection dataRecordCollection = new DataRecordCollection() {
-			{
-				dataDefinitionId = _ddmStructure.getStructureId();
-				dataRecordCollectionKey = RandomTestUtil.randomString();
-				siteId = testGroup.getGroupId();
-			}
-		};
-
-		dataRecordCollection.setDescription(
-			HashMapBuilder.<String, Object>put(
-				"en_US", description
-			).build());
-		dataRecordCollection.setName(
-			HashMapBuilder.<String, Object>put(
-				"en_US", name
-			).build());
-
-		return dataRecordCollection;
+		return _createDataRecordCollection(
+			description, RandomTestUtil.randomString(), name);
 	}
 
 	private DataRecordCollection _createDataRecordCollection(
