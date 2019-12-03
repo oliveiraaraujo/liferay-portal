@@ -57,7 +57,7 @@ export default function FloatingToolbar({buttons, item, itemRef}) {
 					show
 				>
 					{buttons.map(button => (
-						<FloatingToolbarIcon key={button.panelId} {...button} />
+						<FloatingToolbarButton key={button.panelId} {...button}/>
 					))}
 				</ClayPopover>
 			document.body
@@ -65,7 +65,7 @@ export default function FloatingToolbar({buttons, item, itemRef}) {
 	);
 }
 
-function FloatingToolbarIcon({icon}) {
+function FloatingToolbarButton({icon}) {
 	return (
 		<ClayButtonWithIcon
 			borderless
