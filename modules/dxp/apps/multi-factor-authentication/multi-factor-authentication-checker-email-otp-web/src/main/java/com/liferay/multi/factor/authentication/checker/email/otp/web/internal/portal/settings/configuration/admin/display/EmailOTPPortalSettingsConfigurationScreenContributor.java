@@ -93,7 +93,8 @@ public class EmailOTPPortalSettingsConfigurationScreenContributor
 		}
 		catch (ConfigurationException ce) {
 			if (_log.isWarnEnabled()) {
-				_log.warn("Unable to load Email OTP Configuration", ce);
+				_log.warn(
+					"Unable to load email one-time password configuration", ce);
 			}
 
 			throw new IllegalStateException(ce);
