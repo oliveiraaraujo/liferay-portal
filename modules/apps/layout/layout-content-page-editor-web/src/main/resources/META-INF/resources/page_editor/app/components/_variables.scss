@@ -43,6 +43,8 @@ $topperBorderWidth: 1px;
 $topperFocusedBorderWidth: 2px;
 $topperHoveredBorderWidth: 2px;
 
+$floatingToolbarPanelMinWidth: 288px;
+
 $dropTargetWidth: 5px;
 $fragmentsEditorSpacing: 8px;
 
@@ -50,6 +52,8 @@ $fragmentsEditorSpacing: 8px;
 // z-indexes, ordered numerically.
 //
 
+$floatingToolbarZIndex: 976;
+$floatingToolbarPanelZIndex: 989;
 $topperZIndex: -1;
 $topperActiveZIndex: 3;
 $topperHoverZIndex: 3;
