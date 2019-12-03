@@ -251,15 +251,15 @@ public class MBMessageIndexerIndexedFieldsTest {
 	private void _populateTreePath(
 		MBMessage mbMessage, Map<String, String> map) {
 
-		List<String> treePathValues = new ArrayList<>(
+		List<String> treePathParts = new ArrayList<>(
 			Arrays.asList(
 				StringUtil.split(mbMessage.getTreePath(), CharPool.SLASH)));
 
-		if (treePathValues.size() == 1) {
-			map.put(Field.TREE_PATH, treePathValues.get(0));
+		if (treePathParts.size() == 1) {
+			map.put(Field.TREE_PATH, treePathParts.get(0));
 		}
-		else if (treePathValues.size() > 1) {
-			map.put(Field.TREE_PATH, treePathValues.toString());
+		else if (treePathParts.size() > 1) {
+			map.put(Field.TREE_PATH, treePathParts.toString());
 		}
 	}
 
