@@ -64,8 +64,9 @@ public class SegmentsEntrySearchContainerFactory {
 
 		searchContainer.setOrderByType(orderByType);
 
-		long roleId = ParamUtil.getLong(renderRequest, "roleId");
 		String tabs3 = ParamUtil.getString(renderRequest, "tabs3", "current");
+
+		long roleId = ParamUtil.getLong(renderRequest, "roleId");
 
 		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
