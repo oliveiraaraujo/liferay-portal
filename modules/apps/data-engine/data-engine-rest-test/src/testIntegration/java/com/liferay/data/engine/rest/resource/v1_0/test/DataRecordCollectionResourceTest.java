@@ -143,11 +143,6 @@ public class DataRecordCollectionResourceTest
 			RandomTestUtil.randomString(), RandomTestUtil.randomString());
 	}
 
-	private DataRecordCollection _randomDataRecordCollection(String key) {
-		return _createDataRecordCollection(
-			RandomTestUtil.randomString(), key, RandomTestUtil.randomString());
-	}
-
 	@Override
 	protected DataRecordCollection randomIrrelevantDataRecordCollection()
 		throws Exception {
@@ -288,6 +283,11 @@ public class DataRecordCollectionResourceTest
 			).build());
 
 		return dataRecordCollection;
+	}
+
+	private DataRecordCollection _randomDataRecordCollection(String key) {
+		return _createDataRecordCollection(
+			RandomTestUtil.randomString(), key, RandomTestUtil.randomString());
 	}
 
 	private void _testGetDataDefinitionDataRecordCollectionsPage(
