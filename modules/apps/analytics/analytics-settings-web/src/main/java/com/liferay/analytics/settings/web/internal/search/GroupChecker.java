@@ -24,9 +24,9 @@ import javax.portlet.RenderResponse;
 /**
  * @author André Miranda
  */
-public class GroupIdChecker extends EmptyOnClickRowChecker {
+public class GroupChecker extends EmptyOnClickRowChecker {
 
-	public GroupIdChecker(RenderResponse renderResponse, Set<String> ids) {
+	public GroupChecker(RenderResponse renderResponse, Set<String> ids) {
 		super(renderResponse);
 
 		_ids = ids;

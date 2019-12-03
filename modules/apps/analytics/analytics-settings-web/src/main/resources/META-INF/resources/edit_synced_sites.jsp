@@ -44,7 +44,7 @@
 		<liferay-ui:search-container
 			curParam="inheritedSitesCur"
 			headerNames="name"
-			rowChecker="<%= new GroupIdChecker(renderResponse, syncedGroupIds) %>"
+			rowChecker="<%= new GroupChecker(renderResponse, syncedGroupIds) %>"
 			total="<%= groups.size() %>"
 		>
 			<liferay-ui:search-container-results
