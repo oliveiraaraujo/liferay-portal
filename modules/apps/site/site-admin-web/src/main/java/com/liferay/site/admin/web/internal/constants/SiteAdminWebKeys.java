@@ -19,7 +19,7 @@ package com.liferay.site.admin.web.internal.constants;
  */
 public class SiteAdminWebKeys {
 
-	public static final String DLURL_HELPER = "DLURL_HELPER";
+	public static final String DL_URL_HELPER = "DL_URL_HELPER";
 
 	public static final String GROUP_ENTRIES = "GROUP_ENTRIES";
 

@@ -86,7 +86,7 @@ public class SiteAdminDisplayContext {
 		_liferayPortletResponse = liferayPortletResponse;
 
 		_dlurlHelper = (DLURLHelper)_liferayPortletRequest.getAttribute(
-			SiteAdminWebKeys.DLURL_HELPER);
+			SiteAdminWebKeys.DL_URL_HELPER);
 
 		_groupSearchProvider =
 			(GroupSearchProvider)httpServletRequest.getAttribute(
