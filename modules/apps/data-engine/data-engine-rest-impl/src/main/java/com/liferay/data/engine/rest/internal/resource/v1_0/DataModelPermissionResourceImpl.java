@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.service.permission.ModelPermissions;
 import com.liferay.portal.kernel.service.permission.ModelPermissionsFactory;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.vulcan.pagination.Page;
-import com.liferay.portal.vulcan.pagination.Pagination;
 
 import java.util.HashSet;
 import java.util.List;
@@ -56,8 +55,7 @@ public class DataModelPermissionResourceImpl
 	@Override
 	public Page<DataModelPermission>
 			getDataRecordCollectionDataModelPermissionsPage(
-				Long dataRecordCollectionId, String roleNames,
-				Pagination pagination)
+				Long dataRecordCollectionId, String roleNames)
 		throws Exception {
 
 		DDLRecordSet ddlRecordSet = _ddlRecordSetLocalService.getRecordSet(
@@ -70,16 +68,15 @@ public class DataModelPermissionResourceImpl
 		List<ResourceAction> resourceActions =
 			_resourceActionLocalService.getResourceActions(
 				DataRecordCollectionConstants.RESOURCE_NAME);
-		List<Role> roles = DataEnginePermissionUtil.getRoles(
-			contextCompany, _roleLocalService, StringUtil.split(roleNames));
 
 		return Page.of(
 			transform(
-				roles,
+				DataEnginePermissionUtil.getRoles(
+					contextCompany, _roleLocalService,
+					StringUtil.split(roleNames)),
 				role -> _toDataModelPermission(
 					dataRecordCollectionId, ddlRecordSet, resourceActions,
-					role)),
-			pagination, roles.size());
+					role)));
 	}
 
 	@Override
