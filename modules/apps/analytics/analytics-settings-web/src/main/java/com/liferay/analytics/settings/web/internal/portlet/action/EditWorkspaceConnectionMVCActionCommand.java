@@ -27,15 +27,13 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.WebKeys;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.portlet.ActionRequest;
 
 import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -75,7 +73,7 @@ public class EditWorkspaceConnectionMVCActionCommand
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
 			new String(Base64.decode(token)));
 
-		_connectAnalytics(
+		_connect(
 			themeDisplay, jsonObject.getString("token"),
 			jsonObject.getString("url"));
 
@@ -92,8 +90,7 @@ public class EditWorkspaceConnectionMVCActionCommand
 		configurationProperties.put("token", token);
 	}
 
-	private void _connectAnalytics(
-			ThemeDisplay themeDisplay, String token, String url)
+	private void _connect(ThemeDisplay themeDisplay, String token, String url)
 		throws Exception {
 
 		HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
@@ -103,14 +100,12 @@ public class EditWorkspaceConnectionMVCActionCommand
 
 			HttpPost httpPost = new HttpPost(url);
 
-			List<NameValuePair> parameters = new ArrayList<>();
-
-			parameters.add(new BasicNameValuePair("token", token));
-			parameters.add(
-				new BasicNameValuePair(
-					"portalURL", _portal.getPortalURL(themeDisplay)));
-
-			httpPost.setEntity(new UrlEncodedFormEntity(parameters));
+			httpPost.setEntity(
+				new UrlEncodedFormEntity(
+					Arrays.asList(
+						new BasicNameValuePair(
+							"portalURL", _portal.getPortalURL(themeDisplay)),
+						new BasicNameValuePair("token", token))));
 
 			CloseableHttpResponse closeableHttpResponse =
 				closeableHttpClient.execute(httpPost);
@@ -130,9 +125,9 @@ public class EditWorkspaceConnectionMVCActionCommand
 	private void _updateCompanyPreferences(long companyId, String json)
 		throws Exception {
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(json);
-
 		UnicodeProperties unicodeProperties = new UnicodeProperties(true);
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(json);
 
 		Iterator<String> keys = jsonObject.keys();
 
