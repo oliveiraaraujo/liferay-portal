@@ -28,8 +28,8 @@ AccountUsersAdminManagementToolbarDisplayContext accountUsersAdminManagementTool
 
 <aui:container cssClass="container-fluid container-fluid-max-xl">
 	<aui:form method="post" name="fm">
-		<aui:input name="accountUserIds" type="hidden" />
 		<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
+		<aui:input name="accountUserIds" type="hidden" />
 
 		<liferay-ui:search-container
 			searchContainer="<%= accountUsersDisplaySearchContainer %>"
