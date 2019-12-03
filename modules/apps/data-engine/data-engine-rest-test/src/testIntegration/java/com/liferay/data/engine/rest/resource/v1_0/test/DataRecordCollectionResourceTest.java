@@ -143,7 +143,7 @@ public class DataRecordCollectionResourceTest
 			RandomTestUtil.randomString(), RandomTestUtil.randomString());
 	}
 
-	protected DataRecordCollection randomDataRecordCollection(String key) {
+	private DataRecordCollection _randomDataRecordCollection(String key) {
 		return _createDataRecordCollection(
 			RandomTestUtil.randomString(), key, RandomTestUtil.randomString());
 	}
@@ -179,7 +179,7 @@ public class DataRecordCollectionResourceTest
 		return dataRecordCollectionResource.
 			postDataDefinitionDataRecordCollection(
 				_ddmStructure.getStructureId(),
-				randomDataRecordCollection(_ddmStructure.getStructureKey()));
+				_randomDataRecordCollection(_ddmStructure.getStructureKey()));
 	}
 
 	@Override
