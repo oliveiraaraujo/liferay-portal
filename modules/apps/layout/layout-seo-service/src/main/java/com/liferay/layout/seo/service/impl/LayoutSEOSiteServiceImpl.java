@@ -20,17 +20,7 @@ import com.liferay.portal.aop.AopService;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * The implementation of the layout seo site remote service.
- *
- * <p>
- * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the <code>com.liferay.layout.seo.service.LayoutSEOSiteService</code> interface.
- *
- * <p>
- * This is a remote service. Methods of this service are expected to have security checks based on the propagated JAAS credentials because this service can be accessed remotely.
- * </p>
- *
  * @author Brian Wing Shun Chan
- * @see LayoutSEOSiteServiceBaseImpl
  */
 @Component(
 	property = {
@@ -40,11 +30,4 @@ import org.osgi.service.component.annotations.Component;
 	service = AopService.class
 )
 public class LayoutSEOSiteServiceImpl extends LayoutSEOSiteServiceBaseImpl {
-
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Always use <code>com.liferay.layout.seo.service.LayoutSEOSiteServiceUtil</code> to access the layout seo site remote service.
-	 */
-
 }
