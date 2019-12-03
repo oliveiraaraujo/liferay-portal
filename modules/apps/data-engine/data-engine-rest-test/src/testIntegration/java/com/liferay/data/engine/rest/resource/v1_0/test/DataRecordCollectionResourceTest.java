@@ -243,11 +243,11 @@ public class DataRecordCollectionResourceTest
 		String description, String name) {
 
 		return _createDataRecordCollection(
-			description, RandomTestUtil.randomString(), name);
+			RandomTestUtil.randomString(), description, name);
 	}
 
 	private DataRecordCollection _createDataRecordCollection(
-		String description, String dataRecordCollectionKey, String name) {
+		String dataRecordCollectionKey, String description, String name) {
 
 		DataRecordCollection dataRecordCollection = new DataRecordCollection() {
 			{
@@ -270,9 +270,12 @@ public class DataRecordCollectionResourceTest
 		return dataRecordCollection;
 	}
 
-	private DataRecordCollection _randomDataRecordCollection(String dataRecordCollectionKey) {
+	private DataRecordCollection _randomDataRecordCollection(
+		String dataRecordCollectionKey) {
+
 		return _createDataRecordCollection(
-			RandomTestUtil.randomString(), dataRecordCollectionKey, RandomTestUtil.randomString());
+			dataRecordCollectionKey, RandomTestUtil.randomString(),
+			RandomTestUtil.randomString());
 	}
 
 	private void _testGetDataDefinitionDataRecordCollectionsPage(
