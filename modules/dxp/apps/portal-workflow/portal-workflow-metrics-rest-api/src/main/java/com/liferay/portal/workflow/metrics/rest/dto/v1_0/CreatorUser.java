@@ -66,7 +66,7 @@ public class CreatorUser {
 		}
 	}
 
-	@GraphQLField
+	@GraphQLField(description = "The user's ID.")
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected Long id;
 
@@ -92,7 +92,7 @@ public class CreatorUser {
 		}
 	}
 
-	@GraphQLField
+	@GraphQLField(description = "The user's full name.")
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected String name;
 
