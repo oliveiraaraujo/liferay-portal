@@ -88,7 +88,8 @@ public class SiteSettingsPortlet extends SiteAdminPortlet {
 			SessionErrors.add(renderRequest, pe.getClass());
 		}
 
-		renderRequest.setAttribute(SiteAdminWebKeys.DL_URL_HELPER, _dlurlHelper);
+		renderRequest.setAttribute(
+			SiteAdminWebKeys.DL_URL_HELPER, _dlurlHelper);
 		renderRequest.setAttribute(
 			SiteAdminWebKeys.ITEM_SELECTOR, _itemSelector);
 

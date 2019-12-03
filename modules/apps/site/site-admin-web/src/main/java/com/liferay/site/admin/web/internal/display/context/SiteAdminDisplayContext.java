@@ -87,14 +87,11 @@ public class SiteAdminDisplayContext {
 
 		_dlurlHelper = (DLURLHelper)_liferayPortletRequest.getAttribute(
 			SiteAdminWebKeys.DL_URL_HELPER);
-
 		_groupSearchProvider =
 			(GroupSearchProvider)httpServletRequest.getAttribute(
 				SiteWebKeys.GROUP_SEARCH_PROVIDER);
-
 		_itemSelector = (ItemSelector)_liferayPortletRequest.getAttribute(
 			SiteAdminWebKeys.ITEM_SELECTOR);
-
 		_themeDisplay = (ThemeDisplay)liferayPortletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 	}
