@@ -147,10 +147,10 @@ renderResponse.setTitle(role.getTitle(locale));
 					redirect: assignmentsRedirect.toString()
 				};
 
-				if (selectedItem.type === 'users') {
-					data.addUserIds = selectedItem.value;
-				} else if (selectedItem.type == 'segments') {
+				if (selectedItem.type == 'segments') {
 					data.addSegmentsEntryIds = selectedItem.value;
+				} else if (selectedItem.type === 'users') {
+					data.addUserIds = selectedItem.value;
 				} else {
 					data.addGroupIds = selectedItem.value;
 				}
