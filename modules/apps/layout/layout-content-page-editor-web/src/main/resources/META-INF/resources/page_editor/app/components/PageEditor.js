@@ -60,7 +60,16 @@ function Root({children, item}) {
 
 	return (
 		<div ref={drop} style={{background, height: '100vh'}}>
-			{children}
+			{React.Children.count(children) ? (
+				children
+			) : (
+				<div className="taglib-empty-result-message">
+					<div className="taglib-empty-result-message-header"></div>
+					<div className="text-center text-muted">
+						{Liferay.Language.get('place-fragments-here')}
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }
