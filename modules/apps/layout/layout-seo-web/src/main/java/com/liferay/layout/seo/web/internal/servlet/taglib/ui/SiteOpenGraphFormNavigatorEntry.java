@@ -80,7 +80,6 @@ public class SiteOpenGraphFormNavigatorEntry
 		PortletRequest portletRequest =
 			(PortletRequest)httpServletRequest.getAttribute(
 				JavaConstants.JAVAX_PORTLET_REQUEST);
-
 		PortletResponse portletResponse =
 			(PortletResponse)httpServletRequest.getAttribute(
 				JavaConstants.JAVAX_PORTLET_RESPONSE);
