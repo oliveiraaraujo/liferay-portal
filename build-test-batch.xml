@@ -5048,8 +5048,7 @@ log.sanitizer.enabled=false</echo>
 
 						<antcall inheritAll="false" target="install-portal-snapshots" />
 
-						<echo>tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf --gzip --to-stdout --verbose > modules/core/portal-bootstrap/system.packages.extra.mf
-tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'</echo>
+						<echo>tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf --gzip --to-stdout --verbose > modules/core/portal-bootstrap/system.packages.extra.mf</echo>
 
 						<execute>
 							<![CDATA[
@@ -5059,18 +5058,20 @@ tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'</e
 							]]>
 						</execute>
 
-						<if>
-							<equals arg1="${build.profile}" arg2="dxp" />
-							<then>
-								<echo>tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'</echo>
+						<echo>tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'</echo>
 
+						<trycatch property="tar.failure">
+							<try>
 								<execute>
 									<![CDATA[
 										tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'
 									]]>
 								</execute>
-							</then>
-						</if>
+							</try>
+							<catch>
+								<echo>${tar.failure}</echo>
+							</catch>
+						</trycatch>
 					</then>
 					<else>
 						<prepare-test-build />
@@ -5761,18 +5762,20 @@ tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/
 					]]>
 				</execute>
 
-				<if>
-					<equals arg1="${build.profile}" arg2="dxp" />
-					<then>
-						<echo>tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'</echo>
+				<echo>tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'</echo>
 
+				<trycatch property="tar.failure">
+					<try>
 						<execute>
 							<![CDATA[
 								tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'
 							]]>
 						</execute>
-					</then>
-				</if>
+					</try>
+					<catch>
+						<echo>${tar.failure}</echo>
+					</catch>
+				</trycatch>
 
 				<echo>Deleting stale baseline log files.</echo>
 
