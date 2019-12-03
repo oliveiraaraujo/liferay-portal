@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -68,50 +67,19 @@ public class DataModelPermissionResourceImpl
 			ActionKeys.PERMISSIONS, _groupLocalService,
 			ddlRecordSet.getGroupId());
 
-		List<Role> roles = DataEnginePermissionUtil.getRoles(
-			contextCompany, _roleLocalService, StringUtil.split(roleNames));
-
-		List<DataModelPermission> dataModelPermissions = new ArrayList<>();
-
 		List<ResourceAction> resourceActions =
 			_resourceActionLocalService.getResourceActions(
 				DataRecordCollectionConstants.RESOURCE_NAME);
-
-		for (Role role : roles) {
-			ResourcePermission resourcePermission =
-				_resourcePermissionLocalService.fetchResourcePermission(
-					ddlRecordSet.getCompanyId(),
-					DataRecordCollectionConstants.RESOURCE_NAME,
-					ResourceConstants.SCOPE_INDIVIDUAL,
-					String.valueOf(dataRecordCollectionId), role.getRoleId());
-
-			if (resourcePermission == null) {
-				continue;
-			}
-
-			Set<String> actionsIdsSet = new HashSet<>();
-
-			long actionIds = resourcePermission.getActionIds();
-
-			for (ResourceAction resourceAction : resourceActions) {
-				long bitwiseValue = resourceAction.getBitwiseValue();
-
-				if ((actionIds & bitwiseValue) == bitwiseValue) {
-					actionsIdsSet.add(resourceAction.getActionId());
-				}
-			}
-
-			dataModelPermissions.add(
-				new DataModelPermission() {
-					{
-						actionIds = actionsIdsSet.toArray(new String[0]);
-						roleName = role.getName();
-					}
-				});
-		}
+		List<Role> roles = DataEnginePermissionUtil.getRoles(
+			contextCompany, _roleLocalService, StringUtil.split(roleNames));
 
 		return Page.of(
-			dataModelPermissions, pagination, dataModelPermissions.size());
+			transform(
+				roles,
+				role -> _toDataModelPermission(
+					dataRecordCollectionId, ddlRecordSet, resourceActions,
+					role)),
+			pagination, roles.size());
 	}
 
 	@Override
@@ -141,6 +109,42 @@ public class DataModelPermissionResourceImpl
 			ddlRecordSet.getCompanyId(), ddlRecordSet.getGroupId(),
 			DataRecordCollectionConstants.RESOURCE_NAME,
 			String.valueOf(dataRecordCollectionId), modelPermissions);
+	}
+
+	private DataModelPermission _toDataModelPermission(
+			Long dataRecordCollectionId, DDLRecordSet ddlRecordSet,
+			List<ResourceAction> resourceActions, Role role)
+		throws Exception {
+
+		ResourcePermission resourcePermission =
+			_resourcePermissionLocalService.fetchResourcePermission(
+				ddlRecordSet.getCompanyId(),
+				DataRecordCollectionConstants.RESOURCE_NAME,
+				ResourceConstants.SCOPE_INDIVIDUAL,
+				String.valueOf(dataRecordCollectionId), role.getRoleId());
+
+		if (resourcePermission == null) {
+			return null;
+		}
+
+		Set<String> actionsIdsSet = new HashSet<>();
+
+		long actionIds = resourcePermission.getActionIds();
+
+		for (ResourceAction resourceAction : resourceActions) {
+			long bitwiseValue = resourceAction.getBitwiseValue();
+
+			if ((actionIds & bitwiseValue) == bitwiseValue) {
+				actionsIdsSet.add(resourceAction.getActionId());
+			}
+		}
+
+		return new DataModelPermission() {
+			{
+				actionIds = actionsIdsSet.toArray(new String[0]);
+				roleName = role.getName();
+			}
+		};
 	}
 
 	@Reference
