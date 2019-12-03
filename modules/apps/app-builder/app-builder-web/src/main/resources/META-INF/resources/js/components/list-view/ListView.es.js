@@ -67,24 +67,28 @@ export default withRouter(
 			}
 		}
 
-		const refetchOnActions = actions.map(action => {
-			if (!action.action) {
-				return action;
-			}
+		let refetchOnActions;
 
-			return {
-				...action,
-				action: item => {
-					action.action(item).then(isRefetch => {
-						if (!isRefetch) {
-							return;
-						}
-
-						refetch();
-					});
+		if (actions && actions.length > 0) {
+			refetchOnActions = actions.map(action => {
+				if (!action.action) {
+					return action;
 				}
-			};
-		});
+
+				return {
+					...action,
+					action: item => {
+						action.action(item).then(isRefetch => {
+							if (!isRefetch) {
+								return;
+							}
+
+							refetch();
+						});
+					}
+				};
+			});
+		}
 
 		const [isLoading, setLoading] = useState(true);
 

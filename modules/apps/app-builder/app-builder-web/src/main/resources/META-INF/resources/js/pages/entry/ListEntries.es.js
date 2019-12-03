@@ -36,7 +36,7 @@ const ListEntries = withRouter(({history, location}) => {
 		isLoading: true
 	});
 
-	const {appId, basePortletURL} = useContext(AppContext);
+	const {appId, basePortletURL, showFormView} = useContext(AppContext);
 
 	useEffect(() => {
 		getItem(`/o/app-builder/v1.0/apps/${appId}`).then(
@@ -85,60 +85,68 @@ const ListEntries = withRouter(({history, location}) => {
 		Liferay.Util.navigate(getEditURL(dataRecordId));
 	};
 
+	let actions = [];
+
+	if (showFormView) {
+		actions = [
+			{
+				action: ({viewURL}) => Promise.resolve(history.push(viewURL)),
+				name: Liferay.Language.get('view')
+			},
+			{
+				action: ({id}) => Promise.resolve(handleEditItem(id)),
+				name: Liferay.Language.get('edit')
+			},
+			{
+				action: item =>
+					confirmDelete('/o/data-engine/v1.0/data-records/')(
+						item
+					).then(confirmed => {
+						if (confirmed) {
+							openToast({
+								message: Liferay.Language.get(
+									'an-entry-was-deleted'
+								),
+								title: Liferay.Language.get('success'),
+								type: 'success'
+							});
+						}
+
+						return Promise.resolve(confirmed);
+					}),
+				name: Liferay.Language.get('delete')
+			}
+		];
+	}
+
 	return (
 		<Loading isLoading={isLoading}>
 			<ListView
-				actions={[
-					{
-						action: ({viewURL}) =>
-							Promise.resolve(history.push(viewURL)),
-						name: Liferay.Language.get('view')
-					},
-					{
-						action: ({id}) => Promise.resolve(handleEditItem(id)),
-						name: Liferay.Language.get('edit')
-					},
-					{
-						action: item =>
-							confirmDelete('/o/data-engine/v1.0/data-records/')(
-								item
-							).then(confirmed => {
-								if (confirmed) {
-									openToast({
-										message: Liferay.Language.get(
-											'an-entry-was-deleted'
-										),
-										title: Liferay.Language.get('success'),
-										type: 'success'
-									});
-								}
-
-								return Promise.resolve(confirmed);
-							}),
-						name: Liferay.Language.get('delete')
-					}
-				]}
-				addButton={() => (
-					<Button
-						className="nav-btn nav-btn-monospaced navbar-breakpoint-down-d-none"
-						onClick={() => handleEditItem(0)}
-						symbol="plus"
-						tooltip={Liferay.Language.get('new-entry')}
-					/>
-				)}
+				actions={actions}
+				addButton={() =>
+					showFormView && (
+						<Button
+							className="nav-btn nav-btn-monospaced navbar-breakpoint-down-d-none"
+							onClick={() => handleEditItem(0)}
+							symbol="plus"
+							tooltip={Liferay.Language.get('new-entry')}
+						/>
+					)
+				}
 				columns={columns.map(column => ({
 					key: column,
 					value: getFieldLabel(dataDefinition, column)
 				}))}
 				emptyState={{
-					button: () => (
-						<Button
-							displayType="secondary"
-							onClick={() => handleEditItem(0)}
-						>
-							{Liferay.Language.get('new-entry')}
-						</Button>
-					),
+					button: () =>
+						showFormView && (
+							<Button
+								displayType="secondary"
+								onClick={() => handleEditItem(0)}
+							>
+								{Liferay.Language.get('new-entry')}
+							</Button>
+						),
 					title: Liferay.Language.get('there-are-no-entries-yet')
 				}}
 				endpoint={`/o/data-engine/v1.0/data-definitions/${dataDefinitionId}/data-records`}
@@ -165,7 +173,7 @@ const ListEntries = withRouter(({history, location}) => {
 						displayedDataRecordValues[
 							fieldName
 						] = dataDefinition && (
-							<Link className="text-dark" to={viewURL}>
+							<Link to={viewURL}>
 								<FieldValuePreview
 									dataDefinition={dataDefinition}
 									dataRecordValues={dataRecordValues}

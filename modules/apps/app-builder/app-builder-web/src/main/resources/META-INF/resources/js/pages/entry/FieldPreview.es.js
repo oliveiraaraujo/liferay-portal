@@ -143,9 +143,7 @@ const OptionsRenderer = ({displayType, options, values = []}) => {
 	);
 };
 
-const StringRenderer = ({value}) => (
-	<p className="text-dark">{value || ' - '}</p>
-);
+const StringRenderer = ({value}) => <div>{value || ' - '}</div>;
 
 const getFieldValueRenderer = (dataDefinitionField, displayType) => {
 	const {customProperties, fieldType} = dataDefinitionField;

@@ -15,13 +15,16 @@
 import {ClayButtonWithIcon} from '@clayui/button';
 import ClayButtonGroup from '@clayui/button/lib/Group';
 import {ClayTooltipProvider} from '@clayui/tooltip';
-import React from 'react';
+import React, {useContext} from 'react';
 import {withRouter} from 'react-router-dom';
 
+import {AppContext} from '../../AppContext.es';
 import UpperToolbar from '../../components/upper-toolbar/UpperToolbar.es';
 import Lang from '../../utils/lang.es';
 
 export default withRouter(({onDelete, onEdit, onNext, onPrev, page, total}) => {
+	const {showFormView} = useContext(AppContext);
+
 	return (
 		<UpperToolbar>
 			<UpperToolbar.Item className="text-left" expand={true}>
@@ -61,15 +64,20 @@ export default withRouter(({onDelete, onEdit, onNext, onPrev, page, total}) => {
 				</ClayTooltipProvider>
 			</UpperToolbar.Group>
 
-			<UpperToolbar.Group>
-				<UpperToolbar.Button displayType="secondary" onClick={onDelete}>
-					{Liferay.Language.get('delete')}
-				</UpperToolbar.Button>
+			{showFormView && (
+				<UpperToolbar.Group>
+					<UpperToolbar.Button
+						displayType="secondary"
+						onClick={onDelete}
+					>
+						{Liferay.Language.get('delete')}
+					</UpperToolbar.Button>
 
-				<UpperToolbar.Button onClick={onEdit}>
-					{Liferay.Language.get('edit')}
-				</UpperToolbar.Button>
-			</UpperToolbar.Group>
+					<UpperToolbar.Button onClick={onEdit}>
+						{Liferay.Language.get('edit')}
+					</UpperToolbar.Button>
+				</UpperToolbar.Group>
+			)}
 		</UpperToolbar>
 	);
 });
