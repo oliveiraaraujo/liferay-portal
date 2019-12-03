@@ -75,20 +75,20 @@ PortletURL portletURL = editRoleAssignmentsManagementToolbarDisplayContext.getPo
 	%>
 
 	<c:choose>
-		<c:when test='<%= tabs2.equals("users") %>'>
-			<liferay-util:include page="/edit_role_assignments_users.jsp" servletContext="<%= application %>" />
+		<c:when test='<%= tabs2.equals("organizations") %>'>
+			<liferay-util:include page="/edit_role_assignments_organizations.jsp" servletContext="<%= application %>" />
+		</c:when>
+		<c:when test='<%= tabs2.equals("segments") %>'>
+			<liferay-util:include page="/edit_role_assignments_segments_entry.jsp" servletContext="<%= application %>" />
 		</c:when>
 		<c:when test='<%= tabs2.equals("sites") %>'>
 			<liferay-util:include page="/edit_role_assignments_sites.jsp" servletContext="<%= application %>" />
 		</c:when>
-		<c:when test='<%= tabs2.equals("organizations") %>'>
-			<liferay-util:include page="/edit_role_assignments_organizations.jsp" servletContext="<%= application %>" />
-		</c:when>
 		<c:when test='<%= tabs2.equals("user-groups") %>'>
 			<liferay-util:include page="/edit_role_assignments_user_groups.jsp" servletContext="<%= application %>" />
 		</c:when>
-		<c:when test='<%= tabs2.equals("segments") %>'>
-			<liferay-util:include page="/edit_role_assignments_segments_entry.jsp" servletContext="<%= application %>" />
+		<c:when test='<%= tabs2.equals("users") %>'>
+			<liferay-util:include page="/edit_role_assignments_users.jsp" servletContext="<%= application %>" />
 		</c:when>
 	</c:choose>
 </aui:form>
