@@ -49,8 +49,7 @@ export default function FloatingToolbar({buttons, item, itemRef}) {
 
 	return (
 		show &&
-		buttons.length &&
-		ReactDOM.createPortal(
+		buttons.length && (
 			<div className="position-absolute pr-2 pt-2" ref={popoverRef}>
 				<ClayPopover
 					alignPosition={false}
@@ -61,7 +60,6 @@ export default function FloatingToolbar({buttons, item, itemRef}) {
 						<FloatingToolbarIcon key={button.panelId} {...button} />
 					))}
 				</ClayPopover>
-			</div>,
 			document.body
 		)
 	);
