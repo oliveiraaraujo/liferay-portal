@@ -31,7 +31,7 @@ import java.util.Map;
 /**
  * @author Javier Gamarra
  */
-public class UpgradeTreePath extends UpgradeProcess {
+public class UpgradeMBMessageTreePath extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {

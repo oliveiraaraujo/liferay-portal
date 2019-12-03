@@ -25,7 +25,7 @@ import com.liferay.message.boards.internal.upgrade.v2_0_0.util.MBMessageTable;
 import com.liferay.message.boards.internal.upgrade.v2_0_0.util.MBStatsUserTable;
 import com.liferay.message.boards.internal.upgrade.v2_0_0.util.MBThreadFlagTable;
 import com.liferay.message.boards.internal.upgrade.v2_0_0.util.MBThreadTable;
-import com.liferay.message.boards.internal.upgrade.v3_0_0.UpgradeTreePath;
+import com.liferay.message.boards.internal.upgrade.v3_0_0.UpgradeMBMessageTreePath;
 import com.liferay.message.boards.model.MBThread;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
@@ -72,7 +72,7 @@ public class MBServiceUpgrade implements UpgradeStepRegistrator {
 			"2.0.0", "3.0.0",
 			new UpgradeViewCount(
 				"MBThread", MBThread.class, "threadId", "viewCount"),
-			new UpgradeTreePath());
+			new UpgradeMBMessageTreePath());
 	}
 
 	@Reference
