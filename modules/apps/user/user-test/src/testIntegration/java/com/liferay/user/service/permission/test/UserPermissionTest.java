@@ -52,27 +52,27 @@ public class UserPermissionTest {
 
 	@Test
 	public void testContainsViewActionId() throws Exception {
-		_user = UserTestUtil.addUser();
+		_user1 = UserTestUtil.addUser();
 		_role = RoleTestUtil.addRole(RoleConstants.TYPE_REGULAR);
 
 		RoleTestUtil.addResourcePermission(
 			_role, User.class.getName(), ResourceConstants.SCOPE_COMPANY,
-			String.valueOf(_user.getCompanyId()), ActionKeys.VIEW);
+			String.valueOf(_user1.getCompanyId()), ActionKeys.VIEW);
 
-		_userLocalService.addRoleUser(_role.getRoleId(), _user);
+		_user1LocalService.addRoleUser(_role.getRoleId(), _user1);
 
 		PermissionChecker permissionChecker = _permissionCheckerFactory.create(
-			_user);
+			_user1);
 
 		Assert.assertTrue(
-			_userPermission.contains(
+			_user1Permission.contains(
 				permissionChecker, ResourceConstants.PRIMKEY_DNE,
 				ActionKeys.VIEW));
 	}
 
 	@Test
 	public void testOrganizationManageUsersPermission() throws Exception {
-		_user = UserTestUtil.addUser();
+		_user1 = UserTestUtil.addUser();
 		_user2 = UserTestUtil.addUser();
 
 		_role = RoleTestUtil.addRole(RoleConstants.TYPE_REGULAR);
@@ -80,24 +80,24 @@ public class UserPermissionTest {
 		RoleTestUtil.addResourcePermission(
 			_role, Organization.class.getName(),
 			ResourceConstants.SCOPE_COMPANY,
-			String.valueOf(_user.getCompanyId()), ActionKeys.MANAGE_USERS);
+			String.valueOf(_user1.getCompanyId()), ActionKeys.MANAGE_USERS);
 
-		_userLocalService.addRoleUser(_role.getRoleId(), _user);
+		_user1LocalService.addRoleUser(_role.getRoleId(), _user1);
 
 		PermissionChecker permissionChecker = _permissionCheckerFactory.create(
-			_user);
+			_user1);
 
 		Assert.assertFalse(
-			_userPermission.contains(
+			_user1Permission.contains(
 				permissionChecker, _user2.getUserId(), ActionKeys.UPDATE));
 
 		_organization = OrganizationTestUtil.addOrganization();
 
-		_userLocalService.addOrganizationUser(
+		_user1LocalService.addOrganizationUser(
 			_organization.getOrganizationId(), _user2.getUserId());
 
 		Assert.assertTrue(
-			_userPermission.contains(
+			_user1Permission.contains(
 				permissionChecker, _user2.getUserId(), ActionKeys.UPDATE));
 	}
 
@@ -111,15 +111,15 @@ public class UserPermissionTest {
 	private Role _role;
 
 	@DeleteAfterTestRun
-	private User _user;
+	private User _user1;
 
 	@DeleteAfterTestRun
 	private User _user2;
 
 	@Inject
-	private UserLocalService _userLocalService;
+	private UserLocalService _user1LocalService;
 
 	@Inject
-	private UserPermission _userPermission;
+	private UserPermission _user1Permission;
 
 }
