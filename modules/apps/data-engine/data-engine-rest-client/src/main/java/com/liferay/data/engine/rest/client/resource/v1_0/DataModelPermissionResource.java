@@ -17,7 +17,6 @@ package com.liferay.data.engine.rest.client.resource.v1_0;
 import com.liferay.data.engine.rest.client.dto.v1_0.DataModelPermission;
 import com.liferay.data.engine.rest.client.http.HttpInvoker;
 import com.liferay.data.engine.rest.client.pagination.Page;
-import com.liferay.data.engine.rest.client.pagination.Pagination;
 import com.liferay.data.engine.rest.client.serdes.v1_0.DataModelPermissionSerDes;
 
 import java.util.LinkedHashMap;
@@ -40,14 +39,12 @@ public interface DataModelPermissionResource {
 
 	public Page<DataModelPermission>
 			getDataRecordCollectionDataModelPermissionsPage(
-				Long dataRecordCollectionId, String roleNames,
-				Pagination pagination)
+				Long dataRecordCollectionId, String roleNames)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
 			getDataRecordCollectionDataModelPermissionsPageHttpResponse(
-				Long dataRecordCollectionId, String roleNames,
-				Pagination pagination)
+				Long dataRecordCollectionId, String roleNames)
 		throws Exception;
 
 	public void putDataRecordCollectionDataModelPermission(
@@ -119,13 +116,12 @@ public interface DataModelPermissionResource {
 
 		public Page<DataModelPermission>
 				getDataRecordCollectionDataModelPermissionsPage(
-					Long dataRecordCollectionId, String roleNames,
-					Pagination pagination)
+					Long dataRecordCollectionId, String roleNames)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
 				getDataRecordCollectionDataModelPermissionsPageHttpResponse(
-					dataRecordCollectionId, roleNames, pagination);
+					dataRecordCollectionId, roleNames);
 
 			String content = httpResponse.getContent();
 
@@ -140,8 +136,7 @@ public interface DataModelPermissionResource {
 
 		public HttpInvoker.HttpResponse
 				getDataRecordCollectionDataModelPermissionsPageHttpResponse(
-					Long dataRecordCollectionId, String roleNames,
-					Pagination pagination)
+					Long dataRecordCollectionId, String roleNames)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -167,13 +162,6 @@ public interface DataModelPermissionResource {
 
 			if (roleNames != null) {
 				httpInvoker.parameter("roleNames", String.valueOf(roleNames));
-			}
-
-			if (pagination != null) {
-				httpInvoker.parameter(
-					"page", String.valueOf(pagination.getPage()));
-				httpInvoker.parameter(
-					"pageSize", String.valueOf(pagination.getPageSize()));
 			}
 
 			httpInvoker.path(

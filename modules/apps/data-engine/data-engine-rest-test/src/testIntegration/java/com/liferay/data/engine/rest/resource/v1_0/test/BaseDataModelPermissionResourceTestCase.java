@@ -25,7 +25,6 @@ import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.liferay.data.engine.rest.client.dto.v1_0.DataModelPermission;
 import com.liferay.data.engine.rest.client.http.HttpInvoker;
 import com.liferay.data.engine.rest.client.pagination.Page;
-import com.liferay.data.engine.rest.client.pagination.Pagination;
 import com.liferay.data.engine.rest.client.resource.v1_0.DataModelPermissionResource;
 import com.liferay.data.engine.rest.client.serdes.v1_0.DataModelPermissionSerDes;
 import com.liferay.petra.string.StringBundler;
@@ -196,7 +195,7 @@ public abstract class BaseDataModelPermissionResourceTestCase {
 			dataModelPermissionResource.
 				getDataRecordCollectionDataModelPermissionsPage(
 					testGetDataRecordCollectionDataModelPermissionsPage_getDataRecordCollectionId(),
-					RandomTestUtil.randomString(), Pagination.of(1, 2));
+					RandomTestUtil.randomString());
 
 		Assert.assertEquals(0, page.getTotalCount());
 
@@ -214,8 +213,7 @@ public abstract class BaseDataModelPermissionResourceTestCase {
 			page =
 				dataModelPermissionResource.
 					getDataRecordCollectionDataModelPermissionsPage(
-						irrelevantDataRecordCollectionId, null,
-						Pagination.of(1, 2));
+						irrelevantDataRecordCollectionId, null);
 
 			Assert.assertEquals(1, page.getTotalCount());
 
@@ -236,7 +234,7 @@ public abstract class BaseDataModelPermissionResourceTestCase {
 		page =
 			dataModelPermissionResource.
 				getDataRecordCollectionDataModelPermissionsPage(
-					dataRecordCollectionId, null, Pagination.of(1, 2));
+					dataRecordCollectionId, null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -244,61 +242,6 @@ public abstract class BaseDataModelPermissionResourceTestCase {
 			Arrays.asList(dataModelPermission1, dataModelPermission2),
 			(List<DataModelPermission>)page.getItems());
 		assertValid(page);
-	}
-
-	@Test
-	public void testGetDataRecordCollectionDataModelPermissionsPageWithPagination()
-		throws Exception {
-
-		Long dataRecordCollectionId =
-			testGetDataRecordCollectionDataModelPermissionsPage_getDataRecordCollectionId();
-
-		DataModelPermission dataModelPermission1 =
-			testGetDataRecordCollectionDataModelPermissionsPage_addDataModelPermission(
-				dataRecordCollectionId, randomDataModelPermission());
-
-		DataModelPermission dataModelPermission2 =
-			testGetDataRecordCollectionDataModelPermissionsPage_addDataModelPermission(
-				dataRecordCollectionId, randomDataModelPermission());
-
-		DataModelPermission dataModelPermission3 =
-			testGetDataRecordCollectionDataModelPermissionsPage_addDataModelPermission(
-				dataRecordCollectionId, randomDataModelPermission());
-
-		Page<DataModelPermission> page1 =
-			dataModelPermissionResource.
-				getDataRecordCollectionDataModelPermissionsPage(
-					dataRecordCollectionId, null, Pagination.of(1, 2));
-
-		List<DataModelPermission> dataModelPermissions1 =
-			(List<DataModelPermission>)page1.getItems();
-
-		Assert.assertEquals(
-			dataModelPermissions1.toString(), 2, dataModelPermissions1.size());
-
-		Page<DataModelPermission> page2 =
-			dataModelPermissionResource.
-				getDataRecordCollectionDataModelPermissionsPage(
-					dataRecordCollectionId, null, Pagination.of(2, 2));
-
-		Assert.assertEquals(3, page2.getTotalCount());
-
-		List<DataModelPermission> dataModelPermissions2 =
-			(List<DataModelPermission>)page2.getItems();
-
-		Assert.assertEquals(
-			dataModelPermissions2.toString(), 1, dataModelPermissions2.size());
-
-		Page<DataModelPermission> page3 =
-			dataModelPermissionResource.
-				getDataRecordCollectionDataModelPermissionsPage(
-					dataRecordCollectionId, null, Pagination.of(1, 3));
-
-		assertEqualsIgnoringOrder(
-			Arrays.asList(
-				dataModelPermission1, dataModelPermission2,
-				dataModelPermission3),
-			(List<DataModelPermission>)page3.getItems());
 	}
 
 	protected DataModelPermission

@@ -197,6 +197,61 @@ public abstract class BaseDataRecordCollectionResourceTestCase {
 	}
 
 	@Test
+	public void testGetDataDefinitionDataRecordCollection() throws Exception {
+		DataRecordCollection postDataRecordCollection =
+			testGetDataDefinitionDataRecordCollection_addDataRecordCollection();
+
+		DataRecordCollection getDataRecordCollection =
+			dataRecordCollectionResource.getDataDefinitionDataRecordCollection(
+				postDataRecordCollection.getDataDefinitionId());
+
+		assertEquals(postDataRecordCollection, getDataRecordCollection);
+		assertValid(getDataRecordCollection);
+	}
+
+	protected DataRecordCollection
+			testGetDataDefinitionDataRecordCollection_addDataRecordCollection()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	@Test
+	public void testGraphQLGetDataDefinitionDataRecordCollection()
+		throws Exception {
+
+		DataRecordCollection dataRecordCollection =
+			testGraphQLDataRecordCollection_addDataRecordCollection();
+
+		List<GraphQLField> graphQLFields = getGraphQLFields();
+
+		GraphQLField graphQLField = new GraphQLField(
+			"query",
+			new GraphQLField(
+				"dataDefinitionDataRecordCollection",
+				new HashMap<String, Object>() {
+					{
+						put(
+							"dataDefinitionId",
+							dataRecordCollection.getDataDefinitionId());
+					}
+				},
+				graphQLFields.toArray(new GraphQLField[0])));
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+			invoke(graphQLField.toString()));
+
+		JSONObject dataJSONObject = jsonObject.getJSONObject("data");
+
+		Assert.assertTrue(
+			equalsJSONObject(
+				dataRecordCollection,
+				dataJSONObject.getJSONObject(
+					"dataDefinitionDataRecordCollection")));
+	}
+
+	@Test
 	public void testGetDataDefinitionDataRecordCollectionsPage()
 		throws Exception {
 
@@ -364,61 +419,6 @@ public abstract class BaseDataRecordCollectionResourceTestCase {
 			postDataDefinitionDataRecordCollection(
 				testGetDataDefinitionDataRecordCollectionsPage_getDataDefinitionId(),
 				dataRecordCollection);
-	}
-
-	@Test
-	public void testGetDataDefinitionDataRecordCollection() throws Exception {
-		DataRecordCollection postDataRecordCollection =
-			testGetDataDefinitionDataRecordCollection_addDataRecordCollection();
-
-		DataRecordCollection getDataRecordCollection =
-			dataRecordCollectionResource.getDataDefinitionDataRecordCollection(
-				postDataRecordCollection.getDataDefinitionId());
-
-		assertEquals(postDataRecordCollection, getDataRecordCollection);
-		assertValid(getDataRecordCollection);
-	}
-
-	protected DataRecordCollection
-			testGetDataDefinitionDataRecordCollection_addDataRecordCollection()
-		throws Exception {
-
-		throw new UnsupportedOperationException(
-			"This method needs to be implemented");
-	}
-
-	@Test
-	public void testGraphQLGetDataDefinitionDataRecordCollection()
-		throws Exception {
-
-		DataRecordCollection dataRecordCollection =
-			testGraphQLDataRecordCollection_addDataRecordCollection();
-
-		List<GraphQLField> graphQLFields = getGraphQLFields();
-
-		GraphQLField graphQLField = new GraphQLField(
-			"query",
-			new GraphQLField(
-				"dataDefinitionDataRecordCollection",
-				new HashMap<String, Object>() {
-					{
-						put(
-							"dataDefinitionId",
-							dataRecordCollection.getDataDefinitionId());
-					}
-				},
-				graphQLFields.toArray(new GraphQLField[0])));
-
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-			invoke(graphQLField.toString()));
-
-		JSONObject dataJSONObject = jsonObject.getJSONObject("data");
-
-		Assert.assertTrue(
-			equalsJSONObject(
-				dataRecordCollection,
-				dataJSONObject.getJSONObject(
-					"dataDefinitionDataRecordCollection")));
 	}
 
 	@Test

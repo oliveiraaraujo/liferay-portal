@@ -334,14 +334,12 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {dataRecordCollectionDataModelPermissions(dataRecordCollectionId: ___, page: ___, pageSize: ___, roleNames: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {dataRecordCollectionDataModelPermissions(dataRecordCollectionId: ___, roleNames: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField
 	public DataModelPermissionPage dataRecordCollectionDataModelPermissions(
 			@GraphQLName("dataRecordCollectionId") Long dataRecordCollectionId,
-			@GraphQLName("roleNames") String roleNames,
-			@GraphQLName("pageSize") int pageSize,
-			@GraphQLName("page") int page)
+			@GraphQLName("roleNames") String roleNames)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
@@ -350,8 +348,7 @@ public class Query {
 			dataModelPermissionResource -> new DataModelPermissionPage(
 				dataModelPermissionResource.
 					getDataRecordCollectionDataModelPermissionsPage(
-						dataRecordCollectionId, roleNames,
-						Pagination.of(page, pageSize))));
+						dataRecordCollectionId, roleNames)));
 	}
 
 	/**
@@ -433,6 +430,24 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {dataDefinitionDataRecordCollection(dataDefinitionId: ___){dataDefinitionId, dataRecordCollectionKey, description, id, name, siteId}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField
+	public DataRecordCollection dataDefinitionDataRecordCollection(
+			@GraphQLName("dataDefinitionId") Long dataDefinitionId)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_dataRecordCollectionResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			dataRecordCollectionResource ->
+				dataRecordCollectionResource.
+					getDataDefinitionDataRecordCollection(dataDefinitionId));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
 	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {dataDefinitionDataRecordCollections(dataDefinitionId: ___, keywords: ___, page: ___, pageSize: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField
@@ -451,24 +466,6 @@ public class Query {
 					getDataDefinitionDataRecordCollectionsPage(
 						dataDefinitionId, keywords,
 						Pagination.of(page, pageSize))));
-	}
-
-	/**
-	 * Invoke this method with the command line:
-	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {dataDefinitionDataRecordCollection(dataDefinitionId: ___){dataDefinitionId, dataRecordCollectionKey, description, id, name, siteId}}"}' -u 'test@liferay.com:test'
-	 */
-	@GraphQLField
-	public DataRecordCollection dataDefinitionDataRecordCollection(
-			@GraphQLName("dataDefinitionId") Long dataDefinitionId)
-		throws Exception {
-
-		return _applyComponentServiceObjects(
-			_dataRecordCollectionResourceComponentServiceObjects,
-			this::_populateResourceContext,
-			dataRecordCollectionResource ->
-				dataRecordCollectionResource.
-					getDataDefinitionDataRecordCollection(dataDefinitionId));
 	}
 
 	/**
@@ -566,9 +563,7 @@ public class Query {
 
 		@GraphQLField
 		public DataModelPermissionPage dataModelPermissions(
-				@GraphQLName("roleNames") String roleNames,
-				@GraphQLName("pageSize") int pageSize,
-				@GraphQLName("page") int page)
+				@GraphQLName("roleNames") String roleNames)
 			throws Exception {
 
 			return _applyComponentServiceObjects(
@@ -577,8 +572,7 @@ public class Query {
 				dataModelPermissionResource -> new DataModelPermissionPage(
 					dataModelPermissionResource.
 						getDataRecordCollectionDataModelPermissionsPage(
-							_dataRecordCollection.getId(), roleNames,
-							Pagination.of(page, pageSize))));
+							_dataRecordCollection.getId(), roleNames)));
 		}
 
 		private DataRecordCollection _dataRecordCollection;

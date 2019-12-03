@@ -43,6 +43,10 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface DataRecordCollectionResource {
 
+	public DataRecordCollection getDataDefinitionDataRecordCollection(
+			Long dataDefinitionId)
+		throws Exception;
+
 	public Page<DataRecordCollection>
 			getDataDefinitionDataRecordCollectionsPage(
 				Long dataDefinitionId, String keywords, Pagination pagination)
@@ -50,10 +54,6 @@ public interface DataRecordCollectionResource {
 
 	public DataRecordCollection postDataDefinitionDataRecordCollection(
 			Long dataDefinitionId, DataRecordCollection dataRecordCollection)
-		throws Exception;
-
-	public DataRecordCollection getDataDefinitionDataRecordCollection(
-			Long dataDefinitionId)
 		throws Exception;
 
 	public void deleteDataRecordCollection(Long dataRecordCollectionId)

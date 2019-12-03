@@ -65,6 +65,27 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
+	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-record-collection'  -u 'test@liferay.com:test'
+	 */
+	@Override
+	@GET
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.PATH, name = "dataDefinitionId")}
+	)
+	@Path("/data-definitions/{dataDefinitionId}/data-record-collection")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "DataRecordCollection")})
+	public DataRecordCollection getDataDefinitionDataRecordCollection(
+			@NotNull @Parameter(hidden = true) @PathParam("dataDefinitionId")
+				Long dataDefinitionId)
+		throws Exception {
+
+		return new DataRecordCollection();
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-record-collections'  -u 'test@liferay.com:test'
 	 */
 	@Override
@@ -110,27 +131,6 @@ public abstract class BaseDataRecordCollectionResourceImpl
 			@NotNull @Parameter(hidden = true) @PathParam("dataDefinitionId")
 				Long dataDefinitionId,
 			DataRecordCollection dataRecordCollection)
-		throws Exception {
-
-		return new DataRecordCollection();
-	}
-
-	/**
-	 * Invoke this method with the command line:
-	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-record-collection'  -u 'test@liferay.com:test'
-	 */
-	@Override
-	@GET
-	@Parameters(
-		value = {@Parameter(in = ParameterIn.PATH, name = "dataDefinitionId")}
-	)
-	@Path("/data-definitions/{dataDefinitionId}/data-record-collection")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "DataRecordCollection")})
-	public DataRecordCollection getDataDefinitionDataRecordCollection(
-			@NotNull @Parameter(hidden = true) @PathParam("dataDefinitionId")
-				Long dataDefinitionId)
 		throws Exception {
 
 		return new DataRecordCollection();

@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.pagination.Page;
-import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
 import io.swagger.v3.oas.annotations.Parameter;
@@ -47,7 +46,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
 /**
@@ -69,9 +67,7 @@ public abstract class BaseDataModelPermissionResourceImpl
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "dataRecordCollectionId"),
-			@Parameter(in = ParameterIn.QUERY, name = "roleNames"),
-			@Parameter(in = ParameterIn.QUERY, name = "page"),
-			@Parameter(in = ParameterIn.QUERY, name = "pageSize")
+			@Parameter(in = ParameterIn.QUERY, name = "roleNames")
 		}
 	)
 	@Path(
@@ -85,8 +81,7 @@ public abstract class BaseDataModelPermissionResourceImpl
 				@PathParam("dataRecordCollectionId") Long
 					dataRecordCollectionId,
 				@NotNull @Parameter(hidden = true) @QueryParam("roleNames")
-					String roleNames,
-				@Context Pagination pagination)
+					String roleNames)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());
