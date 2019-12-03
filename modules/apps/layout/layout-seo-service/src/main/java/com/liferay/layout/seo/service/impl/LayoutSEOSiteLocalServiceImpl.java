@@ -20,7 +20,6 @@ import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.DateUtil;
 
 import java.util.Date;
 
@@ -57,7 +56,7 @@ public class LayoutSEOSiteLocalServiceImpl
 				serviceContext);
 		}
 
-		layoutSEOSite.setModifiedDate(DateUtil.newDate());
+		layoutSEOSite.setModifiedDate(new Date());
 		layoutSEOSite.setOpenGraphEnabled(openGraphEnabled);
 		layoutSEOSite.setOpenGraphImageFileEntryId(openGraphImageFileEntryId);
 
@@ -81,10 +80,8 @@ public class LayoutSEOSiteLocalServiceImpl
 
 		layoutSEOSite.setUserId(userId);
 
-		Date now = DateUtil.newDate();
-
-		layoutSEOSite.setCreateDate(now);
-		layoutSEOSite.setModifiedDate(now);
+		layoutSEOSite.setCreateDate(new Date());
+		layoutSEOSite.setModifiedDate(new Date());
 
 		layoutSEOSite.setOpenGraphEnabled(openGraphEnabled);
 		layoutSEOSite.setOpenGraphImageFileEntryId(openGraphImageFileEntryId);
