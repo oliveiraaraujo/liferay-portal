@@ -578,7 +578,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 				_log.error(
 					StringBundler.concat(
 						"Unable to download and install ", name, " to ",
-						PropsValues.LIFERAY_LIB_GLOBAL_DIR, " from url ", url),
+						PropsValues.LIFERAY_LIB_GLOBAL_DIR, " from ", url),
 					e);
 
 				throw cnfe;
