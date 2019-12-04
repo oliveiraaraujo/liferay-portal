@@ -30,9 +30,9 @@ public class SelectOrganizationsManagementToolbarDisplayContext
 	extends SearchContainerManagementToolbarDisplayContext {
 
 	public SelectOrganizationsManagementToolbarDisplayContext(
+			HttpServletRequest httpServletRequest,
 			LiferayPortletRequest liferayPortletRequest,
 			LiferayPortletResponse liferayPortletResponse,
-			HttpServletRequest httpServletRequest,
 			SelectOrganizationsDisplayContext selectOrganizationsDisplayContext)
 		throws Exception {
 

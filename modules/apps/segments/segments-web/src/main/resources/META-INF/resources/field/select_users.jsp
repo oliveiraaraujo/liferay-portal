@@ -21,7 +21,7 @@ SelectUsersDisplayContext selectUsersDisplayContext = (SelectUsersDisplayContext
 %>
 
 <clay:management-toolbar
-	displayContext="<%= new SelectUsersManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, request, selectUsersDisplayContext) %>"
+	displayContext="<%= new SelectUsersManagementToolbarDisplayContext(request, liferayPortletRequest, liferayPortletResponse, selectUsersDisplayContext) %>"
 />
 
 <aui:form cssClass="container-fluid-1280" name="fm">
