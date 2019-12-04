@@ -79,8 +79,9 @@ public class ProductMenuAppDeployer implements AppDeployer {
 			_serviceRegistrationsMap.computeIfAbsent(
 				appId,
 				key -> new ServiceRegistration<?>[] {
-					_deployPortlet(appId, appName, controlPanelMenuLabel),
-					_deployPortlet(appId, appName, siteMenuLabel),
+					_deployPortlet(
+						appBuilderApp, appName, controlPanelMenuLabel),
+					_deployPortlet(appBuilderApp, appName, siteMenuLabel),
 					_deployPanelApp(
 						PanelCategoryKeys.CONTROL_PANEL, controlPanelMenuLabel,
 						JSONUtil.toLongArray(
@@ -106,7 +107,7 @@ public class ProductMenuAppDeployer implements AppDeployer {
 			_serviceRegistrationsMap.computeIfAbsent(
 				appId,
 				mapKey -> new ServiceRegistration<?>[] {
-					_deployPortlet(appId, appName, menuLabel),
+					_deployPortlet(appBuilderApp, appName, menuLabel),
 					_deployPanelApp(
 						scope, menuLabel,
 						JSONUtil.toLongArray(
@@ -152,9 +153,10 @@ public class ProductMenuAppDeployer implements AppDeployer {
 	}
 
 	private ServiceRegistration<?> _deployPortlet(
-		long appId, String appName, String portletName) {
+		AppBuilderApp appBuilderApp, String appName, String portletName) {
 
-		AppPortlet appPortlet = new AppPortlet(appId, appName, portletName);
+		AppPortlet appPortlet = new AppPortlet(
+			appBuilderApp, appName, portletName);
 
 		return _bundleContext.registerService(
 			Portlet.class, appPortlet,

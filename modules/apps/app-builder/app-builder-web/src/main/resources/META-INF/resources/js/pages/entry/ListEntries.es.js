@@ -36,35 +36,37 @@ const ListEntries = withRouter(({history, location}) => {
 		isLoading: true
 	});
 
-	const {appId, basePortletURL, showFormView} = useContext(AppContext);
+	const {
+		basePortletURL,
+		dataDefinitionId,
+		dataLayoutId,
+		dataListViewId,
+		showFormView
+	} = useContext(AppContext);
 
 	useEffect(() => {
-		getItem(`/o/app-builder/v1.0/apps/${appId}`).then(
-			({dataDefinitionId, dataLayoutId, dataListViewId}) => {
-				return Promise.all([
-					getItem(
-						`/o/data-engine/v1.0/data-definitions/${dataDefinitionId}`
-					).then(dataDefinition => setDataDefinition(dataDefinition)),
-					getItem(
-						`/o/data-engine/v1.0/data-list-views/${dataListViewId}`
-					).then(dataListView => {
-						setState(prevState => ({
-							...prevState,
-							dataDefinitionId,
-							dataLayoutId,
-							dataListView: {
-								...prevState.dataListView,
-								...dataListView
-							},
-							isLoading: false
-						}));
-					})
-				]);
-			}
-		);
-	}, [appId]);
+		Promise.all([
+			getItem(
+				`/o/data-engine/v1.0/data-definitions/${dataDefinitionId}`
+			).then(dataDefinition => setDataDefinition(dataDefinition)),
+			getItem(
+				`/o/data-engine/v1.0/data-list-views/${dataListViewId}`
+			).then(dataListView => {
+				setState(prevState => ({
+					...prevState,
+					dataDefinitionId,
+					dataLayoutId,
+					dataListView: {
+						...prevState.dataListView,
+						...dataListView
+					},
+					isLoading: false
+				}));
+			})
+		]);
+	}, [dataDefinitionId, dataLayoutId, dataListViewId]);
 
-	const {dataDefinitionId, dataLayoutId, dataListView, isLoading} = state;
+	const {dataListView, isLoading} = state;
 	const {fieldNames: columns} = dataListView;
 
 	const defaultDataRecordValues = {};

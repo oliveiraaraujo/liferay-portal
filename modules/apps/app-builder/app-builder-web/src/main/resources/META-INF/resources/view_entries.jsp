@@ -23,6 +23,9 @@
 
 	data.put("appId", request.getAttribute(AppBuilderWebKeys.APP_ID));
 	data.put("basePortletURL", String.valueOf(renderResponse.createRenderURL()));
+	data.put("dataDefinitionId", request.getAttribute(AppBuilderWebKeys.DATA_DEFINITION_ID));
+	data.put("dataLayoutId", request.getAttribute(AppBuilderWebKeys.DATA_LAYOUT_ID));
+	data.put("dataListViewId", request.getAttribute(AppBuilderWebKeys.DATA_LIST_VIEW_ID));
 	data.put("showFormView", request.getAttribute(AppBuilderWebKeys.SHOW_FORM_VIEW));
 	data.put("showTableView", request.getAttribute(AppBuilderWebKeys.SHOW_TABLE_VIEW));
 	%>

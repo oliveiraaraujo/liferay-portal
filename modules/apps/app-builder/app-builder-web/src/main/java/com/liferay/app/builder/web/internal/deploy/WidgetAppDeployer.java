@@ -53,13 +53,13 @@ public class WidgetAppDeployer implements AppDeployer {
 			appId,
 			key -> new ServiceRegistration[] {
 				_deployPortlet(
-					appId, _getAppName(appBuilderApp, null),
+					appBuilderApp, _getAppName(appBuilderApp, null),
 					_getPortletName(appId, null), true, true),
 				_deployPortlet(
-					appId, _getAppName(appBuilderApp, "Form View"),
+					appBuilderApp, _getAppName(appBuilderApp, "Form View"),
 					_getPortletName(appId, "form_view"), true, false),
 				_deployPortlet(
-					appId, _getAppName(appBuilderApp, "Table View"),
+					appBuilderApp, _getAppName(appBuilderApp, "Table View"),
 					_getPortletName(appId, "table_view"), false, true)
 			});
 
@@ -80,11 +80,11 @@ public class WidgetAppDeployer implements AppDeployer {
 	}
 
 	private ServiceRegistration<?> _deployPortlet(
-		long appId, String appName, String portletName, boolean showFormView,
-		boolean showTableView) {
+		AppBuilderApp appBuilderApp, String appName, String portletName,
+		boolean showFormView, boolean showTableView) {
 
 		AppPortlet appPortlet = new AppPortlet(
-			appId, appName, portletName, showFormView, showTableView);
+			appBuilderApp, appName, portletName, showFormView, showTableView);
 
 		return _bundleContext.registerService(
 			Portlet.class, appPortlet,

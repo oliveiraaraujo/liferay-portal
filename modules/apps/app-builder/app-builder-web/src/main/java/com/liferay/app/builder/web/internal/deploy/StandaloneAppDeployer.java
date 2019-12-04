@@ -82,7 +82,7 @@ public class StandaloneAppDeployer implements AppDeployer {
 						_deployLayoutTypeController(
 							appBuilderApp.getCompanyId(), appId, appName,
 							portletName),
-						_deployPortlet(appId, appName, portletName),
+						_deployPortlet(appBuilderApp, appName, portletName),
 						_deployLayoutTypeAccessPolicy(portletName)
 					};
 				}
@@ -233,9 +233,10 @@ public class StandaloneAppDeployer implements AppDeployer {
 	}
 
 	private ServiceRegistration<?> _deployPortlet(
-		long appId, String appName, String portletName) {
+		AppBuilderApp appBuilderApp, String appName, String portletName) {
 
-		AppPortlet appPortlet = new AppPortlet(appId, appName, portletName);
+		AppPortlet appPortlet = new AppPortlet(
+			appBuilderApp, appName, portletName);
 
 		return _bundleContext.registerService(
 			Portlet.class, appPortlet,

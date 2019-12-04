@@ -25,7 +25,7 @@
 						<aui:form>
 							<liferay-data-engine:data-layout-renderer
 								containerId='<%= renderResponse.getNamespace() + "container" %>'
-								dataLayoutId='<%= ParamUtil.getLong(request, "dataLayoutId") %>'
+								dataLayoutId="<%= GetterUtil.getLong(request.getAttribute(AppBuilderWebKeys.DATA_LAYOUT_ID)) %>"
 								dataRecordId='<%= ParamUtil.getLong(request, "dataRecordId") %>'
 								namespace="<%= renderResponse.getNamespace() %>"
 							/>
@@ -35,11 +35,16 @@
 								<%
 								Map<String, Object> data = new HashMap<>();
 
+								data.put("appId", request.getAttribute(AppBuilderWebKeys.APP_ID));
 								data.put("basePortletURL", String.valueOf(renderResponse.createRenderURL()));
-								data.put("dataDefinitionId", ParamUtil.getLong(request, "dataDefinitionId"));
+								data.put("dataDefinitionId", request.getAttribute(AppBuilderWebKeys.DATA_DEFINITION_ID));
+								data.put("dataLayoutId", request.getAttribute(AppBuilderWebKeys.DATA_LAYOUT_ID));
+								data.put("dataListViewId", request.getAttribute(AppBuilderWebKeys.DATA_LIST_VIEW_ID));
 								data.put("dataRecordId", ParamUtil.getLong(request, "dataRecordId"));
 								data.put("editEntryContainerElementId", renderResponse.getNamespace() + "container");
 								data.put("redirect", ParamUtil.getString(request, "redirect"));
+								data.put("showFormView", request.getAttribute(AppBuilderWebKeys.SHOW_FORM_VIEW));
+								data.put("showTableView", request.getAttribute(AppBuilderWebKeys.SHOW_TABLE_VIEW));
 								%>
 
 								<react:component

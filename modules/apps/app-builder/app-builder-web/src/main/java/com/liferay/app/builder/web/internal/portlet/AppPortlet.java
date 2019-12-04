@@ -14,6 +14,7 @@
 
 package com.liferay.app.builder.web.internal.portlet;
 
+import com.liferay.app.builder.model.AppBuilderApp;
 import com.liferay.app.builder.web.internal.constants.AppBuilderWebKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.util.HashMapDictionary;
@@ -32,15 +33,17 @@ import javax.portlet.RenderResponse;
  */
 public class AppPortlet extends MVCPortlet {
 
-	public AppPortlet(long appId, String appName, String portletName) {
-		this(appId, appName, portletName, true, true);
+	public AppPortlet(
+		AppBuilderApp appBuilderApp, String appName, String portletName) {
+
+		this(appBuilderApp, appName, portletName, true, true);
 	}
 
 	public AppPortlet(
-		long appId, String appName, String portletName, boolean showFormView,
-		boolean showTableView) {
+		AppBuilderApp appBuilderApp, String appName, String portletName,
+		boolean showFormView, boolean showTableView) {
 
-		_appId = appId;
+		_appBuilderApp = appBuilderApp;
 		_appName = appName;
 		_portletName = portletName;
 		_showFormView = showFormView;
@@ -86,7 +89,17 @@ public class AppPortlet extends MVCPortlet {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
 
-		renderRequest.setAttribute(AppBuilderWebKeys.APP_ID, _appId);
+		renderRequest.setAttribute(
+			AppBuilderWebKeys.APP_ID, _appBuilderApp.getAppBuilderAppId());
+		renderRequest.setAttribute(
+			AppBuilderWebKeys.DATA_DEFINITION_ID,
+			_appBuilderApp.getDdmStructureId());
+		renderRequest.setAttribute(
+			AppBuilderWebKeys.DATA_LAYOUT_ID,
+			_appBuilderApp.getDdmStructureLayoutId());
+		renderRequest.setAttribute(
+			AppBuilderWebKeys.DATA_LIST_VIEW_ID,
+			_appBuilderApp.getDeDataListViewId());
 		renderRequest.setAttribute(
 			AppBuilderWebKeys.SHOW_FORM_VIEW, _showFormView);
 		renderRequest.setAttribute(
@@ -95,7 +108,7 @@ public class AppPortlet extends MVCPortlet {
 		super.render(renderRequest, renderResponse);
 	}
 
-	private final long _appId;
+	private final AppBuilderApp _appBuilderApp;
 	private final String _appName;
 	private final String _portletName;
 	private final boolean _showFormView;

@@ -21,6 +21,12 @@ public class AppBuilderWebKeys {
 
 	public static final String APP_ID = "APP_ID";
 
+	public static final String DATA_DEFINITION_ID = "DATA_DEFINITION_ID";
+
+	public static final String DATA_LAYOUT_ID = "DATA_LAYOUT_ID";
+
+	public static final String DATA_LIST_VIEW_ID = "DATA_LIST_VIEW_ID";
+
 	public static final String SHOW_FORM_VIEW = "SHOW_FORM_VIEW";
 
 	public static final String SHOW_TABLE_VIEW = "SHOW_TABLE_VIEW";
