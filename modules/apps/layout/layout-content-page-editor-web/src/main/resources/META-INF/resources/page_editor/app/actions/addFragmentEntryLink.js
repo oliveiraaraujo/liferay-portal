@@ -12,27 +12,19 @@
  * details.
  */
 
-import {ADD_FRAGMENT_ENTRY_LINK_AND_ITEM} from './types';
+import {ADD_FRAGMENT_ENTRY_LINK} from './types';
 
-export default function addFragmentEntryLinkAndItem({
+export default function addFragmentEntryLink({
 	fragmentEntryLink,
 	itemId,
-	itemType,
 	parentId,
 	position
 }) {
-	const {fragmentEntryLinkId} = fragmentEntryLink;
-
 	return {
-		config: {
-			fragmentEntryLinkId
-		},
 		fragmentEntryLink,
-		fragmentEntryLinkId,
 		itemId,
-		itemType,
 		parentId,
 		position,
-		type: ADD_FRAGMENT_ENTRY_LINK_AND_ITEM
+		type: ADD_FRAGMENT_ENTRY_LINK
 	};
 }

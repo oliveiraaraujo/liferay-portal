@@ -12,11 +12,26 @@
  * details.
  */
 
-export const ADD_FRAGMENT_ENTRY_LINK = 'ADD_FRAGMENT_ENTRY_LINK';
-export const ADD_ITEM = 'ADD_ITEM';
-export const DISCARD = 'DISCARD';
-export const LOAD_REDUCER = 'LOAD_REDUCER';
-export const MOVE_ITEM = 'MOVE_ITEM';
-export const PUBLISH = 'PUBLISH';
-export const REMOVE_ITEM = 'REMOVE_ITEM';
-export const UNLOAD_REDUCER = 'UNLOAD_REDUCER';
+import {TYPES} from '../actions/index';
+
+export default function fragmentEntryLinksReducer(state, action) {
+	let nextState = state;
+
+	switch (action.type) {
+		case TYPES.ADD_FRAGMENT_ENTRY_LINK:
+			nextState = {
+				...nextState,
+				fragmentEntryLinks: {
+					...nextState.fragmentEntryLinks,
+					[action.fragmentEntryLink.fragmentEntryLinkId]:
+						action.fragmentEntryLink
+				}
+			};
+			break;
+
+		default:
+			break;
+	}
+
+	return nextState;
+}

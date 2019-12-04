@@ -22,7 +22,7 @@ import {LAYOUT_DATA_ITEM_TYPES} from '../../../app/config/constants/layoutDataIt
 import {ConfigContext} from '../../../app/config/index';
 import {DispatchContext} from '../../../app/reducers/index';
 import {StoreContext} from '../../../app/store/index';
-import addFragmentEntryLink from '../../../app/thunks/addFragmentEntryLink';
+import addFragment from '../../../app/thunks/addFragment';
 
 const ImagePreview = ({imagePreviewURL}) => {
 	if (imagePreviewURL) {
@@ -61,7 +61,7 @@ export default function FragmentCard({
 			const {parentId, position} = result;
 
 			dispatch(
-				addFragmentEntryLink({
+				addFragment({
 					config,
 					fragmentGroupId,
 					fragmentKey,

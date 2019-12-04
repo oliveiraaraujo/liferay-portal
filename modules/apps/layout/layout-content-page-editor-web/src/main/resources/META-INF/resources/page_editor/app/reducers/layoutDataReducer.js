@@ -17,7 +17,7 @@ import {LAYOUT_DATA_ALLOWED_PARENT_TYPES} from '../config/constants/layoutDataAl
 import {LAYOUT_DATA_ITEM_DEFAULT_CONFIGURATIONS} from '../config/constants/layoutDataItemDefaultConfigurations';
 import {LAYOUT_DATA_ITEM_TYPES} from '../config/constants/layoutDataItemTypes';
 
-function addItemReducer(items, action) {
+function addItem(items, action) {
 	const {config, itemId, itemType, parentId} = action;
 	const defaultConfig = LAYOUT_DATA_ITEM_DEFAULT_CONFIGURATIONS[itemType];
 	const parentItem = items[parentId];
@@ -67,7 +67,7 @@ function addItemReducer(items, action) {
 	};
 }
 
-function moveItemReducer(items, action) {
+function moveItem(items, action) {
 	const {itemId, position, siblingId} = action;
 
 	const item = items[itemId];
@@ -110,7 +110,7 @@ function moveItemReducer(items, action) {
 	};
 }
 
-function removeItemReducer(items, action) {
+function removeItem(items, action) {
 	const {itemId} = action;
 	let newItems = items;
 
@@ -146,7 +146,7 @@ export default function layoutDataReducer(state, action) {
 				...state,
 				layoutData: {
 					...state.layoutData,
-					items: addItemReducer(state.layoutData.items, action)
+					items: addItem(state.layoutData.items, action)
 				}
 			};
 
@@ -157,7 +157,7 @@ export default function layoutDataReducer(state, action) {
 				...state,
 				layoutData: {
 					...state.layoutData,
-					items: moveItemReducer(state.layoutData.items, action)
+					items: moveItem(state.layoutData.items, action)
 				}
 			};
 
@@ -168,21 +168,26 @@ export default function layoutDataReducer(state, action) {
 				...state,
 				layoutData: {
 					...state.layoutData,
-					items: removeItemReducer(state.layoutData.items, action)
+					items: removeItem(state.layoutData.items, action)
 				}
 			};
 			break;
 
-		case TYPES.ADD_FRAGMENT_ENTRY_LINK_AND_ITEM:
+		case TYPES.ADD_FRAGMENT_ENTRY_LINK:
 			nextState = {
 				...state,
-				fragmentEntryLinks: {
-					...state.fragmentEntryLinks,
-					[action.fragmentEntryLinkId]: action.fragmentEntryLink
-				},
 				layoutData: {
 					...state.layoutData,
-					items: addItemReducer(state.layoutData.items, action)
+					items: addItem(state.layoutData.items, {
+						config: {
+							fragmentEntryLinkId:
+								action.fragmentEntryLink.fragmentEntryLinkId
+						},
+						itemId: action.itemId,
+						itemType: LAYOUT_DATA_ITEM_TYPES.fragment,
+						parentId: action.parentId,
+						position: action.position
+					})
 				}
 			};
 			break;

@@ -12,11 +12,10 @@
  * details.
  */
 
-import addFragmentEntryLinkAndItem from '../actions/addFragmentEntryLinkAndItem';
-import {LAYOUT_DATA_ITEM_TYPES} from '../config/constants/layoutDataItemTypes';
+import addFragmentEntryLink from '../actions/addFragmentEntryLink';
 import FragmentService from '../services/FragmentService';
 
-export default function addFragmentEntryLink({
+export default function addFragment({
 	config,
 	fragmentGroupId,
 	fragmentKey,
@@ -43,10 +42,9 @@ export default function addFragmentEntryLink({
 			};
 
 			dispatch(
-				addFragmentEntryLinkAndItem({
+				addFragmentEntryLink({
 					fragmentEntryLink,
 					itemId: `thing-${Date.now()}`,
-					itemType: LAYOUT_DATA_ITEM_TYPES.fragment,
 					parentId,
 					position
 				})
