@@ -639,7 +639,7 @@ public abstract class BaseBuild implements Build {
 		}
 		catch (IOException ioe) {
 			throw new RuntimeException(
-				"Unable to get jenkins authentication token", ioe);
+				"Unable to get Jenkins authentication token", ioe);
 		}
 
 		for (Map.Entry<String, String> parameter : parameters.entrySet()) {
