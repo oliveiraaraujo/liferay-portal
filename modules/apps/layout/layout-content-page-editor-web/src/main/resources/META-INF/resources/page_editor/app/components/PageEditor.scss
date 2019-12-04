@@ -1,3 +1,24 @@
-.row.empty {
-	min-height: 10em;
+.page-editor {
+	&__container,
+	&__container-outline,
+	&__fragment,
+	&__row-outline {
+		box-shadow: inset 0 0 0 1px rgba(11, 95, 255, 0.2);
+	}
+
+	&__container.empty &__container-outline,
+	&__row.empty {
+		min-height: 10em;
+	}
+
+	&__root {
+		box-shadow: inset 0 0 0 0 #0b5fff;
+		min-height: 50vh;
+		transition: box-shadow ease 0.3s;
+		will-change: box-shadow;
+
+		&--active {
+			box-shadow: inset 0 0 0 4px #0b5fff;
+		}
+	}
 }

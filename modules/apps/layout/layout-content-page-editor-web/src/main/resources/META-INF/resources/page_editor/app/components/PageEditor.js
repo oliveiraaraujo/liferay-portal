@@ -55,11 +55,13 @@ function Root({children, item}) {
 		}
 	});
 
-	const active = isOver && canDrop;
-	const background = active ? 'honeydew' : 'aliceblue';
-
 	return (
-		<div ref={drop} style={{background, height: '100vh'}}>
+		<div
+			className={classNames('page-editor__root', {
+				'page-editor__root--active': isOver && canDrop
+			})}
+			ref={drop}
+		>
 			{React.Children.count(children) ? (
 				children
 			) : (
@@ -117,12 +119,16 @@ function Container({children, item}) {
 			/>
 
 			<div
-				className={classNames(`container py-${paddingVertical}`, {
-					[`bg-${backgroundColorCssClass}`]: !!backgroundColorCssClass,
-					container: type === 'fixed',
-					'container-fluid': type === 'fluid',
-					[`px-${paddingHorizontal}`]: paddingHorizontal !== 3
-				})}
+				className={classNames(
+					`container page-editor__container py-${paddingVertical}`,
+					{
+						[`bg-${backgroundColorCssClass}`]: !!backgroundColorCssClass,
+						container: type === 'fixed',
+						'container-fluid': type === 'fluid',
+						empty: !item.children.length,
+						[`px-${paddingHorizontal}`]: paddingHorizontal !== 3
+					}
+				)}
 				ref={node => {
 					containerRef.current = node;
 					drop(node);
@@ -138,7 +144,7 @@ function Container({children, item}) {
 						: {}
 				}
 			>
-				{children}
+				<div className="page-editor__container-outline">{children}</div>
 			</div>
 		</Topper>
 	);
@@ -170,19 +176,21 @@ function Row({children, item}) {
 				itemRef={rowRef}
 			/>
 
-			<div
-				className={classNames('row', {
-					empty: !item.children.some(
-						childId => layoutData.items[childId].children.length
-					),
-					'no-gutters': !item.config.gutters
-				})}
-				ref={node => {
-					rowRef.current = node;
-					drop(node);
-				}}
-			>
-				{children}
+			<div className="page-editor__row-outline">
+				<div
+					className={classNames('page-editor__row row', {
+						empty: !item.children.some(
+							childId => layoutData.items[childId].children.length
+						),
+						'no-gutters': !item.config.gutters
+					})}
+					ref={node => {
+						rowRef.current = node;
+						drop(node);
+					}}
+				>
+					{children}
+				</div>
 			</div>
 		</>
 	);
@@ -268,7 +276,7 @@ function Fragment({item}) {
 			/>
 
 			<UnsafeHTML
-				className="fragment"
+				className="page-editor__fragment"
 				markup={markup}
 				ref={fragmentRef}
 			/>
