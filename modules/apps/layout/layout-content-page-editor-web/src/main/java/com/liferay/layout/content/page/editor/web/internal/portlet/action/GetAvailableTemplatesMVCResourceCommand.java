@@ -81,10 +81,13 @@ public class GetAvailableTemplatesMVCResourceCommand
 					infoItemTemplatedRenderer.getInfoItemRendererTemplates(
 						object, themeDisplay.getLocale());
 
+				JSONArray templatesJSONArray =
+					JSONFactoryUtil.createJSONArray();
+
 				for (InfoItemRendererTemplate infoItemRendererTemplate :
 						infoItemRendererTemplates) {
 
-					jsonArray.put(
+					templatesJSONArray.put(
 						JSONUtil.put(
 							"infoItemRendererKey", infoItemRenderer.getKey()
 						).put(
@@ -94,6 +97,16 @@ public class GetAvailableTemplatesMVCResourceCommand
 							infoItemRendererTemplate.getTemplateKey()
 						));
 				}
+
+				jsonArray.put(
+					JSONUtil.put(
+						"label",
+						infoItemTemplatedRenderer.
+							getInfoItemRendererTemplatesGroupLabel(
+								object, themeDisplay.getLocale())
+					).put(
+						"templates", templatesJSONArray
+					));
 			}
 			else {
 				jsonArray.put(
