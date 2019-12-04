@@ -113,7 +113,7 @@ public class ContentObjectFragmentRenderer implements FragmentRenderer {
 			return;
 		}
 
-		Tuple tuple = _getInfoItemRenderer(
+		Tuple tuple = _getTuple(
 			displayObject.getClass(), fragmentRendererContext,
 			httpServletRequest);
 
@@ -183,7 +183,7 @@ public class ContentObjectFragmentRenderer implements FragmentRenderer {
 			"itemSelector");
 	}
 
-	private Tuple _getInfoItemRenderer(
+	private Tuple _getTuple(
 		Class<?> displayObjectClass,
 		FragmentRendererContext fragmentRendererContext,
 		HttpServletRequest httpServletRequest) {
