@@ -26,10 +26,8 @@ import {getFieldLabel} from '../../utils/dataDefinition.es';
 import {FieldValuePreview} from './FieldPreview.es';
 
 const ListEntries = withRouter(({history, location}) => {
-	const [dataDefinition, setDataDefinition] = useState();
 	const [state, setState] = useState({
-		dataDefinitionId: null,
-		dataLayoutId: null,
+		dataDefinition: null,
 		dataListView: {
 			fieldNames: []
 		},
@@ -39,34 +37,31 @@ const ListEntries = withRouter(({history, location}) => {
 	const {
 		basePortletURL,
 		dataDefinitionId,
-		dataLayoutId,
 		dataListViewId,
 		showFormView
 	} = useContext(AppContext);
 
 	useEffect(() => {
 		Promise.all([
-			getItem(
-				`/o/data-engine/v1.0/data-definitions/${dataDefinitionId}`
-			).then(dataDefinition => setDataDefinition(dataDefinition)),
-			getItem(
-				`/o/data-engine/v1.0/data-list-views/${dataListViewId}`
-			).then(dataListView => {
-				setState(prevState => ({
-					...prevState,
-					dataDefinitionId,
-					dataLayoutId,
-					dataListView: {
-						...prevState.dataListView,
-						...dataListView
-					},
-					isLoading: false
-				}));
-			})
-		]);
-	}, [dataDefinitionId, dataLayoutId, dataListViewId]);
+			getItem(`/o/data-engine/v1.0/data-definitions/${dataDefinitionId}`),
+			getItem(`/o/data-engine/v1.0/data-list-views/${dataListViewId}`)
+		]).then(([dataDefinition, dataListView]) => {
+			setState(prevState => ({
+				...prevState,
+				dataDefinition: {
+					...prevState.dataDefinition,
+					...dataDefinition
+				},
+				dataListView: {
+					...prevState.dataListView,
+					...dataListView
+				},
+				isLoading: false
+			}));
+		});
+	}, [dataDefinitionId, dataListViewId]);
 
-	const {dataListView, isLoading} = state;
+	const {dataDefinition, dataListView, isLoading} = state;
 	const {fieldNames: columns} = dataListView;
 
 	const defaultDataRecordValues = {};
@@ -77,8 +72,6 @@ const ListEntries = withRouter(({history, location}) => {
 
 	const getEditURL = (dataRecordId = 0) =>
 		Liferay.Util.PortletURL.createRenderURL(basePortletURL, {
-			dataDefinitionId,
-			dataLayoutId,
 			dataRecordId,
 			mvcPath: '/edit_entry.jsp'
 		});
