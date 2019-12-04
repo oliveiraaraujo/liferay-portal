@@ -15,7 +15,11 @@
 	{@param? availableTemplates: list<[
 		infoItemRendererKey: string,
 		label: string,
-		templateKey: string
+		templates: list<[
+			infoItemRendererKey: string,
+			label: string,
+			templateKey: string
+		]>
 	]>}
 	{@param? enableSelectTemplate: bool}
 	{@param? selectedClassName: string}
@@ -111,22 +115,40 @@
 			id="template"
 		>
 			{foreach $option in $availableTemplates}
-				{let $optionAttributes kind="attributes"}
-					{if $option.templateKey}
-						data-template-key="{$option.templateKey}"
-					{/if}
+				{if isNonnull($option.templates) and length($option.templates) > 1}
+					<optgroup label="{$option.label}">
+						{foreach $template in $option.templates}
+							{let $optionAttributes kind="attributes"}
+								{if $template.templateKey}
+									data-template-key="{$template.templateKey}"
+								{/if}
 
-					{if $option.infoItemRendererKey}
-						data-info-item-renderer-key="{$option.infoItemRendererKey}"
-					{/if}
+								{if $template.infoItemRendererKey}
+									data-info-item-renderer-key="{$template.infoItemRendererKey}"
+								{/if}
 
-					{if $selectedTemplate and $selectedTemplate.infoItemRendererKey == $option.infoItemRendererKey and
-					 (not $selectedTemplate.templateKey or ($selectedTemplate.templateKey and $selectedTemplate.templateKey == $option.templateKey))}
-						selected
-					{/if}
-				{/let}
+								{if $selectedTemplate and $selectedTemplate.infoItemRendererKey == $template.infoItemRendererKey and
+								(not $selectedTemplate.templateKey or ($selectedTemplate.templateKey and $selectedTemplate.templateKey == $template.templateKey))}
+									selected
+								{/if}
+							{/let}
 
-				<option {$optionAttributes}>{$option.label}</option>
+							<option {$optionAttributes}>{$template.label}</option>
+						{/foreach}
+					</optgroup>
+				{else}
+					{let $optionAttributes kind="attributes"}
+						{if $option.infoItemRendererKey}
+							data-info-item-renderer-key="{$option.infoItemRendererKey}"
+						{/if}
+
+						{if $selectedTemplate and $selectedTemplate.infoItemRendererKey == $option.infoItemRendererKey}
+							selected
+						{/if}
+					{/let}
+
+					<option {$optionAttributes}>{$option.label}</option>
+				{/if}
 			{/foreach}
 		</select>
 	</div>

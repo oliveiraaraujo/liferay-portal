@@ -148,7 +148,13 @@ ItemSelectorField.STATE = {
 		Config.shapeOf({
 			infoItemRendererKey: Config.string().value(''),
 			label: Config.string(),
-			templateKey: Config.string().value('')
+			templates: Config.arrayOf(
+				Config.shapeOf({
+					infoItemRendererKey: Config.string().value(''),
+					label: Config.string(),
+					templateKey: Config.string().value('')
+				})
+			).value([])
 		})
 	)
 		.internal()
