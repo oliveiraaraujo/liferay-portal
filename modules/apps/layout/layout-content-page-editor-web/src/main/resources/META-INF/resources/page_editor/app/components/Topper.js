@@ -23,6 +23,7 @@ import {moveItem, removeItem} from '../actions/index';
 import {LAYOUT_DATA_ITEM_TYPES} from '../config/constants/layoutDataItemTypes';
 import {DispatchContext} from '../reducers/index';
 import {
+	useCurrentFloatingToolbar,
 	useIsSelected,
 	useIsHovered,
 	useSelectItem,
@@ -61,6 +62,8 @@ export default function Topper({
 	const isHovered = useIsHovered();
 	const isSelected = useIsSelected();
 	const selectItem = useSelectItem();
+
+	const floatingToolbarRef = useCurrentFloatingToolbar();
 
 	const [{isDragging}, drag] = useDrag({
 		collect: monitor => ({
@@ -170,7 +173,7 @@ export default function Topper({
 		}
 	});
 
-	useOnClickOutside(containerRef, event => {
+	useOnClickOutside([containerRef, floatingToolbarRef], event => {
 		if (!event.shiftKey) {
 			selectItem(null);
 		}
