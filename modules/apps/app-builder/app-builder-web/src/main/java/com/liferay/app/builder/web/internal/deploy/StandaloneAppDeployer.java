@@ -235,10 +235,11 @@ public class StandaloneAppDeployer implements AppDeployer {
 	private ServiceRegistration<?> _deployPortlet(
 		long appId, String appName, String portletName) {
 
+		AppPortlet appPortlet = new AppPortlet(appId, appName, portletName);
+
 		return _bundleContext.registerService(
-			Portlet.class, new AppPortlet(appId),
-			AppPortlet.getProperties(
-				appName, portletName,
+			Portlet.class, appPortlet,
+			appPortlet.getProperties(
 				HashMapBuilder.<String, Object>put(
 					"com.liferay.portlet.application-type",
 					"full-page-application"

@@ -83,10 +83,12 @@ public class WidgetAppDeployer implements AppDeployer {
 		long appId, String appName, String portletName, boolean showFormView,
 		boolean showTableView) {
 
+		AppPortlet appPortlet = new AppPortlet(
+			appId, appName, portletName, showFormView, showTableView);
+
 		return _bundleContext.registerService(
-			Portlet.class, new AppPortlet(appId, showFormView, showTableView),
-			AppPortlet.getProperties(
-				appName, portletName,
+			Portlet.class, appPortlet,
+			appPortlet.getProperties(
 				HashMapBuilder.<String, Object>put(
 					"com.liferay.portlet.display-category",
 					"category.app_builder"

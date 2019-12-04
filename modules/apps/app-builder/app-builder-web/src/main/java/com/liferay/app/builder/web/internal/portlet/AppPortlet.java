@@ -32,8 +32,23 @@ import javax.portlet.RenderResponse;
  */
 public class AppPortlet extends MVCPortlet {
 
-	public static Dictionary<String, Object> getProperties(
-		String appName, String portletName,
+	public AppPortlet(long appId, String appName, String portletName) {
+		this(appId, appName, portletName, true, true);
+	}
+
+	public AppPortlet(
+		long appId, String appName, String portletName, boolean showFormView,
+		boolean showTableView) {
+
+		_appId = appId;
+		_appName = appName;
+		_portletName = portletName;
+		_showFormView = showFormView;
+		_showTableView = showTableView;
+		_viewTemplate = showTableView ? "/view_entries.jsp" : "/edit_entry.jsp";
+	}
+
+	public Dictionary<String, Object> getProperties(
 		Map<String, Object> customProperties) {
 
 		HashMapDictionary<String, Object> properties =
@@ -47,14 +62,14 @@ public class AppPortlet extends MVCPortlet {
 						"com.liferay.portlet.header-portlet-css",
 						"/css/main.css");
 					put("com.liferay.portlet.use-default-template", true);
-					put("javax.portlet.display-name", appName);
-					put("javax.portlet.name", portletName);
+					put("javax.portlet.display-name", _appName);
+					put("javax.portlet.name", _portletName);
 					put(
 						"javax.portlet.init-param.template-path",
 						"/META-INF/resources/");
 					put(
 						"javax.portlet.init-param.view-template",
-						"/view_entries.jsp");
+						_viewTemplate);
 					put(
 						"javax.portlet.security-role-ref",
 						"administrator,guest,power-user,user");
@@ -64,16 +79,6 @@ public class AppPortlet extends MVCPortlet {
 		properties.putAll(customProperties);
 
 		return properties;
-	}
-
-	public AppPortlet(long appId) {
-		this(appId, true, true);
-	}
-
-	public AppPortlet(long appId, boolean showFormView, boolean showTableView) {
-		_appId = appId;
-		_showFormView = showFormView;
-		_showTableView = showTableView;
 	}
 
 	@Override
@@ -91,7 +96,10 @@ public class AppPortlet extends MVCPortlet {
 	}
 
 	private final long _appId;
+	private final String _appName;
+	private final String _portletName;
 	private final boolean _showFormView;
 	private final boolean _showTableView;
+	private final String _viewTemplate;
 
 }
