@@ -74,6 +74,7 @@ class FragmentEntryLink extends Component {
 			[
 				'hasUpdatePermissions',
 				'fragmentEntryLinkId',
+				'fragmentEntryLinks',
 				'activeItemId',
 				'activeItemType'
 			],
