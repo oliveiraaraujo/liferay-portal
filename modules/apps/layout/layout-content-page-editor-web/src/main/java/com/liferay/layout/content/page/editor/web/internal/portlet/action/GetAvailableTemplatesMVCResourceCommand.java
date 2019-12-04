@@ -78,7 +78,7 @@ public class GetAvailableTemplatesMVCResourceCommand
 					(InfoItemTemplatedRenderer)infoItemRenderer;
 
 				List<InfoItemRendererTemplate> infoItemRendererTemplates =
-					infoItemTemplatedRenderer.getInfoItemRendererTemplate(
+					infoItemTemplatedRenderer.getInfoItemRendererTemplates(
 						object, themeDisplay.getLocale());
 
 				for (InfoItemRendererTemplate infoItemRendererTemplate :

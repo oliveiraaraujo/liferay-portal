@@ -50,7 +50,7 @@ public class JournalArticleDDMTemplateInfoItemTemplatedRenderer
 	implements InfoItemTemplatedRenderer<JournalArticle> {
 
 	@Override
-	public List<InfoItemRendererTemplate> getInfoItemRendererTemplate(
+	public List<InfoItemRendererTemplate> getInfoItemRendererTemplates(
 		JournalArticle article, Locale locale) {
 
 		List<InfoItemRendererTemplate> infoItemTemplates = new ArrayList<>();

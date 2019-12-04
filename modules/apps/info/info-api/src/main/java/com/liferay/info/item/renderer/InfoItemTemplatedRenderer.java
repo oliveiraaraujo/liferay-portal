@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface InfoItemTemplatedRenderer<T> extends InfoItemRenderer<T> {
 
-	public List<InfoItemRendererTemplate> getInfoItemRendererTemplate(
+	public List<InfoItemRendererTemplate> getInfoItemRendererTemplates(
 		T t, Locale locale);
 
 	@Override
@@ -38,7 +38,7 @@ public interface InfoItemTemplatedRenderer<T> extends InfoItemRenderer<T> {
 		HttpServletResponse httpServletResponse) {
 
 		List<InfoItemRendererTemplate> infoItemRendererTemplates =
-			getInfoItemRendererTemplate(t, LocaleUtil.getMostRelevantLocale());
+			getInfoItemRendererTemplates(t, LocaleUtil.getMostRelevantLocale());
 
 		if (ListUtil.isEmpty(infoItemRendererTemplates)) {
 			return;
