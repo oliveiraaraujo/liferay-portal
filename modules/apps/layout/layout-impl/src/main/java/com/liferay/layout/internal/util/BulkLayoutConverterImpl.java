@@ -124,15 +124,15 @@ public class BulkLayoutConverterImpl implements BulkLayoutConverter {
 		if (groupId > 0) {
 			actionableDynamicQuery.setAddCriteriaMethod(
 				dynamicQuery -> {
-					Property property = PropertyFactoryUtil.forName("system");
-
-					dynamicQuery.add(property.eq(false));
-
 					dynamicQuery.add(
 						RestrictionsFactoryUtil.eq("groupId", groupId));
 					dynamicQuery.add(
 						RestrictionsFactoryUtil.eq(
 							"type", LayoutConstants.TYPE_PORTLET));
+
+					Property property = PropertyFactoryUtil.forName("system");
+
+					dynamicQuery.add(property.eq(false));
 				});
 
 			actionableDynamicQuery.setPerformActionMethod(
