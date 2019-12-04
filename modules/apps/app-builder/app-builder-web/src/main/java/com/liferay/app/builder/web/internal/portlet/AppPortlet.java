@@ -89,17 +89,7 @@ public class AppPortlet extends MVCPortlet {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
 
-		renderRequest.setAttribute(
-			AppBuilderWebKeys.APP_ID, _appBuilderApp.getAppBuilderAppId());
-		renderRequest.setAttribute(
-			AppBuilderWebKeys.DATA_DEFINITION_ID,
-			_appBuilderApp.getDdmStructureId());
-		renderRequest.setAttribute(
-			AppBuilderWebKeys.DATA_LAYOUT_ID,
-			_appBuilderApp.getDdmStructureLayoutId());
-		renderRequest.setAttribute(
-			AppBuilderWebKeys.DATA_LIST_VIEW_ID,
-			_appBuilderApp.getDeDataListViewId());
+		renderRequest.setAttribute(AppBuilderWebKeys.APP, _appBuilderApp);
 		renderRequest.setAttribute(
 			AppBuilderWebKeys.SHOW_FORM_VIEW, _showFormView);
 		renderRequest.setAttribute(
