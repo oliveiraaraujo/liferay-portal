@@ -67,6 +67,15 @@ public class JournalArticleDDMTemplateInfoItemTemplatedRenderer
 	}
 
 	@Override
+	public String getInfoItemRendererTemplatesGroupLabel(
+		JournalArticle article, Locale locale) {
+
+		DDMStructure ddmStructure = article.getDDMStructure();
+
+		return ddmStructure.getName(locale);
+	}
+
+	@Override
 	public String getLabel(Locale locale) {
 		ResourceBundle resourceBundle =
 			_resourceBundleLoader.loadResourceBundle(locale);
