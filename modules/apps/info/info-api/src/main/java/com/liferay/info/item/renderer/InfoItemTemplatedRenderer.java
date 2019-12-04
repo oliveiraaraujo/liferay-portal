@@ -32,6 +32,12 @@ public interface InfoItemTemplatedRenderer<T> extends InfoItemRenderer<T> {
 	public List<InfoItemRendererTemplate> getInfoItemRendererTemplates(
 		T t, Locale locale);
 
+	public default String getInfoItemRendererTemplatesGroupLabel(
+		T t, Locale locale) {
+
+		return getLabel(locale);
+	}
+
 	@Override
 	public default void render(
 		T t, HttpServletRequest httpServletRequest,
