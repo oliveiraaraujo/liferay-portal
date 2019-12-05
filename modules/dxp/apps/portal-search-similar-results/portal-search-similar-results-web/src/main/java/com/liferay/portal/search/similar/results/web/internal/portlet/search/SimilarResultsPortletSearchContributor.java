@@ -201,28 +201,20 @@ public class SimilarResultsPortletSearchContributor
 
 		moreLikeThisQuery.setAnalyzer(
 			similarResultsPortletPreferences.getAnalyzer());
-
 		moreLikeThisQuery.setMaxDocFrequency(
 			similarResultsPortletPreferences.getMaxDocFrequency());
-
 		moreLikeThisQuery.setMaxQueryTerms(
 			similarResultsPortletPreferences.getMaxQueryTerms());
-
 		moreLikeThisQuery.setMaxWordLength(
 			similarResultsPortletPreferences.getMaxWordLength());
-
 		moreLikeThisQuery.setMinDocFrequency(
 			similarResultsPortletPreferences.getMinDocFrequency());
-
 		moreLikeThisQuery.setMinShouldMatch(
 			similarResultsPortletPreferences.getMinShouldMatch());
-
 		moreLikeThisQuery.setMinTermFrequency(
 			similarResultsPortletPreferences.getMinTermFrequency());
-
 		moreLikeThisQuery.setMinWordLength(
 			similarResultsPortletPreferences.getMinWordLength());
-
 		moreLikeThisQuery.setTermBoost(
 			similarResultsPortletPreferences.getTermBoost());
 
