@@ -33,7 +33,6 @@ import com.liferay.portal.test.log.Log4JLoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import java.nio.charset.StandardCharsets;
 
@@ -80,7 +79,7 @@ public class BatchEngineImportTaskExecutorTest
 	}
 
 	@Test
-	public void testCreateBlogPostingsFromCSVFile() throws IOException {
+	public void testCreateBlogPostingsFromCSVFile() throws Exception {
 		_importBlogPostings(
 			BatchEngineTaskOperation.CREATE,
 			_getBlogPostingsCSVCreateContent(group.getGroupId(), FIELD_NAMES),
@@ -91,7 +90,7 @@ public class BatchEngineImportTaskExecutorTest
 
 	@Test
 	public void testCreateBlogPostingsFromCSVFileWithFieldMappings()
-		throws IOException {
+		throws Exception {
 
 		_importBlogPostings(
 			BatchEngineTaskOperation.CREATE,
@@ -103,7 +102,7 @@ public class BatchEngineImportTaskExecutorTest
 	}
 
 	@Test
-	public void testCreateBlogPostingsFromInvalidCSVFile() throws IOException {
+	public void testCreateBlogPostingsFromInvalidCSVFile() throws Exception {
 		StringBundler sb = new StringBundler();
 
 		_createCSVRow(
@@ -133,7 +132,7 @@ public class BatchEngineImportTaskExecutorTest
 	}
 
 	@Test
-	public void testCreateBlogPostingsFromInvalidJSONFile() throws IOException {
+	public void testCreateBlogPostingsFromInvalidJSONFile() throws Exception {
 		StringBundler sb = new StringBundler();
 
 		sb.append(StringPool.OPEN_BRACKET);
@@ -166,9 +165,7 @@ public class BatchEngineImportTaskExecutorTest
 	}
 
 	@Test
-	public void testCreateBlogPostingsFromInvalidJSONLFile()
-		throws IOException {
-
+	public void testCreateBlogPostingsFromInvalidJSONLFile() throws Exception {
 		StringBundler sb = new StringBundler();
 
 		_createJSONRow(
@@ -225,7 +222,7 @@ public class BatchEngineImportTaskExecutorTest
 	}
 
 	@Test
-	public void testCreateBlogPostingsFromJSONFile() throws IOException {
+	public void testCreateBlogPostingsFromJSONFile() throws Exception {
 		_importBlogPostings(
 			BatchEngineTaskOperation.CREATE,
 			_getBlogPostingsJSONCreateContent(group.getGroupId(), FIELD_NAMES),
@@ -236,7 +233,7 @@ public class BatchEngineImportTaskExecutorTest
 
 	@Test
 	public void testCreateBlogPostingsFromJSONFileWithFieldMappings()
-		throws IOException {
+		throws Exception {
 
 		_importBlogPostings(
 			BatchEngineTaskOperation.CREATE,
@@ -248,7 +245,7 @@ public class BatchEngineImportTaskExecutorTest
 	}
 
 	@Test
-	public void testCreateBlogPostingsFromJSONLFile() throws IOException {
+	public void testCreateBlogPostingsFromJSONLFile() throws Exception {
 		_importBlogPostings(
 			BatchEngineTaskOperation.CREATE,
 			_getBlogPostingsJSONLCreateContent(group.getGroupId(), FIELD_NAMES),
@@ -259,7 +256,7 @@ public class BatchEngineImportTaskExecutorTest
 
 	@Test
 	public void testCreateBlogPostingsFromJSONLFileWithFieldMappings()
-		throws IOException {
+		throws Exception {
 
 		_importBlogPostings(
 			BatchEngineTaskOperation.CREATE,
@@ -467,7 +464,7 @@ public class BatchEngineImportTaskExecutorTest
 	}
 
 	private byte[] _compressContent(byte[] content, String contentType)
-		throws IOException {
+		throws Exception {
 
 		ByteArrayOutputStream byteArrayOutputStream =
 			new ByteArrayOutputStream();
@@ -542,7 +539,7 @@ public class BatchEngineImportTaskExecutorTest
 
 	private byte[] _getBlogPostingsCSVCreateContent(
 			long siteId, String[] fieldNames)
-		throws IOException {
+		throws Exception {
 
 		StringBundler sb = new StringBundler();
 
@@ -560,7 +557,7 @@ public class BatchEngineImportTaskExecutorTest
 
 	private byte[] _getBlogPostingsCSVDeleteContent(
 			List<BlogsEntry> blogsEntries)
-		throws IOException {
+		throws Exception {
 
 		StringBundler sb = new StringBundler();
 
@@ -575,7 +572,7 @@ public class BatchEngineImportTaskExecutorTest
 
 	private byte[] _getBlogPostingsCSVUpdateContent(
 			List<BlogsEntry> blogsEntries)
-		throws IOException {
+		throws Exception {
 
 		StringBundler sb = new StringBundler();
 
@@ -599,7 +596,7 @@ public class BatchEngineImportTaskExecutorTest
 
 	private byte[] _getBlogPostingsJSONCreateContent(
 			long siteId, String[] fieldNames)
-		throws IOException {
+		throws Exception {
 
 		StringBundler sb = new StringBundler();
 
@@ -625,7 +622,7 @@ public class BatchEngineImportTaskExecutorTest
 
 	private byte[] _getBlogPostingsJSONDeleteContent(
 			List<BlogsEntry> blogsEntries)
-		throws IOException {
+		throws Exception {
 
 		StringBundler sb = new StringBundler();
 
@@ -646,7 +643,7 @@ public class BatchEngineImportTaskExecutorTest
 
 	private byte[] _getBlogPostingsJSONLCreateContent(
 			long siteId, String[] fieldNames)
-		throws IOException {
+		throws Exception {
 
 		StringBundler sb = new StringBundler();
 
@@ -668,7 +665,7 @@ public class BatchEngineImportTaskExecutorTest
 
 	private byte[] _getBlogPostingsJSONLDeleteContent(
 			List<BlogsEntry> blogsEntries)
-		throws IOException {
+		throws Exception {
 
 		StringBundler sb = new StringBundler();
 
@@ -685,7 +682,7 @@ public class BatchEngineImportTaskExecutorTest
 
 	private byte[] _getBlogPostingsJSONLUpdateContent(
 			List<BlogsEntry> blogsEntries)
-		throws IOException {
+		throws Exception {
 
 		StringBundler sb = new StringBundler();
 
@@ -712,7 +709,7 @@ public class BatchEngineImportTaskExecutorTest
 
 	private byte[] _getBlogPostingsJSONUpdateContent(
 			List<BlogsEntry> blogsEntries)
-		throws IOException {
+		throws Exception {
 
 		StringBundler sb = new StringBundler();
 
@@ -743,7 +740,7 @@ public class BatchEngineImportTaskExecutorTest
 
 	private byte[] _getBlogPostingsXLSCreateContent(
 			long siteId, String[] fieldNames)
-		throws IOException {
+		throws Exception {
 
 		XSSFWorkbook xssfWorkbook = new XSSFWorkbook();
 
@@ -766,7 +763,7 @@ public class BatchEngineImportTaskExecutorTest
 
 	private byte[] _getBlogPostingsXLSDeleteContent(
 			List<BlogsEntry> blogsEntries)
-		throws IOException {
+		throws Exception {
 
 		XSSFWorkbook xssfWorkbook = new XSSFWorkbook();
 
@@ -785,7 +782,7 @@ public class BatchEngineImportTaskExecutorTest
 
 	private byte[] _getBlogPostingsXLSUpdateContent(
 			List<BlogsEntry> blogsEntries)
-		throws IOException {
+		throws Exception {
 
 		XSSFWorkbook xssfWorkbook = new XSSFWorkbook();
 
@@ -825,7 +822,7 @@ public class BatchEngineImportTaskExecutorTest
 	}
 
 	private byte[] _toContent(String contentType, StringBundler sb)
-		throws IOException {
+		throws Exception {
 
 		String content = sb.toString();
 
@@ -833,7 +830,7 @@ public class BatchEngineImportTaskExecutorTest
 			content.getBytes(StandardCharsets.UTF_8), contentType);
 	}
 
-	private byte[] _toContent(XSSFWorkbook xssfWorkbook) throws IOException {
+	private byte[] _toContent(XSSFWorkbook xssfWorkbook) throws Exception {
 		ByteArrayOutputStream byteArrayOutputStream =
 			new ByteArrayOutputStream();
 
