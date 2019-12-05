@@ -744,7 +744,6 @@ public class WorkflowMetricsRESTTestHelper {
 						indexName, document.getString("uid"), document);
 
 				updateDocumentRequest.setRefresh(true);
-
 				updateDocumentRequest.setType(indexType);
 
 				_searchEngineAdapter.execute(updateDocumentRequest);
