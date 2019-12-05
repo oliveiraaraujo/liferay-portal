@@ -331,7 +331,6 @@ public class DataFactory {
 			ClassNameModel classNameModel = new ClassNameModelImpl();
 
 			classNameModel.setClassNameId(_counter.get());
-
 			classNameModel.setValue(model);
 
 			_classNameModels.put(model, classNameModel);
@@ -2156,10 +2155,8 @@ public class DataFactory {
 			friendlyURLEntryModel.getClassNameId());
 		friendlyURLEntryLocalizationModel.setClassPK(
 			friendlyURLEntryModel.getClassPK());
-
 		friendlyURLEntryLocalizationModel.setLanguageId(
 			LocaleUtil.toLanguageId(LocaleUtil.getSiteDefault()));
-
 		friendlyURLEntryLocalizationModel.setUrlTitle(
 			blogsEntryModel.getUrlTitle());
 
@@ -3764,7 +3761,6 @@ public class DataFactory {
 		cpTaxCategoryModel.setUserName(_SAMPLE_USER_NAME);
 		cpTaxCategoryModel.setCreateDate(new Date());
 		cpTaxCategoryModel.setModifiedDate(new Date());
-
 		cpTaxCategoryModel.setName(
 			StringBundler.concat(
 				"<?xml version=\"1.0\" encoding=\"UTF-8\"?><root ",
