@@ -199,6 +199,12 @@ public class SimilarResultsPortletSearchContributor
 		MoreLikeThisQuery moreLikeThisQuery,
 		SimilarResultsPortletPreferences similarResultsPortletPreferences) {
 
+		String stopWords = similarResultsPortletPreferences.getStopWords();
+
+		if (!Validator.isBlank(stopWords)) {
+			moreLikeThisQuery.addStopWords(stopWords);
+		}
+
 		moreLikeThisQuery.setAnalyzer(
 			similarResultsPortletPreferences.getAnalyzer());
 		moreLikeThisQuery.setMaxDocFrequency(
@@ -217,12 +223,6 @@ public class SimilarResultsPortletSearchContributor
 			similarResultsPortletPreferences.getMinWordLength());
 		moreLikeThisQuery.setTermBoost(
 			similarResultsPortletPreferences.getTermBoost());
-
-		String stopWords = similarResultsPortletPreferences.getStopWords();
-
-		if (!Validator.isBlank(stopWords)) {
-			moreLikeThisQuery.addStopWords(stopWords);
-		}
 	}
 
 	@Reference
