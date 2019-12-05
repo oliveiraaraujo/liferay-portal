@@ -91,6 +91,16 @@ const LAYOUT_COLUMN_ITEM_DROPDOWN_ITEMS = [
 	},
 
 	{
+		label: Liferay.Language.get('conversion-preview'),
+		name: 'layoutConversionPreviewURL'
+	},
+
+	{
+		label: Liferay.Language.get('delete-conversion-preview'),
+		name: 'deleteLayoutConversionPreviewURL'
+	},
+
+	{
 		/**
 		 * Handle delete item click in order to show a previous confirmation alert.
 		 * @param {Event} event

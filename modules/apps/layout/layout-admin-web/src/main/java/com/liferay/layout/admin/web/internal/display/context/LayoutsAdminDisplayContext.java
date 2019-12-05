@@ -618,6 +618,21 @@ public class LayoutsAdminDisplayContext {
 		return layoutColumnsJSONArray;
 	}
 
+	public String getLayoutConversionPreviewURL(Layout layout) {
+		PortletURL layoutConversionPreviewURL =
+			_liferayPortletResponse.createActionURL();
+
+		layoutConversionPreviewURL.setParameter(
+			ActionRequest.ACTION_NAME, "/layout/layout_conversion_preview");
+
+		layoutConversionPreviewURL.setParameter(
+			"redirect", _themeDisplay.getURLCurrent());
+		layoutConversionPreviewURL.setParameter(
+			"selPlid", String.valueOf(layout.getPlid()));
+
+		return layoutConversionPreviewURL.toString();
+	}
+
 	public LayoutConverterConfiguration getLayoutConverterConfiguration() {
 		return _layoutConverterConfiguration;
 	}
@@ -1609,7 +1624,19 @@ public class LayoutsAdminDisplayContext {
 		}
 
 		if (isShowConvertLayoutAction(layout)) {
-			jsonObject.put("convertLayoutURL", getConvertLayoutURL(layout));
+			Layout draftLayout = LayoutLocalServiceUtil.fetchLayout(
+				PortalUtil.getClassNameId(Layout.class), layout.getPlid());
+
+			if (draftLayout == null) {
+				jsonObject.put(
+					"layoutConversionPreviewURL",
+					getLayoutConversionPreviewURL(layout));
+			}
+			else {
+				jsonObject.put(
+					"deleteLayoutConversionPreviewURL",
+					getDeleteLayoutURL(draftLayout));
+			}
 		}
 
 		if (isShowCopyLayoutAction(layout)) {
