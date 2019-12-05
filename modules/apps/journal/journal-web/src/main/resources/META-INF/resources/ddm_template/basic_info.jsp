@@ -22,8 +22,6 @@ JournalEditDDMTemplateDisplayContext journalEditDDMTemplateDisplayContext = new 
 DDMTemplate ddmTemplate = journalEditDDMTemplateDisplayContext.getDDMTemplate();
 
 DDMStructure ddmStructure = journalEditDDMTemplateDisplayContext.getDDMStructure();
-
-String[] templateLanguageTypes = journalEditDDMTemplateDisplayContext.getTemplateLanguageTypes();
 %>
 
 <aui:model-context bean="<%= ddmTemplate %>" model="<%= DDMTemplate.class %>" />
@@ -31,7 +29,7 @@ String[] templateLanguageTypes = journalEditDDMTemplateDisplayContext.getTemplat
 <c:choose>
 	<c:when test="<%= journalEditDDMTemplateDisplayContext.isShowSpecificLanguageType() %>">
 		<p class="article-structure">
-			<b><liferay-ui:message key="language" /></b>: <%= journalEditDDMTemplateDisplayContext.getTemplateLanguageTypeLabel(templateLanguageTypes[0]) %>
+			<b><liferay-ui:message key="language" /></b>: <%= journalEditDDMTemplateDisplayContext.getTemplateLanguageTypeLabel(journalEditDDMTemplateDisplayContext.getTemplateLanguageTypes()[0]) %>
 		</p>
 
 		<aui:input name="language" type="hidden" value="<%= journalEditDDMTemplateDisplayContext.getLanguage() %>" />
