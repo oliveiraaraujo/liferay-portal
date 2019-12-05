@@ -18,8 +18,6 @@
 
 <%
 LayoutsTreeDisplayContext layoutsTreeDisplayContext = new LayoutsTreeDisplayContext(liferayPortletRequest);
-
-Group group = themeDisplay.getSiteGroup();
 %>
 
 <div id="<%= renderResponse.getNamespace() + "-layout-finder" %>">
@@ -82,6 +80,10 @@ Group group = themeDisplay.getSiteGroup();
 			</span>
 		</span>
 	</liferay-util:buffer>
+
+	<%
+	Group group = themeDisplay.getSiteGroup();
+	%>
 
 	<liferay-layout:layouts-tree
 		groupId="<%= layoutsTreeDisplayContext.getGroupId() %>"

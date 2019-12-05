@@ -46,11 +46,10 @@ public class LayoutsTreeDisplayContext {
 
 		_liferayPortletRequest = liferayPortletRequest;
 
-		_themeDisplay = (ThemeDisplay)liferayPortletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
 		_groupProvider = (GroupProvider)liferayPortletRequest.getAttribute(
 			ApplicationListWebKeys.GROUP_PROVIDER);
+		_themeDisplay = (ThemeDisplay)liferayPortletRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 	}
 
 	public String getAddLayoutURL() {
