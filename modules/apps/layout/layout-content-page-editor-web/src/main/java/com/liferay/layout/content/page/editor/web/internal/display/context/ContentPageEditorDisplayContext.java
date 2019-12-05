@@ -70,6 +70,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.model.PortletCategory;
@@ -116,6 +117,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -174,7 +176,13 @@ public class ContentPageEditorDisplayContext {
 			ContentPageEditorWebKeys.ITEM_SELECTOR);
 	}
 
-	public String getDiscardDraftURL() {
+	public String getDiscardDraftURL() throws PortalException {
+		Layout layout = _getPublishedLayout();
+
+		if (Objects.equals(layout.getType(), LayoutConstants.TYPE_PORTLET)) {
+			return StringPool.BLANK;
+		}
+
 		return getFragmentEntryActionURL(
 			"/content_layout/discard_draft_layout");
 	}
@@ -424,8 +432,7 @@ public class ContentPageEditorDisplayContext {
 
 		Layout draftLayout = themeDisplay.getLayout();
 
-		Layout layout = LayoutLocalServiceUtil.getLayout(
-			draftLayout.getClassPK());
+		Layout layout = _getPublishedLayout();
 
 		Date modifiedDate = draftLayout.getModifiedDate();
 
@@ -1370,6 +1377,19 @@ public class ContentPageEditorDisplayContext {
 		);
 	}
 
+	private Layout _getPublishedLayout() throws PortalException {
+		if (_publishedLayout != null) {
+			return _publishedLayout;
+		}
+
+		Layout draftLayout = themeDisplay.getLayout();
+
+		_publishedLayout = LayoutLocalServiceUtil.getLayout(
+			draftLayout.getClassPK());
+
+		return _publishedLayout;
+	}
+
 	private String _getRedirect() {
 		if (Validator.isNotNull(_redirect)) {
 			return _redirect;
@@ -1533,6 +1553,7 @@ public class ContentPageEditorDisplayContext {
 	private ItemSelectorCriterion _imageItemSelectorCriterion;
 	private final ItemSelector _itemSelector;
 	private String _layoutData;
+	private Layout _publishedLayout;
 	private String _redirect;
 	private final RenderResponse _renderResponse;
 	private List<SoyContext> _sidebarPanelSoyContexts;
