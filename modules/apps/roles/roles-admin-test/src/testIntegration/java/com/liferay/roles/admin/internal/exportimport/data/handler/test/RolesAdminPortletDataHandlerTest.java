@@ -80,8 +80,8 @@ public class RolesAdminPortletDataHandlerTest
 			Assert.assertTrue(
 				manifestSummaryKey.endsWith(
 					StagedModelType.REFERRER_CLASS_NAME_ALL) ||
-				manifestSummaryKey.endsWith(Role.class.getName()) ||
-				manifestSummaryKey.endsWith(AccountRole.class.getName()));
+				manifestSummaryKey.endsWith(AccountRole.class.getName()) ||
+				manifestSummaryKey.endsWith(Role.class.getName()));
 		}
 	}
 
