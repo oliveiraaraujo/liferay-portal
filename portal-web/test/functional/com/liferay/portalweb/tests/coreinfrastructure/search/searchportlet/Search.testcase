@@ -377,7 +377,9 @@ definition {
 
 		SearchPortlets.searchEmbedded(searchTerm = "WC Title");
 
-		Pause(locator1 = "5000");
+		while (IsElementNotPresent(locator1 = "SearchResults#ASSET_ENTRY_TABLE_TITLE", key_searchAssetTitle = "WC Title 1")) {
+			Pause(locator1 = "5000");
+		}
 
 		Portlet.gotoPortletOptions(
 			portletName = "Search Results",
