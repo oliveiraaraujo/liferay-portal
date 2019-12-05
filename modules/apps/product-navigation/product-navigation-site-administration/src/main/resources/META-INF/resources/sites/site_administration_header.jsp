@@ -29,7 +29,6 @@ portletURL.setParameter("selPpid", portletDisplay.getId());
 portletURL.setWindowState(LiferayWindowState.EXCLUSIVE);
 %>
 
-<<<<<<< HEAD
 <c:if test="<%= group.getType() != GroupConstants.TYPE_DEPOT %>">
 	<div class="icon-pages-tree">
 		<liferay-ui:icon
