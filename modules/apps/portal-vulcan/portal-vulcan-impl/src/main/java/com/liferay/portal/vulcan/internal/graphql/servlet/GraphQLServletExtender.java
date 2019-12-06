@@ -640,7 +640,9 @@ public class GraphQLServletExtender {
 				}
 				catch (Exception e) {
 					throw new Exception(
-						argument + " can not be converted to a valid Site", e);
+						"Unable to convert site key \"" + argument +
+							"\" to group ID",
+						e);
 				}
 			}
 
