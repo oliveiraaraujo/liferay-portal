@@ -253,7 +253,7 @@ public class AddFragmentEntryLinkReactMVCActionCommand
 	private JSONObject _processAddFragmentEntryLinkAction(
 		ActionRequest actionRequest, ActionResponse actionResponse) {
 
-		AddFragmentEntryLinkCallable callable =
+		Callable<JSONObject> callable =
 			new AddFragmentEntryLinkCallable(actionRequest, actionResponse);
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
