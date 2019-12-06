@@ -12,12 +12,17 @@
  * details.
  */
 
-export const ADD_FRAGMENT_ENTRY_LINK = 'ADD_FRAGMENT_ENTRY_LINK';
-export const ADD_ITEM = 'ADD_ITEM';
-export const DISCARD = 'DISCARD';
-export const LOAD_REDUCER = 'LOAD_REDUCER';
-export const MOVE_ITEM = 'MOVE_ITEM';
-export const PUBLISH = 'PUBLISH';
-export const REMOVE_ITEM = 'REMOVE_ITEM';
-export const UNLOAD_REDUCER = 'UNLOAD_REDUCER';
-export const UPDATE_LANGUAGE_ID = 'UPDATE_LANGUAGE_ID';
+import {UPDATE_LANGUAGE_ID as type} from './types';
+
+const ACTION = {type};
+
+/**
+ * @param {string} languageId
+ * @return {object}
+ */
+export default function updateLanguageId({languageId}) {
+	return {
+		...ACTION,
+		languageId
+	};
+}

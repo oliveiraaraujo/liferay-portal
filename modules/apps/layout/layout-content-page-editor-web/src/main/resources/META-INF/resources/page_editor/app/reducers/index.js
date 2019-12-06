@@ -16,6 +16,7 @@ import React from 'react';
 
 import baseReducer from './baseReducer';
 import fragmentEntryLinksReducer from './fragmentEntryLinksReducer';
+import languageReducer from './languageReducer';
 import layoutDataReducer from './layoutDataReducer';
 
 export const DispatchContext = React.createContext(() => {});
@@ -28,6 +29,7 @@ export function reducer(state, action) {
 	return [
 		baseReducer,
 		fragmentEntryLinksReducer,
+		languageReducer,
 		layoutDataReducer,
 		...Object.values(state.reducers)
 	].reduce((nextState, nextReducer) => {

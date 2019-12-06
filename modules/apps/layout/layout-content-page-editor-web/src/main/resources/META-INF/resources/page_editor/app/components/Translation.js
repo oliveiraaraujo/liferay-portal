@@ -17,6 +17,7 @@ import ClayDropDown from '@clayui/drop-down';
 import classNames from 'classnames';
 import React, {useState, useMemo} from 'react';
 
+import {updateLanguageId} from '../actions/index';
 import {
 	EDITABLE_FRAGMENT_ENTRY_PROCESSOR,
 	BACKGROUND_IMAGE_FRAGMENT_ENTRY_PROCESSOR
@@ -202,6 +203,11 @@ export default function Translation({
 								.languageLabel
 						}
 						onClick={() => {
+							dispatch(
+								updateLanguageId({
+									languageId: language.languageId
+								})
+							);
 							setActive(false);
 						}}
 						translatedValuesLength={languageValues.values.length}
