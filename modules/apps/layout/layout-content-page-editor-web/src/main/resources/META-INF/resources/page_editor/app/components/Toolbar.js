@@ -12,7 +12,7 @@
  * details.
  */
 
-import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
+import ClayButton from '@clayui/button';
 import {useIsMounted} from 'frontend-js-react-web';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -24,6 +24,7 @@ import * as Actions from '../actions/index';
 import {ConfigContext} from '../config/index';
 import {DispatchContext} from '../reducers/index';
 import {StoreContext} from '../store/index';
+import Translation from './Translation';
 import UnsafeHTML from './UnsafeHTML';
 
 const {discard, publish} = Actions;
@@ -38,7 +39,6 @@ function ToolbarBody() {
 	const load = useLoad();
 	const store = useContext(StoreContext);
 
-	const {languageIcon} = config.availableLanguages[config.defaultLanguageId];
 	const {singleSegmentsExperienceMode, toolbarPlugins} = config;
 
 	const loading = useRef(() => {
@@ -119,10 +119,13 @@ function ToolbarBody() {
 					}
 				)}
 				<li className="nav-item">
-					<ClayButtonWithIcon
-						displayType="secondary"
-						small
-						symbol={languageIcon}
+					<Translation
+						availableLanguages={config.availableLanguages}
+						defaultLanguageId={config.defaultLanguageId}
+						dispatch={dispatch}
+						fragmentEntryLinks={store.fragmentEntryLinks}
+						languageId={store.languageId}
+						segmentsExperienceId={store.segmentsExperienceId}
 					/>
 				</li>
 			</ul>

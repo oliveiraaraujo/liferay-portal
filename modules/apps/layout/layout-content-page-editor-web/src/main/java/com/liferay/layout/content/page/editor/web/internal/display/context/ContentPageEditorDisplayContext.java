@@ -217,6 +217,8 @@ public class ContentPageEditorDisplayContext {
 			HashMapBuilder.<String, Object>put(
 				"fragmentEntryLinks", editorSoyContext.get("fragmentEntryLinks")
 			).put(
+				"languageId", editorSoyContext.get("languageId")
+			).put(
 				"layoutData", editorSoyContext.get("layoutData")
 			).put(
 				"pageContents", editorSoyContext.get("pageContents")

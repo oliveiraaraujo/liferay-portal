@@ -12,7 +12,9 @@
  * details.
  */
 
-export const EDITABLE_FRAGMENT_ENTRY_PROCESSOR =
-	'com.liferay.fragment.entry.processor.editable.EditableFragmentEntryProcessor';
-export const BACKGROUND_IMAGE_FRAGMENT_ENTRY_PROCESSOR =
-	'com.liferay.fragment.entry.processor.background.image.BackgroundImageFragmentEntryProcessor';
+export const TRANSLATION_STATUS_TYPE = {
+	default: 'default',
+	translated: 'translated',
+	translating: 'translating',
+	untranslated: 'untranslated'
+};
