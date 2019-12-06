@@ -91,16 +91,16 @@ public class LayoutStructureUtil {
 		JSONObject itemsJSONObject = layoutStructureJSONObject.getJSONObject(
 			"items");
 
-		Map<String, LayoutStructure.Item> itemMap = new HashMap<>(
+		Map<String, LayoutStructure.Item> items = new HashMap<>(
 			itemsJSONObject.length());
 
 		for (String key : itemsJSONObject.keySet()) {
-			itemMap.put(
+			items.put(
 				key,
 				_toLayoutStructureItem(itemsJSONObject.getJSONObject(key)));
 		}
 
-		return new LayoutStructure(itemMap, layoutStructureRootItem);
+		return new LayoutStructure(items, layoutStructureRootItem);
 	}
 
 	private static LayoutStructure.Item _toLayoutStructureItem(
