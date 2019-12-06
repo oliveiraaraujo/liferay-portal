@@ -95,17 +95,13 @@ public class LayoutStructureUtil {
 			itemsJSONObject.length());
 
 		for (String key : itemsJSONObject.keySet()) {
-			items.put(
-				key,
-				_toLayoutStructureItem(itemsJSONObject.getJSONObject(key)));
+			items.put(key, _toItem(itemsJSONObject.getJSONObject(key)));
 		}
 
 		return new LayoutStructure(items, layoutStructureRootItem);
 	}
 
-	private static LayoutStructure.Item _toLayoutStructureItem(
-		JSONObject jsonObject) {
-
+	private static LayoutStructure.Item _toItem(JSONObject jsonObject) {
 		JSONObject configJSONObject = jsonObject.getJSONObject("config");
 		String itemId = jsonObject.getString("itemId");
 		String parentId = jsonObject.getString("parentId");
