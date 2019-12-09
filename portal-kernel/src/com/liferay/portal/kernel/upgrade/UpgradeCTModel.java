@@ -103,10 +103,23 @@ public class UpgradeCTModel extends UpgradeProcess {
 
 		DBType dbType = db.getDBType();
 
-		if ((dbType == DBType.SYBASE) || (dbType == DBType.SQLSERVER)) {
+		if ((dbType == DBType.SQLSERVER) || (dbType == DBType.SYBASE)) {
 			String primaryKeyConstraintName = null;
 
-			if (dbType == DBType.SYBASE) {
+			if (dbType == DBType.SQLSERVER) {
+				try (PreparedStatement ps = connection.prepareStatement(
+						StringBundler.concat(
+							"select name from sys.key_constraints where type ",
+							"= 'PK' and OBJECT_NAME(parent_object_id) = '",
+							normalizedTableName, "'"));
+					ResultSet rs = ps.executeQuery()) {
+
+					if (rs.next()) {
+						primaryKeyConstraintName = rs.getString("name");
+					}
+				}
+			}
+			else {
 				try (PreparedStatement ps = connection.prepareStatement(
 						"sp_helpconstraint " + normalizedTableName);
 					ResultSet rs = ps.executeQuery()) {
@@ -119,19 +132,6 @@ public class UpgradeCTModel extends UpgradeProcess {
 
 							break;
 						}
-					}
-				}
-			}
-			else {
-				try (PreparedStatement ps = connection.prepareStatement(
-						StringBundler.concat(
-							"select name from sys.key_constraints where type ",
-							"= 'PK' and OBJECT_NAME(parent_object_id) = '",
-							normalizedTableName, "'"));
-					ResultSet rs = ps.executeQuery()) {
-
-					if (rs.next()) {
-						primaryKeyConstraintName = rs.getString("name");
 					}
 				}
 			}
