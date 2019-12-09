@@ -1742,7 +1742,7 @@ public class GraphQLServletExtender {
 		@Override
 		public GraphQLFieldDefinition getField(
 				String parentName, Field field,
-				ProcessingElementsContainer container)
+				ProcessingElementsContainer processingElementsContainer)
 			throws GraphQLAnnotationsException {
 
 			GraphQLFieldDefinition.Builder builder =
@@ -1763,7 +1763,8 @@ public class GraphQLServletExtender {
 				).build());
 			builder.type(
 				(GraphQLOutputType)_defaultTypeFunction.buildType(
-					field.getType(), field.getAnnotatedType(), container));
+					field.getType(), field.getAnnotatedType(),
+					processingElementsContainer));
 
 			return builder.build();
 		}
