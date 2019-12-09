@@ -164,16 +164,16 @@ public class SLAProcessResultWorkflowMetricsIndexer
 
 				dynamicQuery.add(companyIdProperty.eq(companyId));
 
-				Property completedProperty = PropertyFactoryUtil.forName(
-					"completed");
-
-				dynamicQuery.add(completedProperty.eq(true));
-
 				Property kaleoDefinitionNameProperty =
 					PropertyFactoryUtil.forName("kaleoDefinitionName");
 
 				dynamicQuery.add(
 					kaleoDefinitionNameProperty.in(kaleoDefinitionNames));
+
+				Property completedProperty = PropertyFactoryUtil.forName(
+					"completed");
+
+				dynamicQuery.add(completedProperty.eq(true));
 			});
 		actionableDynamicQuery.setPerformActionMethod(
 			(KaleoInstance kaleoInstance) -> _reindexSLAProcessResults(
