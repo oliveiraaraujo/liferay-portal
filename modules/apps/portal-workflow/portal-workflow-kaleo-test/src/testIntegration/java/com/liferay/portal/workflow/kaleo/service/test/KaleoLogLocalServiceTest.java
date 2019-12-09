@@ -72,7 +72,6 @@ public class KaleoLogLocalServiceTest extends BaseKaleoLocalServiceTestCase {
 					_kaleoWorkflowModelConverter));
 
 		Assert.assertEquals(kaleoLogs.toString(), 2, kaleoLogs.size());
-
 		Assert.assertEquals(
 			Arrays.asList(endKaleoLog, exitKaleoLog), kaleoLogs);
 
@@ -89,7 +88,6 @@ public class KaleoLogLocalServiceTest extends BaseKaleoLocalServiceTestCase {
 				_kaleoWorkflowModelConverter));
 
 		Assert.assertEquals(kaleoLogs.toString(), 1, kaleoLogs.size());
-
 		Assert.assertEquals(exitKaleoLog, kaleoLogs.get(0));
 	}
 
@@ -109,7 +107,6 @@ public class KaleoLogLocalServiceTest extends BaseKaleoLocalServiceTestCase {
 			kaleoLogLocalService.getKaleoInstanceKaleoLogsCount(
 				TestPropsValues.getCompanyId(),
 				kaleoInstance.getKaleoInstanceId(), null));
-
 		Assert.assertEquals(
 			1,
 			kaleoLogLocalService.getKaleoInstanceKaleoLogsCount(
@@ -152,7 +149,6 @@ public class KaleoLogLocalServiceTest extends BaseKaleoLocalServiceTestCase {
 					_kaleoWorkflowModelConverter));
 
 		Assert.assertEquals(kaleoLogs.toString(), 2, kaleoLogs.size());
-
 		Assert.assertEquals(
 			Arrays.asList(completionKaleoLog, assignmentKaleoLog), kaleoLogs);
 
@@ -169,7 +165,6 @@ public class KaleoLogLocalServiceTest extends BaseKaleoLocalServiceTestCase {
 				_kaleoWorkflowModelConverter));
 
 		Assert.assertEquals(kaleoLogs.toString(), 1, kaleoLogs.size());
-
 		Assert.assertEquals(assignmentKaleoLog, kaleoLogs.get(0));
 	}
 
@@ -192,7 +187,6 @@ public class KaleoLogLocalServiceTest extends BaseKaleoLocalServiceTestCase {
 			kaleoLogLocalService.getKaleoTaskInstanceTokenKaleoLogsCount(
 				TestPropsValues.getCompanyId(),
 				kaleoTaskInstanceToken.getKaleoTaskInstanceTokenId(), null));
-
 		Assert.assertEquals(
 			1,
 			kaleoLogLocalService.getKaleoTaskInstanceTokenKaleoLogsCount(
