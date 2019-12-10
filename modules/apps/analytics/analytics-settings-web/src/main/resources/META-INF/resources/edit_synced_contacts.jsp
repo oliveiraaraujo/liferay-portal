@@ -21,11 +21,11 @@ AnalyticsConfiguration analyticsConfiguration = (AnalyticsConfiguration)request.
 
 boolean syncAllContacts = analyticsConfiguration.syncAllContacts();
 
-List<Organization> organizations = OrganizationServiceUtil.getOrganizations(themeDisplay.getCompanyId(), -1);
+List<Organization> organizations = OrganizationServiceUtil.getOrganizations(themeDisplay.getCompanyId(), OrganizationConstants.ANY_PARENT_ORGANIZATION_ID, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 Set<String> syncedOrganizationIds = SetUtil.fromArray(analyticsConfiguration.syncedOrganizationIds());
 
-List<UserGroup> userGroups = UserGroupServiceUtil.getUserGroups(themeDisplay.getCompanyId());
+List<UserGroup> userGroups = UserGroupServiceUtil.getUserGroups(themeDisplay.getCompanyId(), null, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 Set<String> syncedUserGroupIds = SetUtil.fromArray(analyticsConfiguration.syncedUserGroupIds());
 %>

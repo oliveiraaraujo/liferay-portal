@@ -29,6 +29,7 @@ page import="com.liferay.analytics.settings.web.internal.search.UserGroupChecker
 page import="com.liferay.portal.kernel.dao.orm.QueryUtil" %><%@
 page import="com.liferay.portal.kernel.model.Group" %><%@
 page import="com.liferay.portal.kernel.model.Organization" %><%@
+page import="com.liferay.portal.kernel.model.OrganizationConstants" %><%@
 page import="com.liferay.portal.kernel.model.UserGroup" %><%@
 page import="com.liferay.portal.kernel.service.GroupServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.OrganizationServiceUtil" %><%@
