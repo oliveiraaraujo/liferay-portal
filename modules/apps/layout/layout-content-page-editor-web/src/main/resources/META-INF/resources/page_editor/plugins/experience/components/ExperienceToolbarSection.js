@@ -28,6 +28,7 @@ export default function ExperienceToolbarSection({selectId}) {
 		availableSegmentsEntries,
 		classNameId,
 		classPK,
+		defaultSegmentsEntryId,
 		editSegmentsEntryURL
 	} = useContext(ConfigContext);
 
@@ -40,8 +41,9 @@ export default function ExperienceToolbarSection({selectId}) {
 	);
 	const segments = useMemo(() => Object.values(availableSegmentsEntries), [
 		availableSegmentsEntries
-	]);
+	]).filter(segment => segment.segmentsEntryId !== defaultSegmentsEntryId);
 
+	// TODO get endpoints URL from the display context
 	const APIService = useMemo(() => {
 		return API({
 			addSegmentsExperience: '/',

@@ -201,6 +201,9 @@ public class ContentPageEditorDisplayContext {
 			).put(
 				"defaultLanguageId", editorSoyContext.get("defaultLanguageId")
 			).put(
+				"defaultSegmentsEntryId",
+				editorSoyContext.get("defaultSegmentsEntryId")
+			).put(
 				"defaultSegmentsExperienceId",
 				editorSoyContext.get("defaultSegmentsExperienceId")
 			).put(
