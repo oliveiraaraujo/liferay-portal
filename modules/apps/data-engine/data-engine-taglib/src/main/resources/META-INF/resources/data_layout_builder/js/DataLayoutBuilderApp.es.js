@@ -13,20 +13,25 @@
  */
 
 import {ClayModalProvider} from '@clayui/modal';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {DragDropContext as dragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
-import {AppContextProvider} from './AppContext.es';
 import DataLayoutBuilderView from './DataLayoutBuilderView.es';
 
 const DataLayoutBuilderApp = dragDropContext(HTML5Backend)(({...props}) => {
+	const [loaded, setLoaded] = useState(false);
+
+	useEffect(() => {
+		Liferay.Loader.require(...props.fieldTypesModules.split(','), () =>
+			setLoaded(() => true)
+		);
+	});
+
 	return (
-		<AppContextProvider>
-			<ClayModalProvider>
-				<DataLayoutBuilderView {...props} />
-			</ClayModalProvider>
-		</AppContextProvider>
+		<ClayModalProvider>
+			{loaded && <DataLayoutBuilderView {...props} />}
+		</ClayModalProvider>
 	);
 });
 

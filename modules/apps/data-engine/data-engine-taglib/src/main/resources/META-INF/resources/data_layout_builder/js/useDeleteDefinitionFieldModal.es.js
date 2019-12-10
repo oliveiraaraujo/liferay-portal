@@ -18,7 +18,7 @@ import ClayPanel from '@clayui/panel';
 import React, {useContext} from 'react';
 
 import DataLayoutBuilderViewContext from './DataLayoutBuilderViewContext.es';
-import {getItem} from './react/utils/client.es';
+import {getItem} from './utils/client.es';
 
 export default callback => {
 	const [

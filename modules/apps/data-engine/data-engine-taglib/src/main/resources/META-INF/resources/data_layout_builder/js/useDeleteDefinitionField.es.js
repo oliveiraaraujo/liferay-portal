@@ -17,7 +17,7 @@ import {useContext} from 'react';
 
 import DataLayoutBuilderViewContext from './DataLayoutBuilderViewContext.es';
 import {deleteDefinitionField} from './actions.es';
-import {getIndexesFromFieldName} from './react/utils/dataLayoutVisitor.es';
+import {getIndexesFromFieldName} from './utils/dataLayoutVisitor.es';
 
 export default ({dataLayoutBuilder}) => {
 	const [{dataLayout}, dispatch] = useContext(DataLayoutBuilderViewContext);

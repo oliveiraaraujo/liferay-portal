@@ -26,7 +26,7 @@ import {
 	UPDATE_IDS,
 	UPDATE_PAGES
 } from './actions.es';
-import * as DataLayoutVisitor from './react/utils/dataLayoutVisitor.es';
+import * as DataLayoutVisitor from './utils/dataLayoutVisitor.es';
 
 const DataLayoutBuilderViewContext = createContext();
 

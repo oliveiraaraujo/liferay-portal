@@ -20,11 +20,11 @@ import DataLayoutBuilderViewContext, {
 	createReducer
 } from './DataLayoutBuilderViewContext.es';
 import {
-	UPDATE_DATA_DEFINITION,
+	// UPDATE_DATA_DEFINITION,
 	UPDATE_DATA_LAYOUT,
 	UPDATE_IDS
 } from './actions.es';
-import {getItem} from './react/utils/client.es';
+import {getItem} from './utils/client.es';
 
 export default ({
 	children,
@@ -57,16 +57,16 @@ export default ({
 		}
 	}, [dataLayoutId, dispatch]);
 
-	useEffect(() => {
-		getItem(
-			`/o/data-engine/v1.0/data-definitions/${dataDefinitionId}`
-		).then(dataDefinition =>
-			dispatch({
-				payload: {dataDefinition},
-				type: UPDATE_DATA_DEFINITION
-			})
-		);
-	}, [dataDefinitionId, dispatch]);
+	// useEffect(() => {
+	// 	getItem(
+	// 		`/o/data-engine/v1.0/data-definitions/${dataDefinitionId}`
+	// 	).then(dataDefinition =>
+	// 		dispatch({
+	// 			payload: {dataDefinition},
+	// 			type: UPDATE_DATA_DEFINITION
+	// 		})
+	// 	);
+	// }, [dataDefinitionId, dispatch]);
 
 	return (
 		<DataLayoutBuilderViewContext.Provider value={[state, dispatch]}>

@@ -14,10 +14,11 @@
 
 import {getIndexes} from 'dynamic-data-mapping-form-renderer/js/components/FormRenderer/FormSupport.es';
 import dom from 'metal-dom';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 
 import DataLayoutBuilderColumn from './DataLayoutBuilderColumn.es';
-import DragLayer from './react/drag-and-drop/DragLayer.es';
+import DataLayoutBuilderContext from './DataLayoutBuilderContext.es';
+import DragLayer from './drag-and-drop/DragLayer.es';
 
 const getColumns = () => [
 	...document.querySelectorAll('.col-empty .ddm-target')
@@ -30,8 +31,9 @@ const getColumnKey = node => {
 	return `column_${pageIndex}_${rowIndex}_${columnIndex}_${placeholder}`;
 };
 
-export default ({dataLayoutBuilder}) => {
+export default () => {
 	const [columns, setColumns] = useState(getColumns());
+	const [dataLayoutBuilder] = useContext(DataLayoutBuilderContext);
 
 	useEffect(() => {
 		const provider = dataLayoutBuilder.getProvider();

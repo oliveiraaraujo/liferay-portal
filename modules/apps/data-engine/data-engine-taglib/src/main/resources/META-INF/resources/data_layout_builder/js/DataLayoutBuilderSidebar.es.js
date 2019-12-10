@@ -26,14 +26,14 @@ import React, {
 import DataLayoutBuilderContext from './DataLayoutBuilderContext.es';
 import DataLayoutBuilderViewContext from './DataLayoutBuilderViewContext.es';
 import {dropLayoutBuilderField, EVALUATION_ERROR} from './actions.es';
-import Button from './react/components/button/Button.es';
-import FieldTypeList from './react/components/field-types/FieldTypeList.es';
-import Sidebar from './react/components/sidebar/Sidebar.es';
-import {useSidebarContent} from './react/hooks/index.es';
+import Button from './components/button/Button.es';
+import FieldTypeList from './components/field-types/FieldTypeList.es';
+import Sidebar from './components/sidebar/Sidebar.es';
+import {useSidebarContent} from './hooks/index.es';
 import renderSettingsForm, {
 	getFilteredSettingsContext
 } from './renderSettingsForm.es';
-import isClickOutside from './react/utils/clickOutside.es';
+import isClickOutside from './utils/clickOutside.es';
 
 const DefaultSidebarBody = ({keywords}) => {
 	const [dataLayoutBuilder] = useContext(DataLayoutBuilderContext);
@@ -221,17 +221,13 @@ const SettingsSidebarHeader = () => {
 	);
 };
 
-export default ({dataLayoutBuilderElementId}) => {
+export default () => {
 	const [dataLayoutBuilder] = useContext(DataLayoutBuilderContext);
 	const [{focusedField}] = useContext(DataLayoutBuilderViewContext);
 	const [keywords, setKeywords] = useState('');
 	const [sidebarClosed, setSidebarClosed] = useState(false);
 
-	const builderElementRef = useRef(
-		document.querySelector(`#${dataLayoutBuilderElementId}`)
-	);
-
-	useSidebarContent(builderElementRef, sidebarClosed);
+	useSidebarContent(dataLayoutBuilder.ContainerRef, sidebarClosed);
 
 	const sidebarRef = useRef();
 

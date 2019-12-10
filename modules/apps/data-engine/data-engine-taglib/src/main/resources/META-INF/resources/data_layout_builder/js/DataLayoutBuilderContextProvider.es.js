@@ -24,8 +24,8 @@ import {
 } from './actions.es';
 import useDeleteDefinitionField from './useDeleteDefinitionField.es';
 import useDeleteDefinitionFieldModal from './useDeleteDefinitionFieldModal.es';
-import {getFieldNameFromIndexes} from './react/utils/dataLayoutVisitor.es';
-import generateDataDefinitionFieldName from './react/utils/generateDataDefinitionFieldName.es';
+import {getFieldNameFromIndexes} from './utils/dataLayoutVisitor.es';
+import generateDataDefinitionFieldName from './utils/generateDataDefinitionFieldName.es';
 
 export default ({children, dataLayoutBuilder}) => {
 	const [{dataDefinition, dataLayout}, dispatch] = useContext(

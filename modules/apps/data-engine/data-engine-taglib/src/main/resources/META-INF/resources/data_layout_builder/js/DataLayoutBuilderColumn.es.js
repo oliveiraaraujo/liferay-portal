@@ -19,7 +19,7 @@ import {useDrop} from 'react-dnd';
 
 import DataLayoutBuilderContext from './DataLayoutBuilderContext.es';
 import {dropLayoutBuilderField} from './actions.es';
-import {DRAG_FIELD_TYPE} from './react/utils/dragTypes.es';
+import {DRAG_FIELD_TYPE} from './utils/dragTypes.es';
 
 const replaceColumn = node => {
 	if (node.parentNode) {

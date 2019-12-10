@@ -14,6 +14,7 @@
 
 import React, {useState} from 'react';
 
+import DataLayoutBuilder from './DataLayoutBuilder.es';
 import DataLayoutBuilderDragAndDrop from './DataLayoutBuilderDragAndDrop.es';
 import DataLayoutBuilderSidebar from './DataLayoutBuilderSidebar.es';
 import DataLayoutBuilderViewContextProvider from './DataLayoutBuilderViewContextProvider.es';
@@ -24,43 +25,32 @@ const parseProps = ({dataDefinitionId, dataLayoutId, ...props}) => ({
 	dataLayoutId: Number(dataLayoutId)
 });
 
-const DataLayoutBuilderView = props => {
+export default ({...props}) => {
 	const {
 		dataDefinitionId,
-		dataLayoutBuilder,
 		dataLayoutBuilderElementId,
 		dataLayoutId
 	} = parseProps(props);
 
+	const [dataLayoutBuilder, setDataLayoutBuilder] = useState(null);
+	const onLoad = instance => setDataLayoutBuilder(instance);
+
 	return (
-		<DataLayoutBuilderViewContextProvider
-			dataDefinitionId={dataDefinitionId}
-			dataLayoutBuilder={dataLayoutBuilder}
-			dataLayoutId={dataLayoutId}
-		>
-			<DataLayoutBuilderSidebar
-				dataLayoutBuilder={dataLayoutBuilder}
-				dataLayoutBuilderElementId={dataLayoutBuilderElementId}
-			/>
+		<>
+			<DataLayoutBuilder onLoad={onLoad} {...props}></DataLayoutBuilder>
 
-			<DataLayoutBuilderDragAndDrop
-				dataLayoutBuilder={dataLayoutBuilder}
-			/>
-		</DataLayoutBuilderViewContextProvider>
+			{dataLayoutBuilder && (
+				<DataLayoutBuilderViewContextProvider
+					dataDefinitionId={dataDefinitionId}
+					dataLayoutBuilder={dataLayoutBuilder}
+					dataLayoutBuilderElementId={dataLayoutBuilderElementId}
+					dataLayoutId={dataLayoutId}
+				>
+					<DataLayoutBuilderSidebar />
+
+					<DataLayoutBuilderDragAndDrop />
+				</DataLayoutBuilderViewContextProvider>
+			)}
+		</>
 	);
-};
-
-export default ({dataLayoutBuilderId, ...props}) => {
-	const [dataLayoutBuilder, setDataLayoutBuilder] = useState();
-
-	if (!dataLayoutBuilder) {
-		Liferay.componentReady(dataLayoutBuilderId).then(setDataLayoutBuilder);
-	}
-
-	return dataLayoutBuilder ? (
-		<DataLayoutBuilderView
-			dataLayoutBuilder={dataLayoutBuilder}
-			{...props}
-		/>
-	) : null;
 };

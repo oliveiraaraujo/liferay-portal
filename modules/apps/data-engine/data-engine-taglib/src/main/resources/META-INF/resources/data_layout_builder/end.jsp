@@ -23,43 +23,16 @@
 <%
 Map<String, Object> data = new HashMap<>();
 
+data.put("context", dataLayoutJSONObject);
 data.put("dataLayoutBuilderElementId", renderResponse.getNamespace() + "-data-layout-builder");
 data.put("dataLayoutBuilderId", componentId);
 data.put("dataLayoutId", dataLayoutId);
+data.put("fieldTypes", fieldTypesJSONArray);
+data.put("fieldTypesModules", fieldTypesModules);
+data.put("spritemap", themeDisplay.getPathThemeImages() + "/lexicon/icons.svg");
 %>
 
 <react:component
 	data="<%= data %>"
 	module="data_layout_builder/js/DataLayoutBuilderApp.es"
 />
-
-<aui:script require='<%= fieldTypesModules + ", " + dataLayoutBuilderModule + " as DataLayoutBuilder" %>'>
-	Liferay.component(
-		'<%= componentId %>',
-		new DataLayoutBuilder.default(
-			{
-				componentId: '<%= componentId %>',
-				context: <%= dataLayoutJSONObject %>,
-				dataDefinitionInputId: '<%= namespace + dataDefinitionInputId %>',
-				dataLayoutInputId: '<%= namespace + dataLayoutInputId %>',
-				editingLanguageId: '<%= themeDisplay.getLanguageId() %>',
-				fieldTypes: <%= fieldTypesJSONArray %>,
-				localizable: <%= localizable %>,
-				portletNamespace: '<%= namespace %>',
-				spritemap:
-					'<%= themeDisplay.getPathThemeImages() %>/lexicon/icons.svg'
-			},
-			'#<%= componentId %>container'
-		)
-	);
-
-	var clearPortletHandlers = function(event) {
-		if (event.portletId === '<%= portletDisplay.getRootPortletId() %>') {
-			Liferay.destroyComponent('<%= componentId %>');
-
-			Liferay.detach('destroyPortlet', clearPortletHandlers);
-		}
-	};
-
-	Liferay.on('destroyPortlet', clearPortletHandlers);
-</aui:script>
