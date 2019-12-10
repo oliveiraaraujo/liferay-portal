@@ -17,17 +17,17 @@
 <%@ include file="/init.jsp" %>
 
 <%
-List<UserGroup> userGroups = UserGroupServiceUtil.getUserGroups(themeDisplay.getCompanyId());
-
-List<Organization> organizations = OrganizationServiceUtil.getOrganizations(themeDisplay.getCompanyId(), -1);
-
 AnalyticsConfiguration analyticsConfiguration = (AnalyticsConfiguration)request.getAttribute(AnalyticsSettingsWebKeys.ANALYTICS_CONFIGURATION);
 
 boolean syncAllContacts = analyticsConfiguration.syncAllContacts();
 
-Set<String> syncedUserGroupIds = SetUtil.fromArray(analyticsConfiguration.syncedUserGroupIds());
+List<Organization> organizations = OrganizationServiceUtil.getOrganizations(themeDisplay.getCompanyId(), -1);
 
 Set<String> syncedOrganizationIds = SetUtil.fromArray(analyticsConfiguration.syncedOrganizationIds());
+
+List<UserGroup> userGroups = UserGroupServiceUtil.getUserGroups(themeDisplay.getCompanyId());
+
+Set<String> syncedUserGroupIds = SetUtil.fromArray(analyticsConfiguration.syncedUserGroupIds());
 %>
 
 <portlet:actionURL name="/analytics/edit_synced_contacts" var="editSyncedContactsURL" />
