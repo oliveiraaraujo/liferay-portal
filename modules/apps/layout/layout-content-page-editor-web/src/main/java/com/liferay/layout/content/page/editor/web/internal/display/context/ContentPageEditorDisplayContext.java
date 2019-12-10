@@ -192,13 +192,25 @@ public class ContentPageEditorDisplayContext {
 			).put(
 				"availableLanguages", editorSoyContext.get("availableLanguages")
 			).put(
+				"availableSegmentsEntries",
+				editorSoyContext.get("availableSegmentsEntries")
+			).put(
 				"classNameId", editorSoyContext.get("classNameId")
 			).put(
 				"classPK", editorSoyContext.get("classPK")
 			).put(
 				"defaultLanguageId", editorSoyContext.get("defaultLanguageId")
 			).put(
+				"defaultSegmentsExperienceId",
+				editorSoyContext.get("defaultSegmentsExperienceId")
+			).put(
+				"editSegmentsEntryURL",
+				editorSoyContext.get("editSegmentsEntryURL")
+			).put(
 				"fragments", editorSoyContext.get("elements")
+			).put(
+				"hasEditSegmentsEntryPermission",
+				editorSoyContext.get("hasEditSegmentsEntryPermission")
 			).put(
 				"hasUpdatePermissions",
 				editorSoyContext.get("hasUpdatePermissions")
@@ -215,6 +227,9 @@ public class ContentPageEditorDisplayContext {
 		).put(
 			"state",
 			HashMapBuilder.<String, Object>put(
+				"availableSegmentsExperiences",
+				editorSoyContext.get("availableSegmentsExperiences")
+			).put(
 				"fragmentEntryLinks", editorSoyContext.get("fragmentEntryLinks")
 			).put(
 				"languageId", editorSoyContext.get("languageId")
