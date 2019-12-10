@@ -1444,6 +1444,8 @@ definition {
 			optionValue = "Option2Name",
 			rowNumber = "2");
 
+		Pause(locator1 = "3000");
+
 		Form.closeSidebar();
 
 		Form.gotoAddField(fieldType = "Date");
