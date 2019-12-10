@@ -12,26 +12,65 @@
  * details.
  */
 
-import {ClaySelectWithOption} from '@clayui/form';
-import React from 'react';
+import React, {useContext, useMemo} from 'react';
+
+import {ConfigContext} from '../../../app/config/index';
+import {StoreContext} from '../../../app/store/index';
+import API, {APIContext} from '../API';
+import ExperienceSelector from './ExperienceSelector';
 
 // TODO: show how to colocate CSS with plugins (may use loaders)
 export default function ExperienceToolbarSection({selectId}) {
+	const {availableSegmentsExperiences, segmentsExperienceId} = useContext(
+		StoreContext
+	);
+	const {
+		availableSegmentsEntries,
+		classNameId,
+		classPK,
+		editSegmentsEntryURL
+	} = useContext(ConfigContext);
+
+	const experiences = useMemo(
+		() =>
+			Object.values(availableSegmentsExperiences).sort(
+				(a, b) => b.priority - a.priority
+			),
+		[availableSegmentsExperiences]
+	);
+	const segments = useMemo(() => Object.values(availableSegmentsEntries), [
+		availableSegmentsEntries
+	]);
+
+	const APIService = useMemo(() => {
+		return API({
+			addSegmentsExperience: '/',
+			classNameId,
+			classPK,
+			editSegmentsExperiencePriorityURL: '/',
+			editSegmentsExperienceURL: '/',
+			removeSegmentsExperienceURL: '/'
+		});
+	}, [classNameId, classPK]);
+
+	const selectedExperience =
+		availableSegmentsExperiences[segmentsExperienceId];
+
 	return (
-		<div className="mr-2 page-editor-toolbar-experience">
-			<label className="mr-2" htmlFor={selectId}>
-				Experience
-			</label>
-			<ClaySelectWithOption
-				disabled={false}
-				id={selectId}
-				options={[
-					{
-						label: 'Default',
-						value: '1'
-					}
-				]}
-			/>
-		</div>
+		<APIContext.Provider value={APIService}>
+			<div className="mr-2 page-editor-toolbar-experience">
+				<label className="mr-2" htmlFor={selectId}>
+					{Liferay.Language.get('experience')}
+				</label>
+
+				<ExperienceSelector
+					editSegmentsEntryURL={editSegmentsEntryURL}
+					experiences={experiences}
+					segments={segments}
+					selectId={selectId}
+					selectedExperience={selectedExperience}
+				/>
+			</div>
+		</APIContext.Provider>
 	);
 }
