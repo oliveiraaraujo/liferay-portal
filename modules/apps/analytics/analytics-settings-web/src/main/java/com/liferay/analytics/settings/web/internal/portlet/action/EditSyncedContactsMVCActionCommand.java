@@ -17,7 +17,6 @@ package com.liferay.analytics.settings.web.internal.portlet.action;
 import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Dictionary;
 
@@ -43,18 +42,12 @@ public class EditSyncedContactsMVCActionCommand
 		ActionRequest actionRequest,
 		Dictionary<String, Object> configurationProperties) {
 
-		String syncAllContactsString = ParamUtil.getString(
+		boolean syncAllContacts = ParamUtil.getBoolean(
 			actionRequest, "syncAllContacts");
-		String[] syncedUserGroupIds = ParamUtil.getStringValues(
-			actionRequest, "userGroupIds");
 		String[] syncedOrganizationIds = ParamUtil.getStringValues(
-			actionRequest, "organizationIds");
-
-		boolean syncAllContacts = false;
-
-		if (Validator.isNotNull(syncAllContactsString)) {
-			syncAllContacts = true;
-		}
+			actionRequest, "syncedOrganizationIds");
+		String[] syncedUserGroupIds = ParamUtil.getStringValues(
+			actionRequest, "syncedUserGroupIds");
 
 		configurationProperties.put(
 			"syncAllContacts", String.valueOf(syncAllContacts));

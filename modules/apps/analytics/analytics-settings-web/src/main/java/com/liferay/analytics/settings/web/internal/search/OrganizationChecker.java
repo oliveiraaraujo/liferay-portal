@@ -29,7 +29,7 @@ public class OrganizationChecker extends EmptyOnClickRowChecker {
 	public OrganizationChecker(RenderResponse renderResponse, Set<String> ids) {
 		super(renderResponse);
 
-		setRowIds("organizationIds");
+		setRowIds("syncedOrganizationIds");
 
 		_ids = ids;
 	}

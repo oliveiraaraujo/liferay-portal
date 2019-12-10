@@ -29,7 +29,7 @@ public class UserGroupChecker extends EmptyOnClickRowChecker {
 	public UserGroupChecker(RenderResponse renderResponse, Set<String> ids) {
 		super(renderResponse);
 
-		setRowIds("userGroupIds");
+		setRowIds("syncedUserGroupIds");
 
 		_ids = ids;
 	}
