@@ -41,7 +41,7 @@ const NameButton = ({id, name}) => {
 			)}
 			displayType="unstyled"
 		>
-			{name}
+			{name || Liferay.Language.get('element')}
 		</ClayButton>
 	);
 };
