@@ -99,7 +99,7 @@ List<SiteNavigationMenu> autoSiteNavigationMenus = layoutsAdminDisplayContext.ge
 			/>
 
 			<clay:button
-				elementClasses="btn-secondary"
+				elementClasses="btn-cancel btn-secondary"
 				label='<%= LanguageUtil.get(resourceBundle, "cancel") %>'
 			/>
 		</liferay-frontend:edit-form-footer>
