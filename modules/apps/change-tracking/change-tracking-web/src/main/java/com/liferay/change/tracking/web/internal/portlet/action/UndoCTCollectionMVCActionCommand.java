@@ -56,7 +56,8 @@ public class UndoCTCollectionMVCActionCommand extends BaseMVCActionCommand {
 
 		long ctCollectionId = ParamUtil.getLong(
 			actionRequest, "ctCollectionId");
-		String name = ParamUtil.getString(actionRequest, "name", null);
+
+		String name = ParamUtil.getString(actionRequest, "name");
 		String description = ParamUtil.getString(actionRequest, "description");
 
 		if (Validator.isNull(name)) {
