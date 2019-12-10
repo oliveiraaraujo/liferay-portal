@@ -93,11 +93,11 @@ public class OAuth2ApplicationScopeAliasesLocalServiceImpl
 			if (oAuth2AuthorizationPrimaryKeys.length > 0) {
 				throw new PortalException(
 					StringBundler.concat(
-						"Cannot delete OAuth2ApplicationScopeAliases with ID ",
-						oAuth2ApplicationScopeAliasesId,
-						"because because there exists at least one ",
-						"OAuth2Authorization which references its ",
-						"OAuth2ScopeGrants"));
+						"Unable to delete required OAuth2 application scope ",
+						"aliases ", oAuth2ApplicationScopeAliasesId,
+						"because there exists at least one OAuth2 ",
+						"authorization which references its OAuth2 scope ",
+						"grants"));
 			}
 		}
 
