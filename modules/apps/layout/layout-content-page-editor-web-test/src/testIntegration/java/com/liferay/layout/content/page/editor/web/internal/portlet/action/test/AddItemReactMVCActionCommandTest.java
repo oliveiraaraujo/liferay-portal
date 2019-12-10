@@ -109,7 +109,6 @@ public class AddItemReactMVCActionCommandTest {
 			"config",
 			String.valueOf(
 				JSONUtil.put("someConfig", RandomTestUtil.randomString())));
-
 		actionRequest.addParameter("itemId", newItemId);
 		actionRequest.addParameter("parentId", "root");
 		actionRequest.addParameter("position", "0");
