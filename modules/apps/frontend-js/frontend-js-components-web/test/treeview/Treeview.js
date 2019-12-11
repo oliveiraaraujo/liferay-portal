@@ -44,11 +44,51 @@ const nodes = [
 	{
 		id: '2',
 		name: 'Victor'
+	},
+	{
+		children: [
+			{
+				id: '3.1',
+				name: 'Straight line'
+			}
+		],
+		expanded: true,
+		id: '3',
+		name: 'Juan'
+	},
+	{
+		children: [
+			{
+				expanded: true,
+				id: '4.1',
+				name: 'Victor Son'
+			}
+		],
+		id: '4',
+		name: 'Victor Father'
 	}
 ];
 
 describe('Treeview', () => {
 	beforeEach(cleanup);
+
+	it('expands a node with corresponding property value', () => {
+		const {getByLabelText} = render(<Treeview nodes={nodes} />);
+
+		expect(
+			getByLabelText('Collapse Juan').getAttribute('aria-expanded')
+		).toBe('true');
+	});
+
+	it('expands a node with one of the children expanded', () => {
+		const {getByLabelText} = render(<Treeview nodes={nodes} />);
+
+		expect(
+			getByLabelText('Collapse Victor Father').getAttribute(
+				'aria-expanded'
+			)
+		).toBe('true');
+	});
 
 	it('renders empty', () => {
 		const {container} = render(<Treeview nodes={[]} />);
