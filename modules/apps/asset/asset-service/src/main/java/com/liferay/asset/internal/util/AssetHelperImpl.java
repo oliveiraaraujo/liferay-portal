@@ -315,7 +315,9 @@ public class AssetHelperImpl implements AssetHelper {
 				AssetRendererFactoryRegistryUtil.
 					getAssetRendererFactoryByClassName(className);
 
-			if (Validator.isNull(assetRendererFactory.getPortletId())) {
+			if ((assetRendererFactory == null) ||
+				Validator.isNull(assetRendererFactory.getPortletId())) {
+
 				continue;
 			}
 
