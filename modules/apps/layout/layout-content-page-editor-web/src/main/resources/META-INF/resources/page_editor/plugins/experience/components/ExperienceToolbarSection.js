@@ -69,8 +69,8 @@ export default function ExperienceToolbarSection({selectId}) {
 					editSegmentsEntryURL={editSegmentsEntryURL}
 					experiences={experiences}
 					segments={segments}
-					selectId={selectId}
 					selectedExperience={selectedExperience}
+					selectId={selectId}
 				/>
 			</div>
 		</APIContext.Provider>

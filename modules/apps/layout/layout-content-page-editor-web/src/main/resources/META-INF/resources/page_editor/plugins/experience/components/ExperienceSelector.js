@@ -122,7 +122,7 @@ const ExperienceSelector = ({
 		segmentsExperienceId
 	}) => {
 		if (segmentsExperienceId) {
-			updateExperience({
+			return updateExperience({
 				active: true,
 				name,
 				segmentsEntryId,
@@ -164,7 +164,7 @@ const ExperienceSelector = ({
 					}
 				});
 		} else {
-			createExperience({
+			return createExperience({
 				name,
 				segmentsEntryId
 			})
@@ -222,7 +222,9 @@ const ExperienceSelector = ({
 					type: DELETE_SEGMENTS_EXPERIENCE
 				})
 			)
-			.catch(() => {});
+			.catch(() => {
+				// TODO handle error
+			});
 	};
 
 	const decreasePriority = (id, priority) => {
@@ -242,7 +244,9 @@ const ExperienceSelector = ({
 					type: DEPRIORITIZE_SEGMENTS_EXPERIENCE_PRIORITY
 				});
 			})
-			.catch(() => {});
+			.catch(() => {
+				// TODO handle error
+			});
 	};
 	const increasePriority = (id, priority) => {
 		// TODO define new priority
@@ -261,7 +265,9 @@ const ExperienceSelector = ({
 					type: PRIORITIZE_SEGMENTS_EXPERIENCE_PRIORITY
 				});
 			})
-			.catch(() => {});
+			.catch(() => {
+				// TODO handle error
+			});
 	};
 
 	return (

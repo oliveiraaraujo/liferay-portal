@@ -18,10 +18,12 @@ import ClayForm, {ClayInput, ClaySelect} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import ClayModal from '@clayui/modal';
 import classNames from 'classnames';
+import {useIsMounted} from 'frontend-js-react-web';
 import PropTypes from 'prop-types';
 import React, {useContext, useState} from 'react';
 
 import {ConfigContext} from '../../../app/config/index';
+import Button from '../../../common/components/Button';
 
 const ExperienceModal = ({
 	errorMessage,
@@ -43,9 +45,12 @@ const ExperienceModal = ({
 			: segments[0] && segments[0].segmentsEntryId
 	);
 
+	const isMounted = useIsMounted();
+
 	const [name, setName] = useState(initialName);
 	const [requiredNameError, setRequiredNameError] = useState(false);
 	const [requiredSegmentError, setRequiredSegmentError] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const handleFormSubmit = event => {
 		event.preventDefault();
@@ -57,10 +62,16 @@ const ExperienceModal = ({
 			if (!validName) setRequiredNameError(true);
 			if (!validSegmentId) setRequiredSegmentError(true);
 		} else {
+			setLoading(true);
+
 			onSubmit({
 				name,
 				segmentsEntryId: selectedSegmentId,
 				segmentsExperienceId: experienceId
+			}).finally(() => {
+				if (isMounted()) {
+					setLoading(false);
+				}
 			});
 		}
 	};
@@ -204,14 +215,15 @@ const ExperienceModal = ({
 							</ClaySelect>
 
 							{hasSegmentsPermission === true && (
-								<ClayButton
+								<Button
 									className="flex-shrink-0 ml-2"
+									disabled={loading}
 									displayType="secondary"
 									onClick={handleNewSegmentClick}
 									type="button"
 								>
 									{Liferay.Language.get('new-segment')}
-								</ClayButton>
+								</Button>
 							)}
 						</div>
 
@@ -230,16 +242,22 @@ const ExperienceModal = ({
 			<ClayModal.Footer
 				last={
 					<ClayButton.Group spaced>
-						<ClayButton displayType="secondary" onClick={onClose}>
+						<ClayButton
+							disabled={loading}
+							displayType="secondary"
+							onClick={onClose}
+						>
 							{Liferay.Language.get('cancel')}
 						</ClayButton>
 
-						<ClayButton
+						<Button
+							disabled={loading}
 							displayType="primary"
+							loading={loading}
 							onClick={handleFormSubmit}
 						>
 							{Liferay.Language.get('save')}
-						</ClayButton>
+						</Button>
 					</ClayButton.Group>
 				}
 			></ClayModal.Footer>
