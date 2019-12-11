@@ -96,9 +96,11 @@ function init({
 		return visit(
 			node,
 			node => {
-				const expanded = node.children.some(child => {
-					return child.expanded || child.selected;
-				});
+				const expanded =
+					node.expanded ||
+					node.children.some(child => {
+						return child.expanded || child.selected;
+					});
 
 				const selected = selectedNodeIds.has(node.id);
 
