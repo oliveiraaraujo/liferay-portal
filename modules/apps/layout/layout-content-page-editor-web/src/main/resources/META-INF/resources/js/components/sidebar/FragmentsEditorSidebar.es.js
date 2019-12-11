@@ -56,10 +56,12 @@ class FragmentsEditorSidebar extends Component {
 	 * @review
 	 */
 	disposed() {
-		this._toggleHandle.removeListener(
-			'openStart.lexicon.sidenav',
-			this._handleHide
-		);
+		if (this._toggleHandle) {
+			this._toggleHandle.removeListener(
+				'openStart.lexicon.sidenav',
+				this._handleHide
+			);
+		}
 	}
 
 	/**
