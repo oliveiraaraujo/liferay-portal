@@ -157,6 +157,7 @@ describe('Treeview', () => {
 
 		const {getByText} = render(
 			<Treeview
+				initialSelectedNodeIds={[]}
 				NodeComponent={({node}) => {
 					const {dispatch} = useContext(TreeviewContext);
 
@@ -177,7 +178,6 @@ describe('Treeview', () => {
 						</button>
 					);
 				}}
-				initialSelectedNodeIds={[]}
 				nodes={[node]}
 			/>
 		);
