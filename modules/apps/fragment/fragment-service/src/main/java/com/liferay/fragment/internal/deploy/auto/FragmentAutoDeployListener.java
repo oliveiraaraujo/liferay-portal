@@ -73,6 +73,11 @@ public class FragmentAutoDeployListener implements AutoDeployListener {
 		try {
 			_deploy(autoDeploymentContext.getFile());
 		}
+		catch (AutoDeployException ade) {
+			_log.error(ade, ade);
+
+			throw ade;
+		}
 		catch (Exception e) {
 			_log.error(e, e);
 		}
