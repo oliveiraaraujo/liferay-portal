@@ -20,8 +20,6 @@ import {Link as InternalLink, withRouter} from 'react-router-dom';
 
 import {AppContext} from '../../AppContext.es';
 
-const CONTROL_MENU_CONTENT = '.control-menu-nav-item-content';
-
 const ExternalLink = ({children, to, ...props}) => {
 	return (
 		<a href={to} {...props}>
@@ -52,14 +50,16 @@ const setDocumentTitle = title => {
 };
 
 export const InlineControlMenu = ({backURL, title, tooltip, url}) => {
-	const {appDeploymentType} = useContext(AppContext);
+	const {appDeploymentType, controlMenuElementId} = useContext(AppContext);
 
 	backURL = resolveBackURL(backURL, url);
 
 	const Link =
 		backURL && backURL.startsWith('http') ? ExternalLink : InternalLink;
 
-	return (
+	const controlMenuElement = document.getElementById(controlMenuElementId);
+
+	const ControlMenu = (
 		<div
 			className={classNames(
 				'app-builder-control-menu',
@@ -100,6 +100,12 @@ export const InlineControlMenu = ({backURL, title, tooltip, url}) => {
 			)}
 		</div>
 	);
+
+	if (controlMenuElement) {
+		return createPortal(ControlMenu, controlMenuElement);
+	} else {
+		return ControlMenu;
+	}
 };
 
 export const PortalControlMenu = ({backURL, title, tooltip, url}) => {
@@ -167,9 +173,7 @@ export const ControlMenuBase = props => {
 	) {
 		return <InlineControlMenu {...props} />;
 	} else {
-		const contentNode = document.querySelector(CONTROL_MENU_CONTENT);
-
-		return <PortalControlMenu contentNode={contentNode} {...props} />;
+		return <PortalControlMenu {...props} />;
 	}
 };
 

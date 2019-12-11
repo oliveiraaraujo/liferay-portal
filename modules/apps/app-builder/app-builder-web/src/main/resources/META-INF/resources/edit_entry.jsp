@@ -22,6 +22,8 @@ AppBuilderApp appBuilderApp = (AppBuilderApp)request.getAttribute(AppBuilderWebK
 
 <div class="app-builder-root">
 	<div class="container edit-entry">
+		<div id="<%= renderResponse.getNamespace() %>-control-menu"></div>
+
 		<div class="justify-content-center row">
 			<div class="col-lg-12">
 				<div class="card card-root mb-0 mt-4 shadowless-card">
@@ -43,6 +45,8 @@ AppBuilderApp appBuilderApp = (AppBuilderApp)request.getAttribute(AppBuilderWebK
 									"appId", appBuilderApp.getAppBuilderAppId()
 								).put(
 									"basePortletURL", String.valueOf(renderResponse.createRenderURL())
+								).put(
+									"controlMenuElementId", renderResponse.getNamespace() + "-control-menu"
 								).put(
 									"dataDefinitionId", appBuilderApp.getDdmStructureId()
 								).put(
