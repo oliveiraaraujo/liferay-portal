@@ -62,14 +62,7 @@ public class DDMStructureModelDocumentContributor
 
 			document.addKeyword(Field.STATUS, structureVersion.getStatus());
 			document.addKeyword(Field.VERSION, structureVersion.getVersion());
-		}
-		catch (PortalException pe) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(pe, pe);
-			}
-		}
 
-		try {
 			document.addKeyword(
 				"resourcePermissionName",
 				_ddmPermissionSupport.getStructureModelResourceName(
