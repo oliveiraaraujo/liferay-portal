@@ -68,6 +68,9 @@ public class DDMStructureModelDocumentContributor
 			}
 		}
 
+		document.addKeyword(
+			"resourceClassNameId", ddmStructure.getClassNameId());
+
 		document.addKeyword("structureKey", ddmStructure.getStructureKey());
 		document.addKeyword("storageType", ddmStructure.getStorageType());
 		document.addKeyword("type", ddmStructure.getType());
