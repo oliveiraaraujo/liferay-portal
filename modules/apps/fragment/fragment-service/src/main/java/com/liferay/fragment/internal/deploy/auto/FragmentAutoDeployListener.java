@@ -66,6 +66,12 @@ public class FragmentAutoDeployListener implements AutoDeployListener {
 
 		File file = autoDeploymentContext.getFile();
 
+		PermissionChecker currentPermissionChecker =
+			PermissionThreadLocal.getPermissionChecker();
+		String currentName = PrincipalThreadLocal.getName();
+		ServiceContext currentServiceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
 		try {
 			JSONObject deployJSONObject = _getDeployJSONObject(file);
 
@@ -115,6 +121,12 @@ public class FragmentAutoDeployListener implements AutoDeployListener {
 		}
 		catch (Exception e) {
 			_log.error(e, e);
+		}
+		finally {
+			PermissionThreadLocal.setPermissionChecker(
+				currentPermissionChecker);
+			PrincipalThreadLocal.setName(currentName);
+			ServiceContextThreadLocal.pushServiceContext(currentServiceContext);
 		}
 
 		return AutoDeployer.CODE_DEFAULT;
