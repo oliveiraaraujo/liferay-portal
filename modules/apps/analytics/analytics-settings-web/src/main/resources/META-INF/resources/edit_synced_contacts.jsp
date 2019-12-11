@@ -21,11 +21,7 @@ AnalyticsConfiguration analyticsConfiguration = (AnalyticsConfiguration)request.
 
 boolean syncAllContacts = analyticsConfiguration.syncAllContacts();
 
-List<Organization> organizations = OrganizationServiceUtil.getOrganizations(themeDisplay.getCompanyId(), OrganizationConstants.ANY_PARENT_ORGANIZATION_ID, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
 Set<String> syncedOrganizationIds = SetUtil.fromArray(analyticsConfiguration.syncedOrganizationIds());
-
-List<UserGroup> userGroups = UserGroupServiceUtil.getUserGroups(themeDisplay.getCompanyId(), null, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 Set<String> syncedUserGroupIds = SetUtil.fromArray(analyticsConfiguration.syncedUserGroupIds());
 %>
@@ -119,11 +115,12 @@ Set<String> syncedUserGroupIds = SetUtil.fromArray(analyticsConfiguration.synced
 		<liferay-ui:search-container
 			curParam="inheritedUserGroupsCur"
 			headerNames="name"
+			iteratorURL="<%= currentURLObj %>"
 			rowChecker="<%= new UserGroupChecker(renderResponse, syncedUserGroupIds) %>"
-			total="<%= userGroups.size() %>"
+			total="<%= UserGroupServiceUtil.getUserGroupsCount(themeDisplay.getCompanyId(), null) %>"
 		>
 			<liferay-ui:search-container-results
-				results="<%= userGroups %>"
+				results="<%= UserGroupServiceUtil.getUserGroups(themeDisplay.getCompanyId(), null, searchContainer.getStart(), searchContainer.getEnd()) %>"
 			/>
 
 			<liferay-ui:search-container-row
@@ -148,11 +145,12 @@ Set<String> syncedUserGroupIds = SetUtil.fromArray(analyticsConfiguration.synced
 		<liferay-ui:search-container
 			curParam="inheritedOrganizationsCur"
 			headerNames="name"
+			iteratorURL="<%= currentURLObj %>"
 			rowChecker="<%= new OrganizationChecker(renderResponse, syncedOrganizationIds) %>"
-			total="<%= organizations.size() %>"
+			total="<%= OrganizationServiceUtil.getOrganizationsCount(themeDisplay.getCompanyId(), OrganizationConstants.ANY_PARENT_ORGANIZATION_ID) %>"
 		>
 			<liferay-ui:search-container-results
-				results="<%= organizations %>"
+				results="<%= OrganizationServiceUtil.getOrganizations(themeDisplay.getCompanyId(), OrganizationConstants.ANY_PARENT_ORGANIZATION_ID, searchContainer.getStart(), searchContainer.getEnd()) %>"
 			/>
 
 			<liferay-ui:search-container-row
