@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.LayoutTypePortletConstants;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -41,6 +42,14 @@ public class LayoutTypeSettingsInspectorUtil {
 			LayoutTypePortletConstants.NESTED_COLUMN_IDS);
 
 		if (Validator.isNotNull(nestedColumnIds)) {
+			return true;
+		}
+
+		String typeSettingsPropertiesString = typeSettingsProperties.toString();
+
+		if (typeSettingsPropertiesString.contains(
+				PortletKeys.NESTED_PORTLETS)) {
+
 			return true;
 		}
 
