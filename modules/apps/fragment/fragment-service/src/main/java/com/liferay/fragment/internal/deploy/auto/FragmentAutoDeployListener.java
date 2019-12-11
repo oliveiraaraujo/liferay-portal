@@ -64,8 +64,6 @@ public class FragmentAutoDeployListener implements AutoDeployListener {
 	public int deploy(AutoDeploymentContext autoDeploymentContext)
 		throws AutoDeployException {
 
-		File file = autoDeploymentContext.getFile();
-
 		PermissionChecker currentPermissionChecker =
 			PermissionThreadLocal.getPermissionChecker();
 		String currentName = PrincipalThreadLocal.getName();
@@ -73,51 +71,7 @@ public class FragmentAutoDeployListener implements AutoDeployListener {
 			ServiceContextThreadLocal.getServiceContext();
 
 		try {
-			JSONObject deployJSONObject = _getDeployJSONObject(file);
-
-			if ((deployJSONObject == null) ||
-				!deployJSONObject.has("companyWebId")) {
-
-				throw new AutoDeployException();
-			}
-
-			String webId = deployJSONObject.getString("companyWebId");
-
-			Company company = _companyLocalService.getCompanyByWebId(webId);
-
-			Group group = null;
-
-			if (deployJSONObject.has("groupKey")) {
-				group = _groupLocalService.getGroup(
-					company.getCompanyId(),
-					deployJSONObject.getString("groupKey"));
-			}
-			else {
-				group = _groupLocalService.getCompanyGroup(
-					company.getCompanyId());
-			}
-
-			User user = _getUser(group);
-
-			if (user == null) {
-				throw new AutoDeployException();
-			}
-
-			PermissionChecker permissionChecker =
-				PermissionCheckerFactoryUtil.create(user);
-
-			PermissionThreadLocal.setPermissionChecker(permissionChecker);
-
-			PrincipalThreadLocal.setName(user.getUserId());
-
-			ServiceContext serviceContext = new ServiceContext();
-
-			serviceContext.setUserId(user.getUserId());
-
-			ServiceContextThreadLocal.pushServiceContext(serviceContext);
-
-			_fragmentsImporter.importFile(
-				user.getUserId(), group.getGroupId(), 0, file, true);
+			_deploy(autoDeploymentContext.getFile());
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -160,6 +114,52 @@ public class FragmentAutoDeployListener implements AutoDeployListener {
 		}
 
 		return false;
+	}
+
+	private void _deploy(File file) throws Exception {
+		JSONObject deployJSONObject = _getDeployJSONObject(file);
+
+		if ((deployJSONObject == null) ||
+			!deployJSONObject.has("companyWebId")) {
+
+			throw new AutoDeployException();
+		}
+
+		String webId = deployJSONObject.getString("companyWebId");
+
+		Company company = _companyLocalService.getCompanyByWebId(webId);
+
+		Group group = null;
+
+		if (deployJSONObject.has("groupKey")) {
+			group = _groupLocalService.getGroup(
+				company.getCompanyId(), deployJSONObject.getString("groupKey"));
+		}
+		else {
+			group = _groupLocalService.getCompanyGroup(company.getCompanyId());
+		}
+
+		User user = _getUser(group);
+
+		if (user == null) {
+			throw new AutoDeployException();
+		}
+
+		PermissionChecker permissionChecker =
+			PermissionCheckerFactoryUtil.create(user);
+
+		PermissionThreadLocal.setPermissionChecker(permissionChecker);
+
+		PrincipalThreadLocal.setName(user.getUserId());
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setUserId(user.getUserId());
+
+		ServiceContextThreadLocal.pushServiceContext(serviceContext);
+
+		_fragmentsImporter.importFile(
+			user.getUserId(), group.getGroupId(), 0, file, true);
 	}
 
 	private JSONObject _getDeployJSONObject(File file)
