@@ -1,5 +1,13 @@
 @import 'mixins';
 
+.edit-entry .app-builder-control-menu {
+	&.standalone {
+		margin-left: calc(-2.25rem - 1px);
+		margin-right: calc(-2.25rem - 1px);
+		margin-top: calc(-4.5em - 1px);
+	}
+}
+
 .app-builder-control-menu {
 	padding: 0;
 
@@ -7,7 +15,7 @@
 		background-color: #434354;
 		border: 1px solid #6b6c7e;
 		border-radius: 4px 4px 0 0;
-		margin-top: calc(-1.5rem - 1px);
+		margin-top: calc(-1.5em - 1px);
 	}
 
 	&.widget {
