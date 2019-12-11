@@ -17,7 +17,6 @@ package com.liferay.dynamic.data.mapping.internal.search.util;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMStructureLayout;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
-import com.liferay.dynamic.data.mapping.security.permission.DDMPermissionSupport;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -43,7 +42,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Rafael Praxedes
@@ -88,19 +86,6 @@ public class DDMSearchHelper {
 		searchContext.setAttribute(Field.CLASS_PK, classPK);
 		searchContext.setAttribute(Field.DESCRIPTION, description);
 		searchContext.setAttribute(Field.NAME, name);
-
-		try {
-			searchContext.setAttribute(
-				"resourcePermissionName",
-				_ddmPermissionSupport.getStructureModelResourceName(
-					classNameId));
-		}
-		catch (PortalException pe) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(pe, pe);
-			}
-		}
-
 		searchContext.setAttribute(Field.STATUS, status);
 		searchContext.setAttribute("storageType", storageType);
 		searchContext.setAttribute("type", type);
@@ -172,19 +157,6 @@ public class DDMSearchHelper {
 		searchContext.setAttribute("language", language);
 		searchContext.setAttribute("mode", mode);
 		searchContext.setAttribute("resourceClassNameId", resourceClassNameId);
-
-		try {
-			searchContext.setAttribute(
-				"resourcePermissionName",
-				_ddmPermissionSupport.getTemplateModelResourceName(
-					resourceClassNameId));
-		}
-		catch (Exception e) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(e, e);
-			}
-		}
-
 		searchContext.setAttribute("type", type);
 		searchContext.setCompanyId(companyId);
 		searchContext.setEnd(end);
@@ -308,8 +280,5 @@ public class DDMSearchHelper {
 		).put(
 			Field.MODIFIED_DATE, Sort.LONG_TYPE
 		).build();
-
-	@Reference
-	private DDMPermissionSupport _ddmPermissionSupport;
 
 }
