@@ -23,7 +23,6 @@ Group group = GroupServiceUtil.getGroup(depotEntry.getGroupId());
 %>
 
 <liferay-ui:error exception="<%= DuplicateGroupException.class %>" message="please-enter-a-unique-name" />
-
 <liferay-ui:error exception="<%= GroupKeyException.class %>" message="please-enter-a-valid-name" />
 
 <liferay-frontend:fieldset
