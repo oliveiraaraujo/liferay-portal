@@ -19,6 +19,7 @@ import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.CompanyService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -109,9 +110,13 @@ public class EditWorkspaceConnectionMVCActionCommand
 
 			HttpPost httpPost = new HttpPost(tokenJSONObject.getString("url"));
 
+			Company company = _companyService.getCompanyById(
+				themeDisplay.getCompanyId());
+
 			httpPost.setEntity(
 				new UrlEncodedFormEntity(
 					Arrays.asList(
+						new BasicNameValuePair("name", company.getName()),
 						new BasicNameValuePair(
 							"portalURL", _portal.getPortalURL(themeDisplay)),
 						new BasicNameValuePair(
