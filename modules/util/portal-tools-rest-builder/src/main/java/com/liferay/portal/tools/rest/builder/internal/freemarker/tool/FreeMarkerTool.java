@@ -689,11 +689,12 @@ public class FreeMarkerTool {
 			Iterator<String> iterator = javaMethodParameterNames.iterator();
 
 			while (iterator.hasNext()) {
-				String next = iterator.next();
+				String javaMethodParameterName = iterator.next();
 
-				next = StringUtil.replace(next, "siteId", "siteKey");
+				javaMethodParameterName = StringUtil.replace(
+					javaMethodParameterName, "siteId", "siteKey");
 
-				sb.append(next);
+				sb.append(javaMethodParameterName);
 
 				sb.append(": ___");
 
