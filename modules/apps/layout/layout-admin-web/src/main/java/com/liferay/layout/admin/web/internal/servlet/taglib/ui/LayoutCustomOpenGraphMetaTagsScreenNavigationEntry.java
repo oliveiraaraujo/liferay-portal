@@ -93,9 +93,9 @@ public class LayoutCustomOpenGraphMetaTagsScreenNavigationEntry
 				_portal.getClassNameId(Layout.class), layout.getPlid());
 
 			if ((Objects.equals(
-					layout.getType(), LayoutConstants.TYPE_CONTENT) ||
+					layout.getType(), LayoutConstants.TYPE_ASSET_DISPLAY) ||
 				 Objects.equals(
-					 layout.getType(), LayoutConstants.TYPE_ASSET_DISPLAY)) &&
+					 layout.getType(), LayoutConstants.TYPE_CONTENT)) &&
 				(draftLayout == null)) {
 
 				return false;
