@@ -91,12 +91,12 @@ const LAYOUT_COLUMN_ITEM_DROPDOWN_ITEMS = [
 	},
 
 	{
-		label: Liferay.Language.get('conversion-preview'),
+		label: Liferay.Language.get('convert-to-content-page'),
 		name: 'layoutConversionPreviewURL'
 	},
 
 	{
-		label: Liferay.Language.get('delete-conversion-preview'),
+		label: Liferay.Language.get('discard-conversion-draft'),
 		name: 'deleteLayoutConversionPreviewURL'
 	},
 
