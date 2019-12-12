@@ -83,7 +83,7 @@ export default ({dataDefinitionId, onClose}) => {
 			Promise.all([
 				getItem('/o/headless-admin-user/v1.0/roles'),
 				getItem(
-					`/o/data-engine/v1.0//data-definitions/${dataDefinitionId}/default-data-record-collection`
+					`/o/data-engine/v1.0/data-definitions/${dataDefinitionId}/data-record-collection`
 				)
 			])
 				.then(([{items: roles = []}, {id: dataRecordCollectionId}]) => {
