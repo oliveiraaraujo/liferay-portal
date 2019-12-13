@@ -55,6 +55,7 @@ import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalServiceUtil;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalServiceUtil;
+import com.liferay.layout.util.constants.LayoutConverterTypeConstants;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.comment.Comment;
@@ -177,12 +178,6 @@ public class ContentPageEditorDisplayContext {
 	}
 
 	public String getDiscardDraftURL() throws PortalException {
-		Layout layout = _getPublishedLayout();
-
-		if (Objects.equals(layout.getType(), LayoutConstants.TYPE_PORTLET)) {
-			return StringPool.BLANK;
-		}
-
 		return getFragmentEntryActionURL(
 			"/content_layout/discard_draft_layout");
 	}
@@ -446,6 +441,8 @@ public class ContentPageEditorDisplayContext {
 			"draft", modifiedDate.after(publishDate)
 		).put(
 			"lastSaveDate", StringPool.BLANK
+		).put(
+			"pageType", _getPageType()
 		).put(
 			"portletNamespace", _renderResponse.getNamespace()
 		).put(
@@ -1238,7 +1235,15 @@ public class ContentPageEditorDisplayContext {
 		return null;
 	}
 
-	private int _getPageType() {
+	private int _getPageType() throws PortalException {
+		Layout publishedLayout = _getPublishedLayout();
+
+		if (Objects.equals(
+				publishedLayout.getType(), LayoutConstants.TYPE_PORTLET)) {
+
+			return LayoutConverterTypeConstants.TYPE_CONVERSION;
+		}
+
 		Layout layout = themeDisplay.getLayout();
 
 		LayoutPageTemplateEntry layoutPageTemplateEntry =
