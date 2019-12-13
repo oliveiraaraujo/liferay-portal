@@ -490,7 +490,7 @@ public class GitUtil {
 			}
 			catch (Exception e) {
 				System.out.println(
-					"Unable to execute dig commands. " + e.getMessage());
+					"Unable to execute debug DNS: " + e.getMessage());
 			}
 		}
 	}
