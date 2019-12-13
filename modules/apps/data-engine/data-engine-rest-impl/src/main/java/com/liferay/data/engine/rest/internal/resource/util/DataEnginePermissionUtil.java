@@ -57,7 +57,7 @@ public class DataEnginePermissionUtil {
 				DataEngineConstants.OPERATION_SAVE_PERMISSION, operation)) {
 
 			throw new ValidationException(
-				"Operation must be 'delete' or 'save'");
+				"Operation must be \"delete\" or \"save\"");
 		}
 
 		checkPermission(
