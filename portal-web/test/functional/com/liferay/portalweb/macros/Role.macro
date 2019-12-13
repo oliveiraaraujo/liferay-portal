@@ -495,17 +495,36 @@ definition {
 			Navigator.gotoNavItem(navItem = "Regular Roles");
 		}
 
-		var key_itemName = "${roleTitle}";
+		if ((isSet(roleKey)) && (!(isSet(roleTitle)))) {
+			var rowEntry = "${roleKey}";
+			var roleTitle = "";
+		}
+		else {
+			var rowEntry = "${roleTitle}";
+		}
 
-		LexiconEntry.gotoEntryMenuItem(
-			menuItem = "Edit",
-			rowEntry = "${roleTitle}");
+		AssertClick(
+			key_itemName = "${rowEntry}",
+			locator1 = "ListGroupItem#ITEM_NAME_LINK",
+			value1 = "${rowEntry}");
 
-		SiteAdmin.viewPortletTitle(portletTitle = "${roleTitle}");
+		SiteAdmin.viewPortletTitle(portletTitle = "${rowEntry}");
+
+		if (isSet(toolTip)) {
+			MouseOver(locator1 = "Icon#TOOLTIP");
+
+			AssertTextEquals.assertPartialText(
+				locator1 = "Message#TOOLTIP",
+				value1 = "${toolTip}");
+		}
 
 		AssertTextEquals(
 			locator1 = "TextInput#TITLE",
 			value1 = "${roleTitle}");
+
+		AssertTextEquals(
+			locator1 = "TextInput#KEY",
+			value1 = "${roleKey}");
 	}
 
 	macro viewDefaultCP {
