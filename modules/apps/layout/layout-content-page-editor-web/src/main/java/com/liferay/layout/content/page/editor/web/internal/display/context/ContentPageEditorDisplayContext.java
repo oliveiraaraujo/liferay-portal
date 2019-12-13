@@ -442,7 +442,7 @@ public class ContentPageEditorDisplayContext {
 		).put(
 			"lastSaveDate", StringPool.BLANK
 		).put(
-			"pageType", _getPageType()
+			"pageType", String.valueOf(_getPageType())
 		).put(
 			"portletNamespace", _renderResponse.getNamespace()
 		).put(
