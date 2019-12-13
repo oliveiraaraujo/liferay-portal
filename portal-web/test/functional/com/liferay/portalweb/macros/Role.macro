@@ -1,13 +1,19 @@
 definition {
 
 	macro add {
+		if ((!(isSet(roleKey))) && (!(isSet(roleTitle)))) {
+			fail("Please declear the roleKey or roleTitle when refering this macro.");
+		}
+
 		LexiconEntry.gotoAdd();
 
 		AssertTextEquals(
 			locator1 = "Portlet#HEADER",
 			value1 = "New Role");
 
-		PortletEntry.inputTitle(title = "${roleTitle}");
+		if (isSet(roleTitle)) {
+			PortletEntry.inputTitle(title = "${roleTitle}");
+		}
 
 		if (isSet(roleDescription)) {
 			PortletEntry.inputDescription(description = "${roleDescription}");
