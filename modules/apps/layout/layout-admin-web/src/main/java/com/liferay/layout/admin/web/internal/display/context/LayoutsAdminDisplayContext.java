@@ -1806,10 +1806,9 @@ public class LayoutsAdminDisplayContext {
 			draftLayout, _themeDisplay);
 
 		layoutFullURL = HttpUtil.setParameter(
-			layoutFullURL, "p_l_mode", Constants.EDIT);
-
-		return HttpUtil.setParameter(
 			layoutFullURL, "p_l_back_url", _themeDisplay.getURLCurrent());
+
+		return HttpUtil.setParameter(layoutFullURL, "p_l_mode", Constants.EDIT);
 	}
 
 	private JSONObject _getFirstColumn(boolean privatePages, boolean active)
