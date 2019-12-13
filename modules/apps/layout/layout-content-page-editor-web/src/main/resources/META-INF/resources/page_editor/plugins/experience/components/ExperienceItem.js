@@ -118,7 +118,7 @@ const ExperienceItem = ({
 											)}
 										>
 											{Liferay.Language.get(
-												'experience-locked-message'
+												'edit-is-not-allowed-for-this-experience'
 											)}
 										</Popover>
 									)}

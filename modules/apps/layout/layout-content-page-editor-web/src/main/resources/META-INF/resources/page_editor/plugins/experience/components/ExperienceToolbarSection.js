@@ -34,10 +34,19 @@ export default function ExperienceToolbarSection({selectId}) {
 
 	const experiences = useMemo(
 		() =>
-			Object.values(availableSegmentsExperiences).sort(
-				(a, b) => b.priority - a.priority
-			),
-		[availableSegmentsExperiences]
+			Object.values(availableSegmentsExperiences)
+				.sort((a, b) => b.priority - a.priority)
+				.map(experience => {
+					const segmentsEntryName =
+						availableSegmentsEntries[experience.segmentsEntryId]
+							.name;
+
+					return {
+						...experience,
+						segmentsEntryName
+					};
+				}),
+		[availableSegmentsExperiences, availableSegmentsEntries]
 	);
 	const segments = useMemo(() => Object.values(availableSegmentsEntries), [
 		availableSegmentsEntries
