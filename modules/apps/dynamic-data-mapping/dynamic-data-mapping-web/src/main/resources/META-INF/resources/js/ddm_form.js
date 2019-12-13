@@ -1612,6 +1612,52 @@ AUI.add(
 			EXTENDS: Field,
 
 			prototype: {
+				_getWebContentSelectorURL() {
+					var instance = this;
+
+					var form = instance.getForm();
+
+					var webContentSelectorURL = form.get(
+						'webContentSelectorURL'
+					);
+
+					return webContentSelectorURL ? webContentSelectorURL : instance._getWebContentURL(
+						'com.liferay.item.selector.criteria.info.item.criterion.InfoItemItemSelectorCriterion'
+					);
+				},
+
+				_getWebContentURL(criteria) {
+					var instance = this;
+
+					var container = instance.get('container');
+
+					var portletNamespace = instance.get('portletNamespace');
+
+					var criterionJSON = {
+						desiredItemSelectorReturnTypes:
+							'com.liferay.item.selector.criteria.JournalArticleItemSelectorReturnType'
+					};
+
+					var webContentParameters = {
+						'0_json': JSON.stringify(criterionJSON),
+						criteria,
+						itemSelectedEventName:
+							portletNamespace + 'selectWebContent',
+						p_p_auth: container.getData('itemSelectorAuthToken'),
+						p_p_id: Liferay.PortletKeys.ITEM_SELECTOR,
+						p_p_mode: 'view',
+						p_p_state: 'pop_up',
+						singleSelect: 'true'
+					};
+
+					var webContentURL = Liferay.Util.PortletURL.createPortletURL(
+						themeDisplay.getLayoutRelativeControlPanelURL(),
+						webContentParameters
+					);
+
+					return webContentURL.toString();
+				},
+
 				_handleButtonsClick(event) {
 					var instance = this;
 
@@ -1647,7 +1693,7 @@ AUI.add(
 									eventName: portletNamespace + 'selectWebContent',
 									singleSelect: true,
 									title: Liferay.Language.get('journal-article'),
-									url: instance.getWebContentSelectorURL()
+									url: instance._getWebContentSelectorURL()
 								}
 							);
 
@@ -1729,52 +1775,6 @@ AUI.add(
 					var inputName = instance.getInputName();
 
 					return inputName + 'Title';
-				},
-
-				getWebContentSelectorURL() {
-					var instance = this;
-
-					var form = instance.getForm();
-
-					var webContentSelectorURL = form.get(
-						'webContentSelectorURL'
-					);
-
-					return webContentSelectorURL ? webContentSelectorURL : instance.getWebContentURL(
-						'com.liferay.item.selector.criteria.info.item.criterion.InfoItemItemSelectorCriterion'
-					);
-				},
-
-				getWebContentURL(criteria) {
-					var instance = this;
-
-					var container = instance.get('container');
-
-					var portletNamespace = instance.get('portletNamespace');
-
-					var criterionJSON = {
-						desiredItemSelectorReturnTypes:
-							'com.liferay.item.selector.criteria.JournalArticleItemSelectorReturnType'
-					};
-
-					var webContentParameters = {
-						'0_json': JSON.stringify(criterionJSON),
-						criteria,
-						itemSelectedEventName:
-							portletNamespace + 'selectWebContent',
-						p_p_auth: container.getData('itemSelectorAuthToken'),
-						p_p_id: Liferay.PortletKeys.ITEM_SELECTOR,
-						p_p_mode: 'view',
-						p_p_state: 'pop_up',
-						singleSelect: 'true'
-					};
-
-					var webContentURL = Liferay.Util.PortletURL.createPortletURL(
-						themeDisplay.getLayoutRelativeControlPanelURL(),
-						webContentParameters
-					);
-
-					return webContentURL.toString();
 				},
 
 				initializer() {
