@@ -18,7 +18,7 @@ import com.liferay.data.engine.field.type.util.LocalizedValueUtil;
 import com.liferay.data.engine.rest.internal.constants.DataActionKeys;
 import com.liferay.data.engine.rest.internal.constants.DataRecordCollectionConstants;
 import com.liferay.data.engine.rest.internal.model.InternalDataRecordCollection;
-import com.liferay.data.engine.rest.internal.resource.v1_0.util.DataEnginePermissionUtil;
+import com.liferay.data.engine.rest.internal.resource.util.DataEnginePermissionUtil;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
 import com.liferay.dynamic.data.lists.model.DDLRecordSetConstants;
 import com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService;

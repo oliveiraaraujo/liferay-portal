@@ -16,12 +16,12 @@ package com.liferay.data.engine.taglib.servlet.taglib.util;
 
 import com.liferay.data.engine.renderer.DataLayoutRenderer;
 import com.liferay.data.engine.renderer.DataLayoutRendererContext;
-import com.liferay.data.engine.rest.client.dto.v1_0.DataDefinition;
-import com.liferay.data.engine.rest.client.dto.v1_0.DataLayout;
-import com.liferay.data.engine.rest.client.dto.v1_0.DataRecord;
-import com.liferay.data.engine.rest.client.resource.v1_0.DataDefinitionResource;
-import com.liferay.data.engine.rest.client.resource.v1_0.DataLayoutResource;
-import com.liferay.data.engine.rest.client.resource.v1_0.DataRecordResource;
+import com.liferay.data.engine.rest.client.dto.v2_0.DataDefinition;
+import com.liferay.data.engine.rest.client.dto.v2_0.DataLayout;
+import com.liferay.data.engine.rest.client.dto.v2_0.DataRecord;
+import com.liferay.data.engine.rest.client.resource.v2_0.DataDefinitionResource;
+import com.liferay.data.engine.rest.client.resource.v2_0.DataLayoutResource;
+import com.liferay.data.engine.rest.client.resource.v2_0.DataRecordResource;
 import com.liferay.dynamic.data.mapping.form.builder.context.DDMFormBuilderContextFactory;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldType;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServicesTracker;
