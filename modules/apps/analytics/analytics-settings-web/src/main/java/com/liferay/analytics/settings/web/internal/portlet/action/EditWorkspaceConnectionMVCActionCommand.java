@@ -110,8 +110,7 @@ public class EditWorkspaceConnectionMVCActionCommand
 
 			HttpPost httpPost = new HttpPost(tokenJSONObject.getString("url"));
 
-			Company company = _companyService.getCompanyById(
-				themeDisplay.getCompanyId());
+			Company company = themeDisplay.getCompany();
 
 			httpPost.setEntity(
 				new UrlEncodedFormEntity(
