@@ -1347,6 +1347,19 @@ public class LayoutsAdminDisplayContext {
 		return false;
 	}
 
+	public boolean isConversionDraft(Layout layout) {
+		Layout draftLayout = LayoutLocalServiceUtil.fetchLayout(
+			PortalUtil.getClassNameId(Layout.class), layout.getPlid());
+
+		if (Objects.equals(layout.getType(), LayoutConstants.TYPE_PORTLET) &&
+			(draftLayout != null)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean isDraft() {
 		Layout layout = getSelLayout();
 
@@ -1634,10 +1647,10 @@ public class LayoutsAdminDisplayContext {
 			jsonObject.put("configureURL", getConfigureLayoutURL(layout));
 		}
 
-		if (isShowConvertLayoutAction(layout)) {
-			Layout draftLayout = LayoutLocalServiceUtil.fetchLayout(
-				PortalUtil.getClassNameId(Layout.class), layout.getPlid());
+		Layout draftLayout = LayoutLocalServiceUtil.fetchLayout(
+			PortalUtil.getClassNameId(Layout.class), layout.getPlid());
 
+		if (isShowConvertLayoutAction(layout)) {
 			if (draftLayout == null) {
 				jsonObject.put(
 					"layoutConversionPreviewURL",
@@ -1658,7 +1671,10 @@ public class LayoutsAdminDisplayContext {
 			jsonObject.put("deleteURL", getDeleteLayoutURL(layout));
 		}
 
-		if (isShowConfigureAction(layout)) {
+		if (isConversionDraft(layout) && isShowConfigureAction(layout)) {
+			jsonObject.put("editConversionLayoutURL", getEditLayoutURL(layout));
+		}
+		else if (isShowConfigureAction(layout)) {
 			jsonObject.put("editLayoutURL", getEditLayoutURL(layout));
 		}
 
