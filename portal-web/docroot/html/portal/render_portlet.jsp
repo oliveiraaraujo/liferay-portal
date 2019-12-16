@@ -151,7 +151,9 @@ if (!portletId.equals(rootPortletId)) {
 		String key = entry.getKey();
 
 		if (key.contains(rootPortletId) && !key.contains(portletId)) {
-			((DynamicServletRequest)request).setParameterValues(StringUtil.replace(key, rootPortletId, portletId), entry.getValue());
+			DynamicServletRequest dynamicServletRequest = (DynamicServletRequest)request;
+
+			dynamicServletRequest.setParameterValues(StringUtil.replace(key, rootPortletId, portletId), entry.getValue());
 		}
 	}
 }
