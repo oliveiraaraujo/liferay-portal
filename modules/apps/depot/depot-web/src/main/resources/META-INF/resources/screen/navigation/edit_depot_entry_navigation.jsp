@@ -61,17 +61,7 @@ renderResponse.setTitle(group.getDescriptiveName(locale));
 			<div class="sheet-footer">
 				<aui:button primary="<%= true %>" type="submit" />
 
-				<%
-				String cancelURL = backURL;
-
-				if (Validator.isNull(cancelURL)) {
-					PortletURL portletURL = renderResponse.createRenderURL();
-
-					cancelURL = portletURL.toString();
-				}
-				%>
-
-				<aui:button href="<%= cancelURL %>" type="cancel" />
+				<aui:button href="<%= Validator.isNotNull(backURL) ? backURL : String.valueOf(renderResponse.createRenderURL()) %>" type="cancel" />
 			</div>
 		</c:if>
 	</div>

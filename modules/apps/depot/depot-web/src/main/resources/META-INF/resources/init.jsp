@@ -65,8 +65,7 @@ page import="java.util.Locale" %><%@
 page import="java.util.Map" %><%@
 page import="java.util.Set" %>
 
-<%@ page import="javax.portlet.ActionURL" %><%@
-page import="javax.portlet.PortletURL" %>
+<%@ page import="javax.portlet.ActionURL" %>
 
 <liferay-frontend:defineObjects />
 
