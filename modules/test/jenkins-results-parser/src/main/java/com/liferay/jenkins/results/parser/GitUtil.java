@@ -530,7 +530,7 @@ public class GitUtil {
 		"github-dev.liferay.com";
 
 	private static final Pattern _dnsDebugPattern = Pattern.compile(
-		"Could not resolve hostname (?<hostname>[^:]+): ");
+		"Unable to resolve hostname (?<hostname>[^:]+): ");
 	private static final Pattern _gitHubRefURLPattern = Pattern.compile(
 		JenkinsResultsParserUtil.combine(
 			"https://github.com/(?<username>[^/]+)/",
