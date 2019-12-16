@@ -28,7 +28,6 @@ import com.liferay.journal.web.internal.item.selector.JournalArticleItemSelector
 import com.liferay.journal.web.internal.util.JournalPortletUtil;
 import com.liferay.portal.kernel.bean.BeanParamUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.servlet.taglib.ui.BreadcrumbEntry;
@@ -297,9 +296,7 @@ public class JournalArticleItemSelectorViewDisplayContext {
 		return _folderId;
 	}
 
-	private BreadcrumbEntry _getHomeBreadcrumb()
-		throws PortalException, PortletException {
-
+	private BreadcrumbEntry _getHomeBreadcrumb() throws Exception {
 		BreadcrumbEntry breadcrumbEntry = new BreadcrumbEntry();
 
 		breadcrumbEntry.setTitle(_themeDisplay.getSiteGroupName());
