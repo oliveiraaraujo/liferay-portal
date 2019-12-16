@@ -2462,7 +2462,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	 */
 	@Override
 	public void rebuildTree(long companyId) throws PortalException {
-		final long classNameId = classNameLocalService.getClassNameId(
+		long classNameId = classNameLocalService.getClassNameId(
 			Group.class);
 
 		TreePathUtil.rebuildTree(
@@ -3697,7 +3697,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		if (group.isActive() != active) {
 			group.setActive(active);
 
-			final long companyId = group.getCompanyId();
+			long companyId = group.getCompanyId();
 
 			TransactionCommitCallbackUtil.registerCallback(
 				() -> {
@@ -4659,10 +4659,10 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	protected void reindex(long companyId, long[] userIds)
 		throws PortalException {
 
-		final Indexer<User> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+		Indexer<User> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
 			User.class);
 
-		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			userLocalService.getIndexableActionableDynamicQuery();
 
 		indexableActionableDynamicQuery.setAddCriteriaMethod(
