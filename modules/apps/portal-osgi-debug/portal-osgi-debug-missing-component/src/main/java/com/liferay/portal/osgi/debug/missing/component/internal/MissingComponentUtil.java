@@ -86,7 +86,7 @@ public class MissingComponentUtil {
 				sb.append(satisfiedReference.name);
 			}
 
-			sb.append("\nUnsatisfied References: ");
+			sb.append("\nUnsatisfied references: ");
 
 			for (UnsatisfiedReferenceDTO unsatisfiedReference :
 					componentConfigurationDTO.unsatisfiedReferences) {
