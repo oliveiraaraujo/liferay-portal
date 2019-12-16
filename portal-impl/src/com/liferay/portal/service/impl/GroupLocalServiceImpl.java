@@ -385,7 +385,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			className.equals(Group.class.getName())) {
 
 			validateGroupKey(
-				groupId, user.getCompanyId(), groupKey, site, type);
+				groupId, user.getCompanyId(), groupKey, type, site);
 		}
 
 		validateInheritContent(parentGroupId, inheritContent);
@@ -3656,7 +3656,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 			validateGroupKey(
 				group.getGroupId(), group.getCompanyId(), groupKey,
-				group.isSite(), group.getType());
+				group.getType(), group.isSite());
 		}
 		else if (className.equals(Organization.class.getName())) {
 			Organization organization =
@@ -4908,8 +4908,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	}
 
 	protected void validateGroupKey(
-			long groupId, long companyId, String groupKey, boolean site,
-			int type)
+			long groupId, long companyId, String groupKey, int type,
+			boolean site)
 		throws PortalException {
 
 		int groupKeyMaxLength = ModelHintsUtil.getMaxLength(
@@ -5204,7 +5204,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 			validateGroupKey(
 				group.getGroupId(), group.getCompanyId(),
-				nameMap.get(defaultLocale), group.isSite(), group.getType());
+				nameMap.get(defaultLocale), group.getType(), group.isSite());
 		}
 	}
 
