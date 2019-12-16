@@ -21,8 +21,6 @@ String randomNamespace = PortalUtil.generateRandomKey(request, "portlet_document
 
 FileVersion fileVersion = (FileVersion)request.getAttribute(WebKeys.DOCUMENT_LIBRARY_FILE_VERSION);
 
-String mimeType = fileVersion.getMimeType();
-
 String previewQueryString = "&imagePreview=1";
 
 int status = ParamUtil.getInteger(request, "status", WorkflowConstants.STATUS_ANY);
@@ -41,7 +39,7 @@ String previewURL = DLURLHelperUtil.getPreviewURL(fileVersion.getFileEntry(), fi
 </liferay-util:html-top>
 
 <c:choose>
-	<c:when test="<%= mimeType.equals(ContentTypes.IMAGE_SVG_XML) %>">
+	<c:when test="<%= Objects.equals(fileVersion.getMimeType(), ContentTypes.IMAGE_SVG_XML) %>">
 		<div class="preview-file">
 			<div class="preview-file-container preview-file-max-height">
 				<img class="preview-file-image-vectorial" src="<%= previewURL %>" />
