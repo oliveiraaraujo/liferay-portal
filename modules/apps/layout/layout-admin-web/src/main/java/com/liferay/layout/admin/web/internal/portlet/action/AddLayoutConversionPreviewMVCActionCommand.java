@@ -46,7 +46,7 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = MVCActionCommand.class
 )
-public class LayoutConversionPreviewMVCActionCommand
+public class AddLayoutConversionPreviewMVCActionCommand
 	extends BaseMVCActionCommand {
 
 	@Override
@@ -87,7 +87,7 @@ public class LayoutConversionPreviewMVCActionCommand
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		LayoutConversionPreviewMVCActionCommand.class);
+		AddLayoutConversionPreviewMVCActionCommand.class);
 
 	@Reference
 	private BulkLayoutConverter _bulkLayoutConverter;
