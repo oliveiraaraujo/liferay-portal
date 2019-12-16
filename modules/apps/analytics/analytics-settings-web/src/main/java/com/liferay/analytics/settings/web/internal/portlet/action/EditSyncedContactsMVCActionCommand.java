@@ -91,12 +91,10 @@ public class EditSyncedContactsMVCActionCommand
 
 		String liferayAnalyticsDataSourceId = PrefsPropsUtil.getString(
 			themeDisplay.getCompanyId(), "liferayAnalyticsDataSourceId");
-
 		String liferayAnalyticsFaroBackendSecuritySignature =
 			PrefsPropsUtil.getString(
 				themeDisplay.getCompanyId(),
 				"liferayAnalyticsFaroBackendSecuritySignature");
-
 		String liferayAnalyticsFaroBackendURL = PrefsPropsUtil.getString(
 			themeDisplay.getCompanyId(), "liferayAnalyticsFaroBackendURL");
 
