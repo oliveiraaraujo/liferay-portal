@@ -98,12 +98,6 @@ public class LayoutSEOEntryLocalServiceImpl
 		layoutSEOEntry.setModifiedDate(DateUtil.newDate());
 		layoutSEOEntry.setCanonicalURLEnabled(canonicalURLEnabled);
 		layoutSEOEntry.setCanonicalURLMap(canonicalURLMap);
-		layoutSEOEntry.setOpenGraphDescriptionEnabled(
-			openGraphDescriptionEnabled);
-		layoutSEOEntry.setOpenGraphDescriptionMap(openGraphDescriptionMap);
-		layoutSEOEntry.setOpenGraphImageFileEntryId(openGraphImageFileEntryId);
-		layoutSEOEntry.setOpenGraphTitleEnabled(openGraphTitleEnabled);
-		layoutSEOEntry.setOpenGraphTitleMap(openGraphTitleMap);
 
 		DDMStructure ddmStructure = _getDDMStructure(
 			_groupLocalService.getGroup(groupId));
@@ -113,6 +107,13 @@ public class LayoutSEOEntryLocalServiceImpl
 			ddmStructure.getStructureId(), serviceContext);
 
 		layoutSEOEntry.setDDMStorageId(ddmStorageId);
+
+		layoutSEOEntry.setOpenGraphDescriptionEnabled(
+			openGraphDescriptionEnabled);
+		layoutSEOEntry.setOpenGraphDescriptionMap(openGraphDescriptionMap);
+		layoutSEOEntry.setOpenGraphImageFileEntryId(openGraphImageFileEntryId);
+		layoutSEOEntry.setOpenGraphTitleEnabled(openGraphTitleEnabled);
+		layoutSEOEntry.setOpenGraphTitleMap(openGraphTitleMap);
 
 		return layoutSEOEntryPersistence.update(layoutSEOEntry);
 	}
@@ -172,12 +173,6 @@ public class LayoutSEOEntryLocalServiceImpl
 		layoutSEOEntry.setLayoutId(layoutId);
 		layoutSEOEntry.setCanonicalURLEnabled(canonicalURLEnabled);
 		layoutSEOEntry.setCanonicalURLMap(canonicalURLMap);
-		layoutSEOEntry.setOpenGraphDescriptionEnabled(
-			openGraphDescriptionEnabled);
-		layoutSEOEntry.setOpenGraphDescriptionMap(openGraphDescriptionMap);
-		layoutSEOEntry.setOpenGraphImageFileEntryId(openGraphImageFileEntryId);
-		layoutSEOEntry.setOpenGraphTitleEnabled(openGraphTitleEnabled);
-		layoutSEOEntry.setOpenGraphTitleMap(openGraphTitleMap);
 
 		DDMStructure ddmStructure = _getDDMStructure(
 			_groupLocalService.getGroup(groupId));
@@ -187,6 +182,13 @@ public class LayoutSEOEntryLocalServiceImpl
 			ddmStructure.getStructureId(), serviceContext);
 
 		layoutSEOEntry.setDDMStorageId(ddmStorageId);
+
+		layoutSEOEntry.setOpenGraphDescriptionEnabled(
+			openGraphDescriptionEnabled);
+		layoutSEOEntry.setOpenGraphDescriptionMap(openGraphDescriptionMap);
+		layoutSEOEntry.setOpenGraphImageFileEntryId(openGraphImageFileEntryId);
+		layoutSEOEntry.setOpenGraphTitleEnabled(openGraphTitleEnabled);
+		layoutSEOEntry.setOpenGraphTitleMap(openGraphTitleMap);
 
 		return layoutSEOEntryPersistence.update(layoutSEOEntry);
 	}
