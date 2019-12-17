@@ -74,12 +74,12 @@ public class OASParameter {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("(name=");
+		sb.append("{location=");
+		sb.append(_location);
+		sb.append(", name=");
 		sb.append(_name);
 		sb.append(", required=");
 		sb.append(_required);
-		sb.append(", location=");
-		sb.append(_location);
 		sb.append("}");
 
 		return sb.toString();
