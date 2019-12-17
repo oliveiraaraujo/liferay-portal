@@ -53,10 +53,11 @@ public class AssetPublisherSimilarResultsContributor
 
 		SearchStringUtil.requireEquals("asset_publisher", parameters[0]);
 
+		putAttribute(parameters[2], "type", routeBuilder);
+
 		String assetEntryId = _httpHelper.getPortletIdParameter(
 			urlString, "assetEntryId");
 
-		putAttribute(parameters[2], "type", routeBuilder);
 		putAttribute(Long.valueOf(assetEntryId), "entryId", routeBuilder);
 	}
 
