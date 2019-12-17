@@ -68,13 +68,13 @@ public class AddLayoutConversionPreviewMVCActionCommand
 			String layoutFullURL = _portal.getLayoutFullURL(
 				draftLayout, themeDisplay);
 
-			layoutFullURL = _http.setParameter(
-				layoutFullURL, "p_l_mode", Constants.EDIT);
-
 			String redirect = ParamUtil.getString(actionRequest, "redirect");
 
 			layoutFullURL = _http.setParameter(
 				layoutFullURL, "p_l_back_url", redirect);
+
+			layoutFullURL = _http.setParameter(
+				layoutFullURL, "p_l_mode", Constants.EDIT);
 
 			httpServletResponse.sendRedirect(layoutFullURL);
 		}
