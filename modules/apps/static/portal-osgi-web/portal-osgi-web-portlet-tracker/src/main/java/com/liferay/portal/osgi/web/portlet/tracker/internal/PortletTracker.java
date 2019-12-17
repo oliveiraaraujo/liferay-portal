@@ -232,7 +232,7 @@ public class PortletTracker
 				company.getCompanyId(), WebKeys.PORTLET_CATEGORY);
 
 			if (portletCategory == null) {
-				_log.error("Unable to find PortletCategory for " + company);
+				_log.error("Unable to get portlet category for " + company);
 			}
 			else {
 				portletCategory.separate(portletModel.getRootPortletId());
