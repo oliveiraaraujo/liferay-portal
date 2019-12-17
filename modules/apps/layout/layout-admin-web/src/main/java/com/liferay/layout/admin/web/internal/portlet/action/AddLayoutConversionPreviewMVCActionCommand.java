@@ -57,9 +57,11 @@ public class AddLayoutConversionPreviewMVCActionCommand
 		long plid = ParamUtil.getLong(actionRequest, "selPlid");
 
 		try {
+			HttpServletResponse httpServletResponse =
+				_portal.getHttpServletResponse(actionResponse);
+
 			Layout draftLayout = _bulkLayoutConverter.generatePreviewLayout(
 				plid);
-
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
@@ -73,9 +75,6 @@ public class AddLayoutConversionPreviewMVCActionCommand
 
 			layoutFullURL = _http.setParameter(
 				layoutFullURL, "p_l_back_url", redirect);
-
-			HttpServletResponse httpServletResponse =
-				_portal.getHttpServletResponse(actionResponse);
 
 			httpServletResponse.sendRedirect(layoutFullURL);
 		}
