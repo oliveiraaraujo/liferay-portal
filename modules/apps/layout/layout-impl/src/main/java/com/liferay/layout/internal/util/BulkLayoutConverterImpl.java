@@ -118,7 +118,7 @@ public class BulkLayoutConverterImpl implements BulkLayoutConverter {
 
 		if (!Objects.equals(layout.getType(), LayoutConstants.TYPE_PORTLET)) {
 			throw new LayoutConvertException(
-				"Layout with plid " + layout.getPlid() + " is not convertible");
+				"Layout with PLID " + layout.getPlid() + " is not convertible");
 		}
 
 		Layout draftLayout = _getOrCreateDraftLayout(layout);
