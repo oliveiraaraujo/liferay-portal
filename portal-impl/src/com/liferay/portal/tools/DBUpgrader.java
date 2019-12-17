@@ -107,7 +107,9 @@ public class DBUpgrader {
 
 			StartupHelperUtil.printPatchLevel();
 
-			new VerifyProperties().verify();
+			VerifyProperties verifyProperties = new VerifyProperties();
+
+			verifyProperties.verify();
 
 			upgrade();
 
