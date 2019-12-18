@@ -16,9 +16,10 @@ import '../FieldBase/FieldBase.es';
 
 import './GeolocationRegister.soy.js';
 
-// import MapOpenStreetMap from 'map-openstreetmap/js/MapOpenStreetMap.es';
+import dom from 'metal-dom';
 import L from 'leaflet';
 import Component from 'metal-component';
+// import MapOpenStreetMap from 'map-openstreetmap/js/MapOpenStreetMap.es';
 import Soy from 'metal-soy';
 import {Config} from 'metal-state';
 
@@ -26,6 +27,7 @@ import {setJSONArrayValue} from '../util/setters.es';
 import templates from './Geolocation.soy.js';
 
 import 'leaflet/dist/leaflet.css';
+
 
 /**
  * Geolocation.
@@ -35,7 +37,6 @@ import 'leaflet/dist/leaflet.css';
 class Geolocation extends Component {
 	attached() {
 		const {readOnly} = this;
-		console.log('attached--> 2', this, readOnly);
 
 		this.setState({
 			geolocateTitle: Liferay.Language.get('geolocate'),
@@ -44,22 +45,22 @@ class Geolocation extends Component {
 
 		if (!readOnly) {
 			setTimeout(() => {
-				// 	// const element = document.getElementById('targetGeo1');
 
-				var mymap = L.map('targetGeo1').setView([51.505, -0.09], 13);
+				window['L'] = L;
+				
+				Liferay.Loader.require('map-openstreetmap@5.0.0/js/MapOpenStreetMap.es', (_MapOpenStreetMap) => {
+					console.log(_MapOpenStreetMap);
+					// temporary element to append _MapOpenStreetMap
+					// const element = document.getElementById('targetGeo1');
+				});
 
-				// var map = leafletMap();
-				L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-					id: 'mapbox.streets',
-					maxZoom: 18
-					// accessToken: 'your.mapbox.access.token'
-				}).addTo(mymap);
 			}, 2000);
 		}
 	}
 
+
 	prepareStateForRender(state) {
-		console.log('prepareStateForRender--> 1', {readOnly: state.readOnly});
+		// console.log('prepareStateForRender--> 1', {readOnly: state.readOnly});
 
 		const {predefinedValue} = state;
 		const predefinedValueArray = this._getArrayValue(predefinedValue);
