@@ -40,6 +40,7 @@
 				{param options: $options /}
 				{param pathThemeImages: $pathThemeImages /}
 				{param predefinedValue: $predefinedValue /}
+				{param readOnly: $readOnly /}
 				{param value: $value /}
 			{/call}
 		{/param}
@@ -66,6 +67,7 @@
 	{@param? geolocateTitle: string}
 	{@param? pathThemeImages: string}
 	{@param? predefinedValue: string}
+	{@param? readOnly: bool}
 	{@param? value: string}
 
 	<div
@@ -77,13 +79,19 @@
 		{let $geolocationValue: $value ?: $predefinedValue ?: '' /}
 
 		<div>{$geolocationValue}</div>
-
-		<div id="targetGeo1"></div>
-
-		<img
-			alt="{$pathThemeImages}"
-			title="{$geolocateTitle}"
-			src="{$pathThemeImages}/common/geolocation.png"
-		/>
+		{if $readOnly}
+			<img
+				alt="{$pathThemeImages}"
+				title="{$geolocateTitle}"
+				src="{$pathThemeImages}/common/geolocation.png"
+			/>
+		{else}
+			<dl>
+				<dt class="text-capitalize"></dt>
+				<dd>
+					<div class="lfr-map" id="targetGeo1" style="height: 280px; border:1px solid red;"></div>
+				</dd>
+			</dl>
+		{/if}
 	</div>
 {/template}

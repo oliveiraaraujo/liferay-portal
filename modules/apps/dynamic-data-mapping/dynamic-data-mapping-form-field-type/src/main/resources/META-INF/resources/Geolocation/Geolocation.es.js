@@ -16,20 +16,16 @@ import '../FieldBase/FieldBase.es';
 
 import './GeolocationRegister.soy.js';
 
+// import MapOpenStreetMap from 'map-openstreetmap/js/MapOpenStreetMap.es';
+import L from 'leaflet';
 import Component from 'metal-component';
-
 import Soy from 'metal-soy';
 import {Config} from 'metal-state';
 
 import {setJSONArrayValue} from '../util/setters.es';
 import templates from './Geolocation.soy.js';
 
-import MapOpenStreetMap from 'map-openstreetmap/js/MapOpenStreetMap.es';
-
-import MapBase from 'map-common/js/MapBase.es';
-
-console.log('log2:', MapOpenStreetMap, MapBase);
-
+import 'leaflet/dist/leaflet.css';
 
 /**
  * Geolocation.
@@ -38,23 +34,32 @@ console.log('log2:', MapOpenStreetMap, MapBase);
 
 class Geolocation extends Component {
 	attached() {
-		console.log('attached--> 654321');
+		const {readOnly} = this;
+		console.log('attached--> 2', this, readOnly);
 
 		this.setState({
 			geolocateTitle: Liferay.Language.get('geolocate'),
 			pathThemeImages: Liferay.ThemeDisplay.getPathThemeImages()
 		});
 
-		// setTimeout(() => {
-		// 	const element = document.getElementById('targetGeo1');
+		if (!readOnly) {
+			setTimeout(() => {
+				// 	// const element = document.getElementById('targetGeo1');
 
+				var mymap = L.map('targetGeo1').setView([51.505, -0.09], 13);
 
-		// }, 6000);
-
+				// var map = leafletMap();
+				L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+					id: 'mapbox.streets',
+					maxZoom: 18
+					// accessToken: 'your.mapbox.access.token'
+				}).addTo(mymap);
+			}, 2000);
+		}
 	}
 
 	prepareStateForRender(state) {
-		console.log('prepareStateForRender--> 654321', {readOnly: state.readOnly});
+		console.log('prepareStateForRender--> 1', {readOnly: state.readOnly});
 
 		const {predefinedValue} = state;
 		const predefinedValueArray = this._getArrayValue(predefinedValue);
@@ -80,26 +85,26 @@ class Geolocation extends Component {
 	}
 
 	_handleFieldBlurred() {
-		this.emit('fieldBlurred', {
-			fieldInstance: this,
-			originalEvent: window.event,
-			value: window.event.target.value
-		});
+		// this.emit('fieldBlurred', {
+		// 	fieldInstance: this,
+		// 	originalEvent: window.event,
+		// 	value: window.event.target.value
+		// });
 	}
 
 	_handleFieldFocused(event) {
-		this.emit('fieldFocused', {
-			fieldInstance: this,
-			originalEvent: event
-		});
+		// this.emit('fieldFocused', {
+		// 	fieldInstance: this,
+		// 	originalEvent: event
+		// });
 	}
 
 	_handleValueChanged(event) {
-		this.emit('fieldEdited', {
-			fieldInstance: this,
-			originalEvent: event,
-			value: event.target.value
-		});
+		// this.emit('fieldEdited', {
+		// 	fieldInstance: this,
+		// 	originalEvent: event,
+		// 	value: event.target.value
+		// });
 	}
 }
 
