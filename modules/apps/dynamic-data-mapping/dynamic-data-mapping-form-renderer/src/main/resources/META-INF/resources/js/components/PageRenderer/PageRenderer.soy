@@ -206,7 +206,8 @@
 						'fieldEdited': $_handleFieldEdited,
 						'fieldFocused': $_handleFieldFocused
 						] /}
-						{param ref: 'pageRendererFieldRef' + $field.name + $rowIndex + $columnIndex + $pageIndex /}
+						{param key: 'pageRendererFieldRef' +  $field.instanceId /}
+						{param ref: 'pageRendererFieldRef' +  $field.instanceId /}
 						{param spritemap: $spritemap /}
 					{/delcall}
 				{/foreach}
