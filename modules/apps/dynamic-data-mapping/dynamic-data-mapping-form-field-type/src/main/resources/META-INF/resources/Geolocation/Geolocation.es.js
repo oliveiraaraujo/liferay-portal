@@ -19,11 +19,11 @@ import './GeolocationRegister.soy.js';
 import dom from 'metal-dom';
 import L from 'leaflet';
 import Component from 'metal-component';
-// import MapOpenStreetMap from 'map-openstreetmap/js/MapOpenStreetMap.es';
+import MapOpenStreetMap from 'map-openstreetmap/js/MapOpenStreetMap.es';
 import Soy from 'metal-soy';
-import {Config} from 'metal-state';
+import { Config } from 'metal-state';
 
-import {setJSONArrayValue} from '../util/setters.es';
+import { setJSONArrayValue } from '../util/setters.es';
 import templates from './Geolocation.soy.js';
 
 import 'leaflet/dist/leaflet.css';
@@ -36,7 +36,7 @@ import 'leaflet/dist/leaflet.css';
 
 class Geolocation extends Component {
 	attached() {
-		const {readOnly} = this;
+		const { readOnly } = this;
 
 		this.setState({
 			geolocateTitle: Liferay.Language.get('geolocate'),
@@ -45,68 +45,67 @@ class Geolocation extends Component {
 
 		if (!readOnly) {
 			setTimeout(() => {
-
 				window['L'] = L;
-				
-				Liferay.Loader.require('map-openstreetmap@5.0.0/js/MapOpenStreetMap.es', (_MapOpenStreetMap) => {
-					console.log(_MapOpenStreetMap);
-					// temporary element to append _MapOpenStreetMap
-					// const element = document.getElementById('targetGeo1');
+				const mapcomp = new MapOpenStreetMap({
+					boundingBox: '#targetGeo1', 
+					controls: ['home', 'pan', 'search', 'type', 'zoom'], 
+					geolocation: true,
+					position: { location: { lat: 0, lng: 0 } }
 				});
+				// console.log(mapcomp);
+		}, 2000);
+	}
+}
 
-			}, 2000);
+
+prepareStateForRender(state) {
+	// console.log('prepareStateForRender--> 1', {readOnly: state.readOnly});
+
+	const { predefinedValue } = state;
+	const predefinedValueArray = this._getArrayValue(predefinedValue);
+
+	return {
+		...state,
+		predefinedValue: predefinedValueArray[0] || '',
+		...{
+			geolocateTitle: Liferay.Language.get('geolocate'),
+			pathThemeImages: Liferay.ThemeDisplay.getPathThemeImages()
 		}
+	};
+}
+
+_getArrayValue(value) {
+	let newValue = value || '';
+
+	if (!Array.isArray(newValue)) {
+		newValue = [newValue];
 	}
 
+	return newValue;
+}
 
-	prepareStateForRender(state) {
-		// console.log('prepareStateForRender--> 1', {readOnly: state.readOnly});
+_handleFieldBlurred() {
+	// this.emit('fieldBlurred', {
+	// 	fieldInstance: this,
+	// 	originalEvent: window.event,
+	// 	value: window.event.target.value
+	// });
+}
 
-		const {predefinedValue} = state;
-		const predefinedValueArray = this._getArrayValue(predefinedValue);
+_handleFieldFocused(event) {
+	// this.emit('fieldFocused', {
+	// 	fieldInstance: this,
+	// 	originalEvent: event
+	// });
+}
 
-		return {
-			...state,
-			predefinedValue: predefinedValueArray[0] || '',
-			...{
-				geolocateTitle: Liferay.Language.get('geolocate'),
-				pathThemeImages: Liferay.ThemeDisplay.getPathThemeImages()
-			}
-		};
-	}
-
-	_getArrayValue(value) {
-		let newValue = value || '';
-
-		if (!Array.isArray(newValue)) {
-			newValue = [newValue];
-		}
-
-		return newValue;
-	}
-
-	_handleFieldBlurred() {
-		// this.emit('fieldBlurred', {
-		// 	fieldInstance: this,
-		// 	originalEvent: window.event,
-		// 	value: window.event.target.value
-		// });
-	}
-
-	_handleFieldFocused(event) {
-		// this.emit('fieldFocused', {
-		// 	fieldInstance: this,
-		// 	originalEvent: event
-		// });
-	}
-
-	_handleValueChanged(event) {
-		// this.emit('fieldEdited', {
-		// 	fieldInstance: this,
-		// 	originalEvent: event,
-		// 	value: event.target.value
-		// });
-	}
+_handleValueChanged(event) {
+	// this.emit('fieldEdited', {
+	// 	fieldInstance: this,
+	// 	originalEvent: event,
+	// 	value: event.target.value
+	// });
+}
 }
 
 Geolocation.STATE = {
