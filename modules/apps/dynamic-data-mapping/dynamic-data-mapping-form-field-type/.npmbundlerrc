@@ -7,6 +7,9 @@
 			"map-openstreetmap": {
 				"/": ">=5.0.0"
 			},
+			"map-google-maps": {
+				"/": ">=4.0.0"
+			},
 			"map-common": {
 				"/": ">=5.0.0"
 			}

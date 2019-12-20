@@ -16,96 +16,129 @@ import '../FieldBase/FieldBase.es';
 
 import './GeolocationRegister.soy.js';
 
-import dom from 'metal-dom';
 import L from 'leaflet';
-import Component from 'metal-component';
+import MapGoogleMaps from 'map-google-maps/js/MapGoogleMaps.es.js';
 import MapOpenStreetMap from 'map-openstreetmap/js/MapOpenStreetMap.es';
+import Component from 'metal-component';
 import Soy from 'metal-soy';
-import { Config } from 'metal-state';
+import {Config} from 'metal-state';
 
-import { setJSONArrayValue } from '../util/setters.es';
+import {setJSONArrayValue} from '../util/setters.es';
 import templates from './Geolocation.soy.js';
 
 import 'leaflet/dist/leaflet.css';
-
 
 /**
  * Geolocation.
  * @extends Component
  */
 
-class Geolocation extends Component {
-	attached() {
-		const { readOnly } = this;
+const GEOLOCATE_CONFIG = {
+	geolocateTitle: Liferay.Language.get('geolocate'),
+	pathThemeImages: Liferay.ThemeDisplay.getPathThemeImages()
+};
 
-		this.setState({
-			geolocateTitle: Liferay.Language.get('geolocate'),
-			pathThemeImages: Liferay.ThemeDisplay.getPathThemeImages()
-		});
+const LEAFLET_CDN_IMAGES = 'https://npmcdn.com/leaflet@1.2.0/dist/images/';
+
+const MAP_PROVIDER = {
+	googleMaps: 'GoogleMaps',
+	openStreetMap: 'OpenStreetMap'
+};
+
+const {CONTROLS} = Liferay.MapBase;
+
+const MAP_CONFIG = {
+	boundingBox: '#targetGeo1',
+	controls: [CONTROLS.HOME, CONTROLS.PAN, CONTROLS.SEACH, CONTROLS.TYPE, CONTROLS.ZOOM],
+	geolocation: true,
+	position: {location: {lat: 0, lng: 0}},
+};
+
+class Geolocation extends Component {
+	
+	constructor(...args) {
+		super(...args);
+
+		this._mapComponent = null;
+	}
+
+	attached() {
+		const {readOnly} = this;
+
+		this.setState(GEOLOCATE_CONFIG);
 
 		if (!readOnly) {
-			setTimeout(() => {
-				window['L'] = L;
-				const mapcomp = new MapOpenStreetMap({
-					boundingBox: '#targetGeo1', 
-					controls: ['home', 'pan', 'search', 'type', 'zoom'], 
-					geolocation: true,
-					position: { location: { lat: 0, lng: 0 } }
-				});
-				// console.log(mapcomp);
-		}, 2000);
-	}
-}
-
-
-prepareStateForRender(state) {
-	// console.log('prepareStateForRender--> 1', {readOnly: state.readOnly});
-
-	const { predefinedValue } = state;
-	const predefinedValueArray = this._getArrayValue(predefinedValue);
-
-	return {
-		...state,
-		predefinedValue: predefinedValueArray[0] || '',
-		...{
-			geolocateTitle: Liferay.Language.get('geolocate'),
-			pathThemeImages: Liferay.ThemeDisplay.getPathThemeImages()
+			switch (this.mapProvider) {
+				case MAP_PROVIDER.openStreetMap:
+					this._createMapOpenStreetMaps(MAP_CONFIG);
+					break;
+				
+				case MAP_PROVIDER.googleMaps:
+					if (Liferay.Maps.gmapsReady) {
+						this._createGoogleMaps(MAP_CONFIG);
+					} else {
+						Liferay.once('gmapsReady', this._createGoogleMaps(MAP_CONFIG));
+					}	
+					break;
+			
+				default:
+					throw new Error('mapProvider is required!');
+			}
 		}
-	};
-}
-
-_getArrayValue(value) {
-	let newValue = value || '';
-
-	if (!Array.isArray(newValue)) {
-		newValue = [newValue];
 	}
 
-	return newValue;
-}
+	_createMapOpenStreetMaps(mapConfig) {
+		window['L'] = L; //Isso é realmente necessário?
 
-_handleFieldBlurred() {
-	// this.emit('fieldBlurred', {
-	// 	fieldInstance: this,
-	// 	originalEvent: window.event,
-	// 	value: window.event.target.value
-	// });
-}
+		window['L'].Icon.Default.imagePath = LEAFLET_CDN_IMAGES;
 
-_handleFieldFocused(event) {
-	// this.emit('fieldFocused', {
-	// 	fieldInstance: this,
-	// 	originalEvent: event
-	// });
-}
+		this._mapComponent = new MapOpenStreetMap(
+			mapConfig
+		);
 
-_handleValueChanged(event) {
-	// this.emit('fieldEdited', {
-	// 	fieldInstance: this,
-	// 	originalEvent: event,
-	// 	value: event.target.value
-	// });
-}
+		Liferay.MapBase.register(
+			this.name,
+			this._mapComponent,
+			'#targetGeo1'
+		);
+	}
+
+	_createGoogleMaps(mapConfig) {
+		this._mapComponent = new MapGoogleMaps(mapConfig);
+	
+		Liferay.MapBase.register(
+			this.name,
+			this._mapComponent,
+			'#targetGeo1'
+		);
+	};
+
+	prepareStateForRender(state) {
+		const {predefinedValue} = state;
+		const predefinedValueArray = this._getArrayValue(predefinedValue);
+
+		return {
+			...state,
+			predefinedValue: predefinedValueArray[0] || '',
+			...GEOLOCATE_CONFIG
+		};
+	}
+
+	disposed() {
+		if (this._mapComponent) {
+			this._mapComponent.dispose();
+		}
+	}
+
+	_getArrayValue(value) {
+		let newValue = value || '';
+
+		if (!Array.isArray(newValue)) {
+			newValue = [newValue];
+		}
+
+		return newValue;
+	}
 }
 
 Geolocation.STATE = {
@@ -162,6 +195,12 @@ Geolocation.STATE = {
 	 */
 
 	label: Config.string(),
+
+	/**
+	 * @default 'mapProvider'
+	 * TODO - Falta esse JSDOC aaa
+	 */
+	mapProvider: Config.string().value('OpenStreetMap'),
 
 	/**
 	 * @default undefined

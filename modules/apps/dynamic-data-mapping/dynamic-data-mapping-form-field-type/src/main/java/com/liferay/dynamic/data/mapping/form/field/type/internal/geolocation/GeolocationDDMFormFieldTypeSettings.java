@@ -54,8 +54,8 @@ import com.liferay.dynamic.data.mapping.form.field.type.DefaultDDMFormFieldTypeS
 						@DDMFormLayoutColumn(
 							size = 12,
 							value = {
-								"name", "predefinedValue", "indexType",
-								"localizable", "type", "showLabel", "repeatable"
+								"name", "indexType", "localizable", "type",
+								"showLabel", "repeatable"
 							}
 						)
 					}
