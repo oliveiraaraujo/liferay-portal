@@ -18,18 +18,22 @@ import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTemplateCont
 import com.liferay.dynamic.data.mapping.form.field.type.internal.util.DDMFormFieldTypeUtil;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.render.DDMFormFieldRenderingContext;
-import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.item.selector.ItemSelector;
+import com.liferay.item.selector.criteria.DownloadFileEntryItemSelectorReturnType;
+import com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType;
+import com.liferay.item.selector.criteria.image.criterion.ImageItemSelectorCriterion;
+import com.liferay.journal.item.selector.criterion.JournalItemSelectorCriterion;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
+import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.Map;
+
+import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -58,8 +62,8 @@ public class ImageDDMFormFieldTemplateContextContributor
 			ddmFormFieldRenderingContext.getHttpServletRequest();
 
 		return HashMapBuilder.<String, Object>put(
-			"itemSelectorAuthToken",
-			getItemSelectorAuthToken(httpServletRequest)
+			"itemSelectorURL",
+			getItemSelectorURL(httpServletRequest, ddmFormFieldRenderingContext)
 		).put(
 			"portletNamespace",
 			ddmFormFieldRenderingContext.getPortletNamespace()
@@ -75,28 +79,37 @@ public class ImageDDMFormFieldTemplateContextContributor
 		).build();
 	}
 
-	protected String getItemSelectorAuthToken(
-		HttpServletRequest httpServletRequest) {
+	protected String getItemSelectorURL(
+		HttpServletRequest httpServletRequest,
+		DDMFormFieldRenderingContext ddmFormFieldRenderingContext) {
 
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		if (themeDisplay == null) {
-			return StringPool.BLANK;
+		if (_itemSelector == null) {
+			return null;
 		}
 
-		try {
-			return AuthTokenUtil.getToken(
-				httpServletRequest,
-				portal.getControlPanelPlid(themeDisplay.getCompanyId()),
-				PortletKeys.ITEM_SELECTOR);
-		}
-		catch (PortalException pe) {
-			_log.error("Unable to generate item selector auth token ", pe);
-		}
+		JournalItemSelectorCriterion journalItemSelectorCriterion =
+			new JournalItemSelectorCriterion();
 
-		return StringPool.BLANK;
+		journalItemSelectorCriterion.setDesiredItemSelectorReturnTypes(
+			new FileEntryItemSelectorReturnType());
+
+		ImageItemSelectorCriterion imageItemSelectorCriterion =
+			new ImageItemSelectorCriterion();
+
+		imageItemSelectorCriterion.setDesiredItemSelectorReturnTypes(
+			new DownloadFileEntryItemSelectorReturnType());
+
+		PortletURL itemSelectorURL = _itemSelector.getItemSelectorURL(
+			RequestBackedPortletURLFactoryUtil.create(httpServletRequest),
+			ddmFormFieldRenderingContext.getPortletNamespace() +
+				"selectDocumentLibrary",
+			journalItemSelectorCriterion, imageItemSelectorCriterion);
+
+		return itemSelectorURL.toString();
 	}
 
 	@Reference
@@ -104,5 +117,8 @@ public class ImageDDMFormFieldTemplateContextContributor
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ImageDDMFormFieldTemplateContextContributor.class);
+
+	@Reference
+	private ItemSelector _itemSelector;
 
 }
