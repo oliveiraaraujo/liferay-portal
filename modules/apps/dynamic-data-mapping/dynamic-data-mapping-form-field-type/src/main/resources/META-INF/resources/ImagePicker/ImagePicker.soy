@@ -6,7 +6,7 @@
 	{@param? displayErrors: bool}
 	{@param? errorMessage: string}
 	{@param? id: string}
-	{@param? itemSelectorAuthToken: string}
+	{@param? itemSelectorURL: string}
 	{@param? label: string}
 	{@param? portletNamespace: string}
 	{@param? predefinedValue: string}
@@ -15,7 +15,6 @@
 	{@param? required: bool}
 	{@param? showLabel: bool}
 	{@param? spritemap: string}
-	{@param? themeDisplay: ?}
 	{@param? tip: string}
 	{@param? valid: bool}
 	{@param? value: ?}
@@ -30,11 +29,10 @@
 				{param ref: $name /}
 				{param store: [
 					'inputValue': $inputValue,
-					'itemSelectorAuthToken': $itemSelectorAuthToken,
+					'itemSelectorURL': $itemSelectorURL,
 					'name': $name,
 					'portletNamespace': $portletNamespace,
-					'readOnly': $readOnly,
-					'themeDisplay': $themeDisplay
+					'readOnly': $readOnly
 				] /}
 			{/call}
 		{/param}

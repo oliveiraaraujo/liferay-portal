@@ -14,11 +14,7 @@
 
 import ClayButton from '@clayui/button';
 import ClayForm, {ClayInput} from '@clayui/form';
-import {
-	createActionURL,
-	createPortletURL,
-	ItemSelectorDialog
-} from 'frontend-js-web';
+import {ItemSelectorDialog} from 'frontend-js-web';
 import React, {useState, useEffect} from 'react';
 
 import getConnectedReactComponentAdapter from '../util/ReactComponentAdapter.es';
@@ -27,7 +23,7 @@ import templates from './ImagePickerAdapter.soy.js';
 const ReactImagePicker = ({
 	dispatch,
 	inputValue = '',
-	itemSelectorAuthToken,
+	itemSelectorURL,
 	name,
 	portletNamespace,
 	readOnly
@@ -43,57 +39,6 @@ const ReactImagePicker = ({
 		setImageTitle(valueJSON.title || '');
 		setImageURL(valueJSON.url || '');
 	}, [inputValue]);
-
-	const getDocumentLibrarySelectorURL = () => {
-		const criterionJSON = {
-			desiredItemSelectorReturnTypes:
-				'com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType,com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType'
-		};
-
-		const uploadCriterionJSON = {
-			URL: getUploadURL(),
-			desiredItemSelectorReturnTypes:
-				'com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType,com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType'
-		};
-
-		const documentLibrarySelectorParameters = {
-			'0_json': JSON.stringify(criterionJSON),
-			'1_json': JSON.stringify(criterionJSON),
-			'2_json': JSON.stringify(uploadCriterionJSON),
-			criteria:
-				'com.liferay.journal.item.selector.criterion.JournalItemSelectorCriterion,com.liferay.item.selector.criteria.image.criterion.ImageItemSelectorCriterion',
-			doAsGroupId: Liferay.ThemeDisplay.getScopeGroupId(),
-			itemSelectedEventName: `${portletNamespace}selectDocumentLibrary`,
-			p_p_auth: itemSelectorAuthToken,
-			p_p_id: Liferay.PortletKeys.ITEM_SELECTOR,
-			p_p_mode: 'view',
-			p_p_state: 'pop_up',
-			refererGroupId: Liferay.ThemeDisplay.getScopeGroupId()
-		};
-
-		const documentLibrarySelectorURL = createPortletURL(
-			Liferay.ThemeDisplay.getLayoutRelativeControlPanelURL(),
-			documentLibrarySelectorParameters
-		);
-
-		return documentLibrarySelectorURL.toString();
-	};
-
-	const getUploadURL = () => {
-		const uploadParameters = {
-			cmd: 'add_temp',
-			'javax.portlet.action': '/document_library/upload_file_entry',
-			p_auth: Liferay.authToken,
-			p_p_id: Liferay.PortletKeys.DOCUMENT_LIBRARY
-		};
-
-		const uploadURL = createActionURL(
-			Liferay.ThemeDisplay.getLayoutRelativeURL(),
-			uploadParameters
-		);
-
-		return uploadURL.toString();
-	};
 
 	const _dispatchValue = (value, clear) => {
 		const newValue = {
@@ -137,7 +82,7 @@ const ReactImagePicker = ({
 		const itemSelectorDialog = new ItemSelectorDialog({
 			eventName: `${portletNamespace}selectDocumentLibrary`,
 			singleSelect: true,
-			url: getDocumentLibrarySelectorURL()
+			url: itemSelectorURL
 		});
 
 		itemSelectorDialog.on('selectedItemChange', _handleFieldChanged);
@@ -149,7 +94,7 @@ const ReactImagePicker = ({
 		<>
 			<ClayForm.Group>
 				<ClayInput.Group>
-					<ClayInput.GroupItem prepend>
+					<ClayInput.GroupItem className="d-none d-sm-block" prepend>
 						<input name={name} type="hidden" value={inputValue} />
 
 						<ClayInput
