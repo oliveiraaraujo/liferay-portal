@@ -18,6 +18,8 @@ import './ImagePickerAdapter.soy.js';
 
 import './ImagePickerRegister.soy.js';
 
+import './ReactImagePickerAdapter.es';
+
 import Component from 'metal-component';
 import Soy from 'metal-soy';
 import {Config} from 'metal-state';
