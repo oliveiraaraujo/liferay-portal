@@ -14,11 +14,18 @@
 
 import ClayButton from '@clayui/button';
 import ClayForm, {ClayInput} from '@clayui/form';
-import {ItemSelectorDialog} from 'frontend-js-web';
-import React, {useState, useEffect} from 'react';
+import ClayModal, {useModal} from '@clayui/modal';
+import {debounce, cancelDebounce, ItemSelectorDialog} from 'frontend-js-web';
+import React, {useState, useEffect, useRef} from 'react';
 
 import getConnectedReactComponentAdapter from '../util/ReactComponentAdapter.es';
 import templates from './ImagePickerAdapter.soy.js';
+
+const useDebounceCallback = (callback, milliseconds) => {
+	const callbackRef = useRef(debounce(callback, milliseconds));
+
+	return [callbackRef.current, () => cancelDebounce(callbackRef.current)];
+};
 
 const ReactImagePicker = ({
 	dispatch,
@@ -28,51 +35,50 @@ const ReactImagePicker = ({
 	portletNamespace,
 	readOnly
 }) => {
-	const [imageDescription, setImageDescription] = useState('');
-	const [imageTitle, setImageTitle] = useState('');
-	const [imageURL, setImageURL] = useState('');
+	const [imageValues, setImageValues] = useState({});
+	const [modalVisible, setModalVisible] = useState(false);
 
 	useEffect(() => {
-		const valueJSON = JSON.parse(inputValue || '{}');
-
-		setImageDescription(valueJSON.description || '');
-		setImageTitle(valueJSON.title || '');
-		setImageURL(valueJSON.url || '');
+		const {description = '', title = '', url = ''} = JSON.parse(
+			inputValue || '{}'
+		);
+		setImageValues({...{description, title, url}});
 	}, [inputValue]);
 
-	const _dispatchValue = (value, clear) => {
-		const newValue = {
-			...JSON.parse(value || inputValue),
-			description: imageDescription
-		};
+	const {observer} = useModal({
+		onClose: () => setModalVisible(false)
+	});
 
-		dispatch({
-			payload: clear ? '' : JSON.stringify(newValue),
-			type: 'value'
+	const _dispatchValue = (value, clear) => {
+		setImageValues(oldValues => {
+			const mergedValues = {...oldValues, ...value};
+			dispatch({
+				payload: clear ? '' : JSON.stringify(mergedValues),
+				type: 'value'
+			});
+
+			return mergedValues;
 		});
 	};
 
 	const _handleClearClick = () => {
-		setImageDescription('');
-		setImageTitle('');
-		setImageURL('');
-
-		_dispatchValue(null, true);
+		_dispatchValue({description: '', title: '', url: ''}, true);
 	};
 
-	const _handleDescriptionChange = event => {
-		const description = event.target.value;
+	const [debouncedTest] = useDebounceCallback(value => {
+		_dispatchValue({description: value}, false);
+	}, 500);
 
-		setImageDescription(description);
-
-		_dispatchValue();
-	};
+	const _handleDescriptionChange = ({target: {value}}) =>
+		debouncedTest(value);
 
 	const _handleFieldChanged = event => {
 		var selectedItem = event.selectedItem;
 
 		if (selectedItem) {
-			_dispatchValue(selectedItem.value);
+			const {title = '', url = ''} = JSON.parse(selectedItem.value);
+
+			_dispatchValue({title, url});
 		}
 	};
 
@@ -90,9 +96,12 @@ const ReactImagePicker = ({
 		itemSelectorDialog.open();
 	};
 
+	const spritemap =
+		Liferay.ThemeDisplay.getPathThemeImages() + '/lexicon/icons.svg';
+
 	return (
 		<>
-			<ClayForm.Group>
+			<ClayForm.Group style={{marginBottom: '0.5rem'}}>
 				<ClayInput.Group>
 					<ClayInput.GroupItem className="d-none d-sm-block" prepend>
 						<input name={name} type="hidden" value={inputValue} />
@@ -103,7 +112,7 @@ const ReactImagePicker = ({
 							onClick={_handleItemSelectorTriggerClick}
 							readOnly
 							type="text"
-							value={imageTitle}
+							value={imageValues.title}
 						/>
 					</ClayInput.GroupItem>
 
@@ -118,7 +127,7 @@ const ReactImagePicker = ({
 						</ClayButton>
 					</ClayInput.GroupItem>
 
-					{imageURL && (
+					{imageValues.url && (
 						<ClayInput.GroupItem shrink>
 							<ClayButton
 								disabled={readOnly}
@@ -132,17 +141,44 @@ const ReactImagePicker = ({
 					)}
 				</ClayInput.Group>
 			</ClayForm.Group>
+			{imageValues.url && modalVisible && (
+				<ClayModal
+					className="image-picker-preview-modal"
+					observer={observer}
+					size="full-screen"
+					spritemap={spritemap}
+				>
+					<ClayModal.Header />
+					<ClayModal.Body>
+						<img
+							alt=""
+							className="d-block img-fluid mb-2 mx-auto rounded"
+							src={imageValues.url}
+							style={{maxHeight: '95%'}}
+						/>
+						<p
+							className="font-weight-light text-center"
+							style={{color: '#FFFFFF'}}
+						>
+							{imageValues.description}
+						</p>
+					</ClayModal.Body>
+				</ClayModal>
+			)}
 
-			{imageURL && (
+			{imageValues.url && (
 				<>
 					<img
 						alt=""
-						className="img-fluid mb-2 rounded"
-						src={imageURL}
+						className="d-block img-fluid mb-2 rounded"
+						onClick={() => setModalVisible(true)}
+						src={imageValues.url}
+						style={{cursor: 'zoom-in'}}
 					/>
 
 					<ClayForm.Group>
 						<ClayInput
+							defaultValue={imageValues.description}
 							disabled={readOnly}
 							name={`${name}-description`}
 							onChange={_handleDescriptionChange}
@@ -150,7 +186,6 @@ const ReactImagePicker = ({
 								'add-image-description'
 							)}
 							type="text"
-							value={imageDescription}
 						/>
 					</ClayForm.Group>
 				</>
