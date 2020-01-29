@@ -1,7 +1,8 @@
 {
 	"dependencies": {
-		"@clayui/button": "3.0.3",
-		"@clayui/form": "3.2.1",
+		"@clayui/button": "3.1.0",
+		"@clayui/form": "3.3.0",
+		"@clayui/modal": "3.1.4",
 		"classnames": "2.2.6",
 		"clay-button": "2.20.0",
 		"clay-checkbox": "2.20.0",
