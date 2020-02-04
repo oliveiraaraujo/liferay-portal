@@ -14,9 +14,9 @@
 
 import '../FieldBase/FieldBase.es';
 
-import './ImagePickerAdapter.soy.js';
+import './ImagePickerAdapter.soy';
 
-import './ImagePickerRegister.soy.js';
+import './ImagePickerRegister.soy';
 
 import './ReactImagePickerAdapter.es';
 
@@ -24,7 +24,7 @@ import Component from 'metal-component';
 import Soy from 'metal-soy';
 import {Config} from 'metal-state';
 
-import templates from './ImagePicker.soy.js';
+import templates from './ImagePicker.soy';
 
 class ImagePicker extends Component {
 	dispatchEvent(event, name, value) {
