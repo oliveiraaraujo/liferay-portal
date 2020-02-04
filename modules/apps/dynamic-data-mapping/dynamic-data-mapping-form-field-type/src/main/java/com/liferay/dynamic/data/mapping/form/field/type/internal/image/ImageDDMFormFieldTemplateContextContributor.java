@@ -23,13 +23,9 @@ import com.liferay.item.selector.criteria.DownloadFileEntryItemSelectorReturnTyp
 import com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType;
 import com.liferay.item.selector.criteria.image.criterion.ImageItemSelectorCriterion;
 import com.liferay.journal.item.selector.criterion.JournalItemSelectorCriterion;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.Map;
 
@@ -58,12 +54,11 @@ public class ImageDDMFormFieldTemplateContextContributor
 		DDMFormField ddmFormField,
 		DDMFormFieldRenderingContext ddmFormFieldRenderingContext) {
 
-		HttpServletRequest httpServletRequest =
-			ddmFormFieldRenderingContext.getHttpServletRequest();
-
 		return HashMapBuilder.<String, Object>put(
 			"itemSelectorURL",
-			getItemSelectorURL(httpServletRequest, ddmFormFieldRenderingContext)
+			getItemSelectorURL(
+				ddmFormFieldRenderingContext.getHttpServletRequest(),
+				ddmFormFieldRenderingContext)
 		).put(
 			"portletNamespace",
 			ddmFormFieldRenderingContext.getPortletNamespace()
@@ -82,10 +77,6 @@ public class ImageDDMFormFieldTemplateContextContributor
 	protected String getItemSelectorURL(
 		HttpServletRequest httpServletRequest,
 		DDMFormFieldRenderingContext ddmFormFieldRenderingContext) {
-
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
 
 		if (_itemSelector == null) {
 			return null;
@@ -114,9 +105,6 @@ public class ImageDDMFormFieldTemplateContextContributor
 
 	@Reference
 	protected Portal portal;
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		ImageDDMFormFieldTemplateContextContributor.class);
 
 	@Reference
 	private ItemSelector _itemSelector;
