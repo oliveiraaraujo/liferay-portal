@@ -108,13 +108,23 @@ const ReactImagePicker = ({
 	const spritemap =
 		Liferay.ThemeDisplay.getPathThemeImages() + '/lexicon/icons.svg';
 
+	const placeholder = readOnly
+		? ''
+		: Liferay.Language.get('add-image-description');
+
+	let {height = '0', width = '0'} = {
+		...JSON.parse(inputValue || '{}'),
+	};
+
+	height = `${height}px`;
+	width = `${width}px`;
+
 	return (
 		<>
 			<ClayForm.Group style={{marginBottom: '0.5rem'}}>
+				<input name={name} type="hidden" value={inputValue} />
 				<ClayInput.Group>
 					<ClayInput.GroupItem className="d-none d-sm-block" prepend>
-						<input name={name} type="hidden" value={inputValue} />
-
 						<ClayInput
 							className="bg-light"
 							disabled={readOnly}
@@ -150,6 +160,7 @@ const ReactImagePicker = ({
 					)}
 				</ClayInput.Group>
 			</ClayForm.Group>
+
 			{imageValues.url && modalVisible && (
 				<ClayModal
 					className="image-picker-preview-modal"
@@ -162,8 +173,9 @@ const ReactImagePicker = ({
 						<img
 							alt={imageValues.description}
 							className="d-block img-fluid mb-2 mx-auto rounded"
+							onClick={() => setModalVisible(false)}
 							src={imageValues.url}
-							style={{maxHeight: '95%'}}
+							style={{cursor: 'zoom-out', maxHeight: '95%'}}
 						/>
 						<p
 							className="font-weight-light text-center"
@@ -177,24 +189,36 @@ const ReactImagePicker = ({
 
 			{imageValues.url && (
 				<>
-					<img
-						alt={imageValues.description}
-						className="d-block img-fluid mb-2 rounded"
-						onClick={() => setModalVisible(true)}
-						src={imageValues.url}
-						style={{cursor: 'zoom-in'}}
-					/>
+					<div className="image-picker-preview">
+						<img
+							alt={imageValues.description}
+							className="d-block img-fluid mb-2 rounded"
+							src={imageValues.url}
+						/>
+						<div
+							className="image-picker-priview-backdor"
+							onClick={() => setModalVisible(true)}
+							style={{
+								height,
+								width,
+							}}
+						>
+							<svg className="lexicon-icon">
+								<use xlinkHref={`${spritemap}#search`} />
+							</svg>
+						</div>
+					</div>
 
-					<ClayInput
-						defaultValue={imageValues.description}
-						disabled={readOnly}
-						name={`${name}-description`}
-						onChange={_handleDescriptionChange}
-						placeholder={Liferay.Language.get(
-							'add-image-description'
-						)}
-						type="text"
-					/>
+					<ClayForm.Group className="has-error">
+						<ClayInput
+							defaultValue={imageValues.description}
+							disabled={readOnly}
+							name={`${name}-description`}
+							onChange={_handleDescriptionChange}
+							placeholder={placeholder}
+							type="text"
+						/>
+					</ClayForm.Group>
 				</>
 			)}
 		</>
