@@ -16,7 +16,7 @@ import {ClayInput} from '@clayui/form';
 import {Editor} from 'frontend-editor-ckeditor-web';
 import React, {useEffect, useRef, useState} from 'react';
 
-import getConnectedReactComponentAdapter from '../util/ReactComponentAdapter.es';
+import getConnectedReactComponentAdapter from '../util/ReactComponentAdapterWithObserver.es';
 import templates from './RichTextAdapter.soy';
 
 const CKEDITOR_CONFIG = {
