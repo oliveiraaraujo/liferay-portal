@@ -21,7 +21,7 @@ import SearchInput from '../search-input/SearchInput.es';
 const Sidebar = React.forwardRef(
 	({children, className, onSearch = null}, ref) => {
 		return (
-			<div className={className} ref={ref}>
+			<div className={classNames(className, 'data-layout-builder-sidebar')} ref={ref}>
 				{onSearch && (
 					<ClayForm onSubmit={event => event.preventDefault()}>
 						<SidebarSearchInput onSearch={onSearch} />
