@@ -132,7 +132,7 @@ renderResponse.setTitle((entry != null) ? BlogsEntryUtil.getDisplayTitle(resourc
 					<div class="col-md-8 col-md-offset-2">
 						<div class="cover-image-caption <%= (coverImageFileEntryId == 0) ? "invisible" : "" %>">
 							<small>
-								<liferay-ui:input-editor
+								<liferay-editor:editor
 									contents="<%= coverImageCaption %>"
 									editorName="alloyeditor"
 									name="coverImageCaptionEditor"
@@ -158,7 +158,7 @@ renderResponse.setTitle((entry != null) ? BlogsEntryUtil.getDisplayTitle(resourc
 						</div>
 
 						<div class="entry-content form-group">
-							<liferay-ui:input-editor
+							<liferay-editor:editor
 								contents="<%= content %>"
 								editorName='<%= PropsUtil.get("editor.wysiwyg.portal-web.docroot.html.portlet.blogs.edit_entry.jsp") %>'
 								name="contentEditor"
@@ -167,7 +167,7 @@ renderResponse.setTitle((entry != null) ? BlogsEntryUtil.getDisplayTitle(resourc
 								required="<%= true %>"
 							>
 								<aui:validator name="required" />
-							</liferay-ui:input-editor>
+							</liferay-editor:editor>
 						</div>
 
 						<aui:input name="content" type="hidden" />
