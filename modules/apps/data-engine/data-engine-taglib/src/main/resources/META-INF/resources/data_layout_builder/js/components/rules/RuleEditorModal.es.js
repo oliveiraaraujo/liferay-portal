@@ -12,6 +12,8 @@
  * details.
  */
 
+import ClayButton from '@clayui/button';
+import {ClayInput} from '@clayui/form';
 import ClayModal, {useModal} from '@clayui/modal';
 import {RuleEditor} from 'dynamic-data-mapping-form-builder';
 import React, {useContext, useEffect, useRef, useState} from 'react';
@@ -120,18 +122,37 @@ const RuleEditorModalContent = ({onClose}) => {
 			<ClayModal.Header>
 				{Liferay.Language.get('add-rule')}
 			</ClayModal.Header>
+			<ClayModal.Header withTitle={false}>
+				<ClayInput.Group className="pl-4 pr-4">
+					<Button displayType='secondary' symbol='en-us' />
+
+					<ClayInput.GroupItem>
+						<ClayInput
+							aria-label={Liferay.Language.get('untitled-rule')}
+							className="form-control-inline"
+							placeholder={Liferay.Language.get('untitled-rule')}
+							type="text"
+						/>
+					</ClayInput.GroupItem>
+				</ClayInput.Group>
+			</ClayModal.Header>
 			<ClayModal.Body>
-				<div ref={ruleEditorRef}></div>
+				<div className="pl-4 pr-4" ref={ruleEditorRef}></div>
 			</ClayModal.Body>
 			<ClayModal.Footer
 				last={
-					<Button
-						onClick={() => {
-							ruleEditor._handleRuleAdded();
-						}}
-					>
-						{Liferay.Language.get('save')}
-					</Button>
+					<ClayButton.Group spaced>
+						<Button displayType="secondary" onClick={onClose}>
+							{Liferay.Language.get('cancel')}
+						</Button>
+						<Button
+							onClick={() => {
+								ruleEditor._handleRuleAdded();
+							}}
+						>
+							{Liferay.Language.get('save')}
+						</Button>
+					</ClayButton.Group>
 				}
 			/>
 		</>
@@ -144,15 +165,14 @@ const RuleEditorModal = ({isVisible, onClose}) => {
 	});
 
 	if (!isVisible) {
-		return <></>;
+		return null;
 	}
 
 	return (
 		<ClayModal
 			className="data-layout-builder-rule-editor-modal"
 			observer={observer}
-			size="lg"
-			status="info"
+			size="full-screen"
 		>
 			<RuleEditorModalContent onClose={onClose} />
 		</ClayModal>
