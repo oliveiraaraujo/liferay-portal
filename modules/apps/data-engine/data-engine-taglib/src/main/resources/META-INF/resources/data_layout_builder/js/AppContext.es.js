@@ -66,7 +66,7 @@ const initialState = {
 	fieldTypes: [],
 	focusedCustomObjectField: {},
 	focusedField: {},
-	sidebarOpen: false,
+	sidebarOpen: true,
 	sidebarPanelId: 'fields',
 };
 
