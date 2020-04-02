@@ -79,7 +79,6 @@ export default function MultiPanelSidebar({panels, sidebarPanels}) {
 	);
 
 	useEffect(() => {
-		const productMenuOpen = document.querySelector('.product-menu-open');
 		const sideNavigation = Liferay.SideNavigation.instance(
 			document.querySelector('.product-menu-toggle')
 		);
@@ -93,10 +92,6 @@ export default function MultiPanelSidebar({panels, sidebarPanels}) {
 				type: 'SWITCH_SIDEBAR_PANEL',
 			});
 		};
-
-		if (productMenuOpen && sidebarOpen) {
-			onCloseSidebar();
-		}
 
 		const sideNavigationListener = sideNavigation.on(
 			'openStart.lexicon.sidenav',
