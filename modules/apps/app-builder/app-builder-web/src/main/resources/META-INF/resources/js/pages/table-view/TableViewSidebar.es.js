@@ -114,7 +114,7 @@ export default ({onAddFieldName, onClose}) => {
 
 	return (
 		<Sidebar
-			className="app-builder-sidebar"
+			className="app-builder-sidebar main"
 			closeable={!displayFieldFilters || sidebarClosed}
 			closed={sidebarClosed}
 			onSearch={displayFieldFilters ? false : setKeywords}
