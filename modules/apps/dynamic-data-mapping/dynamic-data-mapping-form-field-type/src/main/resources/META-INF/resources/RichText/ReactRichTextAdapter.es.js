@@ -14,7 +14,8 @@
 
 import {ClayInput} from '@clayui/form';
 import {Editor} from 'frontend-editor-ckeditor-web';
-import React, {useEffect, useRef, useState} from 'react';
+import {cancelDebounce, debounce} from 'frontend-js-web';
+import React, {useRef} from 'react';
 
 import getConnectedReactComponentAdapter from '../util/ReactComponentAdapterWithObserver.es';
 import templates from './RichTextAdapter.soy';
@@ -68,56 +69,32 @@ const CKEDITOR_CONFIG = {
 	],
 };
 
-/**
- * Use Sync Value to synchronize the initial value with the current internal
- * value, only update the internal value with the new initial value if the
- * values are different and when the value is not changed for more than ms.
- */
-const useSyncValue = newValue => {
-	// Maintains the reference of the last value to check in later renderings if the
-	// value is new or keeps the same, it covers cases where the value typed by
-	// the user is sent to LayoutProvider but it does not descend with the new changes.
-	const previousValueRef = useRef(newValue);
+const useDebounceCallback = (callback, milliseconds) => {
+	const callbackRef = useRef(debounce(callback, milliseconds));
 
-	const [value, setValue] = useState(newValue);
-
-	useEffect(() => {
-		const handler = setTimeout(() => {
-			if (value !== newValue && previousValueRef.current !== newValue) {
-				previousValueRef.current = newValue;
-				setValue(newValue);
-			}
-		}, 300);
-
-		return () => {
-			clearTimeout(handler);
-		};
-	}, [newValue, value]);
-
-	return [value, setValue];
+	return [callbackRef.current, () => cancelDebounce(callbackRef.current)];
 };
 
 const RichText = ({data, dispatch, name, readOnly}) => {
-	const [value, setValue] = useSyncValue(data);
-
 	const editorProps = {
 		config: CKEDITOR_CONFIG,
-		data: value,
+		data,
+		editorName: `editor_${name}`,
 	};
+
+	const [debouncedInput] = useDebounceCallback(event => {
+		dispatch({
+			payload: event.editor.getData(),
+			type: 'value',
+		});
+	}, 500);
 
 	if (readOnly) {
 		editorProps.readOnly = true;
 		editorProps.style = {pointerEvents: 'none'};
 	}
 	else {
-		editorProps.onChange = event => {
-			setValue(event.editor.getData());
-
-			dispatch({
-				payload: event.editor.getData(),
-				type: 'value',
-			});
-		};
+		editorProps.onChange = debouncedInput;
 	}
 
 	const style = {
