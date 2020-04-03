@@ -17,8 +17,9 @@ import React, {useContext, useState} from 'react';
 
 import AppContext from '../../AppContext.es';
 import EmptyState from '../empty-state/EmptyState.es';
-import SearchInput from '../search-input/SearchInput.es';
+import {SearchInputWithForm} from '../search-input/SearchInput.es';
 import RuleEditorModal from './RuleEditorModal.es';
+import RuleItem from './RuleItem.es';
 
 export default () => {
 	const [isRulesEditorVisible, setRulesEditorVisible] = useState(false);
@@ -37,11 +38,15 @@ export default () => {
 		}))
 		.filter(({name}) => new RegExp(searchText, 'ig').test(name));
 
+	const toggleRulesEditor = () => {
+		setRulesEditorVisible(!isRulesEditorVisible);
+	};
+
 	return (
 		<>
 			<div className="autofit-row sidebar-section">
 				<div className="autofit-col autofit-col-expand">
-					<SearchInput
+					<SearchInputWithForm
 						onChange={searchText => setSearchText(searchText)}
 					/>
 				</div>
@@ -49,9 +54,7 @@ export default () => {
 				<div className="autofit-col ml-2">
 					<ClayButtonWithIcon
 						displayType="primary"
-						onClick={() =>
-							setRulesEditorVisible(!isRulesEditorVisible)
-						}
+						onClick={() => toggleRulesEditor()}
 						symbol="plus"
 					/>
 				</div>
@@ -63,9 +66,7 @@ export default () => {
 						button: () => (
 							<ClayButton
 								displayType="secondary"
-								onClick={() =>
-									setRulesEditorVisible(!isRulesEditorVisible)
-								}
+								onClick={() => toggleRulesEditor()}
 							>
 								{Liferay.Language.get('add-rule')}
 							</ClayButton>
@@ -76,20 +77,21 @@ export default () => {
 					small
 				/>
 			) : (
-				filtereDataRules.map(
-					({conditions, logicalOperator, name}, index) => (
-						<p key={index}>
-							<div>name: {name}</div>
-							<div>conditions: {JSON.stringify(conditions)}</div>
-							<div>logicalOperator: {logicalOperator}</div>
-						</p>
-					)
-				)
+				<div className="autofit-col mt-4 rule-list">
+					<hr />
+					{filtereDataRules.map((rule, index) => (
+						<RuleItem
+							key={index}
+							rule={rule}
+							toggleRulesEditor={toggleRulesEditor}
+						/>
+					))}
+				</div>
 			)}
 
 			<RuleEditorModal
 				isVisible={isRulesEditorVisible}
-				onClose={() => setRulesEditorVisible(false)}
+				onClose={() => toggleRulesEditor()}
 			/>
 		</>
 	);

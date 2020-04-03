@@ -1,0 +1,12 @@
+.custom-panel {
+	.collapse-icon-options {
+		position: absolute;
+		right: 16px;
+		top: 25%;
+	}
+
+	.collapse-icon-closed.with-actions,
+	.collapse-icon-open.with-actions {
+		right: 56px !important;
+	}
+}
