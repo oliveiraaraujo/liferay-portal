@@ -47,6 +47,8 @@ if (recordVersion != null) {
 
 String defaultLanguageId = ParamUtil.getString(request, "defaultLanguageId");
 
+String themeDisplayLanguageId = themeDisplay.getLanguageId();
+
 if (ddmFormValues != null) {
 	defaultLanguageId = LocaleUtil.toLanguageId(ddmFormValues.getDefaultLocale());
 }
@@ -190,7 +192,7 @@ else {
 							classNameId="<%= classNameId %>"
 							classPK="<%= classPK %>"
 							ddmFormValues="<%= ddmFormValues %>"
-							defaultEditLocale="<%= LocaleUtil.fromLanguageId(defaultLanguageId) %>"
+							defaultEditLocale="<%= LocaleUtil.fromLanguageId(themeDisplayLanguageId) %>"
 							defaultLocale="<%= LocaleUtil.fromLanguageId(defaultLanguageId) %>"
 							groupId="<%= recordSet.getGroupId() %>"
 							repeatable="<%= translating ? false : true %>"
