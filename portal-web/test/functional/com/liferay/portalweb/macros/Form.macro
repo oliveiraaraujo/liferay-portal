@@ -422,6 +422,8 @@ definition {
 		}
 
 		Alert.viewSuccessMessage();
+
+		Pause(locator1 = "2000");
 	}
 
 	macro saveElementSet {
