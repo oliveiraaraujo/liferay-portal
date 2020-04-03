@@ -1,12 +1,4 @@
 .data-layout-builder-rule-editor-modal {
-	.liferay-ddm-form-rule-builder-header {
-		display: none;
-	}
-
-	.modal-body:nth-child(3) {
-		background-color: #f1f2f5;
-	}
-
 	.form-builder-rule-builder {
 		.modal {
 			display: none;
@@ -15,5 +7,13 @@
 
 	.liferay-ddm-form-rule-builder-footer {
 		display: none;
+	}
+
+	.liferay-ddm-form-rule-builder-header {
+		display: none;
+	}
+
+	.modal-body:nth-child(3) {
+		background-color: #f1f2f5;
 	}
 }

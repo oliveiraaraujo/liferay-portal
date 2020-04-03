@@ -21,7 +21,6 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 import AppContext from '../../AppContext.es';
 import DataLayoutBuilderContext from '../../data-layout-builder/DataLayoutBuilderContext.es';
 import {getItem} from '../../utils/client.es';
-import Button from '../button/Button.es';
 
 class RuleEditorWrapper extends RuleEditor {
 	getChildContext() {
@@ -124,8 +123,6 @@ const RuleEditorModalContent = ({onClose}) => {
 			</ClayModal.Header>
 			<ClayModal.Header withTitle={false}>
 				<ClayInput.Group className="pl-4 pr-4">
-					<Button displayType='secondary' symbol='en-us' />
-
 					<ClayInput.GroupItem>
 						<ClayInput
 							aria-label={Liferay.Language.get('untitled-rule')}
@@ -142,16 +139,16 @@ const RuleEditorModalContent = ({onClose}) => {
 			<ClayModal.Footer
 				last={
 					<ClayButton.Group spaced>
-						<Button displayType="secondary" onClick={onClose}>
+						<ClayButton displayType="secondary" onClick={onClose}>
 							{Liferay.Language.get('cancel')}
-						</Button>
-						<Button
+						</ClayButton>
+						<ClayButton
 							onClick={() => {
 								ruleEditor._handleRuleAdded();
 							}}
 						>
 							{Liferay.Language.get('save')}
-						</Button>
+						</ClayButton>
 					</ClayButton.Group>
 				}
 			/>
