@@ -25,7 +25,7 @@ const Sidebar = React.forwardRef(
 				className={classNames(className, 'data-layout-builder-sidebar')}
 				ref={ref}
 			>
-				<div className='sidebar'>
+				<div className="sidebar">
 					{onSearch && (
 						<ClayForm onSubmit={event => event.preventDefault()}>
 							<SidebarSearchInput onSearch={onSearch} />
