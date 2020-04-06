@@ -21,7 +21,7 @@ import React from 'react';
 import {useTransitionHeight} from '../../hooks/useTransition.es';
 import DropDown from '../drop-down/DropDown.es';
 
-const CollapsablePanel = ({actions, children, title, type}) => {
+const CollapsablePanel = ({actions, children, title}) => {
 	const panelRef = React.useRef(null);
 	const [expanded, setExpaned] = React.useState(false);
 
@@ -36,13 +36,13 @@ const CollapsablePanel = ({actions, children, title, type}) => {
 		(expanded && !transitioning)
 	);
 
-	const hasActions = actions && actions.length;
-
 	return (
 		<div
-			className={classNames('collapsable-panel', 'panel', {
-				[`panel-${type}`]: type,
-			})}
+			className={classNames(
+				'collapsable-panel',
+				'panel',
+				'panel-unstyled'
+			)}
 			role="tablist"
 		>
 			<>
@@ -63,27 +63,27 @@ const CollapsablePanel = ({actions, children, title, type}) => {
 					>
 						<>
 							<span
-								className={classNames('collapse-icon-closed', {
-									actions: hasActions,
-								})}
+								className={classNames(
+									'collapse-icon-closed',
+									'actions'
+								)}
 							>
 								<ClayIcon symbol="angle-down" />
 							</span>
 							<span
-								className={classNames('collapse-icon-open', {
-									actions: hasActions,
-								})}
+								className={classNames(
+									'collapse-icon-open',
+									'actions'
+								)}
 							>
 								<ClayIcon symbol="angle-up" />
 							</span>
 						</>
 					</ClayButton>
 
-					{hasActions && (
-						<span className="collapse-icon-options">
-							<DropDown actions={actions} />
-						</span>
-					)}
+					<span className="collapse-icon-options">
+						<DropDown actions={actions} />
+					</span>
 				</div>
 
 				<div

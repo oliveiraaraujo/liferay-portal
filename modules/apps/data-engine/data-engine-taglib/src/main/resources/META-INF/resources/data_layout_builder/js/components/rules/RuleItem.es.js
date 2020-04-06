@@ -29,17 +29,6 @@ const Text = ({children = '', className = ''}) => (
 export default function RuleItem({rule, toggleRulesEditorVisibility}) {
 	const {actions, conditions, logicalOperator, name} = rule;
 
-	const dropDownActions = [
-		{
-			action: () => toggleRulesEditorVisibility(rule),
-			name: Liferay.Language.get('edit'),
-		},
-		{
-			action: confirmDelete('../'),
-			name: Liferay.Language.get('delete'),
-		},
-	];
-
 	const RULE_SENTENCES = {
 		and: Liferay.Language.get('and'),
 		field: Liferay.Language.get('field'),
@@ -49,9 +38,17 @@ export default function RuleItem({rule, toggleRulesEditorVisibility}) {
 
 	return (
 		<CollapsablePanel
-			actions={dropDownActions}
+			actions={[
+				{
+					action: () => toggleRulesEditorVisibility(rule),
+					name: Liferay.Language.get('edit'),
+				},
+				{
+					action: confirmDelete('../'),
+					name: Liferay.Language.get('delete'),
+				},
+			]}
 			title={name}
-			type="unstyled"
 		>
 			<CollapsablePanel.Body>
 				<span>
