@@ -419,7 +419,8 @@ public class MillerColumnsDisplayContext {
 							_httpServletRequest, "discard-conversion-draft")
 					).put(
 						"url",
-						_layoutsAdminDisplayContext.getDeleteLayoutURL(layout)
+						_layoutsAdminDisplayContext.getDeleteLayoutURL(
+							draftLayout)
 					));
 			}
 		}
