@@ -18,18 +18,18 @@ import ClayPanel from '@clayui/panel';
 import classNames from 'classnames';
 import React from 'react';
 
-import {useTransitionHeight} from '../../hooks/useTransition.es';
+import useHeightTransition from '../../hooks/useHeightTransition.es.';
 import DropDown from '../drop-down/DropDown.es';
 
 const CollapsablePanel = ({actions, children, title}) => {
 	const panelRef = React.useRef(null);
-	const [expanded, setExpaned] = React.useState(false);
+	const [expanded, setExpanded] = React.useState(false);
 
 	const [
 		transitioning,
 		handleTransitionEnd,
-		handleClickToggler,
-	] = useTransitionHeight(expanded, setExpaned, panelRef);
+		startTransition,
+	] = useHeightTransition(expanded, setExpanded, panelRef);
 
 	const showIconCollapsed = !(
 		(!expanded && transitioning) ||
@@ -58,7 +58,7 @@ const CollapsablePanel = ({actions, children, title}) => {
 							}
 						)}
 						displayType="unstyled"
-						onClick={handleClickToggler}
+						onClick={startTransition}
 						role="tab"
 					>
 						<>

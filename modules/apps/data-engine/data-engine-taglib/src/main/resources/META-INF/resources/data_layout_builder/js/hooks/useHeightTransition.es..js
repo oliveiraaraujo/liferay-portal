@@ -30,7 +30,7 @@ const setCollapseHeight = collapseElementRef => {
 	}
 };
 
-export const useTransitionHeight = (visible, setVisible, contentRef) => {
+export default (visible, setVisible, contentRef) => {
 	const [transitioning, setTransitioning] = React.useState(false);
 
 	React.useEffect(() => {
@@ -54,7 +54,7 @@ export const useTransitionHeight = (visible, setVisible, contentRef) => {
 		}
 	};
 
-	const willTriggerTransition = event => {
+	const startTransition = event => {
 		event.preventDefault();
 
 		if (visible && !transitioning) {
@@ -66,5 +66,5 @@ export const useTransitionHeight = (visible, setVisible, contentRef) => {
 		}
 	};
 
-	return [transitioning, handleTransitionEnd, willTriggerTransition];
+	return [transitioning, handleTransitionEnd, startTransition];
 };
