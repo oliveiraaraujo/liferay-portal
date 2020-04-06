@@ -457,7 +457,7 @@ public class MillerColumnsDisplayContext {
 						"url", editLayoutURL
 					));
 			}
-			else {
+			else if (layout.isTypeContent()) {
 				jsonArray.put(
 					JSONUtil.put(
 						"id", "editLayout"
