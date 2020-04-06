@@ -83,6 +83,8 @@ public class AssetListEntryLocalServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
+		// Asset list entry
+
 		AssetListEntry assetListEntry =
 			assetListEntryPersistence.findByPrimaryKey(assetListEntryId);
 
@@ -223,6 +225,8 @@ public class AssetListEntryLocalServiceImpl
 	public void deleteAssetEntrySelection(
 			long assetListEntryId, long segmentsEntryId, int position)
 		throws PortalException {
+
+		// Asset list entry
 
 		AssetListEntry assetListEntry =
 			assetListEntryPersistence.findByPrimaryKey(assetListEntryId);
