@@ -16,10 +16,13 @@
 			margin-bottom: 0;
 			padding: 23.6px;
 		}
+
+		button:focus {
+			box-shadow: none !important;
+		}
 	}
 
 	.panel-unstyled:hover {
 		background-color: #f0f5ff;
-		cursor: pointer;
 	}
 }

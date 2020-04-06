@@ -2,13 +2,8 @@
 	.collapse-icon-options {
 		position: absolute;
 		right: 16px;
-		top: 25%;
-	}
-
-	.panel-header {
-		button:focus {
-			box-shadow: none !important;
-		}
+		top: 16px;
+		z-index: 999 !important;
 	}
 
 	.collapse-icon-closed.actions,

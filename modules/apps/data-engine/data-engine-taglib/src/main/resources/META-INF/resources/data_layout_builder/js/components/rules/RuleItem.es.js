@@ -18,13 +18,19 @@ import React from 'react';
 import {confirmDelete} from '../../utils/client.es';
 import CollapsablePanel from '../collapsable-panel/CollapsablePanel.es';
 
-const Label = ({children, displayType = 'success'}) => (
-	<ClayLabel displayType={displayType}>{children}</ClayLabel>
+const Text = ({children = ''}) => (
+	<span className="text-lowercase">{`${children} `}</span>
 );
 
-const Text = ({children = '', className = ''}) => (
-	<span className={className}>{`${children.toLowerCase()} `}</span>
-);
+const OPERATORS = {
+	'belongs-to': Liferay.Language.get('belongs-to'),
+	contains: Liferay.Language.get('contains'),
+	'equals-to': Liferay.Language.get('equals-to'),
+	'is-empty': Liferay.Language.get('is-empty'),
+	'not-contains': Liferay.Language.get('not-contains'),
+	'not-equals-to': Liferay.Language.get('not-equals-to'),
+	'not-is-empty': Liferay.Language.get('not-is-empty'),
+};
 
 export default function RuleItem({rule, toggleRulesEditorVisibility}) {
 	const {actions, conditions, logicalOperator, name} = rule;
@@ -44,35 +50,45 @@ export default function RuleItem({rule, toggleRulesEditorVisibility}) {
 			title={name}
 		>
 			<span>
-				<Text className="text-capitalize">
-					{Liferay.Language.get('if')}
-				</Text>
+				<span className="text-capitalize">
+					{`${Liferay.Language.get('if')} `}
+				</span>
 				{conditions.map(({operands, operator}, index) => {
 					const [first, last] = operands;
 
 					return (
 						<>
 							<Text>{Liferay.Language.get('field')}</Text>
-							<Label>{first.label}</Label>
-							<Label displayType="secondary">{operator}</Label>
-							<Text>{Liferay.Language.get('value')}</Text>
-							<Label displayType="info">{last.label}</Label>
-							{conditions.length < index && (
-								<Label displayType="warning">
+							<ClayLabel displayType="success">
+								{first.label}
+							</ClayLabel>
+							<ClayLabel displayType="secondary">
+								{OPERATORS[operator] || operator}
+							</ClayLabel>
+							{last && last.value && (
+								<ClayLabel displayType="info">
+									{last.value}
+								</ClayLabel>
+							)}
+							{conditions.length !== index + 1 && (
+								<ClayLabel displayType="warning">
 									{logicalOperator}
-								</Label>
+								</ClayLabel>
 							)}
 						</>
 					);
 				})}
+				<ClayLabel displayType="warning">
+					{Liferay.Language.get('then')}
+				</ClayLabel>
 				{actions.map(({action, label}, index) => (
 					<>
 						<Text>{action}</Text>
-						<Label>{label}</Label>
-						{actions.length < index && (
-							<Label displayType="warning">
+						<ClayLabel displayType="success">{label}</ClayLabel>
+						{actions.length !== index + 1 && (
+							<ClayLabel displayType="warning">
 								{Liferay.Language.get('and')}
-							</Label>
+							</ClayLabel>
 						)}
 					</>
 				))}

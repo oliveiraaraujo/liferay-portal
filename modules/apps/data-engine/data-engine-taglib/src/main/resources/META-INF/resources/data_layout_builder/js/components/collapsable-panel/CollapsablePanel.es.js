@@ -46,45 +46,45 @@ const CollapsablePanel = ({actions, children, title}) => {
 			role="tablist"
 		>
 			<>
-				<div className={classNames('panel-header')}>
-					<span className="panel-title">{title}</span>
-					<ClayButton
-						aria-expanded={expanded}
-						className={classNames(
-							'collapse-icon',
-							'collapse-icon-middle',
-							{
-								collapsed: showIconCollapsed,
-							}
-						)}
-						displayType="unstyled"
-						onClick={startTransition}
-						role="tab"
-					>
-						<>
-							<span
-								className={classNames(
-									'collapse-icon-closed',
-									'actions'
-								)}
-							>
-								<ClayIcon symbol="angle-down" />
-							</span>
-							<span
-								className={classNames(
-									'collapse-icon-open',
-									'actions'
-								)}
-							>
-								<ClayIcon symbol="angle-up" />
-							</span>
-						</>
-					</ClayButton>
+				<ClayButton
+					aria-expanded={expanded}
+					className={classNames(
+						'panel-header panel-header-link',
+						'collapse-icon',
+						'collapse-icon-middle',
+						{
+							collapsed: showIconCollapsed,
+						}
+					)}
+					displayType="unstyled"
+					onClick={startTransition}
+					role="tab"
+				>
+					<>
+						<span className="panel-title">{title}</span>
 
-					<span className="collapse-icon-options">
-						<DropDown actions={actions} />
-					</span>
-				</div>
+						<span
+							className={classNames(
+								'collapse-icon-closed',
+								'actions'
+							)}
+						>
+							<ClayIcon symbol="angle-down" />
+						</span>
+						<span
+							className={classNames(
+								'collapse-icon-open',
+								'actions'
+							)}
+						>
+							<ClayIcon symbol="angle-up" />
+						</span>
+					</>
+				</ClayButton>
+
+				<span className="collapse-icon-options">
+					<DropDown actions={actions} />
+				</span>
 
 				<div
 					className={classNames('panel-collapse', {
