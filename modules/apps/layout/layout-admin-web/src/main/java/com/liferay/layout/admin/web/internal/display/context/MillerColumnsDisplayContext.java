@@ -204,6 +204,8 @@ public class MillerColumnsDisplayContext {
 				"hasChild", childLayoutsCount > 0
 			).put(
 				"id", layout.getPlid()
+			).put(
+				"key", String.valueOf(layout.getPlid())
 			);
 
 			LayoutType layoutType = layout.getLayoutType();
@@ -245,6 +247,12 @@ public class MillerColumnsDisplayContext {
 			boolean privatePages, boolean active)
 		throws PortalException {
 
+		String key = "public-pages";
+
+		if (privatePages) {
+			key = "private-pages";
+		}
+
 		JSONObject pagesJSONObject = JSONUtil.put(
 			"actions", _getFirstLayoutColumnActionsJSONArray(privatePages)
 		).put(
@@ -253,6 +261,8 @@ public class MillerColumnsDisplayContext {
 			"hasChild", true
 		).put(
 			"id", LayoutConstants.DEFAULT_PLID
+		).put(
+			"key", key
 		).put(
 			"title", _layoutsAdminDisplayContext.getTitle(privatePages)
 		);
