@@ -26,15 +26,15 @@ const Text = ({children = '', className = ''}) => (
 	<span className={className}>{`${children.toLowerCase()} `}</span>
 );
 
+const RULE_SENTENCES = {
+	and: Liferay.Language.get('and'),
+	field: Liferay.Language.get('field'),
+	if: Liferay.Language.get('if'),
+	value: Liferay.Language.get('value'),
+};
+
 export default function RuleItem({rule, toggleRulesEditorVisibility}) {
 	const {actions, conditions, logicalOperator, name} = rule;
-
-	const RULE_SENTENCES = {
-		and: Liferay.Language.get('and'),
-		field: Liferay.Language.get('field'),
-		if: Liferay.Language.get('if'),
-		value: Liferay.Language.get('value'),
-	};
 
 	return (
 		<CollapsablePanel
