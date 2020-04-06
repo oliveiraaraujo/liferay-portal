@@ -50,7 +50,6 @@ export default function RuleItem({rule, toggleRulesEditorVisibility}) {
 	return (
 		<CollapsablePanel
 			actions={dropDownActions}
-			collapsable
 			title={name}
 			type="unstyled"
 		>
