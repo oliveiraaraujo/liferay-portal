@@ -39,14 +39,12 @@ public class CanonicalURLProvider {
 		LayoutSEOLinkManager layoutSEOLinkManager, Portal portal) {
 
 		_httpServletRequest = httpServletRequest;
-
 		_language = language;
 		_layoutSEOLinkManager = layoutSEOLinkManager;
+		_portal = portal;
 
 		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
-
-		_portal = portal;
 	}
 
 	public String getCanonicalURL() throws PortalException {
