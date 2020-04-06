@@ -38,7 +38,7 @@ export default () => {
 		}))
 		.filter(({name}) => new RegExp(searchText, 'ig').test(name));
 
-	const toggleRulesEditor = () => {
+	const toggleRulesEditorVisibility = () => {
 		setRulesEditorVisible(!isRulesEditorVisible);
 	};
 
@@ -54,7 +54,7 @@ export default () => {
 				<div className="autofit-col ml-2">
 					<ClayButtonWithIcon
 						displayType="primary"
-						onClick={() => toggleRulesEditor()}
+						onClick={() => toggleRulesEditorVisibility()}
 						symbol="plus"
 					/>
 				</div>
@@ -66,7 +66,7 @@ export default () => {
 						button: () => (
 							<ClayButton
 								displayType="secondary"
-								onClick={() => toggleRulesEditor()}
+								onClick={() => toggleRulesEditorVisibility()}
 							>
 								{Liferay.Language.get('add-rule')}
 							</ClayButton>
@@ -83,7 +83,9 @@ export default () => {
 						<RuleItem
 							key={index}
 							rule={rule}
-							toggleRulesEditor={toggleRulesEditor}
+							toggleRulesEditorVisibility={
+								toggleRulesEditorVisibility
+							}
 						/>
 					))}
 				</div>
@@ -91,7 +93,7 @@ export default () => {
 
 			<RuleEditorModal
 				isVisible={isRulesEditorVisible}
-				onClose={() => toggleRulesEditor()}
+				onClose={() => toggleRulesEditorVisibility()}
 			/>
 		</>
 	);

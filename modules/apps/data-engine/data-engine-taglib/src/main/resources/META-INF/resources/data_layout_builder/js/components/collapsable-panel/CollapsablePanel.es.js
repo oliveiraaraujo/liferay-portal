@@ -12,15 +12,16 @@
  * details.
  */
 
+import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
 import ClayPanel from '@clayui/panel';
 import classNames from 'classnames';
 import React from 'react';
 
+import {useTransitionHeight} from '../../hooks/useTransition.es';
 import DropDown from '../drop-down/DropDown.es';
-import {useTransitionHeight} from './Transition.es';
 
-export default ({
+const CollapsablePanel = ({
 	actions,
 	children,
 	className,
@@ -51,7 +52,7 @@ export default ({
 	return (
 		<div
 			{...otherProps}
-			className={classNames('panel', 'custom-panel', className, {
+			className={classNames('collapsable-panel', 'panel', className, {
 				[`panel-${displayType}`]: displayType,
 			})}
 			role="tablist"
@@ -72,13 +73,14 @@ export default ({
 				<>
 					<div className={classNames('panel-header')}>
 						<span className="panel-title">{displayTitle}</span>
-						<button
+						<ClayButton
 							aria-expanded={expanded}
-							className={classNames('btn-unstyled', {
+							className={classNames({
 								'collapse-icon': showCollapseIcon,
 								'collapse-icon-middle': showCollapseIcon,
 								collapsed: showIconCollapsed,
 							})}
+							displayType="unstyled"
 							onClick={handleClickToggler}
 							role="tab"
 						>
@@ -106,7 +108,7 @@ export default ({
 									</span>
 								</>
 							)}
-						</button>
+						</ClayButton>
 
 						{withActions && (
 							<span className="collapse-icon-options">
@@ -136,3 +138,10 @@ export default ({
 		</div>
 	);
 };
+
+CollapsablePanel.Body = ClayPanel.Body;
+CollapsablePanel.Footer = ClayPanel.Footer;
+CollapsablePanel.Group = ClayPanel.Group;
+CollapsablePanel.Header = ClayPanel.Header;
+
+export default CollapsablePanel;

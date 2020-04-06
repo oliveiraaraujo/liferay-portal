@@ -14,23 +14,14 @@
 
 import React from 'react';
 
-/**
- * Removes the height style that triggers a transition when collapse
- * @param collapseElementRef
- */
-function removeCollapseHeight(collapseElementRef) {
+const removeCollapseHeight = (collapseElementRef) => {
 	if (collapseElementRef && collapseElementRef.current) {
 		collapseElementRef.current.style.removeProperty('height');
 	}
 }
 
-/**
- * Adds a height style that triggers a transition when collapsed
- * @param collapseElementRef
- */
-function setCollapseHeight(collapseElementRef) {
+const setCollapseHeight = (collapseElementRef) => {
 	if (collapseElementRef && collapseElementRef.current) {
-		// Cloned into a new array since `.reduce` is not a method on an HTMLCollection
 		const height = Array.prototype.slice
 			.call(collapseElementRef.current.children)
 			.reduce((acc, child) => acc + child.clientHeight, 0);
@@ -39,7 +30,7 @@ function setCollapseHeight(collapseElementRef) {
 	}
 }
 
-export function useTransitionHeight(visible, setVisible, contentRef) {
+export const useTransitionHeight = (visible, setVisible, contentRef) => {
 	const [transitioning, setTransitioning] = React.useState(false);
 
 	React.useEffect(() => {
@@ -65,6 +56,7 @@ export function useTransitionHeight(visible, setVisible, contentRef) {
 
 	const willTriggerTransition = event => {
 		event.preventDefault();
+		
 		if (visible && !transitioning) {
 			setCollapseHeight(contentRef);
 		}

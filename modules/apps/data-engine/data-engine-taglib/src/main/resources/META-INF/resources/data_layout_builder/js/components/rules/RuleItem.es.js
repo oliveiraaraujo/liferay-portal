@@ -13,26 +13,25 @@
  */
 
 import ClayLabel from '@clayui/label';
-import ClayPanel from '@clayui/panel';
 import React from 'react';
 
 import {confirmDelete} from '../../utils/client.es';
-import CustomPanel from '../custom-panel/CustomPanel.es';
+import CollapsablePanel from '../collapsable-panel/CollapsablePanel.es';
 
-const ShowLabel = (text, displayType) => (
-	<ClayLabel displayType={displayType}>{text}</ClayLabel>
+const Label = ({children, displayType = 'success'}) => (
+	<ClayLabel displayType={displayType}>{children}</ClayLabel>
 );
 
-const ShowText = (text, className = 'ruleitem-lowercase') => (
-	<span className={className}>{`${Liferay.Language.get(text)} `}</span>
+const Text = ({children = '', className = ''}) => (
+	<span className={className}>{`${children.toLowerCase()} `}</span>
 );
 
-export default function RuleItem({rule, toggleRulesEditor}) {
+export default function RuleItem({rule, toggleRulesEditorVisibility}) {
 	const {actions, conditions, logicalOperator, name} = rule;
 
 	const dropDownActions = [
 		{
-			action: () => toggleRulesEditor(rule),
+			action: () => toggleRulesEditorVisibility(rule),
 			name: Liferay.Language.get('edit'),
 		},
 		{
@@ -41,44 +40,56 @@ export default function RuleItem({rule, toggleRulesEditor}) {
 		},
 	];
 
+	const RULE_SENTENCES = {
+		and: Liferay.Language.get('and'),
+		field: Liferay.Language.get('field'),
+		if: Liferay.Language.get('if'),
+		value: Liferay.Language.get('value'),
+	};
+
 	return (
-		<CustomPanel
+		<CollapsablePanel
 			actions={dropDownActions}
 			collapsable
 			displayTitle={name}
 			displayType="unstyled"
 		>
-			<ClayPanel.Body>
+			<CollapsablePanel.Body>
 				<span>
-					{ShowText('if', 'ruleitem-capitalize')}
+					<Text className="text-capitalize">{RULE_SENTENCES.if}</Text>
 					{conditions.map(({operands, operator}, index) => {
 						const [first, last] = operands;
 
 						return (
 							<>
-								{ShowText('field')}
-								{ShowLabel(first.label, 'success')}
-								{ShowLabel(operator, 'secondary')}
-								{ShowText('value')}
-								{ShowLabel(last.label, 'info')}
-								{conditions.length !== index + 1 &&
-									ShowLabel(logicalOperator, 'warning')}
+								<Text>{RULE_SENTENCES.field}</Text>
+								<Label>{first.label}</Label>
+								<Label displayType="secondary">
+									{operator}
+								</Label>
+								<Text>{RULE_SENTENCES.value}</Text>
+								<Label displayType="info">{last.label}</Label>
+								{conditions.length !== index + 1 && (
+									<Label displayType="warning">
+										{logicalOperator}
+									</Label>
+								)}
 							</>
 						);
 					})}
 					{actions.map(({action, label}, index) => (
 						<>
-							{ShowText(action)}
-							{ShowLabel(label, 'success')}
-							{actions.length !== index + 1 &&
-								ShowLabel(
-									Liferay.Language.get('and'),
-									'warning'
-								)}
+							<Text>{action}</Text>
+							<Label>{label}</Label>
+							{actions.length !== index + 1 && (
+								<Label displayType="warning">
+									{RULE_SENTENCES.and}
+								</Label>
+							)}
 						</>
 					))}
 				</span>
-			</ClayPanel.Body>
-		</CustomPanel>
+			</CollapsablePanel.Body>
+		</CollapsablePanel>
 	);
 }

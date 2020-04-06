@@ -1,8 +1,14 @@
-.custom-panel {
+.collapsable-panel {
 	.collapse-icon-options {
 		position: absolute;
 		right: 16px;
 		top: 25%;
+	}
+
+	.panel-header {
+		button:focus {
+			box-shadow: none !important;
+		}
 	}
 
 	.collapse-icon-closed.with-actions,
