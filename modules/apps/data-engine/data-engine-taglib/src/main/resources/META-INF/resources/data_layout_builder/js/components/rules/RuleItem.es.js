@@ -26,13 +26,6 @@ const Text = ({children = '', className = ''}) => (
 	<span className={className}>{`${children.toLowerCase()} `}</span>
 );
 
-const RULE_SENTENCES = {
-	and: Liferay.Language.get('and'),
-	field: Liferay.Language.get('field'),
-	if: Liferay.Language.get('if'),
-	value: Liferay.Language.get('value'),
-};
-
 export default function RuleItem({rule, toggleRulesEditorVisibility}) {
 	const {actions, conditions, logicalOperator, name} = rule;
 
@@ -51,16 +44,18 @@ export default function RuleItem({rule, toggleRulesEditorVisibility}) {
 			title={name}
 		>
 			<span>
-				<Text className="text-capitalize">{RULE_SENTENCES.if}</Text>
+				<Text className="text-capitalize">
+					{Liferay.Language.get('if')}
+				</Text>
 				{conditions.map(({operands, operator}, index) => {
 					const [first, last] = operands;
 
 					return (
 						<>
-							<Text>{RULE_SENTENCES.field}</Text>
+							<Text>{Liferay.Language.get('field')}</Text>
 							<Label>{first.label}</Label>
 							<Label displayType="secondary">{operator}</Label>
-							<Text>{RULE_SENTENCES.value}</Text>
+							<Text>{Liferay.Language.get('value')}</Text>
 							<Label displayType="info">{last.label}</Label>
 							{conditions.length < index && (
 								<Label displayType="warning">
@@ -74,9 +69,9 @@ export default function RuleItem({rule, toggleRulesEditorVisibility}) {
 					<>
 						<Text>{action}</Text>
 						<Label>{label}</Label>
-						{actions.length !== index + 1 && (
+						{actions.length < index && (
 							<Label displayType="warning">
-								{RULE_SENTENCES.and}
+								{Liferay.Language.get('and')}
 							</Label>
 						)}
 					</>
