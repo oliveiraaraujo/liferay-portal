@@ -773,9 +773,9 @@ public class LayoutsAdminDisplayContext {
 
 		List<BreadcrumbEntry> breadcrumbEntries = new ArrayList<>();
 
-		List<Layout> curLayouts = layout.getAncestors();
+		List<Layout> ancestorLayouts = layout.getAncestors();
 
-		Collections.reverse(curLayouts);
+		Collections.reverse(ancestorLayouts);
 
 		boolean showLayoutPath = false;
 
@@ -783,16 +783,16 @@ public class LayoutsAdminDisplayContext {
 			showLayoutPath = true;
 		}
 
-		for (Layout curLayout : curLayouts) {
+		for (Layout ancestorLayout : ancestorLayouts) {
 			if (showLayoutPath) {
 				BreadcrumbEntry breadcrumbEntry = new BreadcrumbEntry();
 
 				if (LayoutPermissionUtil.contains(
-						themeDisplay.getPermissionChecker(), curLayout,
+						themeDisplay.getPermissionChecker(), ancestorLayout,
 						ActionKeys.VIEW)) {
 
 					breadcrumbEntry.setTitle(
-						curLayout.getName(themeDisplay.getLocale()));
+						ancestorLayout.getName(themeDisplay.getLocale()));
 				}
 				else {
 					breadcrumbEntry.setTitle(StringPool.TRIPLE_PERIOD);
@@ -801,7 +801,7 @@ public class LayoutsAdminDisplayContext {
 				breadcrumbEntries.add(breadcrumbEntry);
 			}
 
-			if (curLayout.getPlid() == getSelPlid()) {
+			if (ancestorLayout.getPlid() == getSelPlid()) {
 				showLayoutPath = true;
 			}
 		}
@@ -1127,11 +1127,11 @@ public class LayoutsAdminDisplayContext {
 	}
 
 	public boolean isLayoutReachable(Layout layout) throws PortalException {
-		List<Layout> layouts = layout.getAncestors();
+		List<Layout> ancestorLayouts = layout.getAncestors();
 
-		for (Layout curLayout : layouts) {
+		for (Layout ancestorLayout : ancestorLayouts) {
 			if (!LayoutPermissionUtil.contains(
-					themeDisplay.getPermissionChecker(), curLayout,
+					themeDisplay.getPermissionChecker(), ancestorLayout,
 					ActionKeys.VIEW)) {
 
 				return false;
