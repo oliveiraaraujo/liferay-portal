@@ -50,7 +50,6 @@ import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
 import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortletKeys;
 import com.liferay.layout.content.page.editor.sidebar.panel.ContentPageEditorSidebarPanel;
 import com.liferay.layout.content.page.editor.web.internal.comment.CommentUtil;
-import com.liferay.layout.content.page.editor.web.internal.configuration.LayoutContentPageEditorConfiguration;
 import com.liferay.layout.content.page.editor.web.internal.constants.ContentPageEditorActionKeys;
 import com.liferay.layout.content.page.editor.web.internal.constants.ContentPageEditorConstants;
 import com.liferay.layout.content.page.editor.web.internal.constants.ViewportSize;
@@ -169,10 +168,8 @@ public class ContentPageEditorDisplayContext {
 		FragmentRendererTracker fragmentRendererTracker,
 		HttpServletRequest httpServletRequest,
 		InfoDisplayContributorTracker infoDisplayContributorTracker,
-		ItemSelector itemSelector,
-		LayoutContentPageEditorConfiguration
-			layoutContentPageEditorConfiguration,
-		PortletRequest portletRequest, RenderResponse renderResponse) {
+		ItemSelector itemSelector, PortletRequest portletRequest,
+		RenderResponse renderResponse) {
 
 		_commentManager = commentManager;
 		_contentPageEditorSidebarPanels = contentPageEditorSidebarPanels;
@@ -182,8 +179,6 @@ public class ContentPageEditorDisplayContext {
 		_fragmentRendererController = fragmentRendererController;
 		_fragmentRendererTracker = fragmentRendererTracker;
 		_itemSelector = itemSelector;
-		_layoutContentPageEditorConfiguration =
-			layoutContentPageEditorConfiguration;
 		_portletRequest = portletRequest;
 		_renderResponse = renderResponse;
 
@@ -262,10 +257,6 @@ public class ContentPageEditorDisplayContext {
 				"editFragmentEntryLinkURL",
 				getFragmentEntryActionURL(
 					"/content_layout/edit_fragment_entry_link")
-			).put(
-				"fragmentCompositionsEnabled",
-				_layoutContentPageEditorConfiguration.
-					fragmentCompositionsEnabled()
 			).put(
 				"getAssetFieldValueURL",
 				getResourceURL("/content_layout/get_asset_field_value")
@@ -915,18 +906,14 @@ public class ContentPageEditorDisplayContext {
 			List<Map<String, Object>> filteredFragmentEntries =
 				_getFragmentEntries(fragmentEntries);
 
-			if (_layoutContentPageEditorConfiguration.
-					fragmentCompositionsEnabled()) {
+			List<FragmentComposition> fragmentCompositions =
+				FragmentCompositionServiceUtil.getFragmentCompositions(
+					fragmentCollection.getGroupId(),
+					fragmentCollection.getFragmentCollectionId(),
+					WorkflowConstants.STATUS_APPROVED);
 
-				List<FragmentComposition> fragmentCompositions =
-					FragmentCompositionServiceUtil.getFragmentCompositions(
-						fragmentCollection.getGroupId(),
-						fragmentCollection.getFragmentCollectionId(),
-						WorkflowConstants.STATUS_APPROVED);
-
-				filteredFragmentEntries.addAll(
-					_getFragmentCompositions(fragmentCompositions));
-			}
+			filteredFragmentEntries.addAll(
+				_getFragmentCompositions(fragmentCompositions));
 
 			if (!includeEmpty && ListUtil.isEmpty(filteredFragmentEntries)) {
 				continue;
@@ -1864,8 +1851,6 @@ public class ContentPageEditorDisplayContext {
 	private Long _groupId;
 	private ItemSelectorCriterion _imageItemSelectorCriterion;
 	private final ItemSelector _itemSelector;
-	private final LayoutContentPageEditorConfiguration
-		_layoutContentPageEditorConfiguration;
 	private String _layoutData;
 	private LayoutStructure _masterLayoutStructure;
 	private Integer _pageType;
