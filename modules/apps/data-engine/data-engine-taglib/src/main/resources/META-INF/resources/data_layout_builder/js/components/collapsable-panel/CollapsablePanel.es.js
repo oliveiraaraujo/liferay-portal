@@ -28,9 +28,9 @@ const CollapsablePanel = ({
 	collapsable,
 	collapseClassNames,
 	defaultExpanded = false,
-	displayTitle,
-	displayType,
 	showCollapseIcon = true,
+	title,
+	type,
 	...otherProps
 }) => {
 	const panelRef = React.useRef(null);
@@ -53,15 +53,15 @@ const CollapsablePanel = ({
 		<div
 			{...otherProps}
 			className={classNames('collapsable-panel', 'panel', className, {
-				[`panel-${displayType}`]: displayType,
+				[`panel-${type}`]: type,
 			})}
 			role="tablist"
 		>
 			{!collapsable && (
 				<>
-					{displayTitle && (
+					{title && (
 						<ClayPanel.Header>
-							<span className="panel-title">{displayTitle}</span>
+							<span className="panel-title">{title}</span>
 						</ClayPanel.Header>
 					)}
 
@@ -72,7 +72,7 @@ const CollapsablePanel = ({
 			{collapsable && (
 				<>
 					<div className={classNames('panel-header')}>
-						<span className="panel-title">{displayTitle}</span>
+						<span className="panel-title">{title}</span>
 						<ClayButton
 							aria-expanded={expanded}
 							className={classNames({
