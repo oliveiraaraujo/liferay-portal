@@ -20,8 +20,8 @@
 JournalMoveEntriesDisplayContext journalMovesEntriesDisplayContext = new JournalMoveEntriesDisplayContext(liferayPortletRequest, liferayPortletResponse);
 %>
 
-<portlet:actionURL name="/journal/move_entries" var="moveArticleURL">
-	<portlet:param name="mvcPath" value="/move_entries.jsp" />
+<portlet:actionURL name="/journal/move_articles_and_folders" var="moveArticleURL">
+	<portlet:param name="mvcPath" value="/move_articles_and_folders.jsp" />
 </portlet:actionURL>
 
 <liferay-frontend:edit-form

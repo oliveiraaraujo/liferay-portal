@@ -162,26 +162,27 @@ public class JournalManagementToolbarDisplayContext
 			"folderId",
 			String.valueOf(JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID)
 		).put(
-			"moveEntriesURL",
+			"moveArticlesAndFoldersURL",
 			() -> {
-				PortletURL moveEntriesURL =
+				PortletURL moveArticlesAndFoldersURL =
 					liferayPortletResponse.createRenderURL();
 
-				moveEntriesURL.setParameter("mvcPath", "/move_entries.jsp");
+				moveArticlesAndFoldersURL.setParameter(
+					"mvcPath", "/move_articles_and_folders.jsp");
 
 				String redirect = ParamUtil.getString(
 					liferayPortletRequest, "redirect",
 					_themeDisplay.getURLCurrent());
 
-				moveEntriesURL.setParameter("redirect", redirect);
+				moveArticlesAndFoldersURL.setParameter("redirect", redirect);
 
 				String referringPortletResource = ParamUtil.getString(
 					liferayPortletRequest, "referringPortletResource");
 
-				moveEntriesURL.setParameter(
+				moveArticlesAndFoldersURL.setParameter(
 					"referringPortletResource", referringPortletResource);
 
-				return moveEntriesURL.toString();
+				return moveArticlesAndFoldersURL.toString();
 			}
 		).put(
 			"openViewMoreStructuresURL",

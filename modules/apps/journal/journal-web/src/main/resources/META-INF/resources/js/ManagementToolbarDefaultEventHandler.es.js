@@ -51,15 +51,15 @@ class ManagementToolbarDefaultEventHandler extends DefaultEventHandler {
 		if (confirm(message)) {
 			Liferay.fire(this.ns('editEntry'), {
 				action: this.trashEnabled
-					? '/journal/move_entries_to_trash'
-					: '/journal/delete_entries',
+					? '/journal/move_articles_and_folders_to_trash'
+					: '/journal/delete_articles_and_folders',
 			});
 		}
 	}
 
 	expireEntries() {
 		Liferay.fire(this.ns('editEntry'), {
-			action: '/journal/expire_entries',
+			action: '/journal/expire_articles_and_folders',
 		});
 	}
 
@@ -85,7 +85,7 @@ class ManagementToolbarDefaultEventHandler extends DefaultEventHandler {
 	}
 
 	moveEntries() {
-		let moveEntriesURL = this.moveEntriesURL;
+		let moveArticlesAndFoldersURL = this.moveArticlesAndFoldersURL;
 
 		let entrySelectorNodes = document.querySelectorAll('.entry-selector');
 
@@ -97,14 +97,14 @@ class ManagementToolbarDefaultEventHandler extends DefaultEventHandler {
 
 		entrySelectorNodes.forEach(node => {
 			if (node.checked) {
-				moveEntriesURL = Liferay.Util.addParams(
+				moveArticlesAndFoldersURL = Liferay.Util.addParams(
 					`${node.name}=${node.value}`,
-					moveEntriesURL
+					moveArticlesAndFoldersURL
 				);
 			}
 		});
 
-		Liferay.Util.navigate(moveEntriesURL);
+		Liferay.Util.navigate(moveArticlesAndFoldersURL);
 	}
 
 	openDDMStructuresSelector() {
@@ -136,7 +136,7 @@ class ManagementToolbarDefaultEventHandler extends DefaultEventHandler {
 ManagementToolbarDefaultEventHandler.STATE = {
 	addArticleURL: Config.string(),
 	folderId: Config.string(),
-	moveEntriesURL: Config.string(),
+	moveArticlesAndFoldersURL: Config.string(),
 	namespace: Config.string(),
 	openViewMoreStructuresURL: Config.string(),
 	selectEntityURL: Config.string(),
