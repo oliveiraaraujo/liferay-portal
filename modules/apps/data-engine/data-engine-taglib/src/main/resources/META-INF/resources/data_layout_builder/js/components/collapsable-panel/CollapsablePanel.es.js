@@ -96,16 +96,11 @@ const CollapsablePanel = ({actions, children, title}) => {
 					ref={panelRef}
 					role="tabpanel"
 				>
-					{children}
+					<ClayPanel.Body>{children}</ClayPanel.Body>
 				</div>
 			</>
 		</div>
 	);
 };
-
-CollapsablePanel.Body = ClayPanel.Body;
-CollapsablePanel.Footer = ClayPanel.Footer;
-CollapsablePanel.Group = ClayPanel.Group;
-CollapsablePanel.Header = ClayPanel.Header;
 
 export default CollapsablePanel;

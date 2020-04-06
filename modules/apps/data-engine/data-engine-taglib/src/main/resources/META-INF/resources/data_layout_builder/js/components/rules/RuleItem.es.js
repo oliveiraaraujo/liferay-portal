@@ -50,42 +50,38 @@ export default function RuleItem({rule, toggleRulesEditorVisibility}) {
 			]}
 			title={name}
 		>
-			<CollapsablePanel.Body>
-				<span>
-					<Text className="text-capitalize">{RULE_SENTENCES.if}</Text>
-					{conditions.map(({operands, operator}, index) => {
-						const [first, last] = operands;
+			<span>
+				<Text className="text-capitalize">{RULE_SENTENCES.if}</Text>
+				{conditions.map(({operands, operator}, index) => {
+					const [first, last] = operands;
 
-						return (
-							<>
-								<Text>{RULE_SENTENCES.field}</Text>
-								<Label>{first.label}</Label>
-								<Label displayType="secondary">
-									{operator}
-								</Label>
-								<Text>{RULE_SENTENCES.value}</Text>
-								<Label displayType="info">{last.label}</Label>
-								{conditions.length !== index + 1 && (
-									<Label displayType="warning">
-										{logicalOperator}
-									</Label>
-								)}
-							</>
-						);
-					})}
-					{actions.map(({action, label}, index) => (
+					return (
 						<>
-							<Text>{action}</Text>
-							<Label>{label}</Label>
-							{actions.length !== index + 1 && (
+							<Text>{RULE_SENTENCES.field}</Text>
+							<Label>{first.label}</Label>
+							<Label displayType="secondary">{operator}</Label>
+							<Text>{RULE_SENTENCES.value}</Text>
+							<Label displayType="info">{last.label}</Label>
+							{conditions.length !== index + 1 && (
 								<Label displayType="warning">
-									{RULE_SENTENCES.and}
+									{logicalOperator}
 								</Label>
 							)}
 						</>
-					))}
-				</span>
-			</CollapsablePanel.Body>
+					);
+				})}
+				{actions.map(({action, label}, index) => (
+					<>
+						<Text>{action}</Text>
+						<Label>{label}</Label>
+						{actions.length !== index + 1 && (
+							<Label displayType="warning">
+								{RULE_SENTENCES.and}
+							</Label>
+						)}
+					</>
+				))}
+			</span>
 		</CollapsablePanel>
 	);
 }
