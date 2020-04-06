@@ -121,11 +121,11 @@ public class AnalyticsReportsPortlet extends MVCPortlet {
 			analyticsReportsInfoItemObject = themeDisplay.getLayout();
 		}
 
+		String canonicalURL = null;
+
 		CanonicalURLProvider canonicalURLProvider = new CanonicalURLProvider(
 			_portal.getHttpServletRequest(renderRequest), _language,
 			_layoutSEOLinkManager, _portal);
-
-		String canonicalURL = null;
 
 		try {
 			canonicalURL = canonicalURLProvider.getCanonicalURL();
