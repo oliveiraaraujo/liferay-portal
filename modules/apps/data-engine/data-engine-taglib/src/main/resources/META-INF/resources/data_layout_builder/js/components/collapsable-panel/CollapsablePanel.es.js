@@ -47,7 +47,7 @@ const CollapsablePanel = ({
 		(expanded && !transitioning)
 	);
 
-	const withActions = actions && actions.length;
+	const hasActions = actions && actions.length;
 
 	return (
 		<div
@@ -90,7 +90,7 @@ const CollapsablePanel = ({
 										className={classNames(
 											'collapse-icon-closed',
 											{
-												'with-actions': withActions,
+												actions: hasActions,
 											}
 										)}
 									>
@@ -100,7 +100,7 @@ const CollapsablePanel = ({
 										className={classNames(
 											'collapse-icon-open',
 											{
-												'with-actions': withActions,
+												actions: hasActions,
 											}
 										)}
 									>
@@ -110,7 +110,7 @@ const CollapsablePanel = ({
 							)}
 						</ClayButton>
 
-						{withActions && (
+						{hasActions && (
 							<span className="collapse-icon-options">
 								<DropDown actions={actions} />
 							</span>
