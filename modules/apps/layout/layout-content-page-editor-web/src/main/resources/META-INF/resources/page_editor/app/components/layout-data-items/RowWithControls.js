@@ -39,7 +39,6 @@ import updateColSize from '../../actions/updateColSize';
 import {LAYOUT_DATA_FLOATING_TOOLBAR_BUTTONS} from '../../config/constants/layoutDataFloatingToolbarButtons';
 import {LAYOUT_DATA_ITEM_DEFAULT_CONFIGURATIONS} from '../../config/constants/layoutDataItemDefaultConfigurations';
 import {LAYOUT_DATA_ITEM_TYPES} from '../../config/constants/layoutDataItemTypes';
-import {config} from '../../config/index';
 import selectCanUpdateLayoutContent from '../../selectors/selectCanUpdateLayoutContent';
 import {useDispatch, useSelector} from '../../store/index';
 import duplicateItem from '../../thunks/duplicateItem';
@@ -179,12 +178,9 @@ const RowWithControls = React.forwardRef(
 
 		if (!hasDropZoneChild(item, layoutData)) {
 			buttons.push(LAYOUT_DATA_FLOATING_TOOLBAR_BUTTONS.duplicateItem);
-
-			if (config.fragmentCompositionsEnabled) {
-				buttons.push(
-					LAYOUT_DATA_FLOATING_TOOLBAR_BUTTONS.saveFragmentComposition
-				);
-			}
+			buttons.push(
+				LAYOUT_DATA_FLOATING_TOOLBAR_BUTTONS.saveFragmentComposition
+			);
 		}
 
 		buttons.push(LAYOUT_DATA_FLOATING_TOOLBAR_BUTTONS.rowConfiguration);
