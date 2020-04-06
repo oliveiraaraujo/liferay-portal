@@ -348,9 +348,11 @@ public class EditFragmentEntryDisplayContext {
 			PortalUtil.getHttpServletResponse(_renderResponse));
 
 		List<String> freeMarkerTaglibs = new ArrayList<>();
-		List<String> freeMarkerVariables = new ArrayList<>();
 
 		freeMarkerTaglibs.addAll(taglibMap.keySet());
+
+		List<String> freeMarkerVariables = new ArrayList<>();
+
 		freeMarkerVariables.addAll(template.keySet());
 
 		freeMarkerVariables.add("configuration");
