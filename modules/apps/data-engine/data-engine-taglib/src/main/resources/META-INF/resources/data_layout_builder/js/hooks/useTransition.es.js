@@ -14,13 +14,13 @@
 
 import React from 'react';
 
-const removeCollapseHeight = (collapseElementRef) => {
+const removeCollapseHeight = collapseElementRef => {
 	if (collapseElementRef && collapseElementRef.current) {
 		collapseElementRef.current.style.removeProperty('height');
 	}
-}
+};
 
-const setCollapseHeight = (collapseElementRef) => {
+const setCollapseHeight = collapseElementRef => {
 	if (collapseElementRef && collapseElementRef.current) {
 		const height = Array.prototype.slice
 			.call(collapseElementRef.current.children)
@@ -28,7 +28,7 @@ const setCollapseHeight = (collapseElementRef) => {
 
 		collapseElementRef.current.setAttribute('style', `height: ${height}px`);
 	}
-}
+};
 
 export const useTransitionHeight = (visible, setVisible, contentRef) => {
 	const [transitioning, setTransitioning] = React.useState(false);
@@ -56,7 +56,7 @@ export const useTransitionHeight = (visible, setVisible, contentRef) => {
 
 	const willTriggerTransition = event => {
 		event.preventDefault();
-		
+
 		if (visible && !transitioning) {
 			setCollapseHeight(contentRef);
 		}
@@ -67,4 +67,4 @@ export const useTransitionHeight = (visible, setVisible, contentRef) => {
 	};
 
 	return [transitioning, handleTransitionEnd, willTriggerTransition];
-}
+};

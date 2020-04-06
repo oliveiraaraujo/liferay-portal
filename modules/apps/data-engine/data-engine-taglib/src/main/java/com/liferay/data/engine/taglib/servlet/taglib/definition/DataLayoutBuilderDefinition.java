@@ -33,7 +33,7 @@ public interface DataLayoutBuilderDefinition {
 	}
 
 	public default boolean allowRules() {
-		return true;
+		return false;
 	}
 
 	public default boolean allowSuccessPage() {
