@@ -62,7 +62,7 @@ export default function RuleItem({rule, toggleRulesEditorVisibility}) {
 							<Label displayType="secondary">{operator}</Label>
 							<Text>{RULE_SENTENCES.value}</Text>
 							<Label displayType="info">{last.label}</Label>
-							{conditions.length !== index + 1 && (
+							{conditions.length < index && (
 								<Label displayType="warning">
 									{logicalOperator}
 								</Label>
