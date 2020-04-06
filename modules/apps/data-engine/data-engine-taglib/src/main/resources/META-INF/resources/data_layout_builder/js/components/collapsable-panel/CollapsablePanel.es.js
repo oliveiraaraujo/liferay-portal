@@ -18,7 +18,7 @@ import ClayPanel from '@clayui/panel';
 import classNames from 'classnames';
 import React from 'react';
 
-import useHeightTransition from '../../hooks/useHeightTransition.es.';
+import {useHeightTransition} from '../../hooks/index.es';
 import DropDown from '../drop-down/DropDown.es';
 
 const CollapsablePanel = ({actions, children, title}) => {

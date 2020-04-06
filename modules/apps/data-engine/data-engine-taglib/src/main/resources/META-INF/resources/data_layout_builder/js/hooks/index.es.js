@@ -12,5 +12,6 @@
  * details.
  */
 
+export {default as useHeightTransition} from './useHeightTransition.es';
 export {default as useKeyDown} from './useKeyDown.es';
 export {default as useRequest} from './useRequest.es';

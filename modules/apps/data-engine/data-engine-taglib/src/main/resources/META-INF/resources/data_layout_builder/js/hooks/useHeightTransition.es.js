@@ -12,7 +12,7 @@
  * details.
  */
 
-import React from 'react';
+import {useEffect, useState} from 'react';
 
 const removeCollapseHeight = collapseElementRef => {
 	if (collapseElementRef && collapseElementRef.current) {
@@ -31,9 +31,9 @@ const setCollapseHeight = collapseElementRef => {
 };
 
 export default (visible, setVisible, contentRef) => {
-	const [transitioning, setTransitioning] = React.useState(false);
+	const [transitioning, setTransitioning] = useState(false);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (transitioning) {
 			setCollapseHeight(contentRef);
 			if (visible) {
