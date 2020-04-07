@@ -80,6 +80,10 @@ public class Sidecar {
 		ElasticsearchConfiguration elasticsearchConfiguration,
 		ProcessExecutor processExecutor, Props props) {
 
+		_elasticsearchConfiguration = elasticsearchConfiguration;
+		_processExecutor = processExecutor;
+		_props = props;
+
 		Path liferayHome = Paths.get(props.get(PropsKeys.LIFERAY_HOME));
 
 		liferayHome = liferayHome.toAbsolutePath();
@@ -105,10 +109,6 @@ public class Sidecar {
 
 		_pathData = _dataHome.resolve("indices");
 		_pathRepo = _dataHome.resolve("repo");
-
-		_elasticsearchConfiguration = elasticsearchConfiguration;
-		_processExecutor = processExecutor;
-		_props = props;
 	}
 
 	public String getNetworkHostAddress() {
