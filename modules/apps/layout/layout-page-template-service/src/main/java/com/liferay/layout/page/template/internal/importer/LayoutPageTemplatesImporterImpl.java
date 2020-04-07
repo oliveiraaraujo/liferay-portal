@@ -241,9 +241,8 @@ public class LayoutPageTemplatesImporterImpl
 			key = pathParts[pathParts.length - 2];
 		}
 
-		key = StringUtil.toLowerCase(key);
-
 		key = StringUtil.replace(key, CharPool.SPACE, CharPool.DASH);
+		key = StringUtil.toLowerCase(key);
 
 		return key;
 	}
