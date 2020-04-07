@@ -49,9 +49,10 @@ const CollapsablePanel = ({actions, children, title}) => {
 				<ClayButton
 					aria-expanded={expanded}
 					className={classNames(
-						'panel-header panel-header-link',
 						'collapse-icon',
 						'collapse-icon-middle',
+						'panel-header',
+						'panel-header-link',
 						{
 							collapsed: showIconCollapsed,
 						}
@@ -65,16 +66,16 @@ const CollapsablePanel = ({actions, children, title}) => {
 
 						<span
 							className={classNames(
-								'collapse-icon-closed',
-								'actions'
+								'actions',
+								'collapse-icon-closed'
 							)}
 						>
 							<ClayIcon symbol="angle-down" />
 						</span>
 						<span
 							className={classNames(
-								'collapse-icon-open',
-								'actions'
+								'actions',
+								'collapse-icon-open'
 							)}
 						>
 							<ClayIcon symbol="angle-up" />
