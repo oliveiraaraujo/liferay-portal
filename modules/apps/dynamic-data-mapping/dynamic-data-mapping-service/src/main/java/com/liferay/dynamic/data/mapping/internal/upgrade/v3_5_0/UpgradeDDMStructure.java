@@ -429,6 +429,38 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 		);
 	}
 
+	private String _upgradeParentStructureDefinition(
+			String definition, Long parentStructureId, Long structureId)
+		throws Exception {
+
+		StringBundler sb1 = new StringBundler(8);
+
+		sb1.append("select DDMStructureLayout.structureLayoutId  from ");
+		sb1.append("DDMStructureLayout inner join DDMStructureVersion on ");
+		sb1.append("DDMStructureVersion.structureVersionId = ");
+		sb1.append("DDMStructureLayout.structureVersionId inner join ");
+		sb1.append("DDMStructure on DDMStructure.structureId = ");
+		sb1.append("DDMStructureVersion.structureId and DDMStructure.version ");
+		sb1.append("= DDMStructureVersion.version where ");
+		sb1.append("DDMStructure.structureId = ?");
+
+		try (PreparedStatement ps1 = connection.prepareStatement(
+				sb1.toString())) {
+
+			ps1.setLong(1, parentStructureId);
+
+			try (ResultSet rs = ps1.executeQuery()) {
+				while (rs.next()) {
+					return _upgradeDefinition(
+						definition, parentStructureId,
+						rs.getLong("structureLayoutId"), structureId);
+				}
+			}
+		}
+
+		return definition;
+	}
+
 	private void _upgradeSeparatorField(JSONObject jsonObject) {
 		jsonObject.put(
 			"dataType", StringPool.BLANK
@@ -459,10 +491,18 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 
 			try (ResultSet rs = ps1.executeQuery()) {
 				while (rs.next()) {
-					String definition = _upgradeDefinition(
-						rs.getLong("companyId"), rs.getString("definition"));
+					String definition = rs.getString("definition");
 
-					ps2.setString(1, definition);
+					if (Validator.isNotNull(rs.getLong("parentStructureId"))) {
+						definition = _upgradeParentStructureDefinition(
+							definition, rs.getLong("parentStructureId"),
+							rs.getLong("structureId"));
+					}
+
+					ps2.setString(
+						1,
+						_upgradeDefinition(
+							rs.getLong("companyId"), definition));
 
 					ps2.setLong(2, rs.getLong("structureId"));
 					ps2.addBatch();
@@ -555,10 +595,18 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 
 			try (ResultSet rs = ps1.executeQuery()) {
 				while (rs.next()) {
-					String definition = _upgradeDefinition(
-						rs.getLong("companyId"), rs.getString("definition"));
+					String definition = rs.getString("definition");
 
-					ps2.setString(1, definition);
+					if (Validator.isNotNull(rs.getLong("parentStructureId"))) {
+						definition = _upgradeParentStructureDefinition(
+							definition, rs.getLong("parentStructureId"),
+							rs.getLong("structureId"));
+					}
+
+					ps2.setString(
+						1,
+						_upgradeDefinition(
+							rs.getLong("companyId"), definition));
 
 					ps2.setLong(2, rs.getLong("structureVersionId"));
 					ps2.addBatch();
