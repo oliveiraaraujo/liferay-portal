@@ -98,7 +98,8 @@ public class Sidecar {
 			elasticsearchConfiguration.sidecarHome());
 
 		if (!Files.isDirectory(sidecarHomePath)) {
-			sidecarHomePath = Paths.get(elasticsearchConfiguration.sidecarHome());
+			sidecarHomePath = Paths.get(
+				elasticsearchConfiguration.sidecarHome());
 
 			if (!Files.isDirectory(sidecarHomePath)) {
 				throw new IllegalArgumentException(
@@ -620,10 +621,10 @@ public class Sidecar {
 	private final ElasticsearchConfiguration _elasticsearchConfiguration;
 	private final Path _indicesPath;
 	private final Path _logsPath;
-	private final Path _repoPath;
 	private ProcessChannel<Serializable> _processChannel;
 	private final ProcessExecutor _processExecutor;
 	private final Props _props;
+	private final Path _repoPath;
 	private FutureListener<Serializable> _restartFutureListener;
 	private final Path _sidecarHomePath;
 	private Path _sidecarTempDirPath;
