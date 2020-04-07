@@ -328,20 +328,16 @@ public class LayoutPageTemplatesImporterImpl
 				PageDefinitionValidator.validatePageDefinition(
 					pageDefinitionJSON);
 
-				PageDefinition pageDefinition = _objectMapper.readValue(
-					pageDefinitionJSON, PageDefinition.class);
-
-				String masterPageEntryKey = _getKey(
-					masterPage.getName(), _MASTER_PAGE_ENTRY_KEY_DEFAULT_,
-					zipEntry);
-
-				ZipEntry thumbnailZipEntry = _getThumbnailZipEntry(
-					zipEntry.getName(), zipFile);
-
 				masterPageEntries.add(
 					new MasterPageEntry(
-						masterPageEntryKey, masterPage, pageDefinition,
-						thumbnailZipEntry, zipEntry.getName()));
+						_getKey(
+							masterPage.getName(),
+							_MASTER_PAGE_ENTRY_KEY_DEFAULT_, zipEntry),
+						masterPage,
+						_objectMapper.readValue(
+							pageDefinitionJSON, PageDefinition.class),
+						_getThumbnailZipEntry(zipEntry.getName(), zipFile),
+						zipEntry.getName()));
 			}
 			catch (PageDefinitionValidatorException
 						pageDefinitionValidatorException) {
@@ -460,17 +456,13 @@ public class LayoutPageTemplatesImporterImpl
 				PageDefinition pageDefinition = _objectMapper.readValue(
 					pageDefinitionJSON, PageDefinition.class);
 
-				String pageTemplateEntryKey = _getKey(
-					pageTemplate.getName(), _PAGE_TEMPLATE_ENTRY_KEY_DEFAULT,
-					zipEntry);
-
-				ZipEntry thumbnailZipEntry = _getThumbnailZipEntry(
-					zipEntry.getName(), zipFile);
-
 				pageTemplateCollectionEntry.addPageTemplateEntry(
-					pageTemplateEntryKey,
+					_getKey(
+						pageTemplate.getName(),
+						_PAGE_TEMPLATE_ENTRY_KEY_DEFAULT, zipEntry),
 					new PageTemplateEntry(
-						pageTemplate, pageDefinition, thumbnailZipEntry,
+						pageTemplate, pageDefinition,
+						_getThumbnailZipEntry(zipEntry.getName(), zipFile),
 						zipEntry.getName()));
 			}
 			catch (PageDefinitionValidatorException
