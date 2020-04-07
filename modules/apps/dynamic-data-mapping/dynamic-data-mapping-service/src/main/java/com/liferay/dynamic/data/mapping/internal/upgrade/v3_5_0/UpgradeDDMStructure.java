@@ -426,6 +426,8 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 			"dataType", "string"
 		).put(
 			"type", "rich_text"
+		).put(
+			"visibilityExpression", StringPool.BLANK
 		);
 	}
 
@@ -434,6 +436,8 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 			"dataType", "string"
 		).put(
 			"type", "image"
+		).put(
+			"visibilityExpression", StringPool.BLANK
 		);
 	}
 
