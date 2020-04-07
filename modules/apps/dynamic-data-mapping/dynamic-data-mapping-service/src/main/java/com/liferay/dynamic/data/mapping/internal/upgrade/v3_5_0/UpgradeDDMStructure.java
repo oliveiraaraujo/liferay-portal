@@ -80,7 +80,7 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 		_upgradeStructureVersionDefinition();
 	}
 
-	private DDMFormField _createFieldSet(
+	private DDMFormField _createFieldSetDDMFormField(
 		Locale defaultLocale, String name, Long parentStructureId,
 		Long parentStructureLayoutId) {
 
@@ -309,7 +309,7 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 			ddmFormField = _fieldSetMap.get(structureId);
 		}
 		else {
-			ddmFormField = _createFieldSet(
+			ddmFormField = _createFieldSetDDMFormField(
 				ddmForm.getDefaultLocale(), StringUtil.randomString(),
 				parentStructureId, parentStructureLayoutId);
 
