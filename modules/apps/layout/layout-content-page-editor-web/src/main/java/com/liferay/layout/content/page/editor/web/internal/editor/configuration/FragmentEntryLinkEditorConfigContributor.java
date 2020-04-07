@@ -58,13 +58,12 @@ public class FragmentEntryLinkEditorConfigContributor
 		ThemeDisplay themeDisplay,
 		RequestBackedPortletURLFactory requestBackedPortletURLFactory) {
 
-		PortletURL imageSelectorURL = _itemSelector.getItemSelectorURL(
-			requestBackedPortletURLFactory, "_EDITOR_NAME_selectImage",
-			getImageItemSelectorCriterion(), getURLItemSelectorCriterion());
-
 		PortletURL itemSelectorURL = _itemSelector.getItemSelectorURL(
 			requestBackedPortletURLFactory, "_EDITOR_NAME_selectItem",
 			getFileItemSelectorCriterion(), getURLItemSelectorCriterion());
+		PortletURL imageSelectorURL = _itemSelector.getItemSelectorURL(
+			requestBackedPortletURLFactory, "_EDITOR_NAME_selectImage",
+			getImageItemSelectorCriterion(), getURLItemSelectorCriterion());
 
 		jsonObject.put(
 			"allowedContent", ""
