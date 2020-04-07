@@ -109,6 +109,7 @@ public class JGroupsReceiver extends ReceiverAdapter {
 		}
 
 		_clusterReceiver.coordinatorAddressUpdated(coordinatorAddress);
+
 		_clusterReceiver.addressesUpdated(addresses);
 	}
 
