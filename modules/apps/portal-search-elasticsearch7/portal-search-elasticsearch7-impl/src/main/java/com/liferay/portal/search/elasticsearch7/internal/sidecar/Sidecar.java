@@ -252,7 +252,7 @@ public class Sidecar {
 		}
 		catch (IOException ioException) {
 			if (_log.isWarnEnabled()) {
-				_log.warn("Unable to delete dir: " + dirPath, ioException);
+				_log.warn("Unable to delete " + dirPath, ioException);
 			}
 		}
 	}
