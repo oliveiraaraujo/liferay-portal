@@ -188,10 +188,11 @@ public class Sidecar {
 				if (_log.isWarnEnabled()) {
 					_log.warn(
 						StringBundler.concat(
-							"Sidecar process did not shutdown in ",
+							"Forcibly shutdown sidecar process because it ",
+							"did not shut down in ",
 							_elasticsearchConfiguration.
 								sidecarShutdownTimeout(),
-							" ms, force it to shutdown"));
+							" ms"));
 				}
 
 				noticeableFuture.cancel(true);
