@@ -731,7 +731,7 @@ definition {
 
 		BlogsNavigator.gotoEntryCP(entryTitle = "Blogs Workflow Title");
 
-		BlogsEntry.viewEntry(
+		BlogsEntry.viewEntryCP(
 			entryContent = "Blogs Workflow Content",
 			entryTitle = "Blogs Workflow Title");
 
@@ -1089,7 +1089,7 @@ definition {
 
 		BlogsNavigator.gotoEntryCP(entryTitle = "New Blog After Upgrade");
 
-		BlogsEntry.viewEntry(
+		BlogsEntry.viewEntryCP(
 			entryContent = "Blogs Entry Content",
 			entryTitle = "New Blog After Upgrade");
 
@@ -1499,7 +1499,7 @@ definition {
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Profile");
 
-		BlogsEntry.viewEntry(
+		BlogsEntry.viewEntryPG(
 			entryContent = "Usersn Blog Entry Content",
 			entryTitle = "Usersn Blog Entry Title");
 
@@ -2600,7 +2600,7 @@ definition {
 
 		Navigator.gotoPage(pageName = "Blogs");
 
-		BlogsEntry.viewEntry(
+		BlogsEntry.viewEntryPG(
 			entryContent = "Blogs Entry Content",
 			entryTitle = "Blogs Entry Title");
 
@@ -2669,7 +2669,7 @@ definition {
 
 		Navigator.gotoPage(pageName = "Blogs");
 
-		BlogsEntry.viewEntry(
+		BlogsEntry.viewEntryPG(
 			entryContent = "Blogs Entry Content",
 			entryTitle = "Blogs Entry Title");
 

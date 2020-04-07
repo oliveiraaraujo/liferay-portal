@@ -1698,7 +1698,7 @@ definition {
 			pageName = "Staging Test Page",
 			siteName = "Site Name");
 
-		BlogsEntry.viewEntry(
+		BlogsEntry.viewEntryPG(
 			entryContent = "Bodzavirágból, bodzavirágból hullik a, hullik a sárga virágpor.",
 			entryTitle = "Tavaszi felhők");
 	}
