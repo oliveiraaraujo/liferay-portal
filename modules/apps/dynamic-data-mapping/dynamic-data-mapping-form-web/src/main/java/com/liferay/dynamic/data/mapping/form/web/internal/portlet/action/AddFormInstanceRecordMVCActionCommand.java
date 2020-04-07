@@ -235,10 +235,8 @@ public class AddFormInstanceRecordMVCActionCommand
 			StringBundler sb = new StringBundler();
 
 			throw new FormInstanceNotPublishedException(
-				sb.concat(
-					"Unable to submit entry because form instance ID ",
-					String.valueOf(ddmFormInstance.getFormInstanceId()),
-					" is not published"));
+				"Form instance " + ddmFormInstance.getFormInstanceId() +
+					" is not published");
 		}
 	}
 
