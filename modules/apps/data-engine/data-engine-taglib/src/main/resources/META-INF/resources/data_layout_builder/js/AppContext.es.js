@@ -68,6 +68,7 @@ const initialState = {
 	focusedField: {},
 	sidebarOpen: true,
 	sidebarPanelId: 'fields',
+	spritemap: `${Liferay.ThemeDisplay.getPathThemeImages()}/lexicon/icons.svg`,
 };
 
 const addCustomObjectField = ({
