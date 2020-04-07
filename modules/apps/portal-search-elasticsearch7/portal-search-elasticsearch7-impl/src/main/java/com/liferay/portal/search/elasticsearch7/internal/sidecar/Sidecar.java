@@ -88,6 +88,12 @@ public class Sidecar {
 
 		liferayHomePath = liferayHomePath.toAbsolutePath();
 
+		_dataHomePath = liferayHomePath.resolve("data/elasticsearch7");
+		_logsPath = liferayHomePath.resolve("logs");
+
+		_indicesPath = _dataHomePath.resolve("indices");
+		_repoPath = _dataHomePath.resolve("repo");
+
 		Path sidecarHomePath = liferayHomePath.resolve(
 			elasticsearchConfiguration.sidecarHome());
 
@@ -102,13 +108,6 @@ public class Sidecar {
 		}
 
 		_sidecarHomePath = sidecarHomePath.toAbsolutePath();
-
-		_logsPath = liferayHomePath.resolve("logs");
-
-		_dataHomePath = liferayHomePath.resolve("data/elasticsearch7");
-
-		_indicesPath = _dataHomePath.resolve("indices");
-		_repoPath = _dataHomePath.resolve("repo");
 	}
 
 	public String getNetworkHostAddress() {
