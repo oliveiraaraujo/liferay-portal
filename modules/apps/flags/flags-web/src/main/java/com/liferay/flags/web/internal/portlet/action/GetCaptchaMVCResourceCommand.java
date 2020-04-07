@@ -41,7 +41,7 @@ public class GetCaptchaMVCResourceCommand extends BaseMVCResourceCommand {
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
-		include(resourceRequest, resourceResponse, "/captcha.jsp");
+		include(resourceRequest, resourceResponse, "/get_captcha.jsp");
 	}
 
 }
