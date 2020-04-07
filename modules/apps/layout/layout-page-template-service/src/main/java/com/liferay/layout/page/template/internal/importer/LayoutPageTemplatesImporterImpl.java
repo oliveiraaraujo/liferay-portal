@@ -227,7 +227,7 @@ public class LayoutPageTemplatesImporterImpl
 		return fragmentEntryLinks;
 	}
 
-	private String _getKey(String name, String defaultKey, ZipEntry zipEntry) {
+	private String _getKey(String defaultKey, String name, ZipEntry zipEntry) {
 		String[] pathParts = StringUtil.split(
 			zipEntry.getName(), CharPool.SLASH);
 
@@ -331,8 +331,8 @@ public class LayoutPageTemplatesImporterImpl
 				masterPageEntries.add(
 					new MasterPageEntry(
 						_getKey(
-							masterPage.getName(),
-							_MASTER_PAGE_ENTRY_KEY_DEFAULT_, zipEntry),
+							_MASTER_PAGE_ENTRY_KEY_DEFAULT_,
+							masterPage.getName(), zipEntry),
 						masterPage,
 						_objectMapper.readValue(
 							pageDefinitionJSON, PageDefinition.class),
@@ -458,8 +458,8 @@ public class LayoutPageTemplatesImporterImpl
 
 				pageTemplateCollectionEntry.addPageTemplateEntry(
 					_getKey(
-						pageTemplate.getName(),
-						_PAGE_TEMPLATE_ENTRY_KEY_DEFAULT, zipEntry),
+						_PAGE_TEMPLATE_ENTRY_KEY_DEFAULT,
+						pageTemplate.getName(), zipEntry),
 					new PageTemplateEntry(
 						pageTemplate, pageDefinition,
 						_getThumbnailZipEntry(zipEntry.getName(), zipFile),
