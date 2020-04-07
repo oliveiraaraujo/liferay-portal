@@ -226,6 +226,48 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 		return ddmFormLayoutSerializerSerializeResponse.getContent();
 	}
 
+	private String _upgradeDDMFormLayoutDefinition(
+		String definition, Long ddmStructureId) {
+
+		DDMFormLayoutDeserializerDeserializeResponse
+			ddmFormLayoutDeserializerDeserializeResponse =
+				_ddmFormLayoutDeserializer.deserialize(
+					DDMFormLayoutDeserializerDeserializeRequest.Builder.
+						newBuilder(
+							definition
+						).build());
+
+		DDMFormLayout ddmFormLayout =
+			ddmFormLayoutDeserializerDeserializeResponse.getDDMFormLayout();
+
+		DDMFormLayoutPage ddmFormLayoutPage =
+			ddmFormLayout.getDDMFormLayoutPage(0);
+
+		List<DDMFormLayoutRow> ddmFormLayoutRowList =
+			ddmFormLayoutPage.getDDMFormLayoutRows();
+
+		DDMFormLayoutRow ddmFormLayoutRow = new DDMFormLayoutRow();
+
+		DDMFormField ddmFormField = _fieldSetMap.get(ddmStructureId);
+
+		ddmFormLayoutRow.addDDMFormLayoutColumn(
+			new DDMFormLayoutColumn(
+				DDMFormLayoutColumn.FULL, ddmFormField.getName()));
+
+		ddmFormLayoutRowList.add(0, ddmFormLayoutRow);
+
+		ddmFormLayoutPage.setDDMFormLayoutRows(ddmFormLayoutRowList);
+
+		DDMFormLayoutSerializerSerializeResponse
+			ddmFormLayoutSerializerSerializeResponse =
+				_ddmFormLayoutSerializer.serialize(
+					DDMFormLayoutSerializerSerializeRequest.Builder.newBuilder(
+						ddmFormLayout
+					).build());
+
+		return ddmFormLayoutSerializerSerializeResponse.getContent();
+	}
+
 	private void _upgradeDecimalField(JSONObject jsonObject) {
 		jsonObject.put(
 			"dataType", "decimal"
