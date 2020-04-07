@@ -63,14 +63,14 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 
 	public UpgradeDDMStructure(
 		DDMFormDeserializer ddmFormDeserializer,
-		DDMFormSerializer ddmFormSerializer,
 		DDMFormLayoutDeserializer ddmFormLayoutDeserializer,
-		DDMFormLayoutSerializer ddmFormLayoutSerializer) {
+		DDMFormLayoutSerializer ddmFormLayoutSerializer,
+		DDMFormSerializer ddmFormSerializer) {
 
 		_jsonDDMFormDeserializer = ddmFormDeserializer;
-		_jsonDDMFormSerializer = ddmFormSerializer;
 		_ddmFormLayoutDeserializer = ddmFormLayoutDeserializer;
 		_ddmFormLayoutSerializer = ddmFormLayoutSerializer;
+		_jsonDDMFormSerializer = ddmFormSerializer;
 	}
 
 	@Override
