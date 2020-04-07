@@ -32,7 +32,7 @@ import FlagsModal from './FlagsModal.es';
 
 const Flags = ({
 	baseData,
-	captchaUri,
+	captchaURI,
 	companyName,
 	disabled = false,
 	forceLogin = false,
@@ -161,7 +161,7 @@ const Flags = ({
 			</ClayButton>
 			{reportDialogOpen && (
 				<FlagsModal
-					captchaUri={captchaUri}
+					captchaURI={captchaURI}
 					companyName={companyName}
 					error={error}
 					handleClose={onClose}
@@ -181,7 +181,7 @@ const Flags = ({
 };
 Flags.propTypes = {
 	baseData: PropTypes.object.isRequired,
-	captchaUri: PropTypes.string.isRequired,
+	captchaURI: PropTypes.string.isRequired,
 	companyName: PropTypes.string.isRequired,
 	disabled: PropTypes.bool,
 	forceLogin: PropTypes.bool,

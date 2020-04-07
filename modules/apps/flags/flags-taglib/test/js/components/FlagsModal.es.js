@@ -24,7 +24,7 @@ import {
 } from '../../../src/main/resources/META-INF/resources/flags/js/constants.es';
 
 function _renderFlagsModalComponent({
-	captchaUri = '',
+	captchaURI = '',
 	companyName = 'Liferay',
 	handleClose = () => {},
 	handleInputChange = () => {},
@@ -43,7 +43,7 @@ function _renderFlagsModalComponent({
 
 	return render(
 		<FlagsModal
-			captchaUri={captchaUri}
+			captchaURI={captchaURI}
 			companyName={companyName}
 			handleClose={handleClose}
 			handleInputChange={handleInputChange}

@@ -30,7 +30,7 @@ import {sub} from '../utils.es';
 import Captcha from './Captcha.es';
 
 const ModalContentForm = ({
-	captchaUri,
+	captchaURI,
 	error,
 	handleClose,
 	handleInputChange,
@@ -125,7 +125,7 @@ const ModalContentForm = ({
 						/>
 					</div>
 				)}
-				{captchaUri && <Captcha uri={captchaUri} />}
+				{captchaURI && <Captcha uri={captchaURI} />}
 			</ClayModal.Body>
 			<ClayModal.Footer
 				last={
@@ -205,7 +205,7 @@ const ModalBody = ({companyName, status}) => {
 };
 
 const FlagsModal = ({
-	captchaUri,
+	captchaURI,
 	companyName,
 	error,
 	handleClose,
@@ -226,7 +226,7 @@ const FlagsModal = ({
 			</ClayModal.Header>
 			{status === STATUS_REPORT ? (
 				<ModalContentForm
-					captchaUri={captchaUri}
+					captchaURI={captchaURI}
 					error={error}
 					handleClose={handleClose}
 					handleInputChange={handleInputChange}
@@ -261,7 +261,7 @@ const FlagsModal = ({
 };
 
 FlagsModal.propTypes = {
-	captchaUri: PropTypes.string.isRequired,
+	captchaURI: PropTypes.string.isRequired,
 	companyName: PropTypes.string.isRequired,
 	error: PropTypes.string,
 	handleClose: PropTypes.func.isRequired,

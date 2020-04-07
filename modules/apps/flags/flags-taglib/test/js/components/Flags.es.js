@@ -34,7 +34,7 @@ const formDataToObject = formData =>
 	);
 
 function _renderFlagsComponent({
-	captchaUri = '',
+	captchaURI = '',
 	companyName = 'Liferay',
 	baseData = {},
 	onlyIcon = false,
@@ -46,7 +46,7 @@ function _renderFlagsComponent({
 	return render(
 		<Flags
 			baseData={baseData}
-			captchaUri={captchaUri}
+			captchaURI={captchaURI}
 			companyName={companyName}
 			onlyIcon={onlyIcon}
 			pathTermsOfUse={pathTermsOfUse}
