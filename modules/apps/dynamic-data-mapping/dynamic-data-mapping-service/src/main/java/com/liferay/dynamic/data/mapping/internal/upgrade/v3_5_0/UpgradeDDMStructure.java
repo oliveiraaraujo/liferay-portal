@@ -224,7 +224,7 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 	}
 
 	private String _upgradeDDMFormLayoutDefinition(
-		String definition, Long ddmStructureId) {
+		String definition, Long structureId) {
 
 		DDMFormLayoutDeserializerDeserializeResponse
 			ddmFormLayoutDeserializerDeserializeResponse =
@@ -245,7 +245,7 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 
 		DDMFormLayoutRow ddmFormLayoutRow = new DDMFormLayoutRow();
 
-		DDMFormField ddmFormField = _fieldSetMap.get(ddmStructureId);
+		DDMFormField ddmFormField = _fieldSetMap.get(structureId);
 
 		ddmFormLayoutRow.addDDMFormLayoutColumn(
 			new DDMFormLayoutColumn(
