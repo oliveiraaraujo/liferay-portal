@@ -98,9 +98,12 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 
 	@Test
 	public void testGetStructures() throws Exception {
-		addStructure(_classNameId, StringUtil.randomString());
-		addStructure(_classNameId, StringUtil.randomString());
-		addStructure(_classNameId, StringUtil.randomString());
+		_ddmStructures.add(
+			addStructure(_classNameId, StringUtil.randomString()));
+		_ddmStructures.add(
+			addStructure(_classNameId, StringUtil.randomString()));
+		_ddmStructures.add(
+			addStructure(_classNameId, StringUtil.randomString()));
 
 		long[] groupIds = {group.getGroupId(), _group.getGroupId()};
 
@@ -121,6 +124,9 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 		String modelName = ResourceActionsUtil.getCompositeModelName(
 			PortalUtil.getClassName(_classNameId),
 			DDMStructure.class.getName());
+
+		_ddmStructures.add(structure1);
+		_ddmStructures.add(structure2);
 
 		List<Role> roles = RoleLocalServiceUtil.getRoles(
 			TestPropsValues.getCompanyId());
@@ -170,9 +176,12 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 
 	@Test
 	public void testSearch() throws Exception {
-		addStructure(_classNameId, StringUtil.randomString());
-		addStructure(_classNameId, StringUtil.randomString());
-		addStructure(_classNameId, StringUtil.randomString());
+		_ddmStructures.add(
+			addStructure(_classNameId, StringUtil.randomString()));
+		_ddmStructures.add(
+			addStructure(_classNameId, StringUtil.randomString()));
+		_ddmStructures.add(
+			addStructure(_classNameId, StringUtil.randomString()));
 
 		long[] groupIds = {group.getGroupId(), _group.getGroupId()};
 
@@ -197,6 +206,8 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 		expectedStructures.add(
 			addStructure(_classNameId, StringUtil.randomString(), description));
 
+		_ddmStructures.addAll(expectedStructures);
+
 		long[] groupIds = {group.getGroupId(), _group.getGroupId()};
 
 		List<DDMStructure> structures = DDMStructureServiceUtil.search(
@@ -214,17 +225,20 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 
 	@Test
 	public void testSearchByType() throws Exception {
-		addStructure(
-			0, _classNameId, null, StringUtil.randomString(), StringPool.BLANK,
-			read("test-structure.xsd"), StorageType.JSON.getValue(),
-			DDMStructureConstants.TYPE_DEFAULT,
-			WorkflowConstants.STATUS_APPROVED);
+		_ddmStructures.add(
+			addStructure(
+				0, _classNameId, null, StringUtil.randomString(),
+				StringPool.BLANK, read("test-structure.xsd"),
+				StorageType.JSON.getValue(), DDMStructureConstants.TYPE_DEFAULT,
+				WorkflowConstants.STATUS_APPROVED));
 
-		addStructure(
-			0, _classNameId, null, StringUtil.randomString(), StringPool.BLANK,
-			read("test-structure.xsd"), StorageType.JSON.getValue(),
-			DDMStructureConstants.TYPE_FRAGMENT,
-			WorkflowConstants.STATUS_APPROVED);
+		_ddmStructures.add(
+			addStructure(
+				0, _classNameId, null, StringUtil.randomString(),
+				StringPool.BLANK, read("test-structure.xsd"),
+				StorageType.JSON.getValue(),
+				DDMStructureConstants.TYPE_FRAGMENT,
+				WorkflowConstants.STATUS_APPROVED));
 
 		List<DDMStructure> structures = DDMStructureServiceUtil.search(
 			TestPropsValues.getCompanyId(), new long[] {group.getGroupId()},
@@ -245,9 +259,12 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 
 	@Test
 	public void testSearchCount() throws Exception {
-		addStructure(_classNameId, StringUtil.randomString());
-		addStructure(_classNameId, StringUtil.randomString());
-		addStructure(_classNameId, StringUtil.randomString());
+		_ddmStructures.add(
+			addStructure(_classNameId, StringUtil.randomString()));
+		_ddmStructures.add(
+			addStructure(_classNameId, StringUtil.randomString()));
+		_ddmStructures.add(
+			addStructure(_classNameId, StringUtil.randomString()));
 
 		long[] groupIds = {group.getGroupId(), _group.getGroupId()};
 
@@ -263,10 +280,12 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 		String name = StringUtil.randomString();
 		String description = StringUtil.randomString();
 
-		addStructure(_classNameId, name, description);
+		_ddmStructures.add(addStructure(_classNameId, name, description));
 
-		addStructure(_classNameId, name, StringUtil.randomString());
-		addStructure(_classNameId, StringUtil.randomString(), description);
+		_ddmStructures.add(
+			addStructure(_classNameId, name, StringUtil.randomString()));
+		_ddmStructures.add(
+			addStructure(_classNameId, StringUtil.randomString(), description));
 
 		long[] groupIds = {group.getGroupId(), _group.getGroupId()};
 
@@ -286,11 +305,13 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 			_classNameId, null, null, null, DDMStructureConstants.TYPE_FRAGMENT,
 			WorkflowConstants.STATUS_ANY, true);
 
-		addStructure(
-			0, _classNameId, null, StringUtil.randomString(), StringPool.BLANK,
-			read("test-structure.xsd"), StorageType.JSON.getValue(),
-			DDMStructureConstants.TYPE_FRAGMENT,
-			WorkflowConstants.STATUS_APPROVED);
+		_ddmStructures.add(
+			addStructure(
+				0, _classNameId, null, StringUtil.randomString(),
+				StringPool.BLANK, read("test-structure.xsd"),
+				StorageType.JSON.getValue(),
+				DDMStructureConstants.TYPE_FRAGMENT,
+				WorkflowConstants.STATUS_APPROVED));
 
 		int count = DDMStructureServiceUtil.searchCount(
 			TestPropsValues.getCompanyId(), new long[] {group.getGroupId()},
@@ -302,10 +323,13 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 
 	@Test
 	public void testSearchWithSiteAdminPermission() throws Exception {
-		addStructure(_classNameId, StringUtil.randomString());
+		_ddmStructures.add(
+			addStructure(_classNameId, StringUtil.randomString()));
 
 		DDMStructure structure = addStructure(
 			_classNameId, StringUtil.randomString());
+
+		_ddmStructures.add(structure);
 
 		String modelName = ResourceActionsUtil.getCompositeModelName(
 			PortalUtil.getClassName(_classNameId),
@@ -334,10 +358,13 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 
 	@Test
 	public void testSearchWithSiteMemberPermission() throws Exception {
-		addStructure(_classNameId, StringUtil.randomString());
+		_ddmStructures.add(
+			addStructure(_classNameId, StringUtil.randomString()));
 
 		DDMStructure structure = addStructure(
 			_classNameId, StringUtil.randomString());
+
+		_ddmStructures.add(structure);
 
 		String modelName = ResourceActionsUtil.getCompositeModelName(
 			PortalUtil.getClassName(_classNameId),
@@ -387,6 +414,9 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 	}
 
 	private static long _classNameId;
+
+	@DeleteAfterTestRun
+	private final List<DDMStructure> _ddmStructures = new ArrayList<>();
 
 	@DeleteAfterTestRun
 	private Group _group;
