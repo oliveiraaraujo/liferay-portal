@@ -231,21 +231,21 @@ public class LayoutPageTemplatesImporterImpl
 		String[] pathParts = StringUtil.split(
 			zipEntry.getName(), CharPool.SLASH);
 
-		String entryKey = defaultKey;
+		String key = defaultKey;
 
 		if (Validator.isNotNull(name)) {
-			entryKey = name;
+			key = name;
 		}
 
 		if (pathParts.length > 1) {
-			entryKey = pathParts[pathParts.length - 2];
+			key = pathParts[pathParts.length - 2];
 		}
 
-		entryKey = StringUtil.toLowerCase(entryKey);
+		key = StringUtil.toLowerCase(key);
 
-		entryKey = StringUtil.replace(entryKey, CharPool.SPACE, CharPool.DASH);
+		key = StringUtil.replace(key, CharPool.SPACE, CharPool.DASH);
 
-		return entryKey;
+		return key;
 	}
 
 	private LayoutPageTemplateCollection _getLayoutPageTemplateCollection(
