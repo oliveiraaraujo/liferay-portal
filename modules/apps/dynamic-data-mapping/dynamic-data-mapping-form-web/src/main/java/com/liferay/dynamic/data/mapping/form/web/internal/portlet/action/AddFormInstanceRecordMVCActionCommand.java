@@ -215,10 +215,10 @@ public class AddFormInstanceRecordMVCActionCommand
 			ActionRequest actionRequest, DDMFormInstance ddmFormInstance)
 		throws FormInstanceNotPublishedException, PortalException {
 
-		String currentURL = ParamUtil.getString(actionRequest, "currentURL");
-
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
+
+		String currentURL = ParamUtil.getString(actionRequest, "currentURL");
 
 		DDMFormInstanceSettings ddmFormInstanceSettings =
 			ddmFormInstance.getSettingsModel();
