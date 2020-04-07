@@ -331,7 +331,7 @@ public class LayoutPageTemplatesImporterImpl
 				masterPageEntries.add(
 					new MasterPageEntry(
 						_getKey(
-							_MASTER_PAGE_ENTRY_KEY_DEFAULT_,
+							_MASTER_PAGE_ENTRY_KEY_DEFAULT,
 							masterPage.getName(), zipEntry),
 						masterPage,
 						_objectMapper.readValue(
@@ -972,7 +972,7 @@ public class LayoutPageTemplatesImporterImpl
 		_layoutLocalService.updateLayout(layout);
 	}
 
-	private static final String _MASTER_PAGE_ENTRY_KEY_DEFAULT_ =
+	private static final String _MASTER_PAGE_ENTRY_KEY_DEFAULT =
 		"imported-master-page";
 
 	private static final String _MESSAGE_KEY_IGNORED =
