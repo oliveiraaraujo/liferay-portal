@@ -280,10 +280,10 @@ public class Sidecar {
 	}
 
 	private String _createClasspath(
-		Path folderPath, DirectoryStream.Filter<Path> filter) {
+		Path dirPath, DirectoryStream.Filter<Path> filter) {
 
 		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(
-				folderPath, filter)) {
+				dirPath, filter)) {
 
 			StringBundler sb = new StringBundler();
 
@@ -301,7 +301,7 @@ public class Sidecar {
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(
-				"Unable to iterate folder: " + folderPath, ioException);
+				"Unable to iterate " + dirPath, ioException);
 		}
 	}
 
