@@ -175,29 +175,6 @@ public class LayoutPageTemplatesImporterImpl
 			_PAGE_TEMPLATE_COLLECTION_KEY_DEFAULT, pageTemplateCollection);
 	}
 
-	private String _getEntryKey(
-		String name, String defaultEntryKey, ZipEntry zipEntry) {
-
-		String[] pathParts = StringUtil.split(
-			zipEntry.getName(), CharPool.SLASH);
-
-		String entryKey = defaultEntryKey;
-
-		if (Validator.isNotNull(name)) {
-			entryKey = name;
-		}
-
-		if (pathParts.length > 1) {
-			entryKey = pathParts[pathParts.length - 2];
-		}
-
-		entryKey = StringUtil.toLowerCase(entryKey);
-
-		entryKey = StringUtil.replace(entryKey, CharPool.SPACE, CharPool.DASH);
-
-		return entryKey;
-	}
-
 	private String _getErrorMessage(
 			long groupId, String languageKey, String[] arguments)
 		throws PortalException {
@@ -248,6 +225,27 @@ public class LayoutPageTemplatesImporterImpl
 		}
 
 		return fragmentEntryLinks;
+	}
+
+	private String _getKey(String name, String defaultKey, ZipEntry zipEntry) {
+		String[] pathParts = StringUtil.split(
+			zipEntry.getName(), CharPool.SLASH);
+
+		String entryKey = defaultKey;
+
+		if (Validator.isNotNull(name)) {
+			entryKey = name;
+		}
+
+		if (pathParts.length > 1) {
+			entryKey = pathParts[pathParts.length - 2];
+		}
+
+		entryKey = StringUtil.toLowerCase(entryKey);
+
+		entryKey = StringUtil.replace(entryKey, CharPool.SPACE, CharPool.DASH);
+
+		return entryKey;
 	}
 
 	private LayoutPageTemplateCollection _getLayoutPageTemplateCollection(
@@ -334,7 +332,7 @@ public class LayoutPageTemplatesImporterImpl
 				PageDefinition pageDefinition = _objectMapper.readValue(
 					pageDefinitionJSON, PageDefinition.class);
 
-				String masterPageEntryKey = _getEntryKey(
+				String masterPageEntryKey = _getKey(
 					masterPage.getName(), _MASTER_PAGE_ENTRY_KEY_DEFAULT_,
 					zipEntry);
 
@@ -463,7 +461,7 @@ public class LayoutPageTemplatesImporterImpl
 				PageDefinition pageDefinition = _objectMapper.readValue(
 					pageDefinitionJSON, PageDefinition.class);
 
-				String pageTemplateEntryKey = _getEntryKey(
+				String pageTemplateEntryKey = _getKey(
 					pageTemplate.getName(), _PAGE_TEMPLATE_ENTRY_KEY_DEFAULT,
 					zipEntry);
 
