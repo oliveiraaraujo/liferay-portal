@@ -214,31 +214,31 @@ public class Sidecar {
 
 					@Override
 					public FileVisitResult postVisitDirectory(
-							Path dir, IOException ioException)
+							Path path, IOException ioException)
 						throws IOException {
 
 						if (ioException != null) {
 							throw ioException;
 						}
 
-						Files.delete(dir);
+						Files.delete(path);
 
 						return FileVisitResult.CONTINUE;
 					}
 
 					@Override
 					public FileVisitResult visitFile(
-							Path file, BasicFileAttributes basicFileAttributes)
+							Path path, BasicFileAttributes basicFileAttributes)
 						throws IOException {
 
-						Files.delete(file);
+						Files.delete(path);
 
 						return FileVisitResult.CONTINUE;
 					}
 
 					@Override
 					public FileVisitResult visitFileFailed(
-							Path file, IOException ioException)
+							Path path, IOException ioException)
 						throws IOException {
 
 						if (ioException instanceof NoSuchFileException) {
