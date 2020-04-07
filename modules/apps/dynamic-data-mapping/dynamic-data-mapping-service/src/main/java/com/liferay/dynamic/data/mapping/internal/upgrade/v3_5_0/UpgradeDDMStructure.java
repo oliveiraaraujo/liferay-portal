@@ -84,41 +84,38 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 		Locale defaultLocale, String name, Long parentStructureId,
 		Long parentStructureLayoutId) {
 
-		DDMFormField ddmFormField = new DDMFormField(name, "fieldset");
-
-		ddmFormField.setProperty("ddmStructureId", parentStructureId);
-
-		ddmFormField.setProperty(
-			"ddmStructureLayoutId", parentStructureLayoutId);
-
-		ddmFormField.setDataType("string");
-		ddmFormField.setIndexType("keyword");
-		ddmFormField.setLabel(
-			new LocalizedValue() {
-				{
-					addString(defaultLocale, StringPool.BLANK);
-				}
-			});
-		ddmFormField.setLocalizable(true);
-		ddmFormField.setReadOnly(false);
-		ddmFormField.setPredefinedValue(
-			new LocalizedValue() {
-				{
-					addString(defaultLocale, StringPool.BLANK);
-				}
-			});
-		ddmFormField.setRepeatable(false);
-		ddmFormField.setRequired(false);
-		ddmFormField.setShowLabel(true);
-		ddmFormField.setTip(
-			new LocalizedValue() {
-				{
-					addString(defaultLocale, StringPool.BLANK);
-				}
-			});
-		ddmFormField.setVisibilityExpression(StringPool.BLANK);
-
-		return ddmFormField;
+		return new DDMFormField(name, "fieldset") {
+			{
+				setDataType("string");
+				setIndexType("keyword");
+				setLabel(
+					new LocalizedValue() {
+						{
+							addString(defaultLocale, StringPool.BLANK);
+						}
+					});
+				setLocalizable(true);
+				setReadOnly(false);
+				setPredefinedValue(
+					new LocalizedValue() {
+						{
+							addString(defaultLocale, StringPool.BLANK);
+						}
+					});
+				setProperty("ddmStructureId", parentStructureId);
+				setProperty("ddmStructureLayoutId", parentStructureLayoutId);
+				setRepeatable(false);
+				setRequired(false);
+				setShowLabel(true);
+				setTip(
+					new LocalizedValue() {
+						{
+							addString(defaultLocale, StringPool.BLANK);
+						}
+					});
+				setVisibilityExpression(StringPool.BLANK);
+			}
+		};
 	}
 
 	private void _upgradeColorField(JSONObject jsonObject) {
@@ -303,20 +300,13 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 
 		DDMForm ddmForm = ddmFormDeserializerDeserializeResponse.getDDMForm();
 
-		DDMFormField ddmFormField;
-
-		if (_fieldSetMap.containsKey(structureId)) {
-			ddmFormField = _fieldSetMap.get(structureId);
-		}
-		else {
-			ddmFormField = _createFieldSetDDMFormField(
+		_fieldSetMap.computeIfAbsent(
+			structureId,
+			key -> _createFieldSetDDMFormField(
 				ddmForm.getDefaultLocale(), StringUtil.randomString(),
-				parentStructureId, parentStructureLayoutId);
+				parentStructureId, parentStructureLayoutId));
 
-			_fieldSetMap.put(structureId, ddmFormField);
-		}
-
-		ddmForm.addDDMFormField(ddmFormField);
+		ddmForm.addDDMFormField(_fieldSetMap.get(structureId));
 
 		DDMFormSerializerSerializeResponse ddmFormSerializerSerializeResponse =
 			_jsonDDMFormSerializer.serialize(
@@ -496,7 +486,7 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 			ps1.setLong(1, parentStructureId);
 
 			try (ResultSet rs = ps1.executeQuery()) {
-				while (rs.next()) {
+				if (rs.next()) {
 					return _upgradeDefinition(
 						definition, parentStructureId,
 						rs.getLong("structureLayoutId"), structureId);
