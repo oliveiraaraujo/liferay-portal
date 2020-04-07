@@ -643,7 +643,7 @@ public class Sidecar {
 			SidecarComponentUtil.disableSidecarElasticsearchConnectionManager();
 
 			if (_log.isInfoEnabled()) {
-				_log.info("Sidecar process exited, will restart");
+				_log.info("Restaring sidecar process");
 			}
 
 			SidecarComponentUtil.enableSidecarElasticsearchConnectionManager();
