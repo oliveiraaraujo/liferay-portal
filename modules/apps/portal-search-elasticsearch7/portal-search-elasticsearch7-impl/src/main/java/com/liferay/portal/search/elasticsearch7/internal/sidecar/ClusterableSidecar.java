@@ -83,10 +83,10 @@ public class ClusterableSidecar
 	extends Sidecar implements IdentifiableOSGiService {
 
 	public ClusterableSidecar(
-		ElasticsearchConfiguration elasticsearchConfiguration,
 		ClusterExecutor clusterExecutor,
-		ClusterMasterExecutor clusterMasterExecutor, JSONFactory jsonFactory,
-		ProcessExecutor processExecutor, Props props) {
+		ClusterMasterExecutor clusterMasterExecutor,
+		ElasticsearchConfiguration elasticsearchConfiguration,
+		JSONFactory jsonFactory, ProcessExecutor processExecutor, Props props) {
 
 		super(elasticsearchConfiguration, processExecutor, props);
 

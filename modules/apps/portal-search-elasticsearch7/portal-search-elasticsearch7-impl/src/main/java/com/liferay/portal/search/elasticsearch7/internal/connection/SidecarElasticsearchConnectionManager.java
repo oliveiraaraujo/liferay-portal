@@ -79,8 +79,8 @@ public class SidecarElasticsearchConnectionManager {
 
 			if (_clusterExecutor.isEnabled()) {
 				ClusterableSidecar clusterableSidecar = new ClusterableSidecar(
-					elasticsearchConfiguration, _clusterExecutor,
-					_clusterMasterExecutor, _jsonFactory, _processExecutor,
+					_clusterExecutor, _clusterMasterExecutor,
+					elasticsearchConfiguration, _jsonFactory, _processExecutor,
 					_props);
 
 				_clusterableSidecarsOSGiServiceserviceRegistration =
