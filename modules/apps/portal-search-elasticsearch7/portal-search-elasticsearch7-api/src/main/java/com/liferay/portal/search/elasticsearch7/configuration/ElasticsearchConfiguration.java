@@ -17,6 +17,7 @@ package com.liferay.portal.search.elasticsearch7.configuration;
 import aQute.bnd.annotation.metatype.Meta;
 
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
