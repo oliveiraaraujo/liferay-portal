@@ -84,31 +84,31 @@ public class Sidecar {
 		_processExecutor = processExecutor;
 		_props = props;
 
-		Path liferayHome = Paths.get(props.get(PropsKeys.LIFERAY_HOME));
+		Path liferayHomePath = Paths.get(props.get(PropsKeys.LIFERAY_HOME));
 
-		liferayHome = liferayHome.toAbsolutePath();
+		liferayHomePath = liferayHomePath.toAbsolutePath();
 
-		Path sidecarHome = liferayHome.resolve(
+		Path sidecarHomePath = liferayHomePath.resolve(
 			elasticsearchConfiguration.sidecarHome());
 
-		if (!Files.isDirectory(sidecarHome)) {
-			sidecarHome = Paths.get(elasticsearchConfiguration.sidecarHome());
+		if (!Files.isDirectory(sidecarHomePath)) {
+			sidecarHomePath = Paths.get(elasticsearchConfiguration.sidecarHome());
 
-			if (!Files.isDirectory(sidecarHome)) {
+			if (!Files.isDirectory(sidecarHomePath)) {
 				throw new IllegalArgumentException(
 					"Sidecar home " + elasticsearchConfiguration.sidecarHome() +
 						" does not exist");
 			}
 		}
 
-		_sidecarHome = sidecarHome.toAbsolutePath();
+		_sidecarHomePath = sidecarHomePath.toAbsolutePath();
 
-		_pathLogs = liferayHome.resolve("logs");
+		_logsPath = liferayHomePath.resolve("logs");
 
-		_dataHome = liferayHome.resolve("data/elasticsearch7");
+		_dataHomePath = liferayHomePath.resolve("data/elasticsearch7");
 
-		_pathData = _dataHome.resolve("indices");
-		_pathRepo = _dataHome.resolve("repo");
+		_indicesPath = _dataHomePath.resolve("indices");
+		_repoPath = _dataHomePath.resolve("repo");
 	}
 
 	public String getNetworkHostAddress() {
@@ -139,7 +139,7 @@ public class Sidecar {
 		}
 
 		String sidecarLibClassPath = _createClasspath(
-			_sidecarHome.resolve("lib"), path -> true);
+			_sidecarHomePath.resolve("lib"), path -> true);
 
 		try {
 			_processChannel = _processExecutor.execute(
@@ -165,7 +165,7 @@ public class Sidecar {
 	}
 
 	public void stop() {
-		deleteDir(_sidecarTempDir);
+		deleteDir(_sidecarTempDirPath);
 
 		if (_processChannel == null) {
 			return;
@@ -257,7 +257,7 @@ public class Sidecar {
 	}
 
 	protected Path getDataHome() {
-		return _dataHome;
+		return _dataHomePath;
 	}
 
 	protected String getLogProperties() {
@@ -269,7 +269,7 @@ public class Sidecar {
 	}
 
 	protected Path getPathData() {
-		return _pathData;
+		return _indicesPath;
 	}
 
 	protected void setClusterDiscoverySettings(
@@ -386,14 +386,14 @@ public class Sidecar {
 		}
 
 		try {
-			_sidecarTempDir = Files.createTempDirectory("sidecar");
+			_sidecarTempDirPath = Files.createTempDirectory("sidecar");
 		}
 		catch (IOException ioException) {
 			throw new IllegalStateException(
 				"Unable to create temp folder", ioException);
 		}
 
-		Path configFolder = _sidecarTempDir.resolve("config");
+		Path configFolder = _sidecarTempDirPath.resolve("config");
 
 		try {
 			Files.createDirectories(configFolder);
@@ -417,7 +417,7 @@ public class Sidecar {
 
 		arguments.add("-Des.path.conf=" + configFolder);
 
-		arguments.add("-Des.path.home=" + _sidecarHome.toString());
+		arguments.add("-Des.path.home=" + _sidecarHomePath.toString());
 		arguments.add("-Des.networkaddress.cache.ttl=60");
 		arguments.add("-Des.networkaddress.cache.negative.ttl=10");
 
@@ -431,7 +431,7 @@ public class Sidecar {
 		arguments.add("-Dio.netty.recycler.maxCapacityPerThread=0");
 
 		arguments.add("-Dfile.encoding=UTF-8");
-		arguments.add("-Djava.io.tmpdir=" + _sidecarTempDir);
+		arguments.add("-Djava.io.tmpdir=" + _sidecarTempDirPath);
 
 		URLClassLoader urlClassLoader = new URLClassLoader(
 			new URL[] {bundleURL});
@@ -547,9 +547,9 @@ public class Sidecar {
 			"cluster.name", _elasticsearchConfiguration.clusterName());
 		settingsBuilder.put(
 			"http.cors.enabled", _elasticsearchConfiguration.httpCORSEnabled());
-		settingsBuilder.put("path.data", _pathData.toString());
-		settingsBuilder.put("path.logs", _pathLogs.toString());
-		settingsBuilder.put("path.repo", _pathRepo.toString());
+		settingsBuilder.put("path.data", _indicesPath.toString());
+		settingsBuilder.put("path.logs", _logsPath.toString());
+		settingsBuilder.put("path.repo", _repoPath.toString());
 
 		if (_elasticsearchConfiguration.httpCORSEnabled()) {
 			settingsBuilder.put(
@@ -617,17 +617,17 @@ public class Sidecar {
 
 	private String _address;
 	private NoticeableFuture<String> _addressNoticeableFuture;
-	private final Path _dataHome;
+	private final Path _dataHomePath;
 	private final ElasticsearchConfiguration _elasticsearchConfiguration;
-	private final Path _pathData;
-	private final Path _pathLogs;
-	private final Path _pathRepo;
+	private final Path _indicesPath;
+	private final Path _logsPath;
+	private final Path _repoPath;
 	private ProcessChannel<Serializable> _processChannel;
 	private final ProcessExecutor _processExecutor;
 	private final Props _props;
 	private FutureListener<Serializable> _restartFutureListener;
-	private final Path _sidecarHome;
-	private Path _sidecarTempDir;
+	private final Path _sidecarHomePath;
+	private Path _sidecarTempDirPath;
 
 	private class RestartFutureListener
 		implements FutureListener<Serializable> {
