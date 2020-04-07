@@ -300,12 +300,12 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 			Class<? extends SpiraArtifact> spiraArtifactClass) {
 
 		Map<Integer, JSONObject> spiraArtifactJSONObjects =
-			_spiraArtifactJSONObjectMap.get(spiraArtifactClass);
+			_spiraArtifactJSONObjectsMap.get(spiraArtifactClass);
 
 		if (spiraArtifactJSONObjects == null) {
 			spiraArtifactJSONObjects = new HashMap<>();
 
-			_spiraArtifactJSONObjectMap.put(
+			_spiraArtifactJSONObjectsMap.put(
 				spiraArtifactClass, spiraArtifactJSONObjects);
 		}
 
@@ -355,6 +355,6 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 	}
 
 	private static final Map<Class<?>, Map<Integer, JSONObject>>
-		_spiraArtifactJSONObjectMap = new HashMap<>();
+		_spiraArtifactJSONObjectsMap = new HashMap<>();
 
 }
