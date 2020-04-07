@@ -417,20 +417,16 @@ public class Sidecar {
 		}
 
 		arguments.add("-Des.path.conf=" + configFolder);
-
 		arguments.add("-Des.path.home=" + _sidecarHomePath.toString());
 		arguments.add("-Des.networkaddress.cache.ttl=60");
 		arguments.add("-Des.networkaddress.cache.negative.ttl=10");
-
 		arguments.add("-Dlog4j.shutdownHookEnabled=false");
 		arguments.add("-Dlog4j2.disable.jmx=true");
-
 		arguments.add("-Dio.netty.allocator.type=unpooled");
 		arguments.add("-Dio.netty.allocator.numDirectArenas=0");
 		arguments.add("-Dio.netty.noUnsafe=true");
 		arguments.add("-Dio.netty.noKeySetOptimization=true");
 		arguments.add("-Dio.netty.recycler.maxCapacityPerThread=0");
-
 		arguments.add("-Dfile.encoding=UTF-8");
 		arguments.add("-Djava.io.tmpdir=" + _sidecarTempDirPath);
 
