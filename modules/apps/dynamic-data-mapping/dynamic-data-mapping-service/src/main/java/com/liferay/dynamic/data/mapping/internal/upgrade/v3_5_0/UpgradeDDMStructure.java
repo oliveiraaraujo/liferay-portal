@@ -14,14 +14,24 @@
 
 package com.liferay.dynamic.data.mapping.internal.upgrade.v3_5_0;
 
+import com.liferay.dynamic.data.mapping.io.DDMFormDeserializer;
+import com.liferay.dynamic.data.mapping.io.DDMFormDeserializerDeserializeRequest;
+import com.liferay.dynamic.data.mapping.io.DDMFormDeserializerDeserializeResponse;
 import com.liferay.dynamic.data.mapping.io.DDMFormLayoutDeserializer;
 import com.liferay.dynamic.data.mapping.io.DDMFormLayoutDeserializerDeserializeRequest;
 import com.liferay.dynamic.data.mapping.io.DDMFormLayoutDeserializerDeserializeResponse;
 import com.liferay.dynamic.data.mapping.io.DDMFormLayoutSerializer;
 import com.liferay.dynamic.data.mapping.io.DDMFormLayoutSerializerSerializeRequest;
 import com.liferay.dynamic.data.mapping.io.DDMFormLayoutSerializerSerializeResponse;
+import com.liferay.dynamic.data.mapping.io.DDMFormSerializer;
+import com.liferay.dynamic.data.mapping.io.DDMFormSerializerSerializeRequest;
+import com.liferay.dynamic.data.mapping.io.DDMFormSerializerSerializeResponse;
+import com.liferay.dynamic.data.mapping.model.DDMForm;
+import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
+import com.liferay.dynamic.data.mapping.model.DDMFormLayoutColumn;
 import com.liferay.dynamic.data.mapping.model.DDMFormLayoutPage;
+import com.liferay.dynamic.data.mapping.model.DDMFormLayoutRow;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -41,7 +51,10 @@ import com.liferay.portal.kernel.util.Validator;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author Marcela Cunha
@@ -49,9 +62,13 @@ import java.util.Locale;
 public class UpgradeDDMStructure extends UpgradeProcess {
 
 	public UpgradeDDMStructure(
+		DDMFormDeserializer ddmFormDeserializer,
+		DDMFormSerializer ddmFormSerializer,
 		DDMFormLayoutDeserializer ddmFormLayoutDeserializer,
 		DDMFormLayoutSerializer ddmFormLayoutSerializer) {
 
+		_jsonDDMFormDeserializer = ddmFormDeserializer;
+		_jsonDDMFormSerializer = ddmFormSerializer;
 		_ddmFormLayoutDeserializer = ddmFormLayoutDeserializer;
 		_ddmFormLayoutSerializer = ddmFormLayoutSerializer;
 	}
@@ -61,6 +78,47 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 		_upgradeStructureDefinition();
 		_upgradeStructureLayoutDefinition();
 		_upgradeStructureVersionDefinition();
+	}
+
+	private DDMFormField _createFieldSet(
+		Locale defaultLocale, String name, Long parentStructureId,
+		Long parentStructureLayoutId) {
+
+		DDMFormField ddmFormField = new DDMFormField(name, "fieldset");
+
+		ddmFormField.setProperty("ddmStructureId", parentStructureId);
+
+		ddmFormField.setProperty(
+			"ddmStructureLayoutId", parentStructureLayoutId);
+
+		ddmFormField.setDataType("string");
+		ddmFormField.setIndexType("keyword");
+		ddmFormField.setLabel(
+			new LocalizedValue() {
+				{
+					addString(defaultLocale, StringPool.BLANK);
+				}
+			});
+		ddmFormField.setLocalizable(true);
+		ddmFormField.setReadOnly(false);
+		ddmFormField.setPredefinedValue(
+			new LocalizedValue() {
+				{
+					addString(defaultLocale, StringPool.BLANK);
+				}
+			});
+		ddmFormField.setRepeatable(false);
+		ddmFormField.setRequired(false);
+		ddmFormField.setShowLabel(true);
+		ddmFormField.setTip(
+			new LocalizedValue() {
+				{
+					addString(defaultLocale, StringPool.BLANK);
+				}
+			});
+		ddmFormField.setVisibilityExpression(StringPool.BLANK);
+
+		return ddmFormField;
 	}
 
 	private void _upgradeColorField(JSONObject jsonObject) {
@@ -188,6 +246,43 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 			_upgradeFields(companyId, jsonObject.getJSONArray("fields")));
 
 		return jsonObject.toString();
+	}
+
+	private String _upgradeDefinition(
+		String definition, Long parentStructureId, Long parentStructureLayoutId,
+		Long structureId) {
+
+		DDMFormDeserializerDeserializeResponse
+			ddmFormDeserializerDeserializeResponse =
+				_jsonDDMFormDeserializer.deserialize(
+					DDMFormDeserializerDeserializeRequest.Builder.newBuilder(
+						definition
+					).build());
+
+		DDMForm ddmForm = ddmFormDeserializerDeserializeResponse.getDDMForm();
+
+		DDMFormField ddmFormField;
+
+		if (_fieldSetMap.containsKey(structureId)) {
+			ddmFormField = _fieldSetMap.get(structureId);
+		}
+		else {
+			ddmFormField = _createFieldSet(
+				ddmForm.getDefaultLocale(), StringUtil.randomString(),
+				parentStructureId, parentStructureLayoutId);
+
+			_fieldSetMap.put(structureId, ddmFormField);
+		}
+
+		ddmForm.addDDMFormField(ddmFormField);
+
+		DDMFormSerializerSerializeResponse ddmFormSerializerSerializeResponse =
+			_jsonDDMFormSerializer.serialize(
+				DDMFormSerializerSerializeRequest.Builder.newBuilder(
+					ddmForm
+				).build());
+
+		return ddmFormSerializerSerializeResponse.getContent();
 	}
 
 	private void _upgradeDocumentLibraryField(JSONObject jsonObject) {
@@ -562,5 +657,8 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 
 	private final DDMFormLayoutDeserializer _ddmFormLayoutDeserializer;
 	private final DDMFormLayoutSerializer _ddmFormLayoutSerializer;
+	private final Map<Long, DDMFormField> _fieldSetMap = new HashMap<>();
+	private final DDMFormDeserializer _jsonDDMFormDeserializer;
+	private final DDMFormSerializer _jsonDDMFormSerializer;
 
 }
