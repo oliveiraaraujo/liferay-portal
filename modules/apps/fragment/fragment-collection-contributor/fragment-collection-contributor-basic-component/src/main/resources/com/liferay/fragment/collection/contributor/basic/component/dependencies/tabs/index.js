@@ -63,8 +63,10 @@ function openTabPanel(event, i) {
 		}
 	
 		target.focus();
+
 		activeTab(currentTarget, i);
 		activeTabPanel(tabPanelItems[i]);
+
 		this.tabIndex = i;
 	}
 }
