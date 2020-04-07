@@ -266,7 +266,7 @@ public class Sidecar {
 	}
 
 	protected String getNodeName() {
-		return _DEFAULT_NODE_NAME;
+		return "liferay";
 	}
 
 	protected Path getPathData() {
@@ -502,9 +502,10 @@ public class Sidecar {
 				ClassPathUtil.getClassPathURLs(sidecarLibClassPath), null);
 
 			modifiedClasses.put(
-				_MODIFIED_CLASS_NAME_NATIVES,
+				"org.elasticsearch.bootstrap.Natives",
 				_getModifiedClassBytes(
-					classLoader.loadClass(_MODIFIED_CLASS_NAME_NATIVES),
+					classLoader.loadClass(
+						"org.elasticsearch.bootstrap.Natives"),
 					"definitelyRunningAsRoot",
 					methodVisitor -> {
 						methodVisitor.visitCode();
@@ -513,10 +514,10 @@ public class Sidecar {
 					}));
 
 			modifiedClasses.put(
-				_MODIFIED_CLASS_NAME_KEY_STORE_WRAPPER,
+				"org.elasticsearch.common.settings.KeyStoreWrapper",
 				_getModifiedClassBytes(
 					classLoader.loadClass(
-						_MODIFIED_CLASS_NAME_KEY_STORE_WRAPPER),
+						"org.elasticsearch.common.settings.KeyStoreWrapper"),
 					"save",
 					methodVisitor -> {
 						methodVisitor.visitCode();
@@ -601,14 +602,6 @@ public class Sidecar {
 
 		return arguments.toArray(new String[0]);
 	}
-
-	private static final String _DEFAULT_NODE_NAME = "liferay";
-
-	private static final String _MODIFIED_CLASS_NAME_KEY_STORE_WRAPPER =
-		"org.elasticsearch.common.settings.KeyStoreWrapper";
-
-	private static final String _MODIFIED_CLASS_NAME_NATIVES =
-		"org.elasticsearch.bootstrap.Natives";
 
 	private static final Log _log = LogFactoryUtil.getLog(Sidecar.class);
 
