@@ -119,7 +119,7 @@ public class ClusterableSidecar
 			}
 		}
 		else {
-			deleteDir(getDataHome());
+			deleteDir(getDataHomePath());
 		}
 
 		super.start();
@@ -502,7 +502,7 @@ public class ClusterableSidecar
 					futureClusterResponses.get();
 				}
 
-				deleteDir(getDataHome());
+				deleteDir(getDataHomePath());
 
 				_syncStart();
 

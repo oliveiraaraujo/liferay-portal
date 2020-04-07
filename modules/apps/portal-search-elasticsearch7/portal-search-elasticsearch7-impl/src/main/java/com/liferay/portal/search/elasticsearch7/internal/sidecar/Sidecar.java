@@ -257,7 +257,7 @@ public class Sidecar {
 		}
 	}
 
-	protected Path getDataHome() {
+	protected Path getDataHomePath() {
 		return _dataHomePath;
 	}
 
