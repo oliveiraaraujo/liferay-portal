@@ -351,12 +351,11 @@ public class FragmentInstanceDefinitionConverterUtil {
 
 		fragmentFields.addAll(
 			_getTextFragmentFields(
-				editableTypes,
+				editableTypes, infoDisplayContributorTracker,
 				editableValuesJSONObject.getJSONObject(
 					"com.liferay.fragment.entry.processor.editable." +
 						"EditableFragmentEntryProcessor"),
-				infoDisplayContributorTracker, saveMapping,
-				segmentsExperienceId));
+				saveMapping, segmentsExperienceId));
 
 		return fragmentFields.toArray(new FragmentField[0]);
 	}
@@ -420,9 +419,9 @@ public class FragmentInstanceDefinitionConverterUtil {
 	}
 
 	private static List<FragmentField> _getTextFragmentFields(
-		Map<String, String> editableTypes, JSONObject jsonObject,
+		Map<String, String> editableTypes,
 		InfoDisplayContributorTracker infoDisplayContributorTracker,
-		boolean saveMapping, long segmentsExperienceId) {
+		JSONObject jsonObject, boolean saveMapping, long segmentsExperienceId) {
 
 		List<FragmentField> fragmentFields = new ArrayList<>();
 
