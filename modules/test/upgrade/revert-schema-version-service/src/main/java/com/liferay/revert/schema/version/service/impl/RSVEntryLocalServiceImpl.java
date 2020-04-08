@@ -20,28 +20,11 @@ import com.liferay.revert.schema.version.service.base.RSVEntryLocalServiceBaseIm
 import org.osgi.service.component.annotations.Component;
 
 /**
- * The implementation of the rsv entry local service.
- *
- * <p>
- * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the <code>com.liferay.revert.schema.version.service.RSVEntryLocalService</code> interface.
- *
- * <p>
- * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
- * </p>
- *
  * @author Brian Wing Shun Chan
- * @see RSVEntryLocalServiceBaseImpl
  */
 @Component(
 	property = "model.class.name=com.liferay.revert.schema.version.model.RSVEntry",
 	service = AopService.class
 )
 public class RSVEntryLocalServiceImpl extends RSVEntryLocalServiceBaseImpl {
-
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Use <code>com.liferay.revert.schema.version.service.RSVEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.revert.schema.version.service.RSVEntryLocalServiceUtil</code>.
-	 */
-
 }
