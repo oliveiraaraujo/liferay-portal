@@ -298,6 +298,12 @@ public class ExperimentUtilTest {
 		Layout layout = Mockito.mock(Layout.class);
 
 		Mockito.doReturn(
+			RandomTestUtil.randomString()
+		).when(
+			layout
+		).getUuid();
+
+		Mockito.doReturn(
 			RandomTestUtil.randomLong()
 		).when(
 			layout
@@ -316,12 +322,6 @@ public class ExperimentUtilTest {
 		).getTitle(
 			locale
 		);
-
-		Mockito.doReturn(
-			RandomTestUtil.randomString()
-		).when(
-			layout
-		).getUuid();
 
 		return layout;
 	}
