@@ -64,6 +64,9 @@ public class SegmentsPortlet extends MVCPortlet {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
 
+		renderRequest.setAttribute(
+			SegmentsWebKeys.ITEM_SELECTOR, _itemSelector);
+
 		SegmentsDisplayContext segmentsDisplayContext =
 			new SegmentsDisplayContext(
 				_portal.getHttpServletRequest(renderRequest), renderRequest,
@@ -71,9 +74,6 @@ public class SegmentsPortlet extends MVCPortlet {
 
 		renderRequest.setAttribute(
 			SegmentsWebKeys.SEGMENTS_DISPLAY_CONTEXT, segmentsDisplayContext);
-
-		renderRequest.setAttribute(
-			SegmentsWebKeys.ITEM_SELECTOR, _itemSelector);
 
 		super.render(renderRequest, renderResponse);
 	}
