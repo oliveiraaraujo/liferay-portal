@@ -54,10 +54,10 @@ public class SegmentsEntryRoleLocalServiceImpl
 			long segmentsEntryId, long roleId, ServiceContext serviceContext)
 		throws PortalException {
 
+		// Segments entry role
+
 		roleLocalService.getRole(roleId);
 		segmentsEntryPersistence.findByPrimaryKey(segmentsEntryId);
-
-		// Segments entry role
 
 		User user = userLocalService.getUser(serviceContext.getUserId());
 
