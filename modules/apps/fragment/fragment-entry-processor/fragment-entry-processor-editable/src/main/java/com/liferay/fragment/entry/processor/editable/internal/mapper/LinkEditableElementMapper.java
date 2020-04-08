@@ -71,7 +71,7 @@ public class LinkEditableElementMapper implements EditableElementMapper {
 
 		Elements elements = element.children();
 
-		Element firstChild = elements.first();
+		Element firstChildElement = elements.first();
 
 		boolean processEditableTag = false;
 
@@ -84,10 +84,10 @@ public class LinkEditableElementMapper implements EditableElementMapper {
 
 		boolean replaceLink = false;
 
-		if ((firstChild != null) && processEditableTag &&
-			StringUtil.equalsIgnoreCase(firstChild.tagName(), "a")) {
+		if ((firstChildElement != null) && processEditableTag &&
+			StringUtil.equalsIgnoreCase(firstChildElement.tagName(), "a")) {
 
-			linkElement = firstChild;
+			linkElement = firstChildElement;
 			replaceLink = true;
 		}
 
@@ -99,7 +99,8 @@ public class LinkEditableElementMapper implements EditableElementMapper {
 
 		if (Validator.isNotNull(href)) {
 			linkElement.attr("href", href);
-			linkElement.html(replaceLink ? firstChild.html() : element.html());
+			linkElement.html(
+				replaceLink ? firstChildElement.html() : element.html());
 
 			if (processEditableTag) {
 				element.html(linkElement.outerHtml());
@@ -107,7 +108,8 @@ public class LinkEditableElementMapper implements EditableElementMapper {
 		}
 		else if (assetDisplayPage && Validator.isNotNull(mappedField)) {
 			linkElement.attr("href", "${" + mappedField + "}");
-			linkElement.html(replaceLink ? firstChild.html() : element.html());
+			linkElement.html(
+				replaceLink ? firstChildElement.html() : element.html());
 
 			if (processEditableTag) {
 				element.html(
