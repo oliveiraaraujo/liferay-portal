@@ -15,10 +15,12 @@
 package com.liferay.fragment.entry.processor.editable.internal.mapper;
 
 import com.liferay.fragment.entry.processor.editable.mapper.EditableElementMapper;
+import com.liferay.fragment.entry.processor.editable.parser.util.EditableElementParserUtil;
 import com.liferay.fragment.entry.processor.helper.FragmentEntryProcessorHelper;
 import com.liferay.fragment.processor.FragmentEntryProcessorContext;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -58,15 +60,31 @@ public class LinkEditableElementMapper implements EditableElementMapper {
 			return;
 		}
 
+		if (mapped) {
+			href = GetterUtil.getString(
+				_fragmentEntryProcessorHelper.getMappedValue(
+					configJSONObject, new HashMap<>(),
+					fragmentEntryProcessorContext));
+		}
+
 		Element linkElement = new Element("a");
 
 		Elements elements = element.children();
 
 		Element firstChild = elements.first();
 
+		boolean processEditableTag = false;
+
+		if (StringUtil.equalsIgnoreCase(element.tagName(), "lfr-editable")) {
+			processEditableTag = true;
+		}
+		else {
+			linkElement = element;
+		}
+
 		boolean replaceLink = false;
 
-		if ((firstChild != null) &&
+		if ((firstChild != null) && processEditableTag &&
 			StringUtil.equalsIgnoreCase(firstChild.tagName(), "a")) {
 
 			linkElement = firstChild;
@@ -79,36 +97,31 @@ public class LinkEditableElementMapper implements EditableElementMapper {
 
 		String mappedField = configJSONObject.getString("mappedField");
 
-		if (mapped) {
-			Object fieldValue = _fragmentEntryProcessorHelper.getMappedValue(
-				configJSONObject, new HashMap<>(),
-				fragmentEntryProcessorContext);
-
-			if (fieldValue == null) {
-				return;
-			}
-
-			linkElement.attr("href", fieldValue.toString());
-
-			linkElement.html(replaceLink ? firstChild.html() : element.html());
-
-			element.html(linkElement.outerHtml());
-		}
-		else if (Validator.isNotNull(href)) {
+		if (Validator.isNotNull(href)) {
 			linkElement.attr("href", href);
-
 			linkElement.html(replaceLink ? firstChild.html() : element.html());
 
-			element.html(linkElement.outerHtml());
+			if (processEditableTag) {
+				element.html(linkElement.outerHtml());
+			}
 		}
 		else if (assetDisplayPage && Validator.isNotNull(mappedField)) {
 			linkElement.attr("href", "${" + mappedField + "}");
-
 			linkElement.html(replaceLink ? firstChild.html() : element.html());
 
-			element.html(
-				_fragmentEntryProcessorHelper.processTemplate(
-					linkElement.outerHtml(), fragmentEntryProcessorContext));
+			if (processEditableTag) {
+				element.html(
+					_fragmentEntryProcessorHelper.processTemplate(
+						linkElement.outerHtml(),
+						fragmentEntryProcessorContext));
+			}
+			else {
+				element.replaceWith(
+					EditableElementParserUtil.getDocumentBody(
+						_fragmentEntryProcessorHelper.processTemplate(
+							linkElement.outerHtml(),
+							fragmentEntryProcessorContext)));
+			}
 		}
 	}
 
