@@ -60,9 +60,9 @@ public class GetCollectionMappingFieldsMVCResourceCommand
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
-		String itemType = ParamUtil.getString(resourceRequest, "itemType");
-
 		// LPS-111037
+
+		String itemType = ParamUtil.getString(resourceRequest, "itemType");
 
 		if (Objects.equals(DLFileEntryConstants.getClassName(), itemType)) {
 			itemType = FileEntry.class.getName();

@@ -99,9 +99,9 @@ public class FragmentEntryProcessorHelperImpl
 
 		ClassedModel classedModel = (ClassedModel)displayObject;
 
-		String className = classedModel.getModelClassName();
-
 		// LPS-111037
+
+		String className = classedModel.getModelClassName();
 
 		if (classedModel instanceof FileEntry) {
 			className = FileEntry.class.getName();
