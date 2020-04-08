@@ -132,11 +132,8 @@ public class DDMFormAdminDisplayContextTest extends PowerMockito {
 
 	@Test
 	public void testGetPublishedURLForPublishedForm() throws Exception {
-		boolean published = true;
-		boolean requireAuthentication = false;
-
 		DDMFormInstance publishedDDMFormInstance = mockDDMFormInstance(
-			_SHARED_FORM_INSTANCE_ID, published, requireAuthentication);
+			_SHARED_FORM_INSTANCE_ID, true, false);
 
 		String publishedFormURL =
 			_ddmFormAdminDisplayContext.getPublishedFormURL(
@@ -148,11 +145,8 @@ public class DDMFormAdminDisplayContextTest extends PowerMockito {
 
 	@Test
 	public void testGetPublishedURLForUnpublishedForm() throws Exception {
-		boolean published = false;
-		boolean requireAuthentication = false;
-
 		DDMFormInstance unpublishedDDMFormInstance = mockDDMFormInstance(
-			_SHARED_FORM_INSTANCE_ID, published, requireAuthentication);
+			_SHARED_FORM_INSTANCE_ID, false, false);
 
 		String publishedFormURL =
 			_ddmFormAdminDisplayContext.getPublishedFormURL(
