@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.remote.jaxrs.security.internal.container;
+package com.liferay.portal.remote.jaxrs.security.internal.exception.mapper;
 
 import com.liferay.petra.reflect.AnnotationLocator;
 import com.liferay.portal.kernel.security.access.control.AccessControlUtil;

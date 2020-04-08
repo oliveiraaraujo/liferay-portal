@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.oauth2.provider.rest.internal.endpoint.authorize;
+package com.liferay.oauth2.provider.rest.internal.endpoint.authorize.exception.mapper;
 
 import com.liferay.petra.string.StringBundler;
 

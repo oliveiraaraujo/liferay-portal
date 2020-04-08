@@ -12,8 +12,9 @@
  * details.
  */
 
-package com.liferay.oauth2.provider.rest.internal.endpoint.introspect;
+package com.liferay.oauth2.provider.rest.internal.endpoint.introspect.message.body;
 
+import com.liferay.oauth2.provider.rest.internal.endpoint.introspect.TokenIntrospection;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;

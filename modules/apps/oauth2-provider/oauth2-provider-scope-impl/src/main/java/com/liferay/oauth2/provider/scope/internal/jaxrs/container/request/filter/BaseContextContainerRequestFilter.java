@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.oauth2.provider.scope.internal.jaxrs.filter;
+package com.liferay.oauth2.provider.scope.internal.jaxrs.container.request.filter;
 
 import com.liferay.oauth2.provider.scope.internal.constants.OAuth2ProviderScopeConstants;
 import com.liferay.petra.string.StringBundler;

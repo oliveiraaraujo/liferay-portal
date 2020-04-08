@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.oauth2.provider.rest.internal.endpoint.json;
+package com.liferay.oauth2.provider.rest.internal.endpoint.json.message.body;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
