@@ -274,6 +274,10 @@ public class EditableFragmentEntryProcessor implements FragmentEntryProcessor {
 				String mapperType = configJSONObject.getString(
 					"mapperType", element.attr("type"));
 
+				if (Validator.isNull(mapperType)) {
+					mapperType = element.attr("data-lfr-editable-type");
+				}
+
 				EditableElementMapper editableElementMapper =
 					_editableElementMappers.get(mapperType);
 
