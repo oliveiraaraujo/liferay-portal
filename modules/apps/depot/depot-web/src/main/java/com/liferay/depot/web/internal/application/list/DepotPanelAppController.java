@@ -133,6 +133,8 @@ public class DepotPanelAppController {
 				panelAppProperties.put(key, serviceReference.getProperty(key));
 			}
 
+			panelAppProperties.put("depot.panel.app.wrapper", Boolean.TRUE);
+
 			Integer panelAppOrder = (Integer)serviceReference.getProperty(
 				"panel.app.order");
 
@@ -141,8 +143,6 @@ public class DepotPanelAppController {
 			}
 
 			panelAppProperties.put("panel.app.order", panelAppOrder - 1);
-
-			panelAppProperties.put("depot.panel.app.wrapper", Boolean.TRUE);
 
 			return _bundleContext.registerService(
 				PanelApp.class, new PanelAppWrapper(panelApp),
