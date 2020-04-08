@@ -131,28 +131,15 @@ public class DDMFormAdminDisplayContextTest extends PowerMockito {
 	}
 
 	@Test
-	public void testGetPublishedURLForPublishedForm() throws Exception {
-		DDMFormInstance publishedDDMFormInstance = mockDDMFormInstance(
-			_SHARED_FORM_INSTANCE_ID, true, false);
-
-		String publishedFormURL =
-			_ddmFormAdminDisplayContext.getPublishedFormURL(
-				publishedDDMFormInstance);
-
+	public void testGetPublishedFormURL() throws Exception {
 		Assert.assertEquals(
-			getSharedFormURL() + _SHARED_FORM_INSTANCE_ID, publishedFormURL);
-	}
-
-	@Test
-	public void testGetPublishedURLForUnpublishedForm() throws Exception {
-		DDMFormInstance unpublishedDDMFormInstance = mockDDMFormInstance(
-			_SHARED_FORM_INSTANCE_ID, false, false);
-
-		String publishedFormURL =
+			getSharedFormURL() + _SHARED_FORM_INSTANCE_ID,
 			_ddmFormAdminDisplayContext.getPublishedFormURL(
-				unpublishedDDMFormInstance);
-
-		Assert.assertEquals(StringPool.BLANK, publishedFormURL);
+				mockDDMFormInstance(_SHARED_FORM_INSTANCE_ID, true, false)));
+		Assert.assertEquals(
+			StringPool.BLANK,
+			_ddmFormAdminDisplayContext.getPublishedFormURL(
+				mockDDMFormInstance(_SHARED_FORM_INSTANCE_ID, false, false)));
 	}
 
 	@Test
