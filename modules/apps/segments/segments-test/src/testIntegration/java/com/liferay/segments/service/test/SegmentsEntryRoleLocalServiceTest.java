@@ -59,10 +59,8 @@ public class SegmentsEntryRoleLocalServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		_role = RoleTestUtil.addRole(RoleConstants.TYPE_REGULAR);
-
 		_segmentsEntry = SegmentsTestUtil.addSegmentsEntry(
 			TestPropsValues.getGroupId());
-
 		_serviceContext = ServiceContextTestUtil.getServiceContext();
 	}
 
