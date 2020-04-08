@@ -104,7 +104,7 @@ const SaveFragmentCompositionModal = ({
 			size="lg"
 		>
 			<ClayModal.Header>
-				{Liferay.Language.get('new-fragment')}
+				{Liferay.Language.get('save-as-fragment')}
 			</ClayModal.Header>
 
 			<ClayModal.Body>
