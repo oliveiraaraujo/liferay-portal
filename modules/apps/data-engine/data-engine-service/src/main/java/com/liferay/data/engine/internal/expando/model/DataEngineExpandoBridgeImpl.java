@@ -54,7 +54,8 @@ import java.util.stream.Stream;
 public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 
 	public DataEngineExpandoBridgeImpl(
-		String className, long classPK, long companyId) {
+			String className, long classPK, long companyId)
+		throws Exception {
 
 		_className = className;
 		_classPK = classPK;
@@ -68,13 +69,23 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 
 		_companyGroupId = group.getGroupId();
 
+		_dataDefinitionResource = DataDefinitionResource.builder(
+		).checkPermissions(
+			false
+		).user(
+			GuestOrUserUtil.getGuestOrUser()
+		).build();
+
+		_dataRecordResource = DataRecordResource.builder(
+		).checkPermissions(
+			false
+		).user(
+			GuestOrUserUtil.getGuestOrUser()
+		).build();
+
 		DataDefinition dataDefinition = null;
 
-		DataDefinitionResource dataDefinitionResource = null;
-
 		try {
-			dataDefinitionResource = _getDataDefinitionResource();
-
 			dataDefinition = _getDataDefinition();
 		}
 		catch (Exception exception) {
@@ -91,18 +102,13 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 				dataDefinition.setStorageType("json");
 			}
 			else {
-				throw new RuntimeException(exception);
+				throw exception;
 			}
 		}
 
-		try {
-			if (Validator.isNull(dataDefinition.getId())) {
-				dataDefinitionResource.postSiteDataDefinitionByContentType(
-					_companyGroupId, "native-object", dataDefinition);
-			}
-		}
-		catch (Exception exception) {
-			throw new RuntimeException(exception);
+		if (Validator.isNull(dataDefinition.getId())) {
+			_dataDefinitionResource.postSiteDataDefinitionByContentType(
+				_companyGroupId, "native-object", dataDefinition);
 		}
 	}
 
@@ -194,10 +200,7 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 					dataDefinitionFields,
 					createDataDefinitionField(defaultValue, fieldType, name)));
 
-			DataDefinitionResource dataDefinitionResource =
-				_getDataDefinitionResource();
-
-			dataDefinitionResource.putDataDefinition(
+			_dataDefinitionResource.putDataDefinition(
 				dataDefinition.getId(), dataDefinition);
 		}
 		catch (Exception exception) {
@@ -225,9 +228,7 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 				return getAttributeDefault(name);
 			}
 
-			DataRecordResource dataRecordResource = _getDataRecordResource();
-
-			DataRecord dataRecord = dataRecordResource.getDataRecord(
+			DataRecord dataRecord = _dataRecordResource.getDataRecord(
 				ddlRecord.getRecordId());
 
 			Map<String, Object> dataRecordValues =
@@ -407,9 +408,6 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 				_className, _classPK);
 
 			if (ddlRecord == null) {
-				DataRecordResource dataRecordResource =
-					_getDataRecordResource();
-
 				DataDefinition dataDefinition = _getDataDefinition();
 
 				DataRecord dataRecord = new DataRecord();
@@ -419,7 +417,7 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 						name, value
 					).build());
 
-				dataRecord = dataRecordResource.postDataDefinitionDataRecord(
+				dataRecord = _dataRecordResource.postDataDefinitionDataRecord(
 					dataDefinition.getId(), dataRecord);
 
 				ddlRecord = DDLRecordLocalServiceUtil.getDDLRecord(
@@ -431,10 +429,7 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 				DDLRecordLocalServiceUtil.updateDDLRecord(ddlRecord);
 			}
 			else {
-				DataRecordResource dataRecordResource =
-					_getDataRecordResource();
-
-				DataRecord dataRecord = dataRecordResource.getDataRecord(
+				DataRecord dataRecord = _dataRecordResource.getDataRecord(
 					ddlRecord.getRecordId());
 
 				Map<String, Object> dataRecordValues =
@@ -442,7 +437,7 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 
 				dataRecordValues.put(name, value);
 
-				dataRecordResource.putDataRecord(
+				_dataRecordResource.putDataRecord(
 					dataRecord.getId(), dataRecord);
 			}
 		}
@@ -564,41 +559,15 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 	}
 
 	private DataDefinition _getDataDefinition() throws Exception {
-		DataDefinitionResource dataDefinitionResource =
-			_getDataDefinitionResource();
-
-		return dataDefinitionResource.
+		return _dataDefinitionResource.
 			getSiteDataDefinitionByContentTypeByDataDefinitionKey(
 				_companyGroupId, "native-object", _className);
-	}
-
-	private DataDefinitionResource _getDataDefinitionResource()
-		throws Exception {
-
-		return DataDefinitionResource.builder(
-		).checkPermissions(
-			false
-		).user(
-			GuestOrUserUtil.getGuestOrUser()
-		).build();
-	}
-
-	private DataRecordResource _getDataRecordResource() throws Exception {
-		return DataRecordResource.builder(
-		).checkPermissions(
-			false
-		).user(
-			GuestOrUserUtil.getGuestOrUser()
-		).build();
 	}
 
 	private void _updateDataDefinition(DataDefinition dataDefinition)
 		throws Exception {
 
-		DataDefinitionResource dataDefinitionResource =
-			_getDataDefinitionResource();
-
-		dataDefinitionResource.putDataDefinition(
+		_dataDefinitionResource.putDataDefinition(
 			dataDefinition.getId(), dataDefinition);
 	}
 
@@ -606,5 +575,7 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 	private long _classPK;
 	private final long _companyGroupId;
 	private long _companyId;
+	private final DataDefinitionResource _dataDefinitionResource;
+	private final DataRecordResource _dataRecordResource;
 
 }

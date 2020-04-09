@@ -39,7 +39,12 @@ public class DataEngineExpandoBridgeFactoryImpl
 	@Override
 	public ExpandoBridge getExpandoBridge(long companyId, String className) {
 		if (_dataEngineNativeObjectClassNames.containsKey(className)) {
-			return new DataEngineExpandoBridgeImpl(className, 0, companyId);
+			try {
+				return new DataEngineExpandoBridgeImpl(className, 0, companyId);
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
 		}
 
 		return new ExpandoBridgeImpl(companyId, className);
@@ -50,8 +55,13 @@ public class DataEngineExpandoBridgeFactoryImpl
 		long companyId, String className, long classPK) {
 
 		if (_dataEngineNativeObjectClassNames.containsKey(className)) {
-			return new DataEngineExpandoBridgeImpl(
-				className, classPK, companyId);
+			try {
+				return new DataEngineExpandoBridgeImpl(
+					className, classPK, companyId);
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
 		}
 
 		return new ExpandoBridgeImpl(companyId, className, classPK);
