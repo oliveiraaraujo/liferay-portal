@@ -583,19 +583,19 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 		throws PortalException {
 
 		return DataDefinitionResource.builder(
-		).user(
-			UserLocalServiceUtil.getUser(_getUserId())
 		).checkPermissions(
 			false
+		).user(
+			UserLocalServiceUtil.getUser(_getUserId())
 		).build();
 	}
 
 	private DataRecordResource _getDataRecordResource() throws PortalException {
 		return DataRecordResource.builder(
-		).user(
-			UserLocalServiceUtil.getUser(_getUserId())
 		).checkPermissions(
 			false
+		).user(
+			UserLocalServiceUtil.getUser(_getUserId())
 		).build();
 	}
 
