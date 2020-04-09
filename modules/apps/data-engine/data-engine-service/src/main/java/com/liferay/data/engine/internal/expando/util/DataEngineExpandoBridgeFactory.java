@@ -37,7 +37,7 @@ public class DataEngineExpandoBridgeFactory implements ExpandoBridgeFactory {
 
 	@Override
 	public ExpandoBridge getExpandoBridge(long companyId, String className) {
-		if (_dataEngineNativeObjects.containsKey(className)) {
+		if (_dataEngineNativeObjectClassNames.containsKey(className)) {
 			return new DataEngineExpandoBridgeImpl(className, 0, companyId);
 		}
 
@@ -48,7 +48,7 @@ public class DataEngineExpandoBridgeFactory implements ExpandoBridgeFactory {
 	public ExpandoBridge getExpandoBridge(
 		long companyId, String className, long classPK) {
 
-		if (_dataEngineNativeObjects.containsKey(className)) {
+		if (_dataEngineNativeObjectClassNames.containsKey(className)) {
 			return new DataEngineExpandoBridgeImpl(
 				className, classPK, companyId);
 		}
@@ -64,7 +64,7 @@ public class DataEngineExpandoBridgeFactory implements ExpandoBridgeFactory {
 	protected void addDataEngineNativeObject(
 		DataEngineNativeObject dataEngineNativeObject) {
 
-		_dataEngineNativeObjects.put(
+		_dataEngineNativeObjectClassNames.put(
 			dataEngineNativeObject.getClassName(),
 			dataEngineNativeObject.getClassName());
 	}
@@ -72,10 +72,11 @@ public class DataEngineExpandoBridgeFactory implements ExpandoBridgeFactory {
 	protected void removeDataEngineNativeObject(
 		DataEngineNativeObject dataEngineNativeObject) {
 
-		_dataEngineNativeObjects.remove(dataEngineNativeObject.getClassName());
+		_dataEngineNativeObjectClassNames.remove(
+			dataEngineNativeObject.getClassName());
 	}
 
-	private final Map<String, String> _dataEngineNativeObjects =
+	private final Map<String, String> _dataEngineNativeObjectClassNames =
 		new ConcurrentHashMap<>();
 
 }
