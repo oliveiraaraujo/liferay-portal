@@ -64,7 +64,7 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 		Group group = GroupLocalServiceUtil.fetchCompanyGroup(companyId);
 
 		if (group == null) {
-			throw new IllegalArgumentException("Invalid company: " + companyId);
+			throw new IllegalArgumentException("Invalid company " + companyId);
 		}
 
 		_companyGroupId = group.getGroupId();
