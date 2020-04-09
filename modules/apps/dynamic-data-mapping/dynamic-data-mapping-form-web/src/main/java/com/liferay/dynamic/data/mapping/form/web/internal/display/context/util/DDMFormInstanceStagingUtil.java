@@ -40,11 +40,11 @@ public class DDMFormInstanceStagingUtil {
 				remoteURL, user.getLogin(), user.getPassword(),
 				user.isPasswordEncrypted());
 
-			int countFormInstances =
+			int formInstancesCount =
 				DDMFormInstanceServiceHttp.getFormInstancesCount(
 					httpPrincipal, uuid);
 
-			if (countFormInstances > 0) {
+			if (formInstancesCount > 0) {
 				return true;
 			}
 
