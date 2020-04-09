@@ -574,7 +574,7 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 	}
 
 	private DataDefinitionResource _getDataDefinitionResource()
-		throws PortalException {
+		throws Exception {
 
 		return DataDefinitionResource.builder(
 		).checkPermissions(
@@ -584,7 +584,7 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 		).build();
 	}
 
-	private DataRecordResource _getDataRecordResource() throws PortalException {
+	private DataRecordResource _getDataRecordResource() throws Exception {
 		return DataRecordResource.builder(
 		).checkPermissions(
 			false
@@ -593,7 +593,7 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 		).build();
 	}
 
-	private long _getUserId() throws PortalException {
+	private long _getUserId() throws Exception {
 		long userId = PrincipalThreadLocal.getUserId();
 
 		if (userId != 0) {
