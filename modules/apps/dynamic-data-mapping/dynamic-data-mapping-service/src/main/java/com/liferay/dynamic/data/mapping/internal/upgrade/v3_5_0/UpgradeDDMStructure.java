@@ -550,14 +550,15 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 	}
 
 	private void _upgradeStructureLayoutDefinition() throws Exception {
-		StringBundler sb1 = new StringBundler(12);
+		StringBundler sb1 = new StringBundler(13);
 
-		sb1.append("select DDMStructureLayout.definition, ");
+		sb1.append("select DDMStructure.structureId, ");
+		sb1.append("DDMStructure.parentStructureId, DDMStructure.classNameId ");
+		sb1.append(", DDMStructure.structureKey, ");
 		sb1.append("DDMStructureLayout.structureLayoutId, ");
-		sb1.append("DDMStructure.structureKey, DDMStructure.classNameId, ");
-		sb1.append("DDMStructure.parentStructureId, DDMStructure.structureId ");
-		sb1.append("from DDMStructureLayout inner join DDMStructureVersion ");
-		sb1.append("on DDMStructureVersion.structureVersionId = ");
+		sb1.append("DDMStructureLayout.definition from DDMStructureLayout ");
+		sb1.append("inner join DDMStructureVersion on ");
+		sb1.append("DDMStructureVersion.structureVersionId = ");
 		sb1.append("DDMStructureLayout.structureVersionId inner join ");
 		sb1.append("DDMStructure on DDMStructure.structureId = ");
 		sb1.append("DDMStructureVersion.structureId and DDMStructure.version ");
