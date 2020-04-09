@@ -533,7 +533,7 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 
 	@Override
 	public void setAttributes(ServiceContext serviceContext, boolean secure) {
-		throw new UnsupportedOperationException("Operation not supported");
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
