@@ -412,17 +412,16 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 		}
 
 		try {
-			DataRecordResource dataRecordResource = _getDataRecordResource();
-
-			DataRecord dataRecord = null;
-
 			DDLRecord ddlRecord = DDLRecordLocalServiceUtil.fetchFirstRecord(
 				_className, _classPK);
 
 			if (ddlRecord == null) {
+				DataRecordResource dataRecordResource =
+					_getDataRecordResource();
+
 				DataDefinition dataDefinition = _getDataDefinition();
 
-				dataRecord = new DataRecord();
+				DataRecord dataRecord = new DataRecord();
 
 				dataRecord.setDataRecordValues(
 					HashMapBuilder.<String, Object>put(
@@ -441,7 +440,10 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 				DDLRecordLocalServiceUtil.updateDDLRecord(ddlRecord);
 			}
 			else {
-				dataRecord = dataRecordResource.getDataRecord(
+				DataRecordResource dataRecordResource =
+					_getDataRecordResource();
+
+				DataRecord dataRecord = dataRecordResource.getDataRecord(
 					ddlRecord.getRecordId());
 
 				Map<String, Object> dataRecordValues =
