@@ -25,10 +25,9 @@ import com.liferay.dynamic.data.mapping.exception.NoSuchStructureException;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.kernel.security.auth.GuestOrUserUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -580,7 +579,7 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 		).checkPermissions(
 			false
 		).user(
-			UserLocalServiceUtil.getUser(_getUserId())
+			GuestOrUserUtil.getGuestOrUser()
 		).build();
 	}
 
@@ -589,18 +588,8 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 		).checkPermissions(
 			false
 		).user(
-			UserLocalServiceUtil.getUser(_getUserId())
+			GuestOrUserUtil.getGuestOrUser()
 		).build();
-	}
-
-	private long _getUserId() throws Exception {
-		long userId = PrincipalThreadLocal.getUserId();
-
-		if (userId != 0) {
-			return userId;
-		}
-
-		return UserLocalServiceUtil.getDefaultUserId(_companyId);
 	}
 
 	private void _updateDataDefinition(DataDefinition dataDefinition)
