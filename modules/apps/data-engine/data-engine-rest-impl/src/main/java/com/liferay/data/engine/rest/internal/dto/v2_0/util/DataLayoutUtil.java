@@ -285,7 +285,6 @@ public class DataLayoutUtil {
 				));
 
 			dataRule.setLogicalOperator(spiDDMFormRule.getLogicalOperator());
-
 			dataRule.setName(
 				LocalizedValueUtil.toLocalizedValuesMap(
 					spiDDMFormRule.getName()));

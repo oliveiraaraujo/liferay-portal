@@ -49,7 +49,6 @@ public class DDMFormRuleJSONDeserializer {
 		DDMFormRule ddmFormRule = new DDMFormRule(actions, condition);
 
 		ddmFormRule.setEnabled(jsonObject.getBoolean("enabled", true));
-
 		ddmFormRule.setName(
 			LocalizedValueUtil.toLocalizedValue(
 				jsonObject.getJSONObject("name")));

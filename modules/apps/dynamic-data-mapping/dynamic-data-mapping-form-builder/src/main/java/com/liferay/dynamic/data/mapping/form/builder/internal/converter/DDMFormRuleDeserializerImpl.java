@@ -89,7 +89,6 @@ public class DDMFormRuleDeserializerImpl implements DDMFormRuleDeserializer {
 
 		spiDDMFormRule.setLogicalOperator(
 			ruleJSONObject.getString("logical-operator"));
-
 		spiDDMFormRule.setName(
 			LocalizedValueUtil.toLocalizedValue(
 				ruleJSONObject.getJSONObject("name")));
