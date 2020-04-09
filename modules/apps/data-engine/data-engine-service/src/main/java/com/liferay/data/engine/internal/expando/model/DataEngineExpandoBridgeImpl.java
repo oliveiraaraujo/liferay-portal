@@ -420,14 +420,14 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 				_className, _classPK);
 
 			if (ddlRecord == null) {
+				DataDefinition dataDefinition = _getDataDefinition();
+
 				dataRecord = new DataRecord();
 
 				dataRecord.setDataRecordValues(
 					HashMapBuilder.<String, Object>put(
 						name, value
 					).build());
-
-				DataDefinition dataDefinition = _getDataDefinition();
 
 				dataRecord = dataRecordResource.postDataDefinitionDataRecord(
 					dataDefinition.getId(), dataRecord);
