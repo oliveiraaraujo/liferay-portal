@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -38,7 +39,6 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -190,17 +190,10 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 				return;
 			}
 
-			List<DataDefinitionField> dataDefinitionFieldsList =
-				new ArrayList<>();
-
-			Collections.addAll(dataDefinitionFieldsList, dataDefinitionFields);
-
-			dataDefinitionFieldsList.add(
-				createDataDefinitionField(
-					defaultValue, fieldType, name));
-
 			dataDefinition.setDataDefinitionFields(
-				dataDefinitionFieldsList.toArray(new DataDefinitionField[0]));
+				ArrayUtil.append(
+					dataDefinitionFields,
+					createDataDefinitionField(defaultValue, fieldType, name)));
 
 			DataDefinitionResource dataDefinitionResource =
 				_getDataDefinitionResource();
