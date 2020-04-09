@@ -67,10 +67,10 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 		DDMFormLayoutSerializer ddmFormLayoutSerializer,
 		DDMFormSerializer ddmFormSerializer) {
 
-		_jsonDDMFormDeserializer = ddmFormDeserializer;
+		_ddmFormDeserializer = ddmFormDeserializer;
 		_ddmFormLayoutDeserializer = ddmFormLayoutDeserializer;
 		_ddmFormLayoutSerializer = ddmFormLayoutSerializer;
-		_jsonDDMFormSerializer = ddmFormSerializer;
+		_ddmFormSerializer = ddmFormSerializer;
 	}
 
 	@Override
@@ -293,7 +293,7 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 
 		DDMFormDeserializerDeserializeResponse
 			ddmFormDeserializerDeserializeResponse =
-				_jsonDDMFormDeserializer.deserialize(
+				_ddmFormDeserializer.deserialize(
 					DDMFormDeserializerDeserializeRequest.Builder.newBuilder(
 						definition
 					).build());
@@ -309,7 +309,7 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 		ddmForm.addDDMFormField(_fieldSetMap.get(structureId));
 
 		DDMFormSerializerSerializeResponse ddmFormSerializerSerializeResponse =
-			_jsonDDMFormSerializer.serialize(
+			_ddmFormSerializer.serialize(
 				DDMFormSerializerSerializeRequest.Builder.newBuilder(
 					ddmForm
 				).build());
@@ -745,10 +745,10 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 		);
 	}
 
+	private final DDMFormDeserializer _ddmFormDeserializer;
 	private final DDMFormLayoutDeserializer _ddmFormLayoutDeserializer;
 	private final DDMFormLayoutSerializer _ddmFormLayoutSerializer;
+	private final DDMFormSerializer _ddmFormSerializer;
 	private final Map<Long, DDMFormField> _fieldSetMap = new HashMap<>();
-	private final DDMFormDeserializer _jsonDDMFormDeserializer;
-	private final DDMFormSerializer _jsonDDMFormSerializer;
 
 }
