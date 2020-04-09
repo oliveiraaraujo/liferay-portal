@@ -178,7 +178,7 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 			DataDefinitionField[] dataDefinitionFields =
 				dataDefinition.getDataDefinitionFields();
 
-			Optional<DataDefinitionField> dataDefinitionFieldOptional =
+			Optional<DataDefinitionField> dataDefinitionFieldsOptional =
 				Stream.of(
 					dataDefinitionFields
 				).filter(
@@ -186,7 +186,7 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 						dataDefinitionField.getName(), name)
 				).findAny();
 
-			if (dataDefinitionFieldOptional.isPresent()) {
+			if (dataDefinitionFieldsOptional.isPresent()) {
 				return;
 			}
 
@@ -371,7 +371,7 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 		try {
 			DataDefinition dataDefinition = _getDataDefinition();
 
-			Optional<DataDefinitionField> dataDefinitionFieldOptional =
+			Optional<DataDefinitionField> dataDefinitionFieldsOptional =
 				Stream.of(
 					dataDefinition.getDataDefinitionFields()
 				).filter(
@@ -379,7 +379,7 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 						dataDefinitionField.getName(), name)
 				).findAny();
 
-			return dataDefinitionFieldOptional.isPresent();
+			return dataDefinitionFieldsOptional.isPresent();
 		}
 		catch (Exception exception) {
 			throw new RuntimeException(exception);
