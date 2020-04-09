@@ -439,19 +439,19 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 				ddlRecord.setClassPK(_classPK);
 
 				DDLRecordLocalServiceUtil.updateDDLRecord(ddlRecord);
-
-				return;
 			}
+			else {
+				dataRecord = dataRecordResource.getDataRecord(
+					ddlRecord.getRecordId());
 
-			dataRecord = dataRecordResource.getDataRecord(
-				ddlRecord.getRecordId());
+				Map<String, Object> dataRecordValues =
+					dataRecord.getDataRecordValues();
 
-			Map<String, Object> dataRecordValues =
-				dataRecord.getDataRecordValues();
+				dataRecordValues.put(name, value);
 
-			dataRecordValues.put(name, value);
-
-			dataRecordResource.putDataRecord(dataRecord.getId(), dataRecord);
+				dataRecordResource.putDataRecord(
+					dataRecord.getId(), dataRecord);
+			}
 		}
 		catch (Exception exception) {
 			throw new RuntimeException(exception);
