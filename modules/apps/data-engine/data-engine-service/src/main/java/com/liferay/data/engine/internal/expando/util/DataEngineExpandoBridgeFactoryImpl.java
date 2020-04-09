@@ -33,7 +33,8 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
  * @author Jeyvison Nascimento
  */
 @Component(immediate = true, service = ExpandoBridgeFactory.class)
-public class DataEngineExpandoBridgeFactory implements ExpandoBridgeFactory {
+public class DataEngineExpandoBridgeFactoryImpl
+	implements ExpandoBridgeFactory {
 
 	@Override
 	public ExpandoBridge getExpandoBridge(long companyId, String className) {
