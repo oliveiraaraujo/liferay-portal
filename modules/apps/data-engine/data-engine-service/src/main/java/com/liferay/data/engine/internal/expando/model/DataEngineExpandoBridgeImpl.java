@@ -195,10 +195,9 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 
 			Collections.addAll(dataDefinitionFieldsList, dataDefinitionFields);
 
-			DataDefinitionField dataDefinitionField = createDataDefinitionField(
-				defaultValue, fieldType, name);
-
-			dataDefinitionFieldsList.add(dataDefinitionField);
+			dataDefinitionFieldsList.add(
+				createDataDefinitionField(
+					defaultValue, fieldType, name));
 
 			dataDefinition.setDataDefinitionFields(
 				dataDefinitionFieldsList.toArray(new DataDefinitionField[0]));
