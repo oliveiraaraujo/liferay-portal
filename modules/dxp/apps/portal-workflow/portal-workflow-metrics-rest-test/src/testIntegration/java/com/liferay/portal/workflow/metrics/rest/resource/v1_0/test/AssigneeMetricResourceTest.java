@@ -77,7 +77,6 @@ public class AssigneeMetricResourceTest
 
 		_deleteSLATaskResults();
 		_deleteTasks();
-		_deleteTasks();
 	}
 
 	@Override
