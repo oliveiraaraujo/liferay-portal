@@ -86,14 +86,13 @@ public class TeamStagedModelDataHandlerTest
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 			serviceContext);
 
-		_user = UserTestUtil.addUser(group.getGroupId());
-
 		_siteMemberUser = UserTestUtil.addUser(group.getGroupId());
 
 		UserLocalServiceUtil.addGroupUser(
 			liveGroup.getGroupId(), _siteMemberUser);
-
 		UserLocalServiceUtil.addTeamUser(team.getTeamId(), _siteMemberUser);
+
+		_user = UserTestUtil.addUser(group.getGroupId());
 
 		UserLocalServiceUtil.addTeamUser(team.getTeamId(), _user);
 
