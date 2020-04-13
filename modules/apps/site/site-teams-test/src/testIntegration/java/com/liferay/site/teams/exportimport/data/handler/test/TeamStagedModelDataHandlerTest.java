@@ -59,12 +59,12 @@ public class TeamStagedModelDataHandlerTest
 	public void tearDown() throws Exception {
 		super.tearDown();
 
-		if (_user != null) {
-			UserLocalServiceUtil.deleteUser(_user);
-		}
-
 		if (_siteMemberUser != null) {
 			UserLocalServiceUtil.deleteUser(_siteMemberUser);
+		}
+
+		if (_user != null) {
+			UserLocalServiceUtil.deleteUser(_user);
 		}
 
 		if (_userGroup != null) {
