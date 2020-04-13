@@ -948,16 +948,16 @@ public class SiteAdminPortlet extends MVCPortlet {
 		}
 
 		if (inheritLocales) {
-			User user = themeDisplay.getDefaultUser();
-
-			formTypeSettingsUnicodeProperties.setProperty(
-				"languageId", user.getLanguageId());
-
 			formTypeSettingsUnicodeProperties.setProperty(
 				PropsKeys.LOCALES,
 				StringUtil.merge(
 					LocaleUtil.toLanguageIds(
 						LanguageUtil.getAvailableLocales())));
+
+			User user = themeDisplay.getDefaultUser();
+
+			formTypeSettingsUnicodeProperties.setProperty(
+				"languageId", user.getLanguageId());
 		}
 
 		if (formTypeSettingsUnicodeProperties.containsKey(PropsKeys.LOCALES) &&
