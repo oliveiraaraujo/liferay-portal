@@ -67,7 +67,7 @@ String type = GetterUtil.getString((String)request.getAttribute("liferay-ratings
 			/>
 		</div>
 	</c:when>
-	<c:when test="<%= type.equals(RatingsType.STARS.getValue()) || type.equals(RatingsType.STACKED_STARS.getValue()) %>">
+	<c:when test="<%= type.equals(RatingsType.STACKED_STARS.getValue()) || type.equals(RatingsType.STARS.getValue()) %>">
 		<div>
 			<div class="autofit-row autofit-row-center ratings ratings-stars">
 				<div class="autofit-col">
