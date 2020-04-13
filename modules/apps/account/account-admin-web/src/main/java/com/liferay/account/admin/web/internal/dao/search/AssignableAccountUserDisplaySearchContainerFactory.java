@@ -68,16 +68,12 @@ public class AssignableAccountUserDisplaySearchContainerFactory {
 		long accountRoleId = ParamUtil.getLong(
 			liferayPortletRequest, "accountRoleId");
 
-		long scopeAccountEntryId = accountEntryId;
-
 		if (accountRoleId > 0) {
 			searchContainer.setRowChecker(
 				new SelectAccountRoleUserRowChecker(
 					liferayPortletResponse, accountEntryId, accountRoleId));
 		}
 		else {
-			scopeAccountEntryId = AccountConstants.ACCOUNT_ENTRY_ID_ANY;
-
 			searchContainer.setRowChecker(
 				new SelectAccountUserRowChecker(
 					liferayPortletResponse, accountEntryId));
@@ -91,7 +87,8 @@ public class AssignableAccountUserDisplaySearchContainerFactory {
 
 		BaseModelSearchResult<User> baseModelSearchResult =
 			_accountUserRetriever.searchAccountUsers(
-				scopeAccountEntryId,
+				(accountRoleId > 0) ? accountRoleId :
+				AccountConstants.ACCOUNT_ENTRY_ID_ANY,
 				_getEmailAddressDomains(accountEntryId, navigation), keywords,
 				WorkflowConstants.STATUS_APPROVED, searchContainer.getStart(),
 				searchContainer.getDelta(), orderByCol,
