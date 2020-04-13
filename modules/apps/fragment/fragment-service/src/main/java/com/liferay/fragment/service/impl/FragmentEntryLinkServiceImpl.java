@@ -142,7 +142,7 @@ public class FragmentEntryLinkServiceImpl
 
 	private void _checkPermission(
 			long groupId, String className, long classPK,
-			boolean checkUpdatePageContentPermission)
+			boolean checkUpdateLayoutContentPermission)
 		throws PortalException {
 
 		Boolean containsPermission = Boolean.valueOf(
@@ -150,7 +150,7 @@ public class FragmentEntryLinkServiceImpl
 				getPermissionChecker(), groupId, className, classPK,
 				ActionKeys.UPDATE));
 
-		if (checkUpdatePageContentPermission &&
+		if (checkUpdateLayoutContentPermission &&
 			Objects.equals(className, Layout.class.getName())) {
 
 			containsPermission =
