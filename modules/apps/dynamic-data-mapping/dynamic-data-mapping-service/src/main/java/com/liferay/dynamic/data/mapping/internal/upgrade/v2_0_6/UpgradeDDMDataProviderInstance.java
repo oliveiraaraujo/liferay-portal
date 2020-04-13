@@ -238,24 +238,24 @@ public class UpgradeDDMDataProviderInstance extends UpgradeProcess {
 	}
 
 	private boolean _updateDDMStructure(JSONObject jsonObject) {
-		boolean rulesUpdated = false;
+		boolean updatedRules = false;
 
 		JSONArray rulesJSONArray = jsonObject.getJSONArray("rules");
 
 		if (rulesJSONArray != null) {
-			rulesUpdated = _updateDDMDataProviderRules(rulesJSONArray);
+			updatedRules = _updateDDMDataProviderRules(rulesJSONArray);
 		}
 
-		boolean fieldsUpdated = false;
+		boolean updatedFields = false;
 
 		JSONArray fieldsJSONArray = jsonObject.getJSONArray("fields");
 
 		if (fieldsJSONArray != null) {
-			fieldsUpdated = _updateFieldsWithDataProviderAssigned(
+			updatedFields = _updateFieldsWithDataProviderAssigned(
 				fieldsJSONArray);
 		}
 
-		if (rulesUpdated || fieldsUpdated) {
+		if (updatedRules || updatedFields) {
 			return true;
 		}
 
