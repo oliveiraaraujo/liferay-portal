@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.hamcrest.CoreMatchers;
 
 import org.junit.Assert;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
