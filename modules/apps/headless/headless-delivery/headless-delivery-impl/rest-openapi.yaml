@@ -6703,7 +6703,7 @@ paths:
         # @review
         post:
             description:
-                Renders and retreives HTML for the page definition using the theme of specified site.
+                Renders and retrieves HTML for the page definition using the theme of specified site.
             operationId: postSitePageDefinitionPreview
             parameters:
                 - in: path
