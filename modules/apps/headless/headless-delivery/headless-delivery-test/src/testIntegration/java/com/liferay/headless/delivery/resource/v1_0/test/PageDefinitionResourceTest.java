@@ -92,7 +92,7 @@ public class PageDefinitionResourceTest
 
 		Assert.assertThat(
 			httpResponse.getContent(),
-			CoreMatchers.containsString(_INLINE_TEXT_VALUE));
+			CoreMatchers.containsString("Hello, World!"));
 
 		httpResponse =
 			pageDefinitionResource.postSitePageDefinitionPreviewHttpResponse(
@@ -142,7 +142,7 @@ public class PageDefinitionResourceTest
 											LocaleUtil.toLanguageId(
 												LocaleUtil.
 													getMostRelevantLocale()),
-											_INLINE_TEXT_VALUE)))
+											"Hello, World!")))
 							))
 					);
 				}
@@ -155,7 +155,5 @@ public class PageDefinitionResourceTest
 			}
 		};
 	}
-
-	private static final String _INLINE_TEXT_VALUE = "Hello, World!";
 
 }
