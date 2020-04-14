@@ -217,7 +217,7 @@ public class DataEngineExpandoBridgeImpl implements ExpandoBridge {
 	public Serializable getAttribute(String name, boolean secure) {
 		if (_classPK <= 0) {
 			throw new UnsupportedOperationException(
-				"Class primary key is less or equal to 0");
+				"Class primary key is less than or equal to 0");
 		}
 
 		try {
