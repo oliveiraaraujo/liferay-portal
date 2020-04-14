@@ -40,7 +40,55 @@ public class PageDefinitionResourceTest
 	public void testPostSitePageDefinitionPreview() throws Exception {
 		HttpInvoker.HttpResponse httpResponse =
 			pageDefinitionResource.postSitePageDefinitionPreviewHttpResponse(
-				testGroup.getGroupId(), _getTestPageDefinition());
+				testGroup.getGroupId(),
+				new PageDefinition() {
+
+					@Override
+					public PageElement getPageElement() {
+						return new PageElement() {
+
+							@Override
+							public Object getDefinition() {
+								return JSONUtil.put(
+									"gutters", true
+								).put(
+									"numberOfColumns", 1
+								);
+							}
+
+							@Override
+							public PageElement[] getPageElements() {
+								return new PageElement[] {
+									new PageElement() {
+
+										@Override
+										public Object getDefinition() {
+											return JSONUtil.put("size", 12);
+										}
+
+										@Override
+										public PageElement[] getPageElements() {
+											return _getChildrenPageElements();
+										}
+
+										@Override
+										public Type getType() {
+											return Type.COLUMN;
+										}
+
+									}
+								};
+							}
+
+							@Override
+							public Type getType() {
+								return Type.ROW;
+							}
+
+						};
+					}
+
+				});
 
 		Assert.assertThat(
 			httpResponse.getContent(),
@@ -105,57 +153,6 @@ public class PageDefinitionResourceTest
 				}
 
 			}
-		};
-	}
-
-	private PageDefinition _getTestPageDefinition() throws Exception {
-		return new PageDefinition() {
-
-			@Override
-			public PageElement getPageElement() {
-				return new PageElement() {
-
-					@Override
-					public Object getDefinition() {
-						return JSONUtil.put(
-							"gutters", true
-						).put(
-							"numberOfColumns", 1
-						);
-					}
-
-					@Override
-					public PageElement[] getPageElements() {
-						return new PageElement[] {
-							new PageElement() {
-
-								@Override
-								public Object getDefinition() {
-									return JSONUtil.put("size", 12);
-								}
-
-								@Override
-								public PageElement[] getPageElements() {
-									return _getChildrenPageElements();
-								}
-
-								@Override
-								public Type getType() {
-									return Type.COLUMN;
-								}
-
-							}
-						};
-					}
-
-					@Override
-					public Type getType() {
-						return Type.ROW;
-					}
-
-				};
-			}
-
 		};
 	}
 
