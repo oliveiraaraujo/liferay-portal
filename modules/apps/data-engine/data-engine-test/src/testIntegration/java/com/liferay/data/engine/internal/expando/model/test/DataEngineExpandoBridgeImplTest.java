@@ -125,7 +125,7 @@ public class DataEngineExpandoBridgeImplTest {
 
 		Assert.assertEquals(
 			defaultValue,
-			_expandoBridge.getAttribute(_addAttributeWithValue(defaultValue)));
+			_expandoBridge.getAttribute(_addAttribute(defaultValue)));
 
 		_expandoBridge.setClassPK(classPK);
 	}
@@ -137,7 +137,7 @@ public class DataEngineExpandoBridgeImplTest {
 		Assert.assertEquals(
 			defaultValue,
 			_expandoBridge.getAttributeDefault(
-				_addAttributeWithValue(defaultValue)));
+				_addAttribute(defaultValue)));
 	}
 
 	@Test
@@ -180,7 +180,7 @@ public class DataEngineExpandoBridgeImplTest {
 	public void testSetAttributeAndGetAttribute() throws Exception {
 		String attributeValue = RandomTestUtil.randomString();
 
-		String attributeName = _addAttributeWithValue(attributeValue);
+		String attributeName = _addAttribute(attributeValue);
 
 		_expandoBridge.setAttribute(attributeName, attributeValue);
 
@@ -245,7 +245,7 @@ public class DataEngineExpandoBridgeImplTest {
 	public void testSetAttributeDefault() throws Exception {
 		String defaultValue = RandomTestUtil.randomString();
 
-		String attributeName = _addAttributeWithValue(defaultValue);
+		String attributeName = _addAttribute(defaultValue);
 
 		Assert.assertEquals(
 			defaultValue, _expandoBridge.getAttributeDefault(attributeName));
@@ -268,7 +268,7 @@ public class DataEngineExpandoBridgeImplTest {
 		return attributeName;
 	}
 
-	private String _addAttributeWithValue(Serializable value)
+	private String _addAttribute(Serializable value)
 		throws Exception {
 
 		String attributeName = RandomTestUtil.randomString();
