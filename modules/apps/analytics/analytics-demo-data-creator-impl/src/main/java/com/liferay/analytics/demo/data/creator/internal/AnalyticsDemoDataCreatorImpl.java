@@ -91,7 +91,7 @@ public class AnalyticsDemoDataCreatorImpl implements AnalyticsDemoDataCreator {
 				_users.put(emailAddress, _addUser(csvRecord));
 
 				if (_log.isInfoEnabled()) {
-					_log.info("Created user: " + emailAddress);
+					_log.info("Created user " + emailAddress);
 				}
 			}
 			catch (PortalException portalException) {
