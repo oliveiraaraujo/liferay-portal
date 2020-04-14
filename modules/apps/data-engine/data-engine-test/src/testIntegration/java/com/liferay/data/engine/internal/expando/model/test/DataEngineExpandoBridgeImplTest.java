@@ -74,20 +74,20 @@ public class DataEngineExpandoBridgeImplTest {
 			DataEngineNativeObject.class, DataDefinition.class::getName,
 			new HashMapDictionary<>());
 
-		Group testGroup = GroupTestUtil.addGroup();
+		Group group = GroupTestUtil.addGroup();
 
-		_testCompany = CompanyLocalServiceUtil.getCompany(
-			testGroup.getCompanyId());
+		_company = CompanyLocalServiceUtil.getCompany(
+			group.getCompanyId());
 
 		_expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(
-			_testCompany.getCompanyId(), DataDefinition.class.getName(),
+			_company.getCompanyId(), DataDefinition.class.getName(),
 			RandomTestUtil.randomLong());
 	}
 
 	@AfterClass
 	public static void tearDownClass() throws Exception {
 		Company company = CompanyLocalServiceUtil.getCompany(
-			_testCompany.getCompanyId());
+			_company.getCompanyId());
 
 		DataDefinitionResource dataDefinitionResource =
 			DataDefinitionResource.builder(
@@ -100,7 +100,7 @@ public class DataEngineExpandoBridgeImplTest {
 		DataDefinition dataDefinition =
 			dataDefinitionResource.
 				getSiteDataDefinitionByContentTypeByDataDefinitionKey(
-					_testCompany.getGroupId(), "native-object",
+					_company.getGroupId(), "native-object",
 					DataDefinition.class.getName());
 
 		dataDefinitionResource.deleteDataDefinition(dataDefinition.getId());
@@ -286,6 +286,6 @@ public class DataEngineExpandoBridgeImplTest {
 	private static final Map<String, Serializable> _attributes =
 		new HashMap<>();
 	private static ExpandoBridge _expandoBridge;
-	private static Company _testCompany;
+	private static Company _company;
 
 }
