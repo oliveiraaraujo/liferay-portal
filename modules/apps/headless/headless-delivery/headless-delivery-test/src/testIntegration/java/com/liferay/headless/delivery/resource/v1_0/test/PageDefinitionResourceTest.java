@@ -36,17 +36,6 @@ import org.junit.runner.RunWith;
 public class PageDefinitionResourceTest
 	extends BasePageDefinitionResourceTestCase {
 
-	@Test
-	public void testGenerateInvalidPageDefinitionPreview() throws Exception {
-		HttpInvoker.HttpResponse httpResponse =
-			pageDefinitionResource.postSitePageDefinitionPreviewHttpResponse(
-				testGroup.getGroupId(), randomPageDefinition());
-
-		Assert.assertEquals(
-			httpResponse.getStatusCode(),
-			HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-	}
-
 	@Override
 	public void testPostSitePageDefinitionPreview() throws Exception {
 		HttpInvoker.HttpResponse httpResponse =
@@ -56,6 +45,14 @@ public class PageDefinitionResourceTest
 		Assert.assertThat(
 			httpResponse.getContent(),
 			CoreMatchers.containsString(_INLINE_TEXT_VALUE));
+
+		httpResponse =
+			pageDefinitionResource.postSitePageDefinitionPreviewHttpResponse(
+				testGroup.getGroupId(), randomPageDefinition());
+
+		Assert.assertEquals(
+			httpResponse.getStatusCode(),
+			HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 	}
 
 	private PageElement[] _getChildrenPageElements() {
