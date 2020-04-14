@@ -83,7 +83,7 @@ public abstract class BasePageDefinitionResourceImpl
 	@Override
 	@Consumes({"application/json", "application/xml"})
 	@Operation(
-		description = "Renders and retreives HTML for the page definition using the theme of specified site."
+		description = "Renders and retrieves HTML for the page definition using the theme of specified site."
 	)
 	@POST
 	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "siteId")})

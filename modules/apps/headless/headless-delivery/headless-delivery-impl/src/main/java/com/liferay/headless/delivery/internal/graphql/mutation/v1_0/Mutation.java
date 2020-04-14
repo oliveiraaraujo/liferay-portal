@@ -2140,7 +2140,7 @@ public class Mutation {
 	}
 
 	@GraphQLField(
-		description = "Renders and retreives HTML for the page definition using the theme of specified site."
+		description = "Renders and retrieves HTML for the page definition using the theme of specified site."
 	)
 	public Response createSitePageDefinitionPreview(
 			@GraphQLName("siteKey") @NotEmpty String siteKey,
