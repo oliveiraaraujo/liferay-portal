@@ -242,7 +242,7 @@ public class DataEngineExpandoBridgeImplTest {
 	}
 
 	@Test
-	public void testSetDefaultAttribute() throws Exception {
+	public void testSetAttributeDefault() throws Exception {
 		String defaultValue = RandomTestUtil.randomString();
 
 		String attributeName = _addAttributeWithValue(defaultValue);
