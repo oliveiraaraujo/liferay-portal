@@ -86,15 +86,12 @@ public class DataEngineExpandoBridgeImplTest {
 
 	@AfterClass
 	public static void tearDownClass() throws Exception {
-		Company company = CompanyLocalServiceUtil.getCompany(
-			_company.getCompanyId());
-
 		DataDefinitionResource dataDefinitionResource =
 			DataDefinitionResource.builder(
 			).checkPermissions(
 				false
 			).user(
-				company.getDefaultUser()
+				_company.getDefaultUser()
 			).build();
 
 		DataDefinition dataDefinition =
