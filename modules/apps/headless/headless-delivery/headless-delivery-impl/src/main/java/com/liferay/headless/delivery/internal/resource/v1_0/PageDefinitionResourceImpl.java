@@ -116,7 +116,7 @@ public class PageDefinitionResourceImpl extends BasePageDefinitionResourceImpl {
 			).status(
 				HttpServletResponse.SC_INTERNAL_SERVER_ERROR
 			).entity(
-				"Unable to generate page definition preview"
+				"Unable to post page definition preview"
 			).build();
 		}
 
