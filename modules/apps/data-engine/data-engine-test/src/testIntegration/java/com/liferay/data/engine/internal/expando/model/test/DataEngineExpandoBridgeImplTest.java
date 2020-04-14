@@ -177,7 +177,7 @@ public class DataEngineExpandoBridgeImplTest {
 	}
 
 	@Test
-	public void testSetAttributeAndGetValue() throws Exception {
+	public void testSetAttributeAndGetAttribute() throws Exception {
 		String attributeValue = RandomTestUtil.randomString();
 
 		String attributeName = _addAttributeWithValue(attributeValue);
