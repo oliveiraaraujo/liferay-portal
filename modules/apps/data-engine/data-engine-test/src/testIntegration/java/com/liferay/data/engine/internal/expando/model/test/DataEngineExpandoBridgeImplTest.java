@@ -104,7 +104,7 @@ public class DataEngineExpandoBridgeImplTest {
 	}
 
 	@Test
-	public void testAddAttribute() throws PortalException {
+	public void testAddAttribute() throws Exception {
 		long classPK = _expandoBridge.getClassPK();
 
 		_expandoBridge.setClassPK(1);
@@ -116,7 +116,7 @@ public class DataEngineExpandoBridgeImplTest {
 	}
 
 	@Test
-	public void testAddAttributeWithDefaultValue() throws PortalException {
+	public void testAddAttributeWithDefaultValue() throws Exception {
 		long classPK = _expandoBridge.getClassPK();
 
 		_expandoBridge.setClassPK(1);
@@ -131,7 +131,7 @@ public class DataEngineExpandoBridgeImplTest {
 	}
 
 	@Test
-	public void testGetAttributeDefault() throws PortalException {
+	public void testGetAttributeDefault() throws Exception {
 		String defaultValue = RandomTestUtil.randomString();
 
 		Assert.assertEquals(
@@ -150,7 +150,7 @@ public class DataEngineExpandoBridgeImplTest {
 	}
 
 	@Test
-	public void testGetAttributeProperties() throws PortalException {
+	public void testGetAttributeProperties() throws Exception {
 		UnicodeProperties unicodeProperties =
 			_expandoBridge.getAttributeProperties(_addAttribute());
 
@@ -172,12 +172,12 @@ public class DataEngineExpandoBridgeImplTest {
 	}
 
 	@Test
-	public void testHasAttribute() throws PortalException {
+	public void testHasAttribute() throws Exception {
 		Assert.assertTrue(_expandoBridge.hasAttribute(_addAttribute()));
 	}
 
 	@Test
-	public void testSetAttributeAndGetValue() throws PortalException {
+	public void testSetAttributeAndGetValue() throws Exception {
 		String attributeValue = RandomTestUtil.randomString();
 
 		String attributeName = _addAttributeWithValue(attributeValue);
@@ -190,7 +190,7 @@ public class DataEngineExpandoBridgeImplTest {
 	}
 
 	@Test
-	public void testSetAttributeProperties() throws PortalException {
+	public void testSetAttributeProperties() throws Exception {
 		String attributeName = _addAttribute();
 
 		UnicodeProperties unicodeProperties =
@@ -210,7 +210,7 @@ public class DataEngineExpandoBridgeImplTest {
 	}
 
 	@Test
-	public void testSetAttributes() throws PortalException {
+	public void testSetAttributes() throws Exception {
 		String attributeName1 = _addAttribute();
 
 		String attributeName2 = _addAttribute();
@@ -242,7 +242,7 @@ public class DataEngineExpandoBridgeImplTest {
 	}
 
 	@Test
-	public void testSetDefaultAttribute() throws PortalException {
+	public void testSetDefaultAttribute() throws Exception {
 		String defaultValue = RandomTestUtil.randomString();
 
 		String attributeName = _addAttributeWithValue(defaultValue);
@@ -258,7 +258,7 @@ public class DataEngineExpandoBridgeImplTest {
 			defaultValue, _expandoBridge.getAttributeDefault(attributeName));
 	}
 
-	private String _addAttribute() throws PortalException {
+	private String _addAttribute() throws Exception {
 		String attributeName = RandomTestUtil.randomString();
 
 		_expandoBridge.addAttribute(attributeName);
@@ -269,7 +269,7 @@ public class DataEngineExpandoBridgeImplTest {
 	}
 
 	private String _addAttributeWithValue(Serializable value)
-		throws PortalException {
+		throws Exception {
 
 		String attributeName = RandomTestUtil.randomString();
 
