@@ -43,10 +43,10 @@ public class WebServerEntry {
 		_modifiedDate = modifiedDate;
 
 		if (modifiedDate != null) {
-			Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+			Format format = FastDateFormatFactoryUtil.getSimpleDateFormat(
 				"d MMM yyyy HH:mm z");
 
-			_modifiedDateString = dateFormat.format(modifiedDate);
+			_modifiedDateString = format.format(modifiedDate);
 		}
 
 		_description = GetterUtil.getString(description);
