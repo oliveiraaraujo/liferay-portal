@@ -46,6 +46,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.search.test.util.SearchTestRule;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
 
@@ -398,6 +399,9 @@ public class DDMStructureServiceTest extends BaseDDMServiceTestCase {
 
 		Assert.assertEquals(structures.toString(), 1, structures.size());
 	}
+
+	@Rule
+	public SearchTestRule searchTestRule = new SearchTestRule();
 
 	protected void setUpPermissionThreadLocal() throws Exception {
 		_originalPermissionChecker =
