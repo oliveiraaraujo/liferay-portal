@@ -143,8 +143,6 @@ export const getParentField = (pages, fieldName) => {
 
 		if (nestedFieldsVisitor.containsField(fieldName)) {
 			parentField = field;
-
-			return true;
 		}
 
 		return false;
