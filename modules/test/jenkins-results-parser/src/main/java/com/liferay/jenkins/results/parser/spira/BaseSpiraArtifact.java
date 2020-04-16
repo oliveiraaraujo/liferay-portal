@@ -116,12 +116,11 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 
 		Map<Integer, SpiraArtifact> idSpiraArtifactsMap =
 			_getIDSpiraArtifactsMap(spiraArtifactClass);
-		Map<String, PathSpiraArtifact> pathSpiraArtifactsMap =
-			_getPathSpiraArtifactsMap(spiraArtifactClass);
-		Map<String, IndentLevelSpiraArtifact> indentLevelSpiraArtifactsMap =
-			_getIndentLevelSpiraArtifactsMap(spiraArtifactClass);
 
 		idSpiraArtifactsMap.put(spiraArtifact.getID(), spiraArtifact);
+
+		Map<String, PathSpiraArtifact> pathSpiraArtifactsMap =
+			_getPathSpiraArtifactsMap(spiraArtifactClass);
 
 		if (spiraArtifact instanceof PathSpiraArtifact) {
 			PathSpiraArtifact pathSpiraArtifact =
@@ -130,6 +129,9 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 			pathSpiraArtifactsMap.put(
 				pathSpiraArtifact.getPath(), pathSpiraArtifact);
 		}
+
+		Map<String, IndentLevelSpiraArtifact> indentLevelSpiraArtifactsMap =
+			_getIndentLevelSpiraArtifactsMap(spiraArtifactClass);
 
 		if (spiraArtifact instanceof IndentLevelSpiraArtifact) {
 			IndentLevelSpiraArtifact indentLevelSpiraArtifact =
