@@ -295,13 +295,12 @@ public class RESTBuilder {
 	}
 
 	private String _addClientVersionDescription(String yamlString) {
-		Optional<String> clientVersionOptional = _getClientVersionOptional();
-
 		String clientMavenGroupId = _getClientMavenGroupId(
 			_configYAML.getApiPackagePath());
+		Optional<String> clientVersionOptional = _getClientVersionOptional();
 
-		if (!clientVersionOptional.isPresent() ||
-			(clientMavenGroupId == null)) {
+		if ((clientMavenGroupId == null) ||
+			!clientVersionOptional.isPresent()) {
 
 			return yamlString;
 		}
