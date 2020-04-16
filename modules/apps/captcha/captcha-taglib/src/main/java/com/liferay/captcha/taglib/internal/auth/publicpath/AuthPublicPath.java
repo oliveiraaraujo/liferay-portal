@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.captcha.taglib.internal.publicpath;
+package com.liferay.captcha.taglib.internal.auth.publicpath;
 
 import org.osgi.service.component.annotations.Component;
 
