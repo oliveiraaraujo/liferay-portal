@@ -354,27 +354,46 @@ public abstract class BaseDataDefinitionResourceTestCase {
 			(entityField, dataDefinition1, dataDefinition2) -> {
 				Class<?> clazz = dataDefinition1.getClass();
 
+				String entityFieldName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityFieldName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						dataDefinition1, entityField.getName(),
+						dataDefinition1, entityFieldName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						dataDefinition2, entityField.getName(),
+						dataDefinition2, entityFieldName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityFieldName.contains("email")) {
+					BeanUtils.setProperty(
+						dataDefinition1, entityFieldName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						dataDefinition2, entityFieldName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						dataDefinition1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						dataDefinition1, entityFieldName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						dataDefinition2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						dataDefinition2, entityFieldName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -842,27 +861,46 @@ public abstract class BaseDataDefinitionResourceTestCase {
 			(entityField, dataDefinition1, dataDefinition2) -> {
 				Class<?> clazz = dataDefinition1.getClass();
 
+				String entityFieldName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityFieldName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						dataDefinition1, entityField.getName(),
+						dataDefinition1, entityFieldName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						dataDefinition2, entityField.getName(),
+						dataDefinition2, entityFieldName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityFieldName.contains("email")) {
+					BeanUtils.setProperty(
+						dataDefinition1, entityFieldName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						dataDefinition2, entityFieldName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						dataDefinition1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						dataDefinition1, entityFieldName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						dataDefinition2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						dataDefinition2, entityFieldName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -1025,7 +1063,9 @@ public abstract class BaseDataDefinitionResourceTestCase {
 				"dataDefinitionByContentTypeByDataDefinitionKey",
 				new HashMap<String, Object>() {
 					{
-						put("siteId", dataDefinition.getSiteId());
+						put(
+							"siteKey",
+							"\"" + dataDefinition.getSiteId() + "\"");
 						put("contentType", dataDefinition.getContentType());
 						put(
 							"dataDefinitionKey",
@@ -1797,14 +1837,18 @@ public abstract class BaseDataDefinitionResourceTestCase {
 	protected DataDefinition randomDataDefinition() throws Exception {
 		return new DataDefinition() {
 			{
-				contentType = RandomTestUtil.randomString();
-				dataDefinitionKey = RandomTestUtil.randomString();
+				contentType = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				dataDefinitionKey = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				dateCreated = RandomTestUtil.nextDate();
 				dateModified = RandomTestUtil.nextDate();
-				defaultLanguageId = RandomTestUtil.randomString();
+				defaultLanguageId = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
 				siteId = testGroup.getGroupId();
-				storageType = RandomTestUtil.randomString();
+				storageType = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				userId = RandomTestUtil.randomLong();
 			}
 		};

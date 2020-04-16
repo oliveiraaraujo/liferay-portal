@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.test.rule.Inject;
@@ -680,8 +681,9 @@ public abstract class BaseStatusResourceTestCase {
 	protected Status randomStatus() throws Exception {
 		return new Status() {
 			{
-				status = RandomTestUtil.randomString();
-				winnerVariantId = RandomTestUtil.randomString();
+				status = StringUtil.toLowerCase(RandomTestUtil.randomString());
+				winnerVariantId = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 			}
 		};
 	}

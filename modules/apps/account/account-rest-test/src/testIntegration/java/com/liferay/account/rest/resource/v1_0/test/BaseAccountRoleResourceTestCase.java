@@ -308,27 +308,46 @@ public abstract class BaseAccountRoleResourceTestCase {
 			(entityField, accountRole1, accountRole2) -> {
 				Class<?> clazz = accountRole1.getClass();
 
+				String entityFieldName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityFieldName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						accountRole1, entityField.getName(),
+						accountRole1, entityFieldName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						accountRole2, entityField.getName(),
+						accountRole2, entityFieldName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityFieldName.contains("email")) {
+					BeanUtils.setProperty(
+						accountRole1, entityFieldName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						accountRole2, entityFieldName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						accountRole1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						accountRole1, entityFieldName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						accountRole2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						accountRole2, entityFieldName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -401,6 +420,8 @@ public abstract class BaseAccountRoleResourceTestCase {
 
 	@Test
 	public void testGraphQLGetAccountRolesPage() throws Exception {
+		Long accountId = testGetAccountRolesPage_getAccountId();
+
 		List<GraphQLField> graphQLFields = new ArrayList<>();
 
 		List<GraphQLField> itemsGraphQLFields = getGraphQLFields();
@@ -420,6 +441,8 @@ public abstract class BaseAccountRoleResourceTestCase {
 					{
 						put("page", 1);
 						put("pageSize", 2);
+
+						put("accountId", accountId);
 					}
 				},
 				graphQLFields.toArray(new GraphQLField[0])));
@@ -978,10 +1001,12 @@ public abstract class BaseAccountRoleResourceTestCase {
 		return new AccountRole() {
 			{
 				accountId = RandomTestUtil.randomLong();
-				description = RandomTestUtil.randomString();
-				displayName = RandomTestUtil.randomString();
+				description = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				displayName = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
-				name = RandomTestUtil.randomString();
+				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
 				roleId = RandomTestUtil.randomLong();
 			}
 		};

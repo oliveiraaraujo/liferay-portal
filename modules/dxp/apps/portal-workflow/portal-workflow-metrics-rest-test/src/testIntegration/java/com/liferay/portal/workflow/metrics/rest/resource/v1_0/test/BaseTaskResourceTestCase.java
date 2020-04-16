@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.test.rule.Inject;
@@ -1191,7 +1192,8 @@ public abstract class BaseTaskResourceTestCase {
 		return new Task() {
 			{
 				assigneeId = RandomTestUtil.randomLong();
-				className = RandomTestUtil.randomString();
+				className = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				classPK = RandomTestUtil.randomLong();
 				completed = RandomTestUtil.randomBoolean();
 				completionUserId = RandomTestUtil.randomLong();
@@ -1201,11 +1203,12 @@ public abstract class BaseTaskResourceTestCase {
 				duration = RandomTestUtil.randomLong();
 				id = RandomTestUtil.randomLong();
 				instanceId = RandomTestUtil.randomLong();
-				label = RandomTestUtil.randomString();
-				name = RandomTestUtil.randomString();
+				label = StringUtil.toLowerCase(RandomTestUtil.randomString());
+				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
 				nodeId = RandomTestUtil.randomLong();
 				processId = RandomTestUtil.randomLong();
-				processVersion = RandomTestUtil.randomString();
+				processVersion = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 			}
 		};
 	}

@@ -334,27 +334,46 @@ public abstract class BaseDataListViewResourceTestCase {
 			(entityField, dataListView1, dataListView2) -> {
 				Class<?> clazz = dataListView1.getClass();
 
+				String entityFieldName = entityField.getName();
+
 				Method method = clazz.getMethod(
-					"get" +
-						StringUtil.upperCaseFirstLetter(entityField.getName()));
+					"get" + StringUtil.upperCaseFirstLetter(entityFieldName));
 
 				Class<?> returnType = method.getReturnType();
 
 				if (returnType.isAssignableFrom(Map.class)) {
 					BeanUtils.setProperty(
-						dataListView1, entityField.getName(),
+						dataListView1, entityFieldName,
 						Collections.singletonMap("Aaa", "Aaa"));
 					BeanUtils.setProperty(
-						dataListView2, entityField.getName(),
+						dataListView2, entityFieldName,
 						Collections.singletonMap("Bbb", "Bbb"));
+				}
+				else if (entityFieldName.contains("email")) {
+					BeanUtils.setProperty(
+						dataListView1, entityFieldName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
+					BeanUtils.setProperty(
+						dataListView2, entityFieldName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()) +
+									"@liferay.com");
 				}
 				else {
 					BeanUtils.setProperty(
-						dataListView1, entityField.getName(),
-						"Aaa" + RandomTestUtil.randomString());
+						dataListView1, entityFieldName,
+						"aaa" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 					BeanUtils.setProperty(
-						dataListView2, entityField.getName(),
-						"Bbb" + RandomTestUtil.randomString());
+						dataListView2, entityFieldName,
+						"bbb" +
+							StringUtil.toLowerCase(
+								RandomTestUtil.randomString()));
 				}
 			});
 	}
@@ -1175,7 +1194,8 @@ public abstract class BaseDataListViewResourceTestCase {
 				dateModified = RandomTestUtil.nextDate();
 				id = RandomTestUtil.randomLong();
 				siteId = testGroup.getGroupId();
-				sortField = RandomTestUtil.randomString();
+				sortField = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				userId = RandomTestUtil.randomLong();
 			}
 		};
