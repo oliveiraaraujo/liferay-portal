@@ -1027,6 +1027,10 @@ class Form extends Component {
 
 		const formSummary = document.querySelector(`#${namespace}formSummary`);
 
+		if (!formSummary) {
+			return;
+		}
+
 		if (show) {
 			formSummary.classList.remove('hide');
 		}
