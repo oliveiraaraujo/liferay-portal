@@ -114,19 +114,19 @@ public class UpdateConfigurationValuesMVCActionCommand
 		JSONObject editableValuesJSONObject = JSONFactoryUtil.createJSONObject(
 			editableValues);
 
-		JSONObject defaultEditableFragmentEntryProcessorJSONObject =
-			defaultEditableValuesJSONObject.getJSONObject(
-				_KEY_EDITABLE_FRAGMENT_ENTRY_PROCESSOR);
-
 		JSONObject editableFragmentEntryProcessorJSONObject =
 			editableValuesJSONObject.getJSONObject(
 				_KEY_EDITABLE_FRAGMENT_ENTRY_PROCESSOR);
 
-		Iterator<String> keys =
-			defaultEditableFragmentEntryProcessorJSONObject.keys();
-
 		JSONObject mergedEditableFragmentEntryProcessorJSONObject =
 			JSONFactoryUtil.createJSONObject();
+
+		JSONObject defaultEditableFragmentEntryProcessorJSONObject =
+			defaultEditableValuesJSONObject.getJSONObject(
+				_KEY_EDITABLE_FRAGMENT_ENTRY_PROCESSOR);
+
+		Iterator<String> keys =
+			defaultEditableFragmentEntryProcessorJSONObject.keys();
 
 		while (keys.hasNext()) {
 			String key = keys.next();
