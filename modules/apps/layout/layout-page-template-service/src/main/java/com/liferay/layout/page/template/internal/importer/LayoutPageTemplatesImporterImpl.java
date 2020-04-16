@@ -880,7 +880,6 @@ public class LayoutPageTemplatesImporterImpl
 
 			long classNameId = _portal.getClassNameId(
 				displayPageTemplate.getContentTypeClassName());
-
 			long classTypeId = _getClassTypeId(displayPageTemplate, groupId);
 
 			LayoutPageTemplateEntry layoutPageTemplateEntry =
