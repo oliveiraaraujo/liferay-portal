@@ -506,10 +506,6 @@ public class AkismetEntryUtil {
 		return getPersistence().countAll();
 	}
 
-	public static Set<String> getBadColumnNames() {
-		return getPersistence().getBadColumnNames();
-	}
-
 	public static AkismetEntryPersistence getPersistence() {
 		return _serviceTracker.getService();
 	}

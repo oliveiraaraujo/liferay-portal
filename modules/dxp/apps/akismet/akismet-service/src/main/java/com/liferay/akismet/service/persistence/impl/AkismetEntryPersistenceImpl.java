@@ -19,6 +19,7 @@ import com.liferay.akismet.model.AkismetEntry;
 import com.liferay.akismet.model.impl.AkismetEntryImpl;
 import com.liferay.akismet.model.impl.AkismetEntryModelImpl;
 import com.liferay.akismet.service.persistence.AkismetEntryPersistence;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -32,13 +33,11 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
@@ -46,8 +45,6 @@ import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -860,23 +857,15 @@ public class AkismetEntryPersistenceImpl
 	public AkismetEntryPersistenceImpl() {
 		setModelClass(AkismetEntry.class);
 
+		setModelImplClass(AkismetEntryImpl.class);
+		setModelPKClass(long.class);
+		setEntityCacheEnabled(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED);
+
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("type", "type_");
 
-		try {
-			Field field = BasePersistenceImpl.class.getDeclaredField(
-				"_dbColumnNames");
-
-			field.setAccessible(true);
-
-			field.set(this, dbColumnNames);
-		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception, exception);
-			}
-		}
+		setDBColumnNames(dbColumnNames);
 	}
 
 	/**
@@ -1233,161 +1222,12 @@ public class AkismetEntryPersistenceImpl
 	/**
 	 * Returns the akismet entry with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the akismet entry
-	 * @return the akismet entry, or <code>null</code> if a akismet entry with the primary key could not be found
-	 */
-	@Override
-	public AkismetEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			AkismetEntryModelImpl.ENTITY_CACHE_ENABLED, AkismetEntryImpl.class,
-			primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		AkismetEntry akismetEntry = (AkismetEntry)serializable;
-
-		if (akismetEntry == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				akismetEntry = (AkismetEntry)session.get(
-					AkismetEntryImpl.class, primaryKey);
-
-				if (akismetEntry != null) {
-					cacheResult(akismetEntry);
-				}
-				else {
-					entityCache.putResult(
-						AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-						AkismetEntryImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-					AkismetEntryImpl.class, primaryKey);
-
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return akismetEntry;
-	}
-
-	/**
-	 * Returns the akismet entry with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param akismetEntryId the primary key of the akismet entry
 	 * @return the akismet entry, or <code>null</code> if a akismet entry with the primary key could not be found
 	 */
 	@Override
 	public AkismetEntry fetchByPrimaryKey(long akismetEntryId) {
 		return fetchByPrimaryKey((Serializable)akismetEntryId);
-	}
-
-	@Override
-	public Map<Serializable, AkismetEntry> fetchByPrimaryKeys(
-		Set<Serializable> primaryKeys) {
-
-		if (primaryKeys.isEmpty()) {
-			return Collections.emptyMap();
-		}
-
-		Map<Serializable, AkismetEntry> map =
-			new HashMap<Serializable, AkismetEntry>();
-
-		if (primaryKeys.size() == 1) {
-			Iterator<Serializable> iterator = primaryKeys.iterator();
-
-			Serializable primaryKey = iterator.next();
-
-			AkismetEntry akismetEntry = fetchByPrimaryKey(primaryKey);
-
-			if (akismetEntry != null) {
-				map.put(primaryKey, akismetEntry);
-			}
-
-			return map;
-		}
-
-		Set<Serializable> uncachedPrimaryKeys = null;
-
-		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-				AkismetEntryImpl.class, primaryKey);
-
-			if (serializable != nullModel) {
-				if (serializable == null) {
-					if (uncachedPrimaryKeys == null) {
-						uncachedPrimaryKeys = new HashSet<Serializable>();
-					}
-
-					uncachedPrimaryKeys.add(primaryKey);
-				}
-				else {
-					map.put(primaryKey, (AkismetEntry)serializable);
-				}
-			}
-		}
-
-		if (uncachedPrimaryKeys == null) {
-			return map;
-		}
-
-		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
-
-		sb.append(_SQL_SELECT_AKISMETENTRY_WHERE_PKS_IN);
-
-		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
-
-			sb.append(",");
-		}
-
-		sb.setIndex(sb.index() - 1);
-
-		sb.append(")");
-
-		String sql = sb.toString();
-
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			Query query = session.createQuery(sql);
-
-			for (AkismetEntry akismetEntry : (List<AkismetEntry>)query.list()) {
-				map.put(akismetEntry.getPrimaryKeyObj(), akismetEntry);
-
-				cacheResult(akismetEntry);
-
-				uncachedPrimaryKeys.remove(akismetEntry.getPrimaryKeyObj());
-			}
-
-			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-					AkismetEntryImpl.class, primaryKey, nullModel);
-			}
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-
-		return map;
 	}
 
 	/**
@@ -1582,6 +1422,21 @@ public class AkismetEntryPersistenceImpl
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
+	protected String getPKDBName() {
+		return "akismetEntryId";
+	}
+
+	@Override
+	protected String getSelectSQL() {
+		return _SQL_SELECT_AKISMETENTRY;
+	}
+
+	@Override
 	protected Map<String, Integer> getTableColumnsMap() {
 		return AkismetEntryModelImpl.TABLE_COLUMNS_MAP;
 	}
@@ -1660,9 +1515,6 @@ public class AkismetEntryPersistenceImpl
 
 	private static final String _SQL_SELECT_AKISMETENTRY =
 		"SELECT akismetEntry FROM AkismetEntry akismetEntry";
-
-	private static final String _SQL_SELECT_AKISMETENTRY_WHERE_PKS_IN =
-		"SELECT akismetEntry FROM AkismetEntry akismetEntry WHERE akismetEntryId IN (";
 
 	private static final String _SQL_SELECT_AKISMETENTRY_WHERE =
 		"SELECT akismetEntry FROM AkismetEntry akismetEntry WHERE ";

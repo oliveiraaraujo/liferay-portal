@@ -14,16 +14,12 @@
 
 package com.liferay.akismet.model;
 
-import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.model.ModelWrapper;
-import com.liferay.portal.kernel.service.ServiceContext;
-
-import java.io.Serializable;
+import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * <p>
@@ -35,20 +31,11 @@ import java.util.Objects;
  * @generated
  */
 public class AkismetEntryWrapper
+	extends BaseModelWrapper<AkismetEntry>
 	implements AkismetEntry, ModelWrapper<AkismetEntry> {
 
 	public AkismetEntryWrapper(AkismetEntry akismetEntry) {
-		_akismetEntry = akismetEntry;
-	}
-
-	@Override
-	public Class<?> getModelClass() {
-		return AkismetEntry.class;
-	}
-
-	@Override
-	public String getModelClassName() {
-		return AkismetEntry.class.getName();
+		super(akismetEntry);
 	}
 
 	@Override
@@ -132,16 +119,6 @@ public class AkismetEntryWrapper
 		}
 	}
 
-	@Override
-	public Object clone() {
-		return new AkismetEntryWrapper((AkismetEntry)_akismetEntry.clone());
-	}
-
-	@Override
-	public int compareTo(AkismetEntry akismetEntry) {
-		return _akismetEntry.compareTo(akismetEntry);
-	}
-
 	/**
 	 * Returns the akismet entry ID of this akismet entry.
 	 *
@@ -149,7 +126,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public long getAkismetEntryId() {
-		return _akismetEntry.getAkismetEntryId();
+		return model.getAkismetEntryId();
 	}
 
 	/**
@@ -159,7 +136,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public String getClassName() {
-		return _akismetEntry.getClassName();
+		return model.getClassName();
 	}
 
 	/**
@@ -169,7 +146,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public long getClassNameId() {
-		return _akismetEntry.getClassNameId();
+		return model.getClassNameId();
 	}
 
 	/**
@@ -179,12 +156,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public long getClassPK() {
-		return _akismetEntry.getClassPK();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _akismetEntry.getExpandoBridge();
+		return model.getClassPK();
 	}
 
 	/**
@@ -194,7 +166,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public Date getModifiedDate() {
-		return _akismetEntry.getModifiedDate();
+		return model.getModifiedDate();
 	}
 
 	/**
@@ -204,7 +176,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public String getPermalink() {
-		return _akismetEntry.getPermalink();
+		return model.getPermalink();
 	}
 
 	/**
@@ -214,12 +186,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public long getPrimaryKey() {
-		return _akismetEntry.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _akismetEntry.getPrimaryKeyObj();
+		return model.getPrimaryKey();
 	}
 
 	/**
@@ -229,7 +196,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public String getReferrer() {
-		return _akismetEntry.getReferrer();
+		return model.getReferrer();
 	}
 
 	/**
@@ -239,7 +206,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public String getType() {
-		return _akismetEntry.getType();
+		return model.getType();
 	}
 
 	/**
@@ -249,7 +216,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public String getUserAgent() {
-		return _akismetEntry.getUserAgent();
+		return model.getUserAgent();
 	}
 
 	/**
@@ -259,7 +226,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public String getUserIP() {
-		return _akismetEntry.getUserIP();
+		return model.getUserIP();
 	}
 
 	/**
@@ -269,32 +236,12 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public String getUserURL() {
-		return _akismetEntry.getUserURL();
-	}
-
-	@Override
-	public int hashCode() {
-		return _akismetEntry.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _akismetEntry.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _akismetEntry.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _akismetEntry.isNew();
+		return model.getUserURL();
 	}
 
 	@Override
 	public void persist() {
-		_akismetEntry.persist();
+		model.persist();
 	}
 
 	/**
@@ -304,17 +251,12 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public void setAkismetEntryId(long akismetEntryId) {
-		_akismetEntry.setAkismetEntryId(akismetEntryId);
-	}
-
-	@Override
-	public void setCachedModel(boolean cachedModel) {
-		_akismetEntry.setCachedModel(cachedModel);
+		model.setAkismetEntryId(akismetEntryId);
 	}
 
 	@Override
 	public void setClassName(String className) {
-		_akismetEntry.setClassName(className);
+		model.setClassName(className);
 	}
 
 	/**
@@ -324,7 +266,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public void setClassNameId(long classNameId) {
-		_akismetEntry.setClassNameId(classNameId);
+		model.setClassNameId(classNameId);
 	}
 
 	/**
@@ -334,24 +276,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public void setClassPK(long classPK) {
-		_akismetEntry.setClassPK(classPK);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_akismetEntry.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_akismetEntry.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-		_akismetEntry.setExpandoBridgeAttributes(serviceContext);
+		model.setClassPK(classPK);
 	}
 
 	/**
@@ -361,12 +286,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_akismetEntry.setModifiedDate(modifiedDate);
-	}
-
-	@Override
-	public void setNew(boolean n) {
-		_akismetEntry.setNew(n);
+		model.setModifiedDate(modifiedDate);
 	}
 
 	/**
@@ -376,7 +296,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public void setPermalink(String permalink) {
-		_akismetEntry.setPermalink(permalink);
+		model.setPermalink(permalink);
 	}
 
 	/**
@@ -386,12 +306,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
-		_akismetEntry.setPrimaryKey(primaryKey);
-	}
-
-	@Override
-	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		_akismetEntry.setPrimaryKeyObj(primaryKeyObj);
+		model.setPrimaryKey(primaryKey);
 	}
 
 	/**
@@ -401,7 +316,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public void setReferrer(String referrer) {
-		_akismetEntry.setReferrer(referrer);
+		model.setReferrer(referrer);
 	}
 
 	/**
@@ -411,7 +326,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public void setType(String type) {
-		_akismetEntry.setType(type);
+		model.setType(type);
 	}
 
 	/**
@@ -421,7 +336,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public void setUserAgent(String userAgent) {
-		_akismetEntry.setUserAgent(userAgent);
+		model.setUserAgent(userAgent);
 	}
 
 	/**
@@ -431,7 +346,7 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public void setUserIP(String userIP) {
-		_akismetEntry.setUserIP(userIP);
+		model.setUserIP(userIP);
 	}
 
 	/**
@@ -441,75 +356,12 @@ public class AkismetEntryWrapper
 	 */
 	@Override
 	public void setUserURL(String userURL) {
-		_akismetEntry.setUserURL(userURL);
+		model.setUserURL(userURL);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AkismetEntry>
-		toCacheModel() {
-
-		return _akismetEntry.toCacheModel();
+	protected AkismetEntryWrapper wrap(AkismetEntry akismetEntry) {
+		return new AkismetEntryWrapper(akismetEntry);
 	}
-
-	@Override
-	public AkismetEntry toEscapedModel() {
-		return new AkismetEntryWrapper(_akismetEntry.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _akismetEntry.toString();
-	}
-
-	@Override
-	public AkismetEntry toUnescapedModel() {
-		return new AkismetEntryWrapper(_akismetEntry.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _akismetEntry.toXmlString();
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-
-		if (!(obj instanceof AkismetEntryWrapper)) {
-			return false;
-		}
-
-		AkismetEntryWrapper akismetEntryWrapper = (AkismetEntryWrapper)obj;
-
-		if (Objects.equals(_akismetEntry, akismetEntryWrapper._akismetEntry)) {
-			return true;
-		}
-
-		return false;
-	}
-
-	@Override
-	public AkismetEntry getWrappedModel() {
-		return _akismetEntry;
-	}
-
-	@Override
-	public boolean isEntityCacheEnabled() {
-		return _akismetEntry.isEntityCacheEnabled();
-	}
-
-	@Override
-	public boolean isFinderCacheEnabled() {
-		return _akismetEntry.isFinderCacheEnabled();
-	}
-
-	@Override
-	public void resetOriginalValues() {
-		_akismetEntry.resetOriginalValues();
-	}
-
-	private final AkismetEntry _akismetEntry;
 
 }

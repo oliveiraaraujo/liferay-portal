@@ -18,6 +18,7 @@ import com.liferay.akismet.model.AkismetEntry;
 import com.liferay.akismet.model.AkismetEntryModel;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
@@ -26,7 +27,6 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
@@ -262,225 +262,47 @@ public class AkismetEntryModelImpl
 			new LinkedHashMap<String, BiConsumer<AkismetEntry, ?>>();
 
 		attributeGetterFunctions.put(
-			"akismetEntryId",
-			new Function<AkismetEntry, Object>() {
-
-				@Override
-				public Object apply(AkismetEntry akismetEntry) {
-					return akismetEntry.getAkismetEntryId();
-				}
-
-			});
+			"akismetEntryId", AkismetEntry::getAkismetEntryId);
 		attributeSetterBiConsumers.put(
 			"akismetEntryId",
-			new BiConsumer<AkismetEntry, Object>() {
-
-				@Override
-				public void accept(
-					AkismetEntry akismetEntry, Object akismetEntryIdObject) {
-
-					akismetEntry.setAkismetEntryId((Long)akismetEntryIdObject);
-				}
-
-			});
+			(BiConsumer<AkismetEntry, Long>)AkismetEntry::setAkismetEntryId);
 		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<AkismetEntry, Object>() {
-
-				@Override
-				public Object apply(AkismetEntry akismetEntry) {
-					return akismetEntry.getModifiedDate();
-				}
-
-			});
+			"modifiedDate", AkismetEntry::getModifiedDate);
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
-			new BiConsumer<AkismetEntry, Object>() {
-
-				@Override
-				public void accept(
-					AkismetEntry akismetEntry, Object modifiedDateObject) {
-
-					akismetEntry.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
+			(BiConsumer<AkismetEntry, Date>)AkismetEntry::setModifiedDate);
 		attributeGetterFunctions.put(
-			"classNameId",
-			new Function<AkismetEntry, Object>() {
-
-				@Override
-				public Object apply(AkismetEntry akismetEntry) {
-					return akismetEntry.getClassNameId();
-				}
-
-			});
+			"classNameId", AkismetEntry::getClassNameId);
 		attributeSetterBiConsumers.put(
 			"classNameId",
-			new BiConsumer<AkismetEntry, Object>() {
-
-				@Override
-				public void accept(
-					AkismetEntry akismetEntry, Object classNameIdObject) {
-
-					akismetEntry.setClassNameId((Long)classNameIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"classPK",
-			new Function<AkismetEntry, Object>() {
-
-				@Override
-				public Object apply(AkismetEntry akismetEntry) {
-					return akismetEntry.getClassPK();
-				}
-
-			});
+			(BiConsumer<AkismetEntry, Long>)AkismetEntry::setClassNameId);
+		attributeGetterFunctions.put("classPK", AkismetEntry::getClassPK);
 		attributeSetterBiConsumers.put(
 			"classPK",
-			new BiConsumer<AkismetEntry, Object>() {
-
-				@Override
-				public void accept(
-					AkismetEntry akismetEntry, Object classPKObject) {
-
-					akismetEntry.setClassPK((Long)classPKObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"type",
-			new Function<AkismetEntry, Object>() {
-
-				@Override
-				public Object apply(AkismetEntry akismetEntry) {
-					return akismetEntry.getType();
-				}
-
-			});
+			(BiConsumer<AkismetEntry, Long>)AkismetEntry::setClassPK);
+		attributeGetterFunctions.put("type", AkismetEntry::getType);
 		attributeSetterBiConsumers.put(
-			"type",
-			new BiConsumer<AkismetEntry, Object>() {
-
-				@Override
-				public void accept(
-					AkismetEntry akismetEntry, Object typeObject) {
-
-					akismetEntry.setType((String)typeObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"permalink",
-			new Function<AkismetEntry, Object>() {
-
-				@Override
-				public Object apply(AkismetEntry akismetEntry) {
-					return akismetEntry.getPermalink();
-				}
-
-			});
+			"type", (BiConsumer<AkismetEntry, String>)AkismetEntry::setType);
+		attributeGetterFunctions.put("permalink", AkismetEntry::getPermalink);
 		attributeSetterBiConsumers.put(
 			"permalink",
-			new BiConsumer<AkismetEntry, Object>() {
-
-				@Override
-				public void accept(
-					AkismetEntry akismetEntry, Object permalinkObject) {
-
-					akismetEntry.setPermalink((String)permalinkObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"referrer",
-			new Function<AkismetEntry, Object>() {
-
-				@Override
-				public Object apply(AkismetEntry akismetEntry) {
-					return akismetEntry.getReferrer();
-				}
-
-			});
+			(BiConsumer<AkismetEntry, String>)AkismetEntry::setPermalink);
+		attributeGetterFunctions.put("referrer", AkismetEntry::getReferrer);
 		attributeSetterBiConsumers.put(
 			"referrer",
-			new BiConsumer<AkismetEntry, Object>() {
-
-				@Override
-				public void accept(
-					AkismetEntry akismetEntry, Object referrerObject) {
-
-					akismetEntry.setReferrer((String)referrerObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userAgent",
-			new Function<AkismetEntry, Object>() {
-
-				@Override
-				public Object apply(AkismetEntry akismetEntry) {
-					return akismetEntry.getUserAgent();
-				}
-
-			});
+			(BiConsumer<AkismetEntry, String>)AkismetEntry::setReferrer);
+		attributeGetterFunctions.put("userAgent", AkismetEntry::getUserAgent);
 		attributeSetterBiConsumers.put(
 			"userAgent",
-			new BiConsumer<AkismetEntry, Object>() {
-
-				@Override
-				public void accept(
-					AkismetEntry akismetEntry, Object userAgentObject) {
-
-					akismetEntry.setUserAgent((String)userAgentObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userIP",
-			new Function<AkismetEntry, Object>() {
-
-				@Override
-				public Object apply(AkismetEntry akismetEntry) {
-					return akismetEntry.getUserIP();
-				}
-
-			});
+			(BiConsumer<AkismetEntry, String>)AkismetEntry::setUserAgent);
+		attributeGetterFunctions.put("userIP", AkismetEntry::getUserIP);
 		attributeSetterBiConsumers.put(
 			"userIP",
-			new BiConsumer<AkismetEntry, Object>() {
-
-				@Override
-				public void accept(
-					AkismetEntry akismetEntry, Object userIPObject) {
-
-					akismetEntry.setUserIP((String)userIPObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userURL",
-			new Function<AkismetEntry, Object>() {
-
-				@Override
-				public Object apply(AkismetEntry akismetEntry) {
-					return akismetEntry.getUserURL();
-				}
-
-			});
+			(BiConsumer<AkismetEntry, String>)AkismetEntry::setUserIP);
+		attributeGetterFunctions.put("userURL", AkismetEntry::getUserURL);
 		attributeSetterBiConsumers.put(
 			"userURL",
-			new BiConsumer<AkismetEntry, Object>() {
-
-				@Override
-				public void accept(
-					AkismetEntry akismetEntry, Object userURLObject) {
-
-					akismetEntry.setUserURL((String)userURLObject);
-				}
-
-			});
+			(BiConsumer<AkismetEntry, String>)AkismetEntry::setUserURL);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
