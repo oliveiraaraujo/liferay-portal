@@ -121,8 +121,6 @@ public class SimpleCaptchaImpl implements Captcha {
 
 		HttpSession httpSession = _getSession(httpServletRequest);
 
-		nl.captcha.Captcha simpleCaptcha = getSimpleCaptcha();
-
 		String key = WebKeys.CAPTCHA_TEXT;
 
 		String portletId = ParamUtil.getString(httpServletRequest, "portletId");
@@ -130,6 +128,8 @@ public class SimpleCaptchaImpl implements Captcha {
 		if (Validator.isNotNull(portletId)) {
 			key = portal.getPortletNamespace(portletId) + key;
 		}
+
+		nl.captcha.Captcha simpleCaptcha = getSimpleCaptcha();
 
 		httpSession.setAttribute(key, simpleCaptcha.getAnswer());
 
