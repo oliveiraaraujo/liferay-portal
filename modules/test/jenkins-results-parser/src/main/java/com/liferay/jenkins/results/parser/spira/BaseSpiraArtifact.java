@@ -119,17 +119,6 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 
 		idSpiraArtifactsMap.put(spiraArtifact.getID(), spiraArtifact);
 
-		Map<String, PathSpiraArtifact> pathSpiraArtifactsMap =
-			_getPathSpiraArtifactsMap(spiraArtifactClass);
-
-		if (spiraArtifact instanceof PathSpiraArtifact) {
-			PathSpiraArtifact pathSpiraArtifact =
-				(PathSpiraArtifact)spiraArtifact;
-
-			pathSpiraArtifactsMap.put(
-				pathSpiraArtifact.getPath(), pathSpiraArtifact);
-		}
-
 		Map<String, IndentLevelSpiraArtifact> indentLevelSpiraArtifactsMap =
 			_getIndentLevelSpiraArtifactsMap(spiraArtifactClass);
 
@@ -140,6 +129,17 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 			indentLevelSpiraArtifactsMap.put(
 				indentLevelSpiraArtifact.getIndentLevel(),
 				indentLevelSpiraArtifact);
+		}
+
+		Map<String, PathSpiraArtifact> pathSpiraArtifactsMap =
+			_getPathSpiraArtifactsMap(spiraArtifactClass);
+
+		if (spiraArtifact instanceof PathSpiraArtifact) {
+			PathSpiraArtifact pathSpiraArtifact =
+				(PathSpiraArtifact)spiraArtifact;
+
+			pathSpiraArtifactsMap.put(
+				pathSpiraArtifact.getPath(), pathSpiraArtifact);
 		}
 	}
 
@@ -259,20 +259,13 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 
 		Map<Integer, SpiraArtifact> idSpiraArtifactsMap =
 			_getIDSpiraArtifactsMap(spiraArtifactClass);
-		Map<String, PathSpiraArtifact> pathSpiraArtifactsMap =
-			_getPathSpiraArtifactsMap(spiraArtifactClass);
 		Map<String, IndentLevelSpiraArtifact> indentLevelSpiraArtifactsMap =
 			_getIndentLevelSpiraArtifactsMap(spiraArtifactClass);
+		Map<String, PathSpiraArtifact> pathSpiraArtifactsMap =
+			_getPathSpiraArtifactsMap(spiraArtifactClass);
 
 		for (S spiraArtifact : spiraArtifacts) {
 			idSpiraArtifactsMap.remove(spiraArtifact.getID());
-
-			if (spiraArtifact instanceof PathSpiraArtifact) {
-				PathSpiraArtifact pathSpiraArtifact =
-					(PathSpiraArtifact)spiraArtifact;
-
-				pathSpiraArtifactsMap.remove(pathSpiraArtifact.getPath());
-			}
 
 			if (spiraArtifact instanceof IndentLevelSpiraArtifact) {
 				IndentLevelSpiraArtifact indentLevelSpiraArtifact =
@@ -280,6 +273,13 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 
 				indentLevelSpiraArtifactsMap.remove(
 					indentLevelSpiraArtifact.getIndentLevel());
+			}
+
+			if (spiraArtifact instanceof PathSpiraArtifact) {
+				PathSpiraArtifact pathSpiraArtifact =
+					(PathSpiraArtifact)spiraArtifact;
+
+				pathSpiraArtifactsMap.remove(pathSpiraArtifact.getPath());
 			}
 		}
 	}
