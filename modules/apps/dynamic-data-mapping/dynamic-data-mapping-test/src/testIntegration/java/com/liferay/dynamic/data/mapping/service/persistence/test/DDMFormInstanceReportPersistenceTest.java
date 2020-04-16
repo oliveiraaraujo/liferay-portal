@@ -214,8 +214,7 @@ public class DDMFormInstanceReportPersistenceTest {
 		return OrderByComparatorFactoryUtil.create(
 			"DDMFormInstanceReport", "mvccVersion", true,
 			"formInstanceReportId", true, "groupId", true, "companyId", true,
-			"createDate", true, "modifiedDate", true, "formInstanceId", true,
-			"data", true);
+			"createDate", true, "modifiedDate", true, "formInstanceId", true);
 	}
 
 	@Test

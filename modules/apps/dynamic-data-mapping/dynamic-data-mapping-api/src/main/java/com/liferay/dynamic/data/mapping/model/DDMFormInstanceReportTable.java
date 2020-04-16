@@ -17,6 +17,7 @@ package com.liferay.dynamic.data.mapping.model;
 import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.base.BaseTable;
 
+import java.sql.Clob;
 import java.sql.Types;
 
 import java.util.Date;
@@ -55,8 +56,8 @@ public class DDMFormInstanceReportTable
 	public final Column<DDMFormInstanceReportTable, Long> formInstanceId =
 		createColumn(
 			"formInstanceId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
-	public final Column<DDMFormInstanceReportTable, String> data = createColumn(
-		"data_", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<DDMFormInstanceReportTable, Clob> data = createColumn(
+		"data_", Clob.class, Types.CLOB, Column.FLAG_DEFAULT);
 
 	private DDMFormInstanceReportTable() {
 		super("DDMFormInstanceReport", DDMFormInstanceReportTable::new);
