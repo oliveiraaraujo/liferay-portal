@@ -114,15 +114,15 @@ public class UpgradeDynamicDataMappingTest {
 
 	@After
 	public void tearDown() throws Exception {
-		deleteStructure(_structureId);
-
-		deleteStructure(_parentStructureId);
-
 		deleteTemplate(_templateId);
 
 		deleteContent(_contentId);
 
 		deleteStorageLink(_storageLinkId);
+
+		deleteStructure(_structureId);
+
+		deleteStructure(_parentStructureId);
 	}
 
 	@Test
