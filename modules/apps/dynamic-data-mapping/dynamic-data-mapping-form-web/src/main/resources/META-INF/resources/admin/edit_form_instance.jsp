@@ -142,8 +142,8 @@ renderResponse.setTitle((formInstance == null) ? LanguageUtil.get(request, "new-
 <liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="saveFormInstance" var="autoSaveFormInstanceURL" />
 
 <c:if test="<%= ddmFormAdminDisplayContext.isShowSummary() %>">
-	<div class="hide" id="<portlet:namespace />formSummary">
-		<liferay-util:include page="/admin/list_form_instance_records.jsp" servletContext="<%= application %>" />
+	<div class="ddm-form-summary hide" id="<portlet:namespace />formSummary">
+		<liferay-util:include page="/admin/view_form_instance_summary.jsp" servletContext="<%= application %>" />
 	</div>
 </c:if>
 
