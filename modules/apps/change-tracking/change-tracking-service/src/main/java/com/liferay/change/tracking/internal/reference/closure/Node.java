@@ -31,6 +31,14 @@ public class Node {
 
 	@Override
 	public boolean equals(Object object) {
+		if (this == object) {
+			return true;
+		}
+
+		if (!(object instanceof Node)) {
+			return false;
+		}
+
 		Node node = (Node)object;
 
 		if ((_classNameId == node._classNameId) &&

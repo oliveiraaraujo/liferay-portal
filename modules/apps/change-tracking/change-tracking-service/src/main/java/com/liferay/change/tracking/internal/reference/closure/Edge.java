@@ -31,6 +31,14 @@ public class Edge {
 
 	@Override
 	public boolean equals(Object object) {
+		if (this == object) {
+			return true;
+		}
+
+		if (!(object instanceof Edge)) {
+			return false;
+		}
+
 		Edge edge = (Edge)object;
 
 		if (Objects.equals(_fromNode, edge._fromNode) &&
