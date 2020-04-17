@@ -1329,7 +1329,7 @@ private List<String> _getIncludes(File jarFile) {
 
 		String path = it.path
 
-		if (path.startsWith("com/liferay/")) {
+		if (path.startsWith("com/liferay/") && (jar.getResource(path + "/packageinfo") != null)) {
 			includes.add(path + "/*")
 		}
 	}
