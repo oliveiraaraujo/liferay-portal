@@ -16,9 +16,11 @@ package com.liferay.data.engine.rest.internal.dto.v2_0.util;
 
 import com.liferay.data.engine.field.type.util.LocalizedValueUtil;
 import com.liferay.data.engine.rest.dto.v2_0.DataDefinition;
+import com.liferay.data.engine.rest.dto.v2_0.DataDefinitionField;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServicesTracker;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
+import com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -27,58 +29,175 @@ import com.liferay.portal.kernel.util.SetUtil;
 import java.util.Locale;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.mockito.runners.MockitoJUnitRunner;
-
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
  * @author Mateus Santana
  */
-@RunWith(MockitoJUnitRunner.class)
+@PrepareForTest(LocaleUtil.class)
+@RunWith(PowerMockRunner.class)
 public class DataDefinitionUtilTest extends PowerMockito {
+
+	@Before
+	public void setUp() {
+		_setUpLocaleUtil();
+	}
 
 	@Test
 	public void testToDDMFormEquals() {
-		DataDefinition dataDefinition = _createDataDefinition();
+		DDMForm ddmForm = DDMFormTestUtil.createDDMForm(
+			SetUtil.fromArray(new Locale[] {LocaleUtil.BRAZIL, LocaleUtil.US}),
+			LocaleUtil.US);
 
-		Assert.assertEquals(
-			new DDMForm() {
+		ddmForm.addDDMFormField(
+			new DDMFormField() {
 				{
-					setAvailableLocales(
-						SetUtil.fromArray(new Locale[] {LocaleUtil.US}));
-					setDDMFormFields(
-						ListUtil.fromArray(
-							new DDMFormField() {
+					setIndexType("text");
+					setLabel(
+						LocalizedValueUtil.toLocalizedValue(
+							HashMapBuilder.<String, Object>put(
+								"en_US", "label1"
+							).put(
+								"pt_BR", "rótulo1"
+							).build()));
+					setLocalizable(true);
+					setName("name1");
+					setPredefinedValue(
+						LocalizedValueUtil.toLocalizedValue(
+							HashMapBuilder.<String, Object>put(
+								"en_US", "enter a text"
+							).put(
+								"pt_BR", "insira um texto"
+							).build()));
+					setReadOnly(true);
+					setRepeatable(true);
+					setRequired(true);
+					setShowLabel(true);
+					setTip(
+						LocalizedValueUtil.toLocalizedValue(
+							HashMapBuilder.<String, Object>put(
+								"en_US", "tip1"
+							).put(
+								"pt_BR", "ajuda1"
+							).build()));
+					setType("text");
+				}
+			});
+
+		ddmForm.addDDMFormField(
+			new DDMFormField() {
+				{
+					setIndexType("keyword");
+					setLabel(
+						LocalizedValueUtil.toLocalizedValue(
+							HashMapBuilder.<String, Object>put(
+								"en_US", "label2"
+							).put(
+								"pt_BR", "rótulo2"
+							).build()));
+					setName("name2");
+					setLocalizable(false);
+					setPredefinedValue(
+						LocalizedValueUtil.toLocalizedValue(
+							HashMapBuilder.<String, Object>put(
+								"en_US", "select an option"
+							).put(
+								"pt_BR", "selecione uma opção"
+							).build()));
+					setReadOnly(false);
+					setRepeatable(false);
+					setRequired(false);
+					setShowLabel(false);
+					setTip(
+						LocalizedValueUtil.toLocalizedValue(
+							HashMapBuilder.<String, Object>put(
+								"en_US", "tip2"
+							).put(
+								"pt_BR", "ajuda2"
+							).build()));
+					setType("select");
+				}
+			});
+
+		DDMForm actual = DataDefinitionUtil.toDDMForm(
+			new DataDefinition() {
+				{
+					setAvailableLanguageIds(new String[] {"en_US", "pt_BR"});
+					setDataDefinitionFields(
+						new DataDefinitionField[] {
+							new DataDefinitionField() {
 								{
-									setIndexType(null);
+									setDefaultValue(
+										HashMapBuilder.<String, Object>put(
+											"en_US", "enter a text"
+										).put(
+											"pt_BR", "insira um texto"
+										).build());
+									setFieldType("text");
+									setIndexType(IndexType.TEXT);
 									setLabel(
-										LocalizedValueUtil.toLocalizedValue(
-											HashMapBuilder.<String, Object>put(
-												"en_US", "label"
-											).build()));
+										HashMapBuilder.<String, Object>put(
+											"en_US", "label1"
+										).put(
+											"pt_BR", "rótulo1"
+										).build());
+									setLocalizable(true);
+									setName("name1");
+									setReadOnly(true);
+									setRepeatable(true);
+									setRequired(true);
+									setShowLabel(true);
+									setTip(
+										HashMapBuilder.<String, Object>put(
+											"en_US", "tip1"
+										).put(
+											"pt_BR", "ajuda1"
+										).build());
+								}
+							},
+							new DataDefinitionField() {
+								{
+									setDefaultValue(
+										HashMapBuilder.<String, Object>put(
+											"en_US", "select an option"
+										).put(
+											"pt_BR", "selecione uma opção"
+										).build());
+									setFieldType("select");
+									setIndexType(IndexType.KEYWORD);
+									setLabel(
+										HashMapBuilder.<String, Object>put(
+											"en_US", "label2"
+										).put(
+											"pt_BR", "rótulo2"
+										).build());
+									setName("name2");
 									setLocalizable(false);
-									setName("Name");
-									setPredefinedValue(null);
 									setReadOnly(false);
 									setRepeatable(false);
 									setRequired(false);
 									setShowLabel(false);
 									setTip(
-										LocalizedValueUtil.toLocalizedValue(
-											HashMapBuilder.<String, Object>put(
-												"en_US", "tip"
-											).build()));
-									setType("text");
+										HashMapBuilder.<String, Object>put(
+											"en_US", "tip2"
+										).put(
+											"pt_BR", "ajuda2"
+										).build());
 								}
-							}));
-					setDefaultLocale(LocaleUtil.US);
+							}
+						});
+					setDefaultLanguageId("en_US");
 				}
 			},
-			DataDefinitionUtil.toDDMForm(
-				dataDefinition, _ddmFormFieldTypeServicesTracker));
+			_ddmFormFieldTypeServicesTracker);
+
+		Assert.assertEquals(ddmForm, actual);
 	}
 
 	@Test
@@ -100,6 +219,34 @@ public class DataDefinitionUtilTest extends PowerMockito {
 			new DDMForm(),
 			DataDefinitionUtil.toDDMForm(
 				null, _ddmFormFieldTypeServicesTracker));
+	}
+
+	private void _setUpLocaleUtil() {
+		mockStatic(LocaleUtil.class);
+
+		when(
+			LocaleUtil.fromLanguageId("en_US")
+		).thenReturn(
+			LocaleUtil.US
+		);
+
+		when(
+			LocaleUtil.fromLanguageId("pt_BR")
+		).thenReturn(
+			LocaleUtil.BRAZIL
+		);
+
+		when(
+			LocaleUtil.toLanguageId(LocaleUtil.US)
+		).thenReturn(
+			"en_US"
+		);
+
+		when(
+			LocaleUtil.toLanguageId(LocaleUtil.BRAZIL)
+		).thenReturn(
+			"pt_BR"
+		);
 	}
 
 	private DDMFormFieldTypeServicesTracker _ddmFormFieldTypeServicesTracker;
