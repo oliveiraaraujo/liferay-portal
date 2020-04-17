@@ -145,8 +145,6 @@ public abstract class BaseProjectConfigurator implements ProjectConfigurator {
 
 		if ((version == null) && dir.exists()) {
 			for (String fileName : dir.list()) {
-				System.out.println(fileName);
-
 				if (fileName.startsWith("tomcat-")) {
 					version = fileName.substring(fileName.indexOf("-") + 1);
 
