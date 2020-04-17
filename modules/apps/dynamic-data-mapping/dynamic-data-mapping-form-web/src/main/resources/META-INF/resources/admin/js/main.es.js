@@ -1023,9 +1023,11 @@ class Form extends Component {
 	}
 
 	_toggleSummary(show) {
-		const {namespace} = this.props;
+		const formSummary = document.querySelector('.ddm-form-summary');
 
-		const formSummary = document.querySelector(`#${namespace}formSummary`);
+		if (!formSummary) {
+			return;
+		}
 
 		if (!formSummary) {
 			return;

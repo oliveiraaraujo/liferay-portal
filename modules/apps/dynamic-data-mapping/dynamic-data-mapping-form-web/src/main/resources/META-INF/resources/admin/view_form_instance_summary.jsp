@@ -24,43 +24,45 @@ int totalItems = ddmFormViewFormInstanceRecordsDisplayContext.getTotalItems();
 String redirect = ParamUtil.getString(request, "redirect");
 %>
 
-<div class="ddm-form-summary-header">
-	<div class="container-fluid container-fluid-max-xl">
-		<div class="align-items-center autofit-row">
-			<span class="ddm-form-summary-title text-truncate">
-				<liferay-ui:message arguments="<%= totalItems %>" key="x-entries" />
-			</span>
+<div class="ddm-form-summary hide">
+	<div class="ddm-form-summary-header">
+		<div class="container-fluid container-fluid-max-xl">
+			<div class="align-items-center autofit-row">
+				<span class="ddm-form-summary-title text-truncate">
+					<liferay-ui:message arguments="<%= totalItems %>" key="x-entries" />
+				</span>
+			</div>
+
+			<div class="align-items-center autofit-row">
+				<span class="ddm-form-summary-subtitle text-truncate">
+					<c:choose>
+						<c:when test="<%= totalItems > 0 %>">
+							<liferay-ui:message arguments="30" key="last-entry-sent-x-minutes-ago" />
+						</c:when>
+						<c:otherwise>
+							<liferay-ui:message key="no-entry-submitted-yet" />
+						</c:otherwise>
+					</c:choose>
+				</span>
+			</div>
+
+			<liferay-ui:tabs
+				cssClass="mb-0 mb-lg-0 navbar-no-collapse navigation-bar-light pt-custom"
+				names="summary,entries"
+				refresh="<%= false %>"
+			>
+				<liferay-ui:section>
+
+				</liferay-ui:section>
+
+				<liferay-ui:section>
+					<div class="ddm-form-summary-container">
+						<liferay-util:include page="/admin/form_instance_records_search_container.jsp" servletContext="<%= application %>">
+							<liferay-util:param name="redirect" value="<%= redirect %>" />
+						</liferay-util:include>
+					</div>
+				</liferay-ui:section>
+			</liferay-ui:tabs>
 		</div>
-
-		<div class="align-items-center autofit-row">
-			<span class="ddm-form-summary-subtitle text-truncate">
-				<c:choose>
-					<c:when test="<%= totalItems > 0 %>">
-						<liferay-ui:message arguments="30" key="last-entry-sent-x-minutes-ago" />
-					</c:when>
-					<c:otherwise>
-						<liferay-ui:message key="no-entry-submitted-yet" />
-					</c:otherwise>
-				</c:choose>
-			</span>
-		</div>
-
-		<liferay-ui:tabs
-			cssClass="mb-0 mb-lg-0 navbar-no-collapse navigation-bar-light pt-custom"
-			names="summary,entries"
-			refresh="<%= false %>"
-		>
-			<liferay-ui:section>
-
-			</liferay-ui:section>
-
-			<liferay-ui:section>
-				<div class="ddm-form-summary-container">
-					<liferay-util:include page="/admin/form_instance_records_search_container.jsp" servletContext="<%= application %>">
-						<liferay-util:param name="redirect" value="<%= redirect %>" />
-					</liferay-util:include>
-				</div>
-			</liferay-ui:section>
-		</liferay-ui:tabs>
 	</div>
 </div>
