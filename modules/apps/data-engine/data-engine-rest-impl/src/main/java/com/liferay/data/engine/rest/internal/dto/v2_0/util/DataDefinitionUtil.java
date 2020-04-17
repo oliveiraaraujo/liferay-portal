@@ -100,6 +100,10 @@ public class DataDefinitionUtil {
 		DataDefinition dataDefinition,
 		DDMFormFieldTypeServicesTracker ddmFormFieldTypeServicesTracker) {
 
+		if (dataDefinition == null) {
+			return new DDMForm();
+		}
+
 		DDMForm ddmForm = new DDMForm();
 
 		ddmForm.setAvailableLocales(
