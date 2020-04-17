@@ -20,17 +20,7 @@ import com.liferay.portal.aop.AopService;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * The implementation of the ddm form instance report local service.
- *
- * <p>
- * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the <code>com.liferay.dynamic.data.mapping.service.DDMFormInstanceReportLocalService</code> interface.
- *
- * <p>
- * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
- * </p>
- *
- * @author Brian Wing Shun Chan
- * @see DDMFormInstanceReportLocalServiceBaseImpl
+ * @author Marcos Martins
  */
 @Component(
 	property = "model.class.name=com.liferay.dynamic.data.mapping.model.DDMFormInstanceReport",
@@ -38,10 +28,4 @@ import org.osgi.service.component.annotations.Component;
 )
 public class DDMFormInstanceReportLocalServiceImpl
 	extends DDMFormInstanceReportLocalServiceBaseImpl {
-
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Use <code>com.liferay.dynamic.data.mapping.service.DDMFormInstanceReportLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.dynamic.data.mapping.service.DDMFormInstanceReportLocalServiceUtil</code>.
-	 */
 }

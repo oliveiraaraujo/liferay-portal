@@ -15,21 +15,10 @@
 package com.liferay.dynamic.data.mapping.model.impl;
 
 /**
- * The extended model implementation for the DDMFormInstanceReport service. Represents a row in the &quot;DDMFormInstanceReport&quot; database table, with each column mapped to a property of this class.
- *
- * <p>
- * Helper methods and all application logic should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the <code>com.liferay.dynamic.data.mapping.model.DDMFormInstanceReport</code> interface.
- * </p>
- *
- * @author Brian Wing Shun Chan
+ * @author Marcos Martins
  */
 public class DDMFormInstanceReportImpl extends DDMFormInstanceReportBaseImpl {
 
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. All methods that expect a ddm form instance report model instance should use the {@link com.liferay.dynamic.data.mapping.model.DDMFormInstanceReport} interface instead.
-	 */
 	public DDMFormInstanceReportImpl() {
 	}
 
