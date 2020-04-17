@@ -24,12 +24,15 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <%@ page import="com.liferay.akismet.internal.util.ModerationUtil" %><%@
-page import="com.liferay.message.boards.kernel.exception.NoSuchMessageException" %><%@
-page import="com.liferay.message.boards.kernel.exception.RequiredMessageException" %><%@
-page import="com.liferay.message.boards.kernel.model.MBMessage" %><%@
-page import="com.liferay.message.boards.kernel.model.MBStatsUser" %><%@
-page import="com.liferay.message.boards.kernel.service.MBMessageLocalServiceUtil" %><%@
-page import="com.liferay.message.boards.kernel.service.MBStatsUserLocalServiceUtil" %><%@
+page import="com.liferay.message.boards.exception.NoSuchMessageException" %><%@
+page import="com.liferay.message.boards.exception.RequiredMessageException" %><%@
+page import="com.liferay.message.boards.model.MBMessage" %><%@
+page import="com.liferay.message.boards.model.MBStatsUser" %><%@
+page import="com.liferay.message.boards.service.MBMessageLocalServiceUtil" %><%@
+page import="com.liferay.message.boards.service.MBStatsUserLocalServiceUtil" %><%@
+page import="com.liferay.message.boards.settings.MBGroupServiceSettings" %><%@
+page import="com.liferay.message.boards.util.MBUtil" %><%@
+page import="com.liferay.message.boards.web.internal.util.MBUserRankUtil" %><%@
 page import="com.liferay.portal.kernel.dao.search.ResultRow" %><%@
 page import="com.liferay.portal.kernel.dao.search.RowChecker" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
@@ -43,9 +46,7 @@ page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
-page import="com.liferay.portal.kernel.util.WebKeys" %><%@
-page import="com.liferay.portlet.messageboards.MBGroupServiceSettings" %><%@
-page import="com.liferay.portlet.messageboards.util.MBUtil" %>
+page import="com.liferay.portal.kernel.util.WebKeys" %>
 
 <%@ page import="java.text.DateFormat" %><%@
 page import="java.text.Format" %>

@@ -22,14 +22,14 @@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.message.boards.kernel.model.MBCategory" %><%@
-page import="com.liferay.message.boards.kernel.model.MBCategoryConstants" %><%@
-page import="com.liferay.message.boards.kernel.model.MBMessage" %><%@
+<%@ page import="com.liferay.message.boards.constants.MBCategoryConstants" %><%@
+page import="com.liferay.message.boards.model.MBCategory" %><%@
+page import="com.liferay.message.boards.model.MBMessage" %><%@
+page import="com.liferay.message.boards.web.internal.security.permission.MBResourcePermission" %><%@
 page import="com.liferay.portal.kernel.security.permission.ActionKeys" %><%@
 page import="com.liferay.portal.kernel.util.Constants" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
-page import="com.liferay.portal.kernel.workflow.WorkflowConstants" %><%@
-page import="com.liferay.portlet.messageboards.service.permission.MBPermission" %>
+page import="com.liferay.portal.kernel.workflow.WorkflowConstants" %>
 
 <%
 MBMessage message = (MBMessage)request.getAttribute("edit_message.jsp-message");

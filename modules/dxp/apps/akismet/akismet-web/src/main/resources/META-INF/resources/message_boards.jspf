@@ -40,7 +40,7 @@
 				</c:if>
 
 				<liferay-ui:search-container-row
-					className="com.liferay.message.boards.kernel.model.MBMessage"
+					className="com.liferay.message.boards.model.MBMessage"
 					escapedModel="<%= true %>"
 					keyProperty="messageId"
 					modelVar="message"

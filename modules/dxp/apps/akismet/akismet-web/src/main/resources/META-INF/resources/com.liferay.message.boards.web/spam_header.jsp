@@ -20,7 +20,7 @@
 MBCategory category = (MBCategory)request.getAttribute("edit_message.jsp-category");
 %>
 
-<c:if test="<%= MBPermission.contains(permissionChecker, scopeGroupId, ActionKeys.BAN_USER) %>">
+<c:if test="<%= MBResourcePermission.contains(permissionChecker, scopeGroupId, ActionKeys.BAN_USER) %>">
 	<div class="spam" style="margin: 10px;">
 		<c:choose>
 			<c:when test="<%= spam %>">
