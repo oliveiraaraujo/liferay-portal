@@ -138,8 +138,8 @@ public abstract class BaseProjectConfigurator implements ProjectConfigurator {
 
 		liferayExtension.setAppServerParentDir(workspaceExtension.getHomeDir());
 
-		String version = (String)GradleUtil.getProperty(
-			project, "app.server.tomcat.version");
+		String version = GradleUtil.getProperty(
+			project, "app.server.tomcat.version", (String)null);
 
 		File dir = workspaceExtension.getHomeDir();
 
