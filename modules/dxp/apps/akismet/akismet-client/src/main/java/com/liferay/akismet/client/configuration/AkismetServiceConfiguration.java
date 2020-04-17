@@ -21,7 +21,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 /**
  * @author Jamie Sammons
  */
-@ExtendedObjectClassDefinition(category = "other")
+@ExtendedObjectClassDefinition(category = "community-tools")
 @Meta.OCD(
 	id = "com.liferay.akismet.client.configuration.AkismetServiceConfiguration",
 	localization = "content/Language", name = "akismet-configuration-name"

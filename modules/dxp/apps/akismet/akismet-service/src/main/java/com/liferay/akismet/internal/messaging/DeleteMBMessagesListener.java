@@ -95,9 +95,10 @@ public class DeleteMBMessagesListener extends BaseMessageListener {
 				_schedulerEngineHelper.unschedule(
 					_schedulerEntryImpl, StorageType.MEMORY_CLUSTERED);
 			}
-			catch (SchedulerException se) {
+			catch (SchedulerException schedulerException) {
 				if (_log.isWarnEnabled()) {
-					_log.warn("Unable to unschedule trigger", se);
+					_log.warn(
+						"Unable to unschedule trigger", schedulerException);
 				}
 			}
 
@@ -129,9 +130,9 @@ public class DeleteMBMessagesListener extends BaseMessageListener {
 				_mbMessageLocalService.deleteMBMessage(
 					mbMessage.getMessageId());
 			}
-			catch (NoSuchMessageException nsme) {
+			catch (NoSuchMessageException noSuchMessageException) {
 				if (_log.isDebugEnabled()) {
-					_log.debug(nsme, nsme);
+					_log.debug(noSuchMessageException, noSuchMessageException);
 				}
 			}
 		}

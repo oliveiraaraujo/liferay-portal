@@ -269,8 +269,8 @@ public class AkismetClient {
 		try {
 			return _http.URLtoString(options);
 		}
-		catch (IOException ioe) {
-			_log.error(ioe, ioe);
+		catch (IOException ioException) {
+			_log.error(ioException, ioException);
 		}
 
 		return StringPool.BLANK;

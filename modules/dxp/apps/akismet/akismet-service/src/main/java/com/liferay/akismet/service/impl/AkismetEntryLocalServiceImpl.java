@@ -33,15 +33,13 @@ public class AkismetEntryLocalServiceImpl
 	public void deleteAkismetEntry(String className, long classPK)
 		throws PortalException {
 
-		long classNameId = classNameLocalService.getClassNameId(className);
-
-		akismetEntryPersistence.removeByC_C(classNameId, classPK);
+		akismetEntryPersistence.removeByC_C(
+			classNameLocalService.getClassNameId(className), classPK);
 	}
 
 	public AkismetEntry fetchAkismetEntry(String className, long classPK) {
-		long classNameId = classNameLocalService.getClassNameId(className);
-
-		return akismetEntryPersistence.fetchByC_C(classNameId, classPK);
+		return akismetEntryPersistence.fetchByC_C(
+			classNameLocalService.getClassNameId(className), classPK);
 	}
 
 	public AkismetEntry updateAkismetEntry(

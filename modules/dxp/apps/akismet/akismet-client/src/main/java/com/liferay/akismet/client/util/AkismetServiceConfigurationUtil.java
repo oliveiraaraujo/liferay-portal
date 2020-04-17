@@ -32,7 +32,8 @@ import org.osgi.service.component.annotations.Modified;
  */
 @Component(
 	configurationPid = "com.liferay.akismet.client.configuration.AkismetServiceConfiguration",
-	configurationPolicy = ConfigurationPolicy.REQUIRE, immediate = true
+	configurationPolicy = ConfigurationPolicy.REQUIRE, immediate = true,
+	service = {}
 )
 public class AkismetServiceConfigurationUtil {
 
@@ -50,7 +51,7 @@ public class AkismetServiceConfigurationUtil {
 		try {
 			apiKey = _akismetServiceConfiguration.akismetApiKey();
 		}
-		catch (NullPointerException npe) {
+		catch (NullPointerException nullPointerException) {
 		}
 
 		return apiKey;
@@ -65,10 +66,10 @@ public class AkismetServiceConfigurationUtil {
 	}
 
 	public static Date getRetainSpamTime() {
-		return new Date(
-			System.currentTimeMillis() -
-				(_akismetServiceConfiguration.akismetRetainSpamTime() *
-					Time.DAY));
+		long retainSpamTime =
+			_akismetServiceConfiguration.akismetRetainSpamTime() * Time.DAY;
+
+		return new Date(System.currentTimeMillis() - retainSpamTime);
 	}
 
 	public static boolean isMessageBoardsEnabled() {

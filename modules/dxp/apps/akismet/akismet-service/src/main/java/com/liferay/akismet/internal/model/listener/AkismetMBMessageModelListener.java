@@ -35,7 +35,7 @@ public class AkismetMBMessageModelListener
 			_akismetEntryLocalService.deleteAkismetEntry(
 				MBMessage.class.getName(), message.getMessageId());
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 		}
 	}
 

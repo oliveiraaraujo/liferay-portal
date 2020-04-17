@@ -88,11 +88,11 @@ public class AkismetEditMessageMVCActionCommand extends BaseMVCActionCommand {
 
 				actionResponse.sendRedirect(redirect);
 			}
-			catch (PrincipalException pe) {
-				throw pe;
+			catch (PrincipalException principalException) {
+				throw principalException;
 			}
-			catch (Exception e) {
-				SessionErrors.add(actionRequest, e.getClass());
+			catch (Exception exception) {
+				SessionErrors.add(actionRequest, exception.getClass());
 			}
 		}
 

@@ -85,9 +85,10 @@ public class DeleteAkismetMessageListener extends BaseMessageListener {
 				_schedulerEngineHelper.unschedule(
 					_schedulerEntryImpl, StorageType.MEMORY_CLUSTERED);
 			}
-			catch (SchedulerException se) {
+			catch (SchedulerException schedulerException) {
 				if (_log.isWarnEnabled()) {
-					_log.warn("Unable to unschedule trigger", se);
+					_log.warn(
+						"Unable to unschedule trigger", schedulerException);
 				}
 			}
 

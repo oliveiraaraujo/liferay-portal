@@ -39,7 +39,8 @@ public class MBMessageHeaderJSPDynamicInclude extends BaseJSPDynamicInclude {
 
 	@Override
 	protected String getJspPath() {
-		return "/com.liferay.message.boards.web/spam_header.jsp";
+		return "/dynamic_include/com.liferay.message.boards.web" +
+			"/spam_header.jsp";
 	}
 
 	@Override
