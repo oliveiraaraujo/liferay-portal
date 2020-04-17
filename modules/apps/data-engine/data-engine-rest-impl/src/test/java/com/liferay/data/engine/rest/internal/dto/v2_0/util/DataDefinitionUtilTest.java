@@ -16,11 +16,9 @@ package com.liferay.data.engine.rest.internal.dto.v2_0.util;
 
 import com.liferay.data.engine.field.type.util.LocalizedValueUtil;
 import com.liferay.data.engine.rest.dto.v2_0.DataDefinition;
-import com.liferay.data.engine.rest.dto.v2_0.DataDefinitionField;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServicesTracker;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
-import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -102,43 +100,6 @@ public class DataDefinitionUtilTest extends PowerMockito {
 			new DDMForm(),
 			DataDefinitionUtil.toDDMForm(
 				null, _ddmFormFieldTypeServicesTracker));
-	}
-
-	private DataDefinition _createDataDefinition() {
-		DataDefinition dataDefinition = new DataDefinition() {
-			{
-				availableLanguageIds = new String[] {"en_US"};
-				dataDefinitionFields = new DataDefinitionField[] {
-					new DataDefinitionField() {
-						{
-							description = HashMapBuilder.<String, Object>put(
-								"en_US", "Description"
-							).build();
-							fieldType = "text";
-							label = HashMapBuilder.<String, Object>put(
-								"en_US", "label"
-							).build();
-							name = "Name";
-							tip = HashMapBuilder.<String, Object>put(
-								"en_us", "tip"
-							).build();
-						}
-					}
-				};
-				defaultLanguageId = "en_US";
-			}
-		};
-
-		dataDefinition.setDescription(
-			HashMapBuilder.<String, Object>put(
-				"en_US", RandomTestUtil.randomString()
-			).build());
-		dataDefinition.setName(
-			HashMapBuilder.<String, Object>put(
-				"en_US", RandomTestUtil.randomString()
-			).build());
-
-		return dataDefinition;
 	}
 
 	private DDMFormFieldTypeServicesTracker _ddmFormFieldTypeServicesTracker;
