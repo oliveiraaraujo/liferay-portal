@@ -81,6 +81,12 @@ public interface AkismetEntryLocalService
 	public AkismetEntry createAkismetEntry(long akismetEntryId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the akismet entry from the database. Also notifies the appropriate model listeners.
 	 *
 	 * @param akismetEntry the akismet entry
