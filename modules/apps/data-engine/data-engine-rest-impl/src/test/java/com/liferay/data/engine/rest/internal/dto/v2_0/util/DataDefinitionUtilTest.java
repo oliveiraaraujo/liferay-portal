@@ -84,18 +84,6 @@ public class DataDefinitionUtilTest extends PowerMockito {
 	}
 
 	@Test
-	public void testToDDMFormWithEmptyAvailableLanguageIds() {
-		DataDefinition dataDefinition = _createDataDefinition();
-
-		dataDefinition.setAvailableLanguageIds(new String[0]);
-
-		DDMForm ddmForm = DataDefinitionUtil.toDDMForm(
-			dataDefinition, _ddmFormFieldTypeServicesTracker);
-
-		Assert.assertTrue(SetUtil.isEmpty(ddmForm.getAvailableLocales()));
-	}
-
-	@Test
 	public void testToDDMFormWithEmptyDataDefinition() {
 		DDMForm ddmForm = DataDefinitionUtil.toDDMForm(
 			new DataDefinition(), _ddmFormFieldTypeServicesTracker);
@@ -103,31 +91,6 @@ public class DataDefinitionUtilTest extends PowerMockito {
 		Assert.assertTrue(SetUtil.isEmpty(ddmForm.getAvailableLocales()));
 
 		Assert.assertTrue(ListUtil.isEmpty(ddmForm.getDDMFormFields()));
-
-		Assert.assertEquals(
-			"en_US", LocaleUtil.toLanguageId(ddmForm.getDefaultLocale()));
-	}
-
-	@Test
-	public void testToDDMFormWithEmptyDataDefinitionFields() {
-		DataDefinition dataDefinition = _createDataDefinition();
-
-		dataDefinition.setDataDefinitionFields(new DataDefinitionField[0]);
-
-		DDMForm ddmForm = DataDefinitionUtil.toDDMForm(
-			dataDefinition, _ddmFormFieldTypeServicesTracker);
-
-		Assert.assertTrue(ListUtil.isEmpty(ddmForm.getDDMFormFields()));
-	}
-
-	@Test
-	public void testToDDMFormWithEmptyDefaultLanguageId() {
-		DataDefinition dataDefinition = _createDataDefinition();
-
-		dataDefinition.setDefaultLanguageId(new String());
-
-		DDMForm ddmForm = DataDefinitionUtil.toDDMForm(
-			dataDefinition, _ddmFormFieldTypeServicesTracker);
 
 		Assert.assertEquals(
 			"en_US", LocaleUtil.toLanguageId(ddmForm.getDefaultLocale()));
