@@ -84,47 +84,6 @@ public class DataDefinitionUtilTest extends PowerMockito {
 	}
 
 	@Test
-	public void testToDDMFormNotEquals() {
-		DataDefinition dataDefinition = _createDataDefinition();
-
-		Assert.assertNotEquals(
-			new DDMForm() {
-				{
-					setAvailableLocales(
-						SetUtil.fromArray(new Locale[] {LocaleUtil.US}));
-					setDDMFormFields(
-						ListUtil.fromArray(
-							new DDMFormField() {
-								{
-									setIndexType(null);
-									setLabel(
-										LocalizedValueUtil.toLocalizedValue(
-											HashMapBuilder.<String, Object>put(
-												"en_US", "label"
-											).build()));
-									setLocalizable(true);
-									setName("Name");
-									setPredefinedValue(null);
-									setReadOnly(true);
-									setRepeatable(true);
-									setRequired(true);
-									setShowLabel(true);
-									setTip(
-										LocalizedValueUtil.toLocalizedValue(
-											HashMapBuilder.<String, Object>put(
-												"en_US", "tip"
-											).build()));
-									setType("text");
-								}
-							}));
-					setDefaultLocale(LocaleUtil.US);
-				}
-			},
-			DataDefinitionUtil.toDDMForm(
-				dataDefinition, _ddmFormFieldTypeServicesTracker));
-	}
-
-	@Test
 	public void testToDDMFormWithEmptyAvailableLanguageIds() {
 		DataDefinition dataDefinition = _createDataDefinition();
 
