@@ -12,7 +12,7 @@ runGradleTest {
 	dependsOn ":modules:foo-api:testLiferayTomcatVersion"
 
 	doLast {
-		def version = null
+		String version = null
 
 		try {
 			version = project.property("app.server.tomcat.version")
