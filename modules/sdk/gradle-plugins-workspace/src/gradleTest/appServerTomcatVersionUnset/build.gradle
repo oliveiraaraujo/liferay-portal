@@ -17,7 +17,8 @@ runGradleTest {
 		try {
 			version = project.property("app.server.tomcat.version")
 		}
-		catch (Exception e) {}
+		catch (Exception exception) {
+		}
 
 		assert version == null
 	}
