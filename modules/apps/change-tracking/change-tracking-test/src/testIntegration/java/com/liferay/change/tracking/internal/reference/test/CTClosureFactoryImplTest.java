@@ -89,11 +89,10 @@ public class CTClosureFactoryImplTest {
 
 		BundleContext bundleContext = bundle.getBundleContext();
 
-		Method getModelClassMethod = BasePersistence.class.getMethod(
-			"getModelClass");
-
 		Method getDataSourceMethod = BasePersistence.class.getMethod(
 			"getDataSource");
+		Method getModelClassMethod = BasePersistence.class.getMethod(
+			"getModelClass");
 
 		_serviceRegistration1 = bundleContext.registerService(
 			TableReferenceDefinition.class,
@@ -102,12 +101,11 @@ public class CTClosureFactoryImplTest {
 					BasePersistence.class.getClassLoader(),
 					new Class<?>[] {BasePersistence.class},
 					(proxy, method, args) -> {
-						if (method.equals(getModelClassMethod)) {
-							return GrandParent.class;
-						}
-
 						if (method.equals(getDataSourceMethod)) {
 							return InfrastructureUtil.getDataSource();
+						}
+						else if (method.equals(getModelClassMethod)) {
+							return GrandParent.class;
 						}
 
 						throw new UnsupportedOperationException(
@@ -122,12 +120,11 @@ public class CTClosureFactoryImplTest {
 					BasePersistence.class.getClassLoader(),
 					new Class<?>[] {BasePersistence.class},
 					(proxy, method, args) -> {
-						if (method.equals(getModelClassMethod)) {
-							return Parent.class;
-						}
-
 						if (method.equals(getDataSourceMethod)) {
 							return InfrastructureUtil.getDataSource();
+						}
+						else if (method.equals(getModelClassMethod)) {
+							return Parent.class;
 						}
 
 						throw new UnsupportedOperationException(
@@ -142,12 +139,11 @@ public class CTClosureFactoryImplTest {
 					BasePersistence.class.getClassLoader(),
 					new Class<?>[] {BasePersistence.class},
 					(proxy, method, args) -> {
-						if (method.equals(getModelClassMethod)) {
-							return Child.class;
-						}
-
 						if (method.equals(getDataSourceMethod)) {
 							return InfrastructureUtil.getDataSource();
+						}
+						else if (method.equals(getModelClassMethod)) {
+							return Child.class;
 						}
 
 						throw new UnsupportedOperationException(
