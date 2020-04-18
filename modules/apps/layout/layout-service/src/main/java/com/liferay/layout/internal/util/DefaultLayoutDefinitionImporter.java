@@ -136,6 +136,8 @@ public class DefaultLayoutDefinitionImporter {
 		DefaultLayoutLayoutSetPrototypeLocalServiceWrapper.class,
 		"default-layout-definition.json");
 
+	private static final String _FILE_NAME_WELCOME_IMAGE = "welcome_bg.jpg";
+
 	private static final boolean _HTTP_HEADER_VERSION_VERBOSITY_DEFAULT =
 		StringUtil.equalsIgnoreCase(
 			PropsValues.HTTP_HEADER_VERSION_VERBOSITY, "off");
@@ -143,8 +145,6 @@ public class DefaultLayoutDefinitionImporter {
 	private static final boolean _HTTP_HEADER_VERSION_VERBOSITY_PARTIAL =
 		StringUtil.equalsIgnoreCase(
 			PropsValues.HTTP_HEADER_VERSION_VERBOSITY, "partial");
-
-	private static final String _FILE_NAME_WELCOME_IMAGE = "welcome_bg.jpg";
 
 	@Reference
 	private File _file;
