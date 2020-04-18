@@ -63,17 +63,17 @@ public class ContainerLayoutStructureItemHelper
 				(Map<String, Object>)definitionMap.get("backgroundImage");
 
 			if (backgroundImageMap != null) {
+				JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
 				Map<String, Object> titleMap =
 					(Map<String, Object>)backgroundImageMap.get("title");
-
-				Map<String, Object> urlMap =
-					(Map<String, Object>)backgroundImageMap.get("url");
-
-				JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 				if (titleMap != null) {
 					jsonObject.put("title", _getLocalizedValue(titleMap));
 				}
+
+				Map<String, Object> urlMap =
+					(Map<String, Object>)backgroundImageMap.get("url");
 
 				if (urlMap != null) {
 					jsonObject.put("url", _getLocalizedValue(urlMap));
