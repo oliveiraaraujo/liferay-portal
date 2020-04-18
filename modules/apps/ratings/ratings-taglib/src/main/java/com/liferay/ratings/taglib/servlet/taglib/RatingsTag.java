@@ -165,7 +165,6 @@ public class RatingsTag extends IncludeTag {
 			boolean thumbUp = _isThumbUp(userScore);
 
 			int totalEntries = _getTotalEntries(ratingsStats);
-
 			String type = _getType(httpServletRequest);
 			String url = _getURL(themeDisplay);
 
