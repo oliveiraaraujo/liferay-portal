@@ -69,7 +69,6 @@ public class GetAnalyticsReportsHistoricalViewsMVCResourceCommand
 
 			int timeSpanOffset = ParamUtil.getInteger(
 				resourceRequest, "timeSpanOffset");
-
 			CanonicalURLProvider canonicalURLProvider =
 				new CanonicalURLProvider(
 					_portal.getHttpServletRequest(resourceRequest), _language,
