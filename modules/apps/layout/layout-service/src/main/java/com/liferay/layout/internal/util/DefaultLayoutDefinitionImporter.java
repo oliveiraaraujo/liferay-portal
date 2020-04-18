@@ -114,18 +114,18 @@ public class DefaultLayoutDefinitionImporter {
 		}
 
 		FileEntry fileEntry = _portletFileRepository.fetchPortletFileEntry(
-			groupId, repository.getDlFolderId(), _WELCOME_IMAGE_FILENAME);
+			groupId, repository.getDlFolderId(), _FILE_NAME_WELCOME_IMAGE);
 
 		if (fileEntry == null) {
 			byte[] bytes = _file.getBytes(
 				DefaultLayoutLayoutSetPrototypeLocalServiceWrapper.class,
-				_WELCOME_IMAGE_FILENAME);
+				_FILE_NAME_WELCOME_IMAGE);
 
 			fileEntry = _portletFileRepository.addPortletFileEntry(
 				groupId, userId, Layout.class.getName(), plid,
 				Layout.class.getName(), repository.getDlFolderId(), bytes,
-				_WELCOME_IMAGE_FILENAME,
-				MimeTypesUtil.getContentType(_WELCOME_IMAGE_FILENAME), false);
+				_FILE_NAME_WELCOME_IMAGE,
+				MimeTypesUtil.getContentType(_FILE_NAME_WELCOME_IMAGE), false);
 		}
 
 		return DLUtil.getDownloadURL(
@@ -144,7 +144,7 @@ public class DefaultLayoutDefinitionImporter {
 		StringUtil.equalsIgnoreCase(
 			PropsValues.HTTP_HEADER_VERSION_VERBOSITY, "partial");
 
-	private static final String _WELCOME_IMAGE_FILENAME = "welcome_bg.jpg";
+	private static final String _FILE_NAME_WELCOME_IMAGE = "welcome_bg.jpg";
 
 	@Reference
 	private File _file;
