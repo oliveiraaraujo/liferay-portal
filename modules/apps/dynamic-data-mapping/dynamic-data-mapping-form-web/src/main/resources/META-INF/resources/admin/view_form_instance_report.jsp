@@ -17,11 +17,11 @@
 <%@ include file="/admin/init.jsp" %>
 
 <%
+String redirect = ParamUtil.getString(request, "redirect");
+
 DDMFormViewFormInstanceRecordsDisplayContext ddmFormViewFormInstanceRecordsDisplayContext = ddmFormAdminDisplayContext.getFormViewRecordsDisplayContext();
 
 int totalItems = ddmFormViewFormInstanceRecordsDisplayContext.getTotalItems();
-
-String redirect = ParamUtil.getString(request, "redirect");
 %>
 
 <div class="ddm-form-report hide">
