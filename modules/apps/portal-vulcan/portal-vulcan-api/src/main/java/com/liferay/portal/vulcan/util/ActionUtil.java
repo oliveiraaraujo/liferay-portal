@@ -60,8 +60,8 @@ public class ActionUtil {
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
-	 * #addAction(String, Class, Long, String, Object, Long, String,
-	 * Long, UriInfo)}
+	 *             #addAction(String, Class, Long, String, Object, Long, String,
+	 *             Long, UriInfo)}
 	 */
 	@Deprecated
 	public static Map<String, String> addAction(
@@ -92,8 +92,8 @@ public class ActionUtil {
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
-	 * #addAction(String, Class, Long, String, Object, Long, String,
-	 * Long, UriInfo)}
+	 *             #addAction(String, Class, Long, String, Object, Long, String,
+	 *             Long, UriInfo)}
 	 */
 	@Deprecated
 	public static Map<String, String> addAction(
@@ -107,8 +107,8 @@ public class ActionUtil {
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
-	 * #addAction(String, Class, Long, String, Object, Long, String,
-	 * Long, UriInfo)}
+	 *             #addAction(String, Class, Long, String, Object, Long, String,
+	 *             Long, UriInfo)}
 	 */
 	@Deprecated
 	public static Map<String, String> addAction(
