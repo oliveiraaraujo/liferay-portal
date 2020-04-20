@@ -36,8 +36,8 @@ RedirectNotFoundEntriesManagementToolbarDisplayContext redirectNotFoundEntriesMa
 
 	<c:choose>
 		<c:when test="<%= results.size() > 0 %>">
-			<aui:input name="ignored" type="hidden" />
 			<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
+			<aui:input name="ignored" type="hidden" />
 
 			<liferay-ui:search-container
 				id="<%= redirectNotFoundEntriesDisplayContext.getSearchContainerId() %>"
