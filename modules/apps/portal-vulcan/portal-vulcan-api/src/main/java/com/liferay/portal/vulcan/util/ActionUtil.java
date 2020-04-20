@@ -173,8 +173,8 @@ public class ActionUtil {
 		String baseURIString = baseURI.toString();
 
 		if (baseURIString.contains("/graphql")) {
-			String field;
-			String operation;
+			String field = null;
+			String operation = null;
 
 			if (httpMethodName.equals("GET")) {
 				Stream<Method> stream = Arrays.stream(clazz.getMethods());
