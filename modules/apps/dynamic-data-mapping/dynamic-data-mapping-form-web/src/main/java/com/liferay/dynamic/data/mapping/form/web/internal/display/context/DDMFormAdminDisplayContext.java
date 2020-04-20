@@ -505,9 +505,9 @@ public class DDMFormAdminDisplayContext {
 					LanguageUtil.get(httpServletRequest, "rules"));
 			}
 		).add(
-			this::isShowSummary,
+			this::isShowReport,
 			navigationItem -> {
-				navigationItem.putData("action", "showSummary");
+				navigationItem.putData("action", "showReport");
 				navigationItem.setHref(StringPool.BLANK);
 				navigationItem.setLabel(
 					LanguageUtil.get(httpServletRequest, "entries"));
@@ -967,7 +967,7 @@ public class DDMFormAdminDisplayContext {
 		return ParamUtil.getBoolean(renderRequest, "showPublishAlert");
 	}
 
-	public boolean isShowSummary() {
+	public boolean isShowReport() {
 		try {
 			if (getDDMFormInstance() == null) {
 				return false;
@@ -977,7 +977,7 @@ public class DDMFormAdminDisplayContext {
 			_log.error(portalException, portalException);
 		}
 
-		return ParamUtil.getBoolean(renderRequest, "showSummary");
+		return ParamUtil.getBoolean(renderRequest, "showReport");
 	}
 
 	public String serializeSettingsForm(PageContext pageContext)

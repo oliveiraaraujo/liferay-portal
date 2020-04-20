@@ -46,8 +46,8 @@ import StateSyncronizer from './util/StateSyncronizer.es';
 
 const NAV_ITEMS = {
 	FORM: 0,
+	REPORT: 2,
 	RULES: 1,
-	SUMMARY: 2,
 };
 
 /**
@@ -340,10 +340,10 @@ class Form extends Component {
 		return activeNavItem === NAV_ITEMS.RULES && this.isFormBuilderView();
 	}
 
-	isShowSummary() {
+	isShowReport() {
 		const {activeNavItem} = this.state;
 
-		return activeNavItem === NAV_ITEMS.SUMMARY && this.isFormBuilderView();
+		return activeNavItem === NAV_ITEMS.REPORT && this.isFormBuilderView();
 	}
 
 	onAvailableLocalesRemoved({newValue, previousValue}) {
@@ -453,7 +453,7 @@ class Form extends Component {
 						spritemap={spritemap}
 						view={view}
 						visible={
-							!this.isShowRuleBuilder() && !this.isShowSummary()
+							!this.isShowRuleBuilder() && !this.isShowReport()
 						}
 					/>
 
@@ -467,7 +467,7 @@ class Form extends Component {
 						ref="sidebar"
 						spritemap={spritemap}
 						visible={
-							!this.isShowRuleBuilder() && !this.isShowSummary()
+							!this.isShowRuleBuilder() && !this.isShowReport()
 						}
 					/>
 				</LayoutProviderTag>
@@ -576,20 +576,20 @@ class Form extends Component {
 		switch (activeNavItem) {
 			case NAV_ITEMS.FORM:
 				this._toggleRulesBuilder(false);
-				this._toggleSummary(false);
+				this._toggleReport(false);
 				this._toggleFormBuilder(true);
 				break;
 
 			case NAV_ITEMS.RULES:
 				this._toggleFormBuilder(false);
-				this._toggleSummary(false);
+				this._toggleReport(false);
 				this._toggleRulesBuilder(true);
 				break;
 
-			case NAV_ITEMS.SUMMARY:
+			case NAV_ITEMS.REPORT:
 				this._toggleFormBuilder(false);
 				this._toggleRulesBuilder(false);
-				this._toggleSummary(true);
+				this._toggleReport(true);
 				break;
 
 			default:
@@ -1000,6 +1000,21 @@ class Form extends Component {
 		}
 	}
 
+	_toggleReport(show) {
+		const formReport = document.querySelector('.ddm-form-report');
+
+		if (!formReport) {
+			return;
+		}
+
+		if (show) {
+			formReport.classList.remove('hide');
+		}
+		else {
+			formReport.classList.add('hide');
+		}
+	}
+
 	_toggleRulesBuilder(show) {
 		const {namespace} = this.props;
 
@@ -1019,25 +1034,6 @@ class Form extends Component {
 		}
 		else {
 			this.hideAddButton();
-		}
-	}
-
-	_toggleSummary(show) {
-		const formSummary = document.querySelector('.ddm-form-summary');
-
-		if (!formSummary) {
-			return;
-		}
-
-		if (!formSummary) {
-			return;
-		}
-
-		if (show) {
-			formSummary.classList.remove('hide');
-		}
-		else {
-			formSummary.classList.add('hide');
 		}
 	}
 

@@ -24,20 +24,20 @@ int totalItems = ddmFormViewFormInstanceRecordsDisplayContext.getTotalItems();
 String redirect = ParamUtil.getString(request, "redirect");
 %>
 
-<div class="ddm-form-summary hide">
-	<div class="ddm-form-summary-header">
+<div class="ddm-form-report hide">
+	<div class="ddm-form-report-header">
 		<div class="container-fluid container-fluid-max-xl">
 			<div class="align-items-center autofit-row">
-				<span class="ddm-form-summary-title text-truncate">
+				<span class="ddm-form-report-title text-truncate">
 					<liferay-ui:message arguments="<%= totalItems %>" key="x-entries" />
 				</span>
 			</div>
 
 			<div class="align-items-center autofit-row">
-				<span class="ddm-form-summary-subtitle text-truncate">
+				<span class="ddm-form-report-subtitle text-truncate">
 					<c:choose>
 						<c:when test="<%= totalItems > 0 %>">
-							<liferay-ui:message arguments="few seconds ago" key="last-entry-submitted-x" />
+							<liferay-ui:message arguments="ago few seconds" key="last-entry-submitted-x" />
 						</c:when>
 						<c:otherwise>
 							<liferay-ui:message key="there-are-no-entries" />
@@ -52,7 +52,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 				refresh="<%= false %>"
 			>
 				<liferay-ui:section>
-					<div class="ddm-form-summary-container">
+					<div class="ddm-form-report-container">
 						<liferay-util:include page="/admin/form_instance_records_search_container.jsp" servletContext="<%= application %>">
 							<liferay-util:param name="redirect" value="<%= redirect %>" />
 						</liferay-util:include>

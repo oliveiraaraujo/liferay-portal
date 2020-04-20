@@ -141,8 +141,8 @@ renderResponse.setTitle((formInstance == null) ? LanguageUtil.get(request, "new-
 
 <liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="saveFormInstance" var="autoSaveFormInstanceURL" />
 
-<c:if test="<%= ddmFormAdminDisplayContext.isShowSummary() %>">
-	<liferay-util:include page="/admin/view_form_instance_summary.jsp" servletContext="<%= application %>" />
+<c:if test="<%= ddmFormAdminDisplayContext.isShowReport() %>">
+	<liferay-util:include page="/admin/view_form_instance_report.jsp" servletContext="<%= application %>" />
 </c:if>
 
 <aui:script>
