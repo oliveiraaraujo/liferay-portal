@@ -69,9 +69,6 @@ public class AddFragmentEntryLinkMVCActionCommand
 			ActionRequest actionRequest)
 		throws PortalException {
 
-		long segmentsExperienceId = ParamUtil.getLong(
-			actionRequest, "segmentsExperienceId",
-			SegmentsExperienceConstants.ID_DEFAULT);
 		String fragmentEntryKey = ParamUtil.getString(
 			actionRequest, "fragmentEntryKey");
 
@@ -89,6 +86,10 @@ public class AddFragmentEntryLinkMVCActionCommand
 		if ((fragmentEntry == null) && (fragmentRenderer == null)) {
 			throw new NoSuchEntryException();
 		}
+
+		long segmentsExperienceId = ParamUtil.getLong(
+			actionRequest, "segmentsExperienceId",
+			SegmentsExperienceConstants.ID_DEFAULT);
 
 		if (fragmentEntry != null) {
 			String contributedRendererKey = null;

@@ -130,10 +130,6 @@ public class AddPortletMVCActionCommand
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		long segmentsExperienceId = ParamUtil.getLong(
-			actionRequest, "segmentsExperienceId",
-			SegmentsExperienceConstants.ID_DEFAULT);
-
 		String portletId = PortletIdCodec.decodePortletName(
 			ParamUtil.getString(actionRequest, "portletId"));
 
@@ -141,8 +137,9 @@ public class AddPortletMVCActionCommand
 			themeDisplay.getPermissionChecker(), themeDisplay.getScopeGroupId(),
 			themeDisplay.getLayout(), portletId, ActionKeys.ADD_TO_PAGE);
 
-		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			actionRequest);
+		long segmentsExperienceId = ParamUtil.getLong(
+			actionRequest, "segmentsExperienceId",
+			SegmentsExperienceConstants.ID_DEFAULT);
 
 		String instanceId = _getPortletInstanceId(
 			themeDisplay.getLayout(), portletId, segmentsExperienceId);
@@ -156,6 +153,9 @@ public class AddPortletMVCActionCommand
 		).put(
 			"portletId", portletId
 		);
+
+		ServiceContext serviceContext = ServiceContextFactory.getInstance(
+			actionRequest);
 
 		FragmentEntryLink fragmentEntryLink =
 			_fragmentEntryLinkLocalService.addFragmentEntryLink(
