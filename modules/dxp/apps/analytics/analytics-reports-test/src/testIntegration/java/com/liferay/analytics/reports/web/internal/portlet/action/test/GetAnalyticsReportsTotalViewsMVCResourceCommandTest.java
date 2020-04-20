@@ -214,6 +214,7 @@ public class GetAnalyticsReportsTotalViewsMVCResourceCommandTest {
 				TestPropsValues.getCompanyId());
 
 			themeDisplay.setCompany(company);
+
 			themeDisplay.setLanguageId(_group.getDefaultLanguageId());
 			themeDisplay.setLocale(
 				LocaleUtil.fromLanguageId(_group.getDefaultLanguageId()));
