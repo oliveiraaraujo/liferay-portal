@@ -145,7 +145,7 @@ AUI.add(
 							.then(response => {
 								var responseDataNode = A.Node.create(response);
 
-								// Replace each progress bar.
+								// Replace each progress bar
 
 								var responseAdminIndexPanel = responseDataNode.one(
 									instance.get(STR_INDEX_ACTIONS_PANEL)
@@ -181,7 +181,7 @@ AUI.add(
 									}
 								);
 
-								// Replace control menu bar.
+								// Replace control menu bar
 
 								var controlMenuId =
 									'#' + instance.ns('controlMenu');
@@ -198,7 +198,7 @@ AUI.add(
 									);
 								}
 
-								// Start timeout for refreshing the data.
+								// Start timeout for refreshing the data
 
 								var renderInterval = INTERVAL_RENDER_IDLE;
 
