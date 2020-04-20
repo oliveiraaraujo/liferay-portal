@@ -101,10 +101,9 @@ public class MessageBoardAttachmentResourceTest
 
 		_tempFileName = FileUtil.createTempFileName();
 
-		messageBoardAttachment.setTitle(
-			new File(
-				_tempFileName
-			).getName());
+		File file = new File(_tempFileName);
+
+		messageBoardAttachment.setTitle(file.getName());
 
 		return messageBoardAttachment;
 	}

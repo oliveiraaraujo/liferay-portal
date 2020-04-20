@@ -103,10 +103,9 @@ public class KnowledgeBaseAttachmentResourceTest
 
 		_tempFileName = FileUtil.createTempFileName();
 
-		knowledgeBaseAttachment.setTitle(
-			new File(
-				_tempFileName
-			).getName());
+		File file = new File(_tempFileName);
+
+		knowledgeBaseAttachment.setTitle(file.getName());
 
 		return knowledgeBaseAttachment;
 	}

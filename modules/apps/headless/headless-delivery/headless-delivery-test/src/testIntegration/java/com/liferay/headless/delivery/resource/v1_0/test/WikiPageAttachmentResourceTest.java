@@ -105,10 +105,9 @@ public class WikiPageAttachmentResourceTest
 
 		_tempFileName = FileUtil.createTempFileName();
 
-		wikiPageAttachment.setTitle(
-			new File(
-				_tempFileName
-			).getName());
+		File file = new File(_tempFileName);
+
+		wikiPageAttachment.setTitle(file.getName());
 
 		return wikiPageAttachment;
 	}
