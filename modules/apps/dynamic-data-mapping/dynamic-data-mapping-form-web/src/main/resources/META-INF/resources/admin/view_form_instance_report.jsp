@@ -28,13 +28,13 @@ String redirect = ParamUtil.getString(request, "redirect");
 	<div class="ddm-form-report-header">
 		<div class="container-fluid container-fluid-max-xl">
 			<div class="align-items-center autofit-row">
-				<span class="ddm-form-report-title text-truncate">
+				<span class="ddm-form-report-header-title text-truncate">
 					<liferay-ui:message arguments="<%= totalItems %>" key="x-entries" />
 				</span>
 			</div>
 
 			<div class="align-items-center autofit-row">
-				<span class="ddm-form-report-subtitle text-truncate">
+				<span class="ddm-form-report-header-subtitle text-truncate">
 					<c:choose>
 						<c:when test="<%= totalItems > 0 %>">
 							<liferay-ui:message arguments="ago few seconds" key="last-entry-submitted-x" />
@@ -45,20 +45,18 @@ String redirect = ParamUtil.getString(request, "redirect");
 					</c:choose>
 				</span>
 			</div>
-
-			<liferay-ui:tabs
-				cssClass="mb-0 mb-lg-0 navbar-no-collapse navigation-bar-light pt-custom"
-				names="entries"
-				refresh="<%= false %>"
-			>
-				<liferay-ui:section>
-					<div class="ddm-form-report-container">
-						<liferay-util:include page="/admin/form_instance_records_search_container.jsp" servletContext="<%= application %>">
-							<liferay-util:param name="redirect" value="<%= redirect %>" />
-						</liferay-util:include>
-					</div>
-				</liferay-ui:section>
-			</liferay-ui:tabs>
 		</div>
 	</div>
+
+	<liferay-ui:tabs
+		cssClass="navbar-no-collapse navigation-bar-light"
+		names="entries"
+		refresh="<%= false %>"
+	>
+		<liferay-ui:section>
+			<liferay-util:include page="/admin/form_instance_records_search_container.jsp" servletContext="<%= application %>">
+				<liferay-util:param name="redirect" value="<%= redirect %>" />
+			</liferay-util:include>
+		</liferay-ui:section>
+	</liferay-ui:tabs>
 </div>
