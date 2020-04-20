@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.vulcan.yaml.util;
+package com.liferay.portal.vulcan.yaml.graphql;
 
 import com.liferay.portal.kernel.util.StringUtil;
 

@@ -14,7 +14,7 @@
 
 package com.liferay.portal.vulcan.util;
 
-import static com.liferay.portal.vulcan.yaml.util.GraphQLNamingUtil.getGraphQLMutationName;
+import static com.liferay.portal.vulcan.yaml.graphql.GraphQLNamingUtil.getGraphQLMutationName;
 
 import com.liferay.oauth2.provider.scope.ScopeChecker;
 import com.liferay.oauth2.provider.scope.liferay.OAuth2ProviderScopeLiferayAccessControlContext;
@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.vulcan.yaml.util.GraphQLNamingUtil;
+import com.liferay.portal.vulcan.yaml.graphql.GraphQLNamingUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
