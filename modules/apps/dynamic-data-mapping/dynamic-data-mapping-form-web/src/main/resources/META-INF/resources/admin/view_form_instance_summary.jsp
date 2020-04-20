@@ -48,13 +48,9 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 			<liferay-ui:tabs
 				cssClass="mb-0 mb-lg-0 navbar-no-collapse navigation-bar-light pt-custom"
-				names="summary,entries"
+				names="entries"
 				refresh="<%= false %>"
 			>
-				<liferay-ui:section>
-
-				</liferay-ui:section>
-
 				<liferay-ui:section>
 					<div class="ddm-form-summary-container">
 						<liferay-util:include page="/admin/form_instance_records_search_container.jsp" servletContext="<%= application %>">
