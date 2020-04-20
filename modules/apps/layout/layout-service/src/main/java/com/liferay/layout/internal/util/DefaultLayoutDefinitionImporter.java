@@ -20,6 +20,7 @@ import com.liferay.layout.page.template.importer.LayoutPageTemplatesImporter;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalService;
 import com.liferay.layout.util.structure.LayoutStructure;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
@@ -75,7 +76,9 @@ public class DefaultLayoutDefinitionImporter {
 			Map<String, String> values = HashMapBuilder.put(
 				"RELEASE_INFO",
 				"Welcome to ".concat(
-					releaseInfo
+					StringUtil.replace(
+						releaseInfo, CharPool.OPEN_PARENTHESIS,
+						"<br>" + StringPool.OPEN_PARENTHESIS)
 				).concat(
 					"."
 				)
