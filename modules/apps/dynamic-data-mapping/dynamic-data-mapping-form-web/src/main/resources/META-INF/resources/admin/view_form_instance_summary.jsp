@@ -37,10 +37,10 @@ String redirect = ParamUtil.getString(request, "redirect");
 				<span class="ddm-form-summary-subtitle text-truncate">
 					<c:choose>
 						<c:when test="<%= totalItems > 0 %>">
-							<liferay-ui:message arguments="30" key="last-entry-sent-x-minutes-ago" />
+							<liferay-ui:message arguments="few seconds ago" key="last-entry-submitted-x" />
 						</c:when>
 						<c:otherwise>
-							<liferay-ui:message key="no-entry-submitted-yet" />
+							<liferay-ui:message key="there-are-no-entries" />
 						</c:otherwise>
 					</c:choose>
 				</span>
