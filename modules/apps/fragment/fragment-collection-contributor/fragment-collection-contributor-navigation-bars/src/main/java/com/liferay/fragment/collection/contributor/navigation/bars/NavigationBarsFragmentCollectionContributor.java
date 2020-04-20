@@ -43,6 +43,11 @@ public class NavigationBarsFragmentCollectionContributor
 	}
 
 	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.site.navigation.menu.web)"
+	)
+	private ServletContext _portletServletContext;
+
+	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.fragment.collection.contributor.navigation.bars)"
 	)
 	private ServletContext _servletContext;
