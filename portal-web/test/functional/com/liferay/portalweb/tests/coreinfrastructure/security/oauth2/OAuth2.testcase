@@ -420,6 +420,8 @@ definition {
 	@description = "This is a use case for LPS-110393."
 	@priority = "4"
 	test AssertExpandPanelsOnGlobalScopes {
+		property test.name.skip.portal.instance = "OAuth2#AssertExpandPanelsOnGlobalScopes";
+
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",

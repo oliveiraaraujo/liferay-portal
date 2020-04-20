@@ -209,6 +209,8 @@ definition {
 	@description = "This is a use case for LPS-42750."
 	@priority = "3"
 	test ViewMobileDeviceFamilies {
+		property test.name.skip.portal.instance = "XSS#ViewMobileDeviceFamilies";
+
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Site Administration",
