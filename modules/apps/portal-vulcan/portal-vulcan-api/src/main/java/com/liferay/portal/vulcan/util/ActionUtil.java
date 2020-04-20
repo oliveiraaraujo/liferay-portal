@@ -174,13 +174,13 @@ public class ActionUtil {
 			version = matchedURIs.get(matchedURIs.size() - 1);
 		}
 
-		URI baseUri = uriInfo.getBaseUri();
+		URI baseURI = uriInfo.getBaseUri();
 
-		String baseUriString = baseUri.toString();
+		String baseURIString = baseURI.toString();
 
 		String httpMethodName = _getHttpMethodName(clazz, methodName);
 
-		if (baseUriString.contains("/graphql")) {
+		if (baseURIString.contains("/graphql")) {
 			String field;
 			String operation;
 
