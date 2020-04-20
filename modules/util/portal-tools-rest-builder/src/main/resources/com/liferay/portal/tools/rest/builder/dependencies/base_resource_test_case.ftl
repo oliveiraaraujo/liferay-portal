@@ -695,23 +695,23 @@ public abstract class Base${schemaName}ResourceTestCase {
 
 								Class<?> clazz = ${schemaVarName}1.getClass();
 
-								String entityName = entityField.getName();
+								String entityFieldName = entityField.getName();
 
-								Method method = clazz.getMethod( "get" + StringUtil.upperCaseFirstLetter(entityName));
+								Method method = clazz.getMethod( "get" + StringUtil.upperCaseFirstLetter(entityFieldName));
 
 								Class<?> returnType = method.getReturnType();
 
 								if (returnType.isAssignableFrom(Map.class)) {
-									BeanUtils.setProperty(${schemaVarName}1, entityName, Collections.singletonMap("Aaa", "Aaa"));
-									BeanUtils.setProperty(${schemaVarName}2, entityName, Collections.singletonMap("Bbb", "Bbb"));
+									BeanUtils.setProperty(${schemaVarName}1, entityFieldName, Collections.singletonMap("Aaa", "Aaa"));
+									BeanUtils.setProperty(${schemaVarName}2, entityFieldName, Collections.singletonMap("Bbb", "Bbb"));
 								}
-								else if (entityName.contains("email")) {
-									BeanUtils.setProperty(${schemaVarName}1, entityName, "aaa" + StringUtil.toLowerCase(RandomTestUtil.randomString()) + "@liferay.com");
-									BeanUtils.setProperty(${schemaVarName}2, entityName, "bbb" + StringUtil.toLowerCase(RandomTestUtil.randomString()) + "@liferay.com");
+								else if (entityFieldName.contains("email")) {
+									BeanUtils.setProperty(${schemaVarName}1, entityFieldName, "aaa" + StringUtil.toLowerCase(RandomTestUtil.randomString()) + "@liferay.com");
+									BeanUtils.setProperty(${schemaVarName}2, entityFieldName, "bbb" + StringUtil.toLowerCase(RandomTestUtil.randomString()) + "@liferay.com");
 								}
 								else {
-									BeanUtils.setProperty(${schemaVarName}1, entityName, "aaa" + StringUtil.toLowerCase(RandomTestUtil.randomString()));
-									BeanUtils.setProperty(${schemaVarName}2, entityName, "bbb" + StringUtil.toLowerCase(RandomTestUtil.randomString()));
+									BeanUtils.setProperty(${schemaVarName}1, entityFieldName, "aaa" + StringUtil.toLowerCase(RandomTestUtil.randomString()));
+									BeanUtils.setProperty(${schemaVarName}2, entityFieldName, "bbb" + StringUtil.toLowerCase(RandomTestUtil.randomString()));
 								}
 							});
 					}
@@ -1251,7 +1251,6 @@ public abstract class Base${schemaName}ResourceTestCase {
 				<#if !properties?keys?seq_contains("id")>
 					Assert.assertTrue(false);
 				<#else>
-
 					<#list javaMethodSignature.pathJavaMethodParameters as javaMethodParameter>
 						${javaMethodParameter.parameterType} ${javaMethodParameter.parameterName} = test${javaMethodSignature.methodName?cap_first}_get${javaMethodParameter.parameterName?cap_first}();
 					</#list>

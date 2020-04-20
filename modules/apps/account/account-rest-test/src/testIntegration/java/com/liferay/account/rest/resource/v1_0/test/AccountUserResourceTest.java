@@ -49,7 +49,6 @@ public class AccountUserResourceTest extends BaseAccountUserResourceTestCase {
 		super.setUp();
 
 		_accountEntry = _getAccountEntry();
-
 		_irrelevantAccountEntry = _getAccountEntry();
 	}
 
@@ -100,7 +99,7 @@ public class AccountUserResourceTest extends BaseAccountUserResourceTestCase {
 
 	@Override
 	protected Long testGetAccountUsersPage_getIrrelevantAccountId() {
-		return _getIrrelevantEntryId();
+		return _getIrrelevantAccountEntryId();
 	}
 
 	@Override
@@ -154,7 +153,7 @@ public class AccountUserResourceTest extends BaseAccountUserResourceTestCase {
 		return _accountEntry.getAccountEntryId();
 	}
 
-	private Long _getIrrelevantEntryId() {
+	private Long _getIrrelevantAccountEntryId() {
 		return _irrelevantAccountEntry.getAccountEntryId();
 	}
 
