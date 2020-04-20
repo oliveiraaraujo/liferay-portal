@@ -28,5 +28,5 @@ String template = properties.get("template")
 
 if (template.contains("-ext")) {
 	throw new IllegalArgumentException(
-		"EXT project is not supported for Maven.")
+		"EXT project is not supported for Maven")
 }
