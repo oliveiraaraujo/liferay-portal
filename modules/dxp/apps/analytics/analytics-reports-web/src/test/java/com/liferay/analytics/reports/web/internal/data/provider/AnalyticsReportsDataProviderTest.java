@@ -54,7 +54,7 @@ public class AnalyticsReportsDataProviderTest {
 	@Test
 	public void testGetTotalReads() throws Exception {
 		AnalyticsReportsDataProvider analyticsReportsDataProvider =
-			new AnalyticsReportsDataProvider(_getMockHttp("12345"));
+			new AnalyticsReportsDataProvider(_getHttp("12345"));
 
 		Long totalReads = analyticsReportsDataProvider.getTotalReads(
 			RandomTestUtil.randomLong(), RandomTestUtil.randomString());
@@ -65,7 +65,7 @@ public class AnalyticsReportsDataProviderTest {
 	@Test(expected = PortalException.class)
 	public void testGetTotalReadsWithAsahFaroBackendError() throws Exception {
 		AnalyticsReportsDataProvider analyticsReportsDataProvider =
-			new AnalyticsReportsDataProvider(_getMockHttp(new IOException()));
+			new AnalyticsReportsDataProvider(_getHttp(new IOException()));
 
 		analyticsReportsDataProvider.getTotalReads(
 			RandomTestUtil.randomLong(), RandomTestUtil.randomString());
@@ -74,7 +74,7 @@ public class AnalyticsReportsDataProviderTest {
 	@Test
 	public void testGetTotalViews() throws Exception {
 		AnalyticsReportsDataProvider analyticsReportsDataProvider =
-			new AnalyticsReportsDataProvider(_getMockHttp("12345"));
+			new AnalyticsReportsDataProvider(_getHttp("12345"));
 
 		Long totalViews = analyticsReportsDataProvider.getTotalViews(
 			RandomTestUtil.randomLong(), RandomTestUtil.randomString());
@@ -85,7 +85,7 @@ public class AnalyticsReportsDataProviderTest {
 	@Test(expected = PortalException.class)
 	public void testGetTotalViewsWithAsahFaroBackendError() throws Exception {
 		AnalyticsReportsDataProvider analyticsReportsDataProvider =
-			new AnalyticsReportsDataProvider(_getMockHttp(new IOException()));
+			new AnalyticsReportsDataProvider(_getHttp(new IOException()));
 
 		analyticsReportsDataProvider.getTotalViews(
 			RandomTestUtil.randomLong(), RandomTestUtil.randomString());
@@ -95,7 +95,7 @@ public class AnalyticsReportsDataProviderTest {
 	public void testGetTrafficSources() throws Exception {
 		AnalyticsReportsDataProvider analyticsReportsDataProvider =
 			new AnalyticsReportsDataProvider(
-				_getMockHttp(
+				_getHttp(
 					JSONUtil.putAll(
 						JSONUtil.put(
 							"name", "search"
@@ -130,7 +130,7 @@ public class AnalyticsReportsDataProviderTest {
 		throws Exception {
 
 		AnalyticsReportsDataProvider analyticsReportsDataProvider =
-			new AnalyticsReportsDataProvider(_getMockHttp(new IOException()));
+			new AnalyticsReportsDataProvider(_getHttp(new IOException()));
 
 		analyticsReportsDataProvider.getTrafficSources(
 			RandomTestUtil.randomLong(), RandomTestUtil.randomString());
@@ -141,7 +141,7 @@ public class AnalyticsReportsDataProviderTest {
 		new AnalyticsReportsDataProvider(null);
 	}
 
-	private Http _getMockHttp(Exception exception) throws Exception {
+	private Http _getHttp(Exception exception) throws Exception {
 		Http http = Mockito.mock(Http.class);
 
 		Mockito.when(
@@ -153,7 +153,7 @@ public class AnalyticsReportsDataProviderTest {
 		return http;
 	}
 
-	private Http _getMockHttp(String response) throws Exception {
+	private Http _getHttp(String response) throws Exception {
 		Http http = Mockito.mock(Http.class);
 
 		Mockito.when(
