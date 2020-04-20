@@ -722,7 +722,7 @@
 		},
 
 		/**
-		 * @deprecated as of 7.3 - use `window.innerWidth` instead
+		 * @deprecated As of Athanasius (7.3.x), replaced by `window.innerWidth`
 		 */
 		getWindowWidth() {
 			return window.innerWidth;
