@@ -922,7 +922,7 @@
 		},
 
 		/**
-		 * @deprecated as of 7.3 with no replacement
+		 * @deprecated As of Athanasius (7.3.x), with no replacement
 		 */
 		randomInt() {
 			return Math.ceil(Math.random() * new Date().getTime());
