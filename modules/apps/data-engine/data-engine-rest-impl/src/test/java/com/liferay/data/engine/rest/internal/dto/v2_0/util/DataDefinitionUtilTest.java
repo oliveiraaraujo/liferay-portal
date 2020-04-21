@@ -209,8 +209,7 @@ public class DataDefinitionUtilTest extends PowerMockito {
 
 		Assert.assertTrue(ListUtil.isEmpty(ddmForm.getDDMFormFields()));
 
-		Assert.assertEquals(
-			"en_US", LocaleUtil.toLanguageId(ddmForm.getDefaultLocale()));
+		Assert.assertNull(LocaleUtil.toLanguageId(ddmForm.getDefaultLocale()));
 	}
 
 	@Test
