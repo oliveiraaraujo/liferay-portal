@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.layout.internal.util;
+package com.liferay.layout.internal.importer;
 
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.layout.internal.service.DefaultLayoutLayoutSetPrototypeLocalServiceWrapper;
