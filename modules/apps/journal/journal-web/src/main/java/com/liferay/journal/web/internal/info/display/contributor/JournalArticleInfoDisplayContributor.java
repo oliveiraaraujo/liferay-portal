@@ -35,6 +35,7 @@ import com.liferay.info.display.field.ClassTypesInfoDisplayFieldProvider;
 import com.liferay.info.display.field.ExpandoInfoDisplayFieldProvider;
 import com.liferay.info.display.field.InfoDisplayFieldProvider;
 import com.liferay.journal.model.JournalArticle;
+import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.util.JournalContent;
 import com.liferay.journal.util.JournalConverter;
@@ -389,10 +390,28 @@ public class JournalArticleInfoDisplayContributor
 		}
 
 		public String getContent() {
-			return journalContent.getContent(
-				_article.getGroupId(), _article.getArticleId(),
-				_ddmTemplate.getTemplateKey(), Constants.VIEW, _languageId,
-				_getThemeDisplay());
+			JournalArticleDisplay journalArticleDisplay =
+				journalContent.getDisplay(
+					_article, _ddmTemplate.getTemplateKey(), Constants.VIEW,
+					_languageId, 1, null, _getThemeDisplay());
+
+			if (journalArticleDisplay != null) {
+				return journalArticleDisplay.getContent();
+			}
+
+			try {
+				journalArticleDisplay =
+					journalArticleLocalService.getArticleDisplay(
+						_article, _ddmTemplate.getTemplateKey(), null,
+						_languageId, 1, null, _getThemeDisplay());
+
+				return journalArticleDisplay.getContent();
+			}
+			catch (Exception exception) {
+				_log.error("Unable to get journal article display", exception);
+			}
+
+			return StringPool.BLANK;
 		}
 
 		private final JournalArticle _article;
