@@ -77,6 +77,7 @@ describe('Modal', () => {
 	// document.createRange, but will support it in a future version. See more:
 	//
 	//      https://github.com/liferay/liferay-npm-tools/issues/440
+
 	it.skip('renders given body HTML', () => {
 		const sampleId = 'sampleId';
 
