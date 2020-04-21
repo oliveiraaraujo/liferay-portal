@@ -148,11 +148,13 @@ public abstract class BaseProjectConfigurator implements ProjectConfigurator {
 				if (fileName.startsWith("tomcat-")) {
 					version = fileName.substring(fileName.indexOf("-") + 1);
 
-					NamedDomainObjectCollection<AppServer> appServers =
-						liferayExtension.getAppServers();
+					NamedDomainObjectCollection<AppServer>
+						namedDomainObjectCollection =
+							liferayExtension.getAppServers();
 
 					TomcatAppServer tomcatAppServer =
-						(TomcatAppServer)appServers.getByName("tomcat");
+						(TomcatAppServer)namedDomainObjectCollection.getByName(
+							"tomcat");
 
 					tomcatAppServer.setVersion(version);
 				}
