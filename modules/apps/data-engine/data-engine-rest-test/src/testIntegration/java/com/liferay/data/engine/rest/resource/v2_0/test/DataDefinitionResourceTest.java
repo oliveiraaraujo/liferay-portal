@@ -22,7 +22,10 @@ import com.liferay.data.engine.rest.client.pagination.Page;
 import com.liferay.data.engine.rest.client.pagination.Pagination;
 import com.liferay.data.engine.rest.resource.v2_0.test.util.DataLayoutTestUtil;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
@@ -30,7 +33,9 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.test.util.SearchTestRule;
 import com.liferay.portal.test.rule.Inject;
@@ -43,7 +48,6 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -165,22 +169,73 @@ public class DataDefinitionResourceTest
 		Assert.assertEquals(1, page.getTotalCount());
 	}
 
-	@Ignore
 	@Override
 	@Test
-	public void testGraphQLDeleteDataDefinition() {
+	public void testGraphQLGetDataDefinition() throws Exception {
+		DataDefinition dataDefinition =
+			testGraphQLDataDefinition_addDataDefinition();
+
+		List<GraphQLField> graphQLFields = getGraphQLFields();
+
+		GraphQLField graphQLField = new GraphQLField(
+			"query",
+			new GraphQLField(
+				"dataDefinition",
+				HashMapBuilder.<String, Object>put(
+					"dataDefinitionId", dataDefinition.getId()
+				).build(),
+				graphQLFields.toArray(new GraphQLField[0])));
+
+		Assert.assertEquals(
+			MapUtil.getString(dataDefinition.getName(), "en_US"),
+			JSONUtil.getValue(
+				JSONFactoryUtil.createJSONObject(
+					invoke(graphQLField.toString())),
+				"JSONObject/data", "JSONObject/dataDefinition",
+				"JSONObject/name", "Object/en_US"));
 	}
 
-	@Ignore
 	@Override
 	@Test
-	public void testGraphQLGetDataDefinition() {
-	}
+	public void testGraphQLGetSiteDataDefinitionByContentTypeByDataDefinitionKey()
+		throws Exception {
 
-	@Ignore
-	@Override
-	@Test
-	public void testGraphQLGetSiteDataDefinitionByContentTypeByDataDefinitionKey() {
+		DataDefinition dataDefinition =
+			dataDefinitionResource.postSiteDataDefinitionByContentType(
+				testGroup.getGroupId(), _CONTENT_TYPE, randomDataDefinition());
+
+		List<GraphQLField> graphQLFields = getGraphQLFields();
+
+		GraphQLField graphQLField = new GraphQLField(
+			"query",
+			new GraphQLField(
+				"dataDefinitionByContentTypeByDataDefinitionKey",
+				HashMapBuilder.<String, Object>put(
+					"contentType",
+					StringBundler.concat(
+						StringPool.QUOTE, _CONTENT_TYPE, StringPool.QUOTE)
+				).put(
+					"dataDefinitionKey",
+					StringBundler.concat(
+						StringPool.QUOTE, dataDefinition.getDataDefinitionKey(),
+						StringPool.QUOTE)
+				).put(
+					"siteKey",
+					StringBundler.concat(
+						StringPool.QUOTE,
+						String.valueOf(dataDefinition.getSiteId()),
+						StringPool.QUOTE)
+				).build(),
+				graphQLFields.toArray(new GraphQLField[0])));
+
+		Assert.assertEquals(
+			MapUtil.getString(dataDefinition.getName(), "en_US"),
+			JSONUtil.getValue(
+				JSONFactoryUtil.createJSONObject(
+					invoke(graphQLField.toString())),
+				"JSONObject/data",
+				"JSONObject/dataDefinitionByContentTypeByDataDefinitionKey",
+				"JSONObject/name", "Object/en_US"));
 	}
 
 	@Override
@@ -215,12 +270,6 @@ public class DataDefinitionResourceTest
 		assertValid(getDataDefinition);
 	}
 
-	@Ignore
-	@Override
-	@Test
-	public void testPutDataDefinitionPermission() throws Exception {
-	}
-
 	@Rule
 	public SearchTestRule searchTestRule = new SearchTestRule();
 
@@ -252,9 +301,7 @@ public class DataDefinitionResourceTest
 
 	@Override
 	protected String[] getAdditionalAssertFieldNames() {
-		return new String[] {
-			"availableLanguageIds", "defaultLanguageId", "name", "userId"
-		};
+		return new String[] {"name"};
 	}
 
 	@Override
@@ -338,6 +385,14 @@ public class DataDefinitionResourceTest
 	}
 
 	@Override
+	protected DataDefinition testGraphQLDataDefinition_addDataDefinition()
+		throws Exception {
+
+		return dataDefinitionResource.postSiteDataDefinitionByContentType(
+			testGroup.getGroupId(), _CONTENT_TYPE, randomDataDefinition());
+	}
+
+	@Override
 	protected DataDefinition
 			testPostDataDefinitionByContentType_addDataDefinition(
 				DataDefinition dataDefinition)
@@ -359,6 +414,14 @@ public class DataDefinitionResourceTest
 
 	@Override
 	protected DataDefinition testPutDataDefinition_addDataDefinition()
+		throws Exception {
+
+		return dataDefinitionResource.postSiteDataDefinitionByContentType(
+			testGroup.getGroupId(), _CONTENT_TYPE, randomDataDefinition());
+	}
+
+	@Override
+	protected DataDefinition testPutDataDefinitionPermission_addDataDefinition()
 		throws Exception {
 
 		return dataDefinitionResource.postSiteDataDefinitionByContentType(
