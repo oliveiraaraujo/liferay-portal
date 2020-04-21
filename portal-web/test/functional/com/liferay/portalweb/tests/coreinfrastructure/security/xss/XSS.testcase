@@ -227,7 +227,7 @@ definition {
 
 		SitePages.gotoPageMenuItem(
 			menuItem = "Configure",
-			pageName = "Home");
+			pageName = "Search");
 
 		Navigator.gotoNavTab(navTab = "Advanced");
 
