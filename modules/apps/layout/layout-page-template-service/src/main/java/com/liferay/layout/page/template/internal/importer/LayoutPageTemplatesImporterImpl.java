@@ -1090,16 +1090,22 @@ public class LayoutPageTemplatesImporterImpl
 			layoutStructureItemHelperFactory.getLayoutStructureItemHelper(
 				pageElement.getType());
 
-		if (layoutStructureItemHelper == null) {
+		LayoutStructureItem layoutStructureItem = null;
+
+		if (layoutStructureItemHelper != null) {
+			layoutStructureItem =
+				layoutStructureItemHelper.addLayoutStructureItem(
+					_fragmentCollectionContributorTracker,
+					_fragmentEntryProcessorRegistry, _fragmentEntryValidator,
+					_fragmentRendererTracker, layout, layoutStructure,
+					pageElement, parentItemId, position);
+		}
+		else if (pageElement.getType() == PageElement.Type.ROOT) {
+			layoutStructureItem = layoutStructure.getMainLayoutStructureItem();
+		}
+		else {
 			return;
 		}
-
-		LayoutStructureItem layoutStructureItem =
-			layoutStructureItemHelper.addLayoutStructureItem(
-				_fragmentCollectionContributorTracker,
-				_fragmentEntryProcessorRegistry, _fragmentEntryValidator,
-				_fragmentRendererTracker, layout, layoutStructure, pageElement,
-				parentItemId, position);
 
 		if ((layoutStructureItem == null) ||
 			(pageElement.getPageElements() == null)) {
