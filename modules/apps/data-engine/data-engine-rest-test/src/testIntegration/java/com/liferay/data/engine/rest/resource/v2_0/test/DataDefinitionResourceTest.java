@@ -21,9 +21,15 @@ import com.liferay.data.engine.rest.client.dto.v2_0.DataLayout;
 import com.liferay.data.engine.rest.client.pagination.Page;
 import com.liferay.data.engine.rest.client.pagination.Pagination;
 import com.liferay.data.engine.rest.resource.v2_0.test.util.DataLayoutTestUtil;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.model.BaseModelListener;
+import com.liferay.portal.kernel.model.ModelListener;
+import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.test.util.SearchTestRule;
@@ -33,13 +39,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Jeyvison Nascimento
@@ -48,22 +60,39 @@ import org.junit.runner.RunWith;
 public class DataDefinitionResourceTest
 	extends BaseDataDefinitionResourceTestCase {
 
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		Bundle bundle = FrameworkUtil.getBundle(
+			DataDefinitionResourceTest.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		_serviceRegistration = bundleContext.registerService(
+			ModelListener.class,
+			new BaseModelListener<DDMStructure>() {
+
+				@Override
+				public void onAfterCreate(DDMStructure ddmStructure)
+					throws ModelListenerException {
+
+					_ddmStructures.add(ddmStructure);
+				}
+
+			},
+			new HashMapDictionary<>());
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		_serviceRegistration.unregister();
+	}
+
 	@Before
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
 
-		_dataDefinitions = new ArrayList<>();
-	}
-
-	@After
-	@Override
-	public void tearDown() throws Exception {
-		super.tearDown();
-
-		for (DataDefinition dataDefinition : _dataDefinitions) {
-			dataDefinitionResource.deleteDataDefinition(dataDefinition.getId());
-		}
+		_ddmStructures = new ArrayList<>();
 	}
 
 	@Override
@@ -256,13 +285,8 @@ public class DataDefinitionResourceTest
 				String contentType, DataDefinition dataDefinition)
 		throws Exception {
 
-		DataDefinition postDataDefinition =
-			dataDefinitionResource.postDataDefinitionByContentType(
-				contentType, dataDefinition);
-
-		_dataDefinitions.add(postDataDefinition);
-
-		return postDataDefinition;
+		return dataDefinitionResource.postDataDefinitionByContentType(
+			contentType, dataDefinition);
 	}
 
 	@Override
@@ -418,7 +442,10 @@ public class DataDefinitionResourceTest
 
 	private static final String _CONTENT_TYPE = "app-builder";
 
-	private List<DataDefinition> _dataDefinitions;
+	@DeleteAfterTestRun
+	private static List<DDMStructure> _ddmStructures;
+
+	private static ServiceRegistration _serviceRegistration;
 
 	@Inject(type = Portal.class)
 	private Portal _portal;
