@@ -125,7 +125,9 @@ public class DataDefinitionUtilTest extends PowerMockito {
 				}
 			});
 
-		DDMForm actual = DataDefinitionUtil.toDDMForm(
+		Assert.assertEquals(
+			ddmForm,
+			DataDefinitionUtil.toDDMForm(
 			new DataDefinition() {
 				{
 					setAvailableLanguageIds(new String[] {"en_US", "pt_BR"});
@@ -195,9 +197,7 @@ public class DataDefinitionUtilTest extends PowerMockito {
 					setDefaultLanguageId("en_US");
 				}
 			},
-			_ddmFormFieldTypeServicesTracker);
-
-		Assert.assertEquals(ddmForm, actual);
+			_ddmFormFieldTypeServicesTracker));
 	}
 
 	@Test
