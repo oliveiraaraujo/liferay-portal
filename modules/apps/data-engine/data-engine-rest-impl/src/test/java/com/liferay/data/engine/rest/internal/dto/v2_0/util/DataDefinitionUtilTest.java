@@ -206,9 +206,7 @@ public class DataDefinitionUtilTest extends PowerMockito {
 			new DataDefinition(), _ddmFormFieldTypeServicesTracker);
 
 		Assert.assertTrue(SetUtil.isEmpty(ddmForm.getAvailableLocales()));
-
 		Assert.assertTrue(ListUtil.isEmpty(ddmForm.getDDMFormFields()));
-
 		Assert.assertNull(LocaleUtil.toLanguageId(ddmForm.getDefaultLocale()));
 	}
 
