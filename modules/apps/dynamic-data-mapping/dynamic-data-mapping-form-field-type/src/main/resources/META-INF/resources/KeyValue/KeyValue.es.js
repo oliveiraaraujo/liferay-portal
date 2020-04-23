@@ -12,16 +12,14 @@
  * details.
  */
 
-import './KeyValueRegister.soy';
-
 import {normalizeFieldName} from 'dynamic-data-mapping-form-renderer';
 import React, {useRef} from 'react';
 
 import {FieldBaseProxy} from '../FieldBase/ReactFieldBase.es';
-import {TextWithFieldBase, useSyncValue} from '../Text/Text.es';
+import {Main as Text} from '../Text/Text.es';
+import {useSyncValue} from '../hooks/useSyncValue.es';
 import getConnectedReactComponentAdapter from '../util/ReactComponentAdapter.es';
 import {connectStore} from '../util/connectStore.es';
-import templates from './KeyValueAdapter.soy';
 
 const KeyValue = ({disabled, onChange, value, ...otherProps}) => (
 	<div className="active form-text key-value-editor">
@@ -43,7 +41,7 @@ const KeyValue = ({disabled, onChange, value, ...otherProps}) => (
 	</div>
 );
 
-const KeyValueWithFieldBase = ({
+const Main = ({
 	dispatch,
 	generateKeyword: initialGenerateKeyword = true,
 	keyword,
@@ -78,19 +76,19 @@ const KeyValueWithFieldBase = ({
 			store={store}
 			visible={visible}
 		>
-			<TextWithFieldBase
+			<Text
 				dispatch={dispatch}
 				name={`keyValueLabel${name}`}
 				onBlur={onTextBlur}
 				onChange={event => {
 					const {value} = event.target;
 
+					onTextChange(event);
+
 					if (generateKeywordRef.current) {
 						const newKeyword = normalizeFieldName(value);
-						onKeywordChange(event, newKeyword);
+						onKeywordChange(event, newKeyword, true);
 					}
-
-					onTextChange(event);
 				}}
 				onFocus={onTextFocus}
 				placeholder={placeholder}
@@ -99,6 +97,7 @@ const KeyValueWithFieldBase = ({
 				showLabel={showLabel}
 				spritemap={spritemap}
 				store={store}
+				syncDelay={false}
 				value={value}
 				visible={visible}
 			/>
@@ -109,7 +108,7 @@ const KeyValueWithFieldBase = ({
 					const {value} = event.target;
 
 					generateKeywordRef.current = false;
-					onKeywordChange(event, value);
+					onKeywordChange(event, value, false);
 				}}
 				value={keyword}
 			/>
@@ -117,12 +116,14 @@ const KeyValueWithFieldBase = ({
 	);
 };
 
+Main.displayName = 'KeyValue';
+
 const KeyValueProxy = connectStore(
 	({emit, keyword: initialKeyword, ...otherProps}) => {
 		const [keyword, setKeyword] = useSyncValue(initialKeyword);
 
 		return (
-			<KeyValueWithFieldBase
+			<Main
 				{...otherProps}
 				keyword={keyword}
 				onKeywordBlur={event =>
@@ -148,8 +149,8 @@ const KeyValueProxy = connectStore(
 
 const ReactKeyValueAdapter = getConnectedReactComponentAdapter(
 	KeyValueProxy,
-	templates
+	'key_value'
 );
 
-export {ReactKeyValueAdapter, KeyValueWithFieldBase};
+export {ReactKeyValueAdapter, Main};
 export default ReactKeyValueAdapter;

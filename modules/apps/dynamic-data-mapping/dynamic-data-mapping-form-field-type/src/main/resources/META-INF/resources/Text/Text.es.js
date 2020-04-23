@@ -12,8 +12,6 @@
  * details.
  */
 
-import './TextRegister.soy';
-
 import ClayAutocomplete from '@clayui/autocomplete';
 import ClayDropDown from '@clayui/drop-down';
 import {ClayInput} from '@clayui/form';
@@ -21,38 +19,9 @@ import {normalizeFieldName} from 'dynamic-data-mapping-form-renderer';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 
 import {FieldBaseProxy} from '../FieldBase/ReactFieldBase.es';
+import {useSyncValue} from '../hooks/useSyncValue.es';
 import getConnectedReactComponentAdapter from '../util/ReactComponentAdapter.es';
 import {connectStore} from '../util/connectStore.es';
-import templates from './TextAdapter.soy';
-
-/**
- * Use Sync Value to synchronize the initial value with the current internal
- * value, only update the internal value with the new initial value if the
- * values are different and when the value is not changed for more than ms.
- */
-const useSyncValue = newValue => {
-	// Maintains the reference of the last value to check in later renderings if the
-	// value is new or keeps the same, it covers cases where the value typed by
-	// the user is sent to LayoutProvider but it does not descend with the new changes.
-	const previousValueRef = useRef(newValue);
-
-	const [value, setValue] = useState(newValue);
-
-	useEffect(() => {
-		const handler = setTimeout(() => {
-			if (value !== newValue && previousValueRef.current !== newValue) {
-				previousValueRef.current = newValue;
-				setValue(newValue);
-			}
-		}, 300);
-
-		return () => {
-			clearTimeout(handler);
-		};
-	}, [newValue, value]);
-
-	return [value, setValue];
-};
 
 const Text = ({
 	disabled,
@@ -63,9 +32,10 @@ const Text = ({
 	onChange,
 	onFocus,
 	placeholder,
+	syncDelay,
 	value: initialValue,
 }) => {
-	const [value, setValue] = useSyncValue(initialValue);
+	const [value, setValue] = useSyncValue(initialValue, syncDelay);
 
 	return (
 		<ClayInput
@@ -99,9 +69,10 @@ const Textarea = ({
 	onChange,
 	onFocus,
 	placeholder,
+	syncDelay,
 	value: initialValue,
 }) => {
-	const [value, setValue] = useSyncValue(initialValue);
+	const [value, setValue] = useSyncValue(initialValue, syncDelay);
 
 	return (
 		<textarea
@@ -131,9 +102,10 @@ const Autocomplete = ({
 	onFocus,
 	options,
 	placeholder,
+	syncDelay,
 	value: initialValue,
 }) => {
-	const [value, setValue] = useSyncValue(initialValue);
+	const [value, setValue] = useSyncValue(initialValue, syncDelay);
 	const [visible, setVisible] = useState(false);
 	const inputRef = useRef(null);
 	const itemListRef = useRef(null);
@@ -263,7 +235,7 @@ const DISPLAY_STYLE = {
 	singleline: Text,
 };
 
-const TextWithFieldBase = ({
+const Main = ({
 	autocomplete,
 	autocompleteEnabled,
 	displayStyle = 'singleline',
@@ -277,6 +249,7 @@ const TextWithFieldBase = ({
 	placeholder,
 	predefinedValue = '',
 	readOnly,
+	syncDelay = true,
 	value,
 	...otherProps
 }) => {
@@ -300,14 +273,17 @@ const TextWithFieldBase = ({
 				onFocus={onFocus}
 				options={optionsMemo}
 				placeholder={placeholder}
+				syncDelay={syncDelay}
 				value={value ? value : predefinedValue}
 			/>
 		</FieldBaseProxy>
 	);
 };
 
+Main.displayName = 'Text';
+
 const TextProxy = connectStore(({emit, ...otherProps}) => (
-	<TextWithFieldBase
+	<Main
 		{...otherProps}
 		onBlur={event => emit('fieldBlurred', event, event.target.value)}
 		onChange={event => emit('fieldEdited', event, event.target.value)}
@@ -315,10 +291,7 @@ const TextProxy = connectStore(({emit, ...otherProps}) => (
 	/>
 ));
 
-const ReactTextAdapter = getConnectedReactComponentAdapter(
-	TextProxy,
-	templates
-);
+const ReactTextAdapter = getConnectedReactComponentAdapter(TextProxy, 'text');
 
-export {ReactTextAdapter, useSyncValue, TextWithFieldBase};
+export {ReactTextAdapter, useSyncValue, Main};
 export default ReactTextAdapter;
