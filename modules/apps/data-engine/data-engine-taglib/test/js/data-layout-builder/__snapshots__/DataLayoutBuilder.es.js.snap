@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DataLayoutBuilder is rendering 1`] = `
+DataLayoutBuilder {
+  "containerRef": Object {
+    "current": null,
+  },
+  "context": undefined,
+  "eventEmitter": EventEmitter {
+    "events": Object {},
+  },
+  "props": Object {
+    "readOnly": false,
+    "spritemap": "icons.svg",
+  },
+  "refs": Object {},
+  "state": Object {},
+  "updater": Object {
+    "enqueueForceUpdate": [Function],
+    "enqueueReplaceState": [Function],
+    "enqueueSetState": [Function],
+    "isMounted": [Function],
+  },
+}
+`;
