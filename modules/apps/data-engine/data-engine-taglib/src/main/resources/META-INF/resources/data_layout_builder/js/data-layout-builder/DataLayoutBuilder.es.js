@@ -229,6 +229,12 @@ class DataLayoutBuilder extends React.Component {
 
 				if (localizable) {
 					availableLanguageIds.forEach((languageId) => {
+						if (!localizedValue) {
+							localizedValue = {
+								[languageId]:
+									localizedValue[defaultLanguageId] || '',
+							};
+						}
 						if (!localizedValue[languageId]) {
 							localizedValue[languageId] =
 								localizedValue[defaultLanguageId] || '';
