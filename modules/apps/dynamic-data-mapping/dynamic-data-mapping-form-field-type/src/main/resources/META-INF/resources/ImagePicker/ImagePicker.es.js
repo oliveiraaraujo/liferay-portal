@@ -121,8 +121,9 @@ const ImagePicker = ({
 							value={imageValues.title}
 						/>
 					</ClayInput.GroupItem>
-
-					<ClayInput.GroupItem append shrink>
+				</ClayInput.Group>
+				<ClayInput.Group style={{marginTop: '0.5rem'}}>
+					<ClayInput.GroupItem shrink>
 						<ClayButton
 							disabled={readOnly}
 							displayType="secondary"
@@ -134,30 +135,42 @@ const ImagePicker = ({
 					</ClayInput.GroupItem>
 
 					{imageValues.url && (
-						<ClayInput.GroupItem shrink>
-							<ClayButton
-								disabled={readOnly}
-								displayType="secondary"
-								onClick={(event) =>
-									dispatchValue(
-										{
-											clear: true,
-											value: {
-												description: '',
-												event,
-												title: '',
-												url: '',
+						<>
+							<ClayInput.GroupItem shrink>
+								<ClayButton
+									disabled={readOnly}
+									displayType="secondary"
+									onClick={(event) =>
+										dispatchValue(
+											{
+												clear: true,
+												value: {
+													description: '',
+													event,
+													title: '',
+													url: '',
+												},
 											},
-										},
-										(mergedValues) =>
-											onClearClick(mergedValues)
-									)
-								}
-								type="button"
-							>
-								{Liferay.Language.get('clear')}
-							</ClayButton>
-						</ClayInput.GroupItem>
+											(mergedValues) =>
+												onClearClick(mergedValues)
+										)
+									}
+									type="button"
+								>
+									{Liferay.Language.get('clear')}
+								</ClayButton>
+							</ClayInput.GroupItem>
+							<ClayInput.GroupItem shrink>
+								<ClayButton
+									disabled={readOnly}
+									displayType="secondary"
+									onClick={() => setModalVisible(true)}
+									type="button"
+								>
+									{Liferay.Language.get('preview')}
+								</ClayButton>
+							</ClayInput.GroupItem>
+						</>
 					)}
 				</ClayInput.Group>
 			</ClayForm.Group>
