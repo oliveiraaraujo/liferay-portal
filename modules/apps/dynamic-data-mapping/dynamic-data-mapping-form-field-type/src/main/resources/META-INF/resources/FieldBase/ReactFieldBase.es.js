@@ -157,8 +157,6 @@ function FieldBase({
 
 				{children}
 
-				{nestedFields && <Layout rows={getDefaultRows(nestedFields)} />}
-
 				{localizedValueArray.length > 0 &&
 					localizedValueArray.map((language) => (
 						<input
@@ -176,6 +174,8 @@ function FieldBase({
 						<div className="form-feedback-item">{errorMessage}</div>
 					</span>
 				)}
+
+				{nestedFields && <Layout rows={getDefaultRows(nestedFields)} />}
 			</div>
 		</ClayTooltipProvider>
 	);
