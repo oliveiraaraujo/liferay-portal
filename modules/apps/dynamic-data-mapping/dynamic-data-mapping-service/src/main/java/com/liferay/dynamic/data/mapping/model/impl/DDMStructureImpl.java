@@ -591,22 +591,9 @@ public class DDMStructureImpl extends DDMStructureBaseImpl {
 	private List<DDMFormField> _removeFieldSetDDMFormField(
 		List<DDMFormField> ddmFormFields) {
 
-		try {
-			DDMStructure parentDDMStructure = getParentDDMStructure();
-
-			if (parentDDMStructure != null) {
-				ddmFormFields.removeIf(
-					ddmFormField ->
-						_isFieldSet(ddmFormField) &&
-						Objects.equals(
-							GetterUtil.getLong(
-								ddmFormField.getProperty("ddmStructureId")),
-							parentDDMStructure.getStructureId()));
-			}
-		}
-		catch (PortalException portalException) {
-			_log.error(portalException, portalException);
-		}
+		ddmFormFields.removeIf(
+			ddmFormField -> GetterUtil.getBoolean(
+				ddmFormField.getProperty("upgradedStructure")));
 
 		return ddmFormFields;
 	}
@@ -619,7 +606,7 @@ public class DDMStructureImpl extends DDMStructureBaseImpl {
 						GetterUtil.getLong(
 							ddmFormField.getProperty("ddmStructureId")));
 
-				DDMForm ddmForm = ddmStructure.createFullHierarchyDDMForm();
+				DDMForm ddmForm = ddmStructure.getDDMForm();
 
 				ddmFormField.setNestedDDMFormFields(ddmForm.getDDMFormFields());
 			}
