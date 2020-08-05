@@ -39,19 +39,11 @@ const getRows = (rows, nestedFields) => {
 	return normalizedRows.map((row) => ({
 		...row,
 		columns: row.columns.map((column) => {
-			let fields = [];
-
-			column.fields.forEach((fieldName) => {
-				fields = fields.concat(
-					nestedFields.filter(
-						(nestedField) => nestedField.fieldName === fieldName
-					)
-				);
-			});
-
 			return {
 				...column,
-				fields,
+				fields: nestedFields.filter((nestedField) =>
+					column.fields.includes(nestedField.fieldName)
+				),
 			};
 		}),
 	}));
