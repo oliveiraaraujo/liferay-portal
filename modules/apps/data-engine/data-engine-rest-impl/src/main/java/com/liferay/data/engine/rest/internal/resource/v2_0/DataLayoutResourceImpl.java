@@ -59,6 +59,7 @@ import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -248,6 +249,11 @@ public class DataLayoutResourceImpl
 			dataLayoutRenderingContext.getReadOnly());
 		ddmFormRenderingContext.setShowSubmitButton(false);
 		ddmFormRenderingContext.setViewMode(true);
+
+		if (LocaleThreadLocal.getThemeDisplayLocale() == null) {
+			LocaleThreadLocal.setThemeDisplayLocale(
+				contextAcceptLanguage.getPreferredLocale());
+		}
 
 		Map<String, Object> ddmFormTemplateContext =
 			_ddmFormTemplateContextFactory.create(
