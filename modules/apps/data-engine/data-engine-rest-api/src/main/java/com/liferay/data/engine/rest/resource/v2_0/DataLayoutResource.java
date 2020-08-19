@@ -15,6 +15,7 @@
 package com.liferay.data.engine.rest.resource.v2_0;
 
 import com.liferay.data.engine.rest.dto.v2_0.DataLayout;
+import com.liferay.data.engine.rest.dto.v2_0.DataLayoutRenderingContext;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
@@ -64,6 +65,11 @@ public interface DataLayoutResource {
 
 	public Response postDataDefinitionDataLayoutBatch(
 			Long dataDefinitionId, String callbackURL, Object object)
+		throws Exception;
+
+	public Response postDataLayoutContext(
+			Long dataLayoutId,
+			DataLayoutRenderingContext dataLayoutRenderingContext)
 		throws Exception;
 
 	public void deleteDataLayout(Long dataLayoutId) throws Exception;
