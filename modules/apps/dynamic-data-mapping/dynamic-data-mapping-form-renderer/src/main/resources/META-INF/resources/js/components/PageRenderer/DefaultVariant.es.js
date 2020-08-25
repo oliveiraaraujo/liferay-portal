@@ -84,6 +84,57 @@ export const Column = ({
 	const firstField = column.fields[0];
 	const rootParentField = parentField.root ?? firstField;
 
+	const fieldsGroup = () => {
+		return (
+			<div
+				className={classnames('ddm-field-container ddm-target h-100', {
+					'active-drop-child':
+						firstField.type === 'fieldset' &&
+						overTarget &&
+						!rootParentField.ddmStructureId,
+					'ddm-fieldset':
+						firstField.type === 'fieldset' &&
+						firstField.ddmStructureId,
+					selected: firstField.selected,
+					'target-over targetOver':
+						!rootParentField.ddmStructureId && overTarget,
+				})}
+				data-field-name={firstField.fieldName}
+			>
+				<div
+					className={classnames(
+						'ddm-resize-handle ddm-resize-handle-left',
+						{
+							hide: !firstField.selected,
+						}
+					)}
+					{...addr}
+				/>
+
+				<div
+					className="ddm-drag"
+					ref={
+						allowNestedFields && !rootParentField.ddmStructureId
+							? drop
+							: undefined
+					}
+				>
+					{fields}
+				</div>
+
+				<div
+					className={classnames(
+						'ddm-resize-handle ddm-resize-handle-right',
+						{
+							hide: !firstField.selected,
+						}
+					)}
+					{...addr}
+				/>
+			</div>
+		);
+	};
+
 	return (
 		<ClayLayout.Col
 			{...addr}
@@ -91,56 +142,10 @@ export const Column = ({
 			key={index}
 			md={column.size}
 		>
-			{editable && column.fields.length > 0 ? (
-				<div
-					className={classnames(
-						'ddm-field-container ddm-target h-100',
-						{
-							'active-drop-child':
-								firstField.type === 'fieldset' &&
-								overTarget &&
-								!rootParentField.ddmStructureId,
-							'ddm-fieldset':
-								firstField.type === 'fieldset' &&
-								firstField.ddmStructureId,
-							selected: firstField.selected,
-							'target-over targetOver':
-								!rootParentField.ddmStructureId && overTarget,
-						}
-					)}
-					data-field-name={firstField.fieldName}
-				>
-					<div
-						className={classnames(
-							'ddm-resize-handle ddm-resize-handle-left',
-							{
-								hide: !firstField.selected,
-							}
-						)}
-						{...addr}
-					/>
-
-					<div
-						className="ddm-drag"
-						ref={
-							allowNestedFields && !rootParentField.ddmStructureId
-								? drop
-								: undefined
-						}
-					>
-						{fields}
-					</div>
-
-					<div
-						className={classnames(
-							'ddm-resize-handle ddm-resize-handle-right',
-							{
-								hide: !firstField.selected,
-							}
-						)}
-						{...addr}
-					/>
-				</div>
+			{column.fields.length && firstField.type === 'fieldset' ? (
+				<div className="fields-group">{fieldsGroup()}</div>
+			) : editable && column.fields.length > 0 ? (
+				fieldsGroup()
 			) : (
 				fields
 			)}
