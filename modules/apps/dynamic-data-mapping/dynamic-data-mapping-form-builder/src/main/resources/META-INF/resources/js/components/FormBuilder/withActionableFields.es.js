@@ -177,7 +177,7 @@ const withActionableFields = (ChildComponent) => {
 		}
 
 		_handleMouseEnterField(event) {
-			const {pages} = this.props;
+			const {contentType, pages} = this.props;
 			const {delegateTarget} = event;
 			const {dispatch} = this.context;
 			const {fieldName} = delegateTarget.dataset;
@@ -198,7 +198,11 @@ const withActionableFields = (ChildComponent) => {
 				return;
 			}
 
-			if (fieldName !== selectedFieldActions.state.fieldName) {
+			if (
+				contentType &&
+				contentType === 'app-builder' &&
+				fieldName !== selectedFieldActions.state.fieldName
+			) {
 				selectedFieldActions.close();
 			}
 
