@@ -542,7 +542,7 @@
 				</div>
 
 				{if $showTargetCalculator and $targetSelected}
-					{call Calculator.render}
+					{call CalculatorReactAdapter.render}
 						{param events: [
 							'editExpression': $_handleEditExpression
 						]/}
