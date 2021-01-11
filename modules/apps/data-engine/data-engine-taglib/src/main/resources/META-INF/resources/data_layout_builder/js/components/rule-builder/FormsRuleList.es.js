@@ -20,7 +20,7 @@ import ClayIcon from '@clayui/icon';
 import ClayLabel from '@clayui/label';
 import ClayLayout from '@clayui/layout';
 import ClayList from '@clayui/list';
-import {RulesSupport} from 'dynamic-data-mapping-form-builder';
+import RulesSupport from 'dynamic-data-mapping-form-builder/js/components/RuleBuilder/RulesSupport.es';
 import React, {useMemo} from 'react';
 
 import * as Lang from '../../utils/lang.es';
@@ -296,6 +296,51 @@ const ListItem = ({dataProvider, fields, onDelete, onEdit, pages, rule}) => {
 		[conditions]
 	);
 
+	const WrapperCondition = ({condition, hasLogicalOperator}) => {
+		return (
+			<>
+				<Condition {...condition} />
+				{hasLogicalOperator && (
+					<LogicalOperator
+						logicalOperator={
+							LOGICAL_OPERATOR[rule['logical-operator']]
+						}
+					/>
+				)}
+			</>
+		);
+	};
+
+	const WrapperAction = ({
+		action,
+		dataProvider,
+		fields,
+		hasLogicalOperator,
+		pages,
+		...otherProps
+	}) => {
+		const Action = ACTIONS[action];
+
+		return (
+			<>
+				<Action
+					action={action}
+					dataProvider={dataProvider}
+					fields={fields}
+					pages={pages}
+					{...otherProps}
+				/>
+				{hasLogicalOperator && (
+					<LogicalOperator
+						logicalOperator={Liferay.Language.get('and')}
+					>
+						{` , `}
+					</LogicalOperator>
+				)}
+			</>
+		);
+	};
+
 	return (
 		<ClayList.Item flex>
 			<ClayLayout.ContentCol expand>
@@ -304,47 +349,24 @@ const ListItem = ({dataProvider, fields, onDelete, onEdit, pages, rule}) => {
 						{Liferay.Language.get('if')}
 					</b>
 					{conditions.map((condition, index) => (
-						<>
-							<Condition key={index} {...condition} />
-							{conditions.length - 1 > index && (
-								<LogicalOperator
-									key={'lo' + index}
-									logicalOperator={
-										LOGICAL_OPERATOR[
-											rule['logical-operator']
-										]
-									}
-								/>
-							)}
-						</>
+						<WrapperCondition
+							condition={condition}
+							hasLogicalOperator={conditions.length - 1 > index}
+							key={index}
+						/>
 					))}
 					<br />
-					{actions.map(({action, ...otherProps}, index) => {
-						const Action = ACTIONS[action];
-
-						return (
-							<>
-								<Action
-									action={action}
-									dataProvider={dataProvider}
-									fields={fields}
-									key={index}
-									pages={pages}
-									{...otherProps}
-								/>
-								{actions.length - 1 > index && (
-									<LogicalOperator
-										key={'lo' + index}
-										logicalOperator={Liferay.Language.get(
-											'and'
-										)}
-									>
-										{` , `}
-									</LogicalOperator>
-								)}
-							</>
-						);
-					})}
+					{actions.map(({action, ...otherProps}, index) => (
+						<WrapperAction
+							action={action}
+							dataProvider={dataProvider}
+							fields={fields}
+							hasLogicalOperator={actions.length - 1 > index}
+							key={index}
+							pages={pages}
+							{...otherProps}
+						/>
+					))}
 				</div>
 			</ClayLayout.ContentCol>
 			<ClayLayout.ContentCol>
