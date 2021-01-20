@@ -19,7 +19,7 @@ import {useForm} from '../hooks/useForm.es';
 import {usePage} from './usePage.es';
 
 const defaultSpec = {
-	accept: [],
+	accept: 'fieldType',
 };
 
 export const DND_ORIGIN_TYPE = {
@@ -35,15 +35,31 @@ export const useDrop = (sourceItem) => {
 
 	const [{canDrop, overTarget}, drop] = useDndDrop({
 		...spec,
+		// accept: defaultSpec.accept,
 		collect: (monitor) => ({
 			canDrop: monitor.canDrop(),
 			overTarget: monitor.isOver(),
 		}),
-		drop: (item, monitor) =>
+		drop: (item, monitor) => {
+			
 			dispatch({
 				payload: {item, monitor, sourceItem},
 				type: EVENT_TYPES.FIELD_DROP,
-			}),
+			});
+
+			if(monitor.isOver()){
+				dispatch({
+					payload: {
+						sourceFieldName: item.fieldName,
+						sourceFieldPage: item.pageIndex,
+						targetFieldName: undefined,
+						targetIndexes: item.targetIndexes,
+						targetParentFieldName: item.targetParentFieldName,
+					},
+					type: EVENT_TYPES.FIELD_MOVED,
+				});
+			}
+		},
 	});
 
 	return {

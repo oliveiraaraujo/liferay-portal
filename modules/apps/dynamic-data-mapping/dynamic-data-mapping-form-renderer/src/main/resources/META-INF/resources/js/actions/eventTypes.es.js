@@ -20,6 +20,7 @@ const PUBLIC_EVENTS = {
 	FIELD_DELETED: 'fieldDeleted',
 	FIELD_DROP: 'fieldDrop',
 	FIELD_DUPLICATED: 'fieldDuplicated',
+	FIELD_MOVED: 'fieldMoved',
 	FIELD_EVALUATED: 'evaluated',
 	FIELD_EVALUATION_ERROR: 'evaluationError',
 	FIELD_FOCUS: 'fieldFocused',

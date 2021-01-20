@@ -14,8 +14,10 @@
 
 import ClayLayout from '@clayui/layout';
 import classNames from 'classnames';
+import {FormSupport} from 'dynamic-data-mapping-form-renderer';
 import React, {useContext, useRef} from 'react';
 
+import {useDrag} from '../../hooks/useDrag.es';
 import {DND_ORIGIN_TYPE, useDrop} from '../../hooks/useDrop.es';
 import {hasFieldSet} from '../../util/fields.es';
 import {Actions, ActionsControls, useActions} from '../Actions.es';
@@ -33,6 +35,8 @@ export const Column = ({
 	pageIndex,
 	rowIndex,
 }) => {
+	const ref = useRef(null);
+
 	const parentField = useContext(ParentFieldContext);
 
 	const actionsRef = useRef(null);
@@ -40,7 +44,7 @@ export const Column = ({
 
 	const [{activeId, hoveredId}] = useActions();
 
-	const {drop, overTarget} = useDrop({
+	const {drop: defaultDrop, overTarget} = useDrop({
 		columnIndex: index,
 		fieldName: column.fields[0]?.fieldName,
 		origin: DND_ORIGIN_TYPE.FIELD,
@@ -48,6 +52,15 @@ export const Column = ({
 		parentField,
 		rowIndex,
 	});
+
+	const {drag} = useDrag({
+		...column.fields[0],
+		pageIndex,
+		targetParentFieldName: parentField.fieldName,
+		targetIndexes: ref.current ? FormSupport.getIndexes(ref.current.parentElement) : {columnIndex: index, rowIndex, pageIndex}
+	});
+
+	const drop = drag(defaultDrop(ref));
 
 	if (editable && column.fields.length === 0 && activePage === pageIndex) {
 		return (
@@ -126,9 +139,10 @@ export const Column = ({
 					className={classNames('ddm-drag', {
 						'py-0': isFieldSetOrGroup,
 					})}
+
 					ref={
 						allowNestedFields && !rootParentField.ddmStructureId
-							? drop
+							? ref
 							: undefined
 					}
 				>
