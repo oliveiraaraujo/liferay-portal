@@ -35,7 +35,6 @@ export const useDrop = (sourceItem) => {
 
 	const [{canDrop, overTarget}, drop] = useDndDrop({
 		...spec,
-		// accept: defaultSpec.accept,
 		collect: (monitor) => ({
 			canDrop: monitor.canDrop(),
 			overTarget: monitor.isOver(),
